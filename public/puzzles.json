@@ -9,10 +9,26 @@
           "difficulty": 1,
           "color": "#4CAF50",
           "movies": [
-            { "title": "Total Recall", "year": 1990, "tmdb_id": null },
-            { "title": "Commando", "year": 1985, "tmdb_id": null },
-            { "title": "Predator", "year": 1987, "tmdb_id": null },
-            { "title": "The Running Man", "year": 1987, "tmdb_id": null }
+            {
+              "title": "Total Recall",
+              "year": 1990,
+              "tmdb_id": 861
+            },
+            {
+              "title": "Commando",
+              "year": 1985,
+              "tmdb_id": 10999
+            },
+            {
+              "title": "Predator",
+              "year": 1987,
+              "tmdb_id": 106
+            },
+            {
+              "title": "The Running Man",
+              "year": 1987,
+              "tmdb_id": 865
+            }
           ]
         },
         {
@@ -20,10 +36,26 @@
           "difficulty": 2,
           "color": "#FFC107",
           "movies": [
-            { "title": "The Breakfast Club", "year": 1985, "tmdb_id": null },
-            { "title": "St. Elmo's Fire", "year": 1985, "tmdb_id": null },
-            { "title": "Pretty in Pink", "year": 1986, "tmdb_id": null },
-            { "title": "About Last Night", "year": 1986, "tmdb_id": null }
+            {
+              "title": "The Breakfast Club",
+              "year": 1985,
+              "tmdb_id": 2108
+            },
+            {
+              "title": "St. Elmo's Fire",
+              "year": 1985,
+              "tmdb_id": 11557
+            },
+            {
+              "title": "Pretty in Pink",
+              "year": 1986,
+              "tmdb_id": 11522
+            },
+            {
+              "title": "About Last Night",
+              "year": 1986,
+              "tmdb_id": 18169
+            }
           ]
         },
         {
@@ -31,10 +63,26 @@
           "difficulty": 3,
           "color": "#2196F3",
           "movies": [
-            { "title": "Wayne's World", "year": 1992, "tmdb_id": null },
-            { "title": "Big", "year": 1988, "tmdb_id": null },
-            { "title": "Pet Sematary", "year": 1989, "tmdb_id": null },
-            { "title": "Near Dark", "year": 1987, "tmdb_id": null }
+            {
+              "title": "Wayne's World",
+              "year": 1992,
+              "tmdb_id": 8872
+            },
+            {
+              "title": "Big",
+              "year": 1988,
+              "tmdb_id": 2280
+            },
+            {
+              "title": "Pet Sematary",
+              "year": 1989,
+              "tmdb_id": 8913
+            },
+            {
+              "title": "Near Dark",
+              "year": 1987,
+              "tmdb_id": 11879
+            }
           ]
         },
         {
@@ -42,10 +90,26 @@
           "difficulty": 4,
           "color": "#9C27B0",
           "movies": [
-            { "title": "WarGames", "year": 1983, "tmdb_id": null },
-            { "title": "2001: A Space Odyssey", "year": 1968, "tmdb_id": null },
-            { "title": "Demon Seed", "year": 1977, "tmdb_id": null },
-            { "title": "Colossus: The Forbin Project", "year": 1970, "tmdb_id": null }
+            {
+              "title": "WarGames",
+              "year": 1983,
+              "tmdb_id": 860
+            },
+            {
+              "title": "2001: A Space Odyssey",
+              "year": 1968,
+              "tmdb_id": 62
+            },
+            {
+              "title": "Demon Seed",
+              "year": 1977,
+              "tmdb_id": 18775
+            },
+            {
+              "title": "Colossus: The Forbin Project",
+              "year": 1970,
+              "tmdb_id": 14801
+            }
           ]
         }
       ]
@@ -59,10 +123,26 @@
           "difficulty": 1,
           "color": "#4CAF50",
           "movies": [
-            { "title": "Ferris Bueller's Day Off", "year": 1986, "tmdb_id": null },
-            { "title": "Sixteen Candles", "year": 1984, "tmdb_id": null },
-            { "title": "Weird Science", "year": 1985, "tmdb_id": null },
-            { "title": "Planes, Trains and Automobiles", "year": 1987, "tmdb_id": null }
+            {
+              "title": "Ferris Bueller's Day Off",
+              "year": 1986,
+              "tmdb_id": 9377
+            },
+            {
+              "title": "Sixteen Candles",
+              "year": 1984,
+              "tmdb_id": 15144
+            },
+            {
+              "title": "Weird Science",
+              "year": 1985,
+              "tmdb_id": 11814
+            },
+            {
+              "title": "Planes, Trains and Automobiles",
+              "year": 1987,
+              "tmdb_id": 2609
+            }
           ]
         },
         {
@@ -70,10 +150,26 @@
           "difficulty": 2,
           "color": "#FFC107",
           "movies": [
-            { "title": "Aliens", "year": 1986, "tmdb_id": null },
-            { "title": "The Empire Strikes Back", "year": 1980, "tmdb_id": null },
-            { "title": "The Road Warrior", "year": 1981, "tmdb_id": null },
-            { "title": "Star Trek II: The Wrath of Khan", "year": 1982, "tmdb_id": null }
+            {
+              "title": "Aliens",
+              "year": 1986,
+              "tmdb_id": 679
+            },
+            {
+              "title": "The Empire Strikes Back",
+              "year": 1980,
+              "tmdb_id": 1891
+            },
+            {
+              "title": "The Road Warrior",
+              "year": 1981,
+              "tmdb_id": 8810
+            },
+            {
+              "title": "Star Trek II: The Wrath of Khan",
+              "year": 1982,
+              "tmdb_id": 154
+            }
           ]
         },
         {
@@ -81,10 +177,26 @@
           "difficulty": 3,
           "color": "#2196F3",
           "movies": [
-            { "title": "Die Hard", "year": 1988, "tmdb_id": null },
-            { "title": "The Shining", "year": 1980, "tmdb_id": null },
-            { "title": "Clue", "year": 1985, "tmdb_id": null },
-            { "title": "Cube", "year": 1997, "tmdb_id": null }
+            {
+              "title": "Die Hard",
+              "year": 1988,
+              "tmdb_id": 562
+            },
+            {
+              "title": "The Shining",
+              "year": 1980,
+              "tmdb_id": 694
+            },
+            {
+              "title": "Clue",
+              "year": 1985,
+              "tmdb_id": 15196
+            },
+            {
+              "title": "Cube",
+              "year": 1997,
+              "tmdb_id": 431
+            }
           ]
         },
         {
@@ -92,10 +204,26 @@
           "difficulty": 4,
           "color": "#9C27B0",
           "movies": [
-            { "title": "Heathers", "year": 1988, "tmdb_id": null },
-            { "title": "Beetlejuice", "year": 1988, "tmdb_id": null },
-            { "title": "Amadeus", "year": 1984, "tmdb_id": null },
-            { "title": "Rocky", "year": 1976, "tmdb_id": null }
+            {
+              "title": "Heathers",
+              "year": 1988,
+              "tmdb_id": 2640
+            },
+            {
+              "title": "Beetlejuice",
+              "year": 1988,
+              "tmdb_id": 4011
+            },
+            {
+              "title": "Amadeus",
+              "year": 1984,
+              "tmdb_id": 279
+            },
+            {
+              "title": "Rocky",
+              "year": 1976,
+              "tmdb_id": 1366
+            }
           ]
         }
       ]
@@ -109,10 +237,26 @@
           "difficulty": 1,
           "color": "#4CAF50",
           "movies": [
-            { "title": "Beverly Hills Cop", "year": 1984, "tmdb_id": null },
-            { "title": "Coming to America", "year": 1988, "tmdb_id": null },
-            { "title": "Trading Places", "year": 1983, "tmdb_id": null },
-            { "title": "48 Hrs.", "year": 1982, "tmdb_id": null }
+            {
+              "title": "Beverly Hills Cop",
+              "year": 1984,
+              "tmdb_id": 90
+            },
+            {
+              "title": "Coming to America",
+              "year": 1988,
+              "tmdb_id": 9602
+            },
+            {
+              "title": "Trading Places",
+              "year": 1983,
+              "tmdb_id": 1621
+            },
+            {
+              "title": "48 Hrs.",
+              "year": 1982,
+              "tmdb_id": 150
+            }
           ]
         },
         {
@@ -120,10 +264,26 @@
           "difficulty": 2,
           "color": "#FFC107",
           "movies": [
-            { "title": "Stand by Me", "year": 1986, "tmdb_id": null },
-            { "title": "The Shawshank Redemption", "year": 1994, "tmdb_id": null },
-            { "title": "Misery", "year": 1990, "tmdb_id": null },
-            { "title": "Christine", "year": 1983, "tmdb_id": null }
+            {
+              "title": "Stand by Me",
+              "year": 1986,
+              "tmdb_id": 235
+            },
+            {
+              "title": "The Shawshank Redemption",
+              "year": 1994,
+              "tmdb_id": 278
+            },
+            {
+              "title": "Misery",
+              "year": 1990,
+              "tmdb_id": 1700
+            },
+            {
+              "title": "Christine",
+              "year": 1983,
+              "tmdb_id": 8769
+            }
           ]
         },
         {
@@ -131,10 +291,26 @@
           "difficulty": 3,
           "color": "#2196F3",
           "movies": [
-            { "title": "Carrie", "year": 1976, "tmdb_id": null },
-            { "title": "Back to the Future", "year": 1985, "tmdb_id": null },
-            { "title": "Footloose", "year": 1984, "tmdb_id": null },
-            { "title": "Never Been Kissed", "year": 1999, "tmdb_id": null }
+            {
+              "title": "Carrie",
+              "year": 1976,
+              "tmdb_id": 7340
+            },
+            {
+              "title": "Back to the Future",
+              "year": 1985,
+              "tmdb_id": 105
+            },
+            {
+              "title": "Footloose",
+              "year": 1984,
+              "tmdb_id": 1788
+            },
+            {
+              "title": "Never Been Kissed",
+              "year": 1999,
+              "tmdb_id": 11355
+            }
           ]
         },
         {
@@ -142,10 +318,26 @@
           "difficulty": 4,
           "color": "#9C27B0",
           "movies": [
-            { "title": "Home Alone", "year": 1990, "tmdb_id": null },
-            { "title": "The Blues Brothers", "year": 1980, "tmdb_id": null },
-            { "title": "It Came from Hollywood", "year": 1982, "tmdb_id": null },
-            { "title": "The Silent Partner", "year": 1978, "tmdb_id": null }
+            {
+              "title": "Home Alone",
+              "year": 1990,
+              "tmdb_id": 771
+            },
+            {
+              "title": "The Blues Brothers",
+              "year": 1980,
+              "tmdb_id": 525
+            },
+            {
+              "title": "It Came from Hollywood",
+              "year": 1982,
+              "tmdb_id": 30168
+            },
+            {
+              "title": "The Silent Partner",
+              "year": 1978,
+              "tmdb_id": 25338
+            }
           ]
         }
       ]
@@ -159,10 +351,26 @@
           "difficulty": 1,
           "color": "#4CAF50",
           "movies": [
-            { "title": "Raiders of the Lost Ark", "year": 1981, "tmdb_id": null },
-            { "title": "E.T. the Extra-Terrestrial", "year": 1982, "tmdb_id": null },
-            { "title": "Jaws", "year": 1975, "tmdb_id": null },
-            { "title": "Jurassic Park", "year": 1993, "tmdb_id": null }
+            {
+              "title": "Raiders of the Lost Ark",
+              "year": 1981,
+              "tmdb_id": 85
+            },
+            {
+              "title": "E.T. the Extra-Terrestrial",
+              "year": 1982,
+              "tmdb_id": 601
+            },
+            {
+              "title": "Jaws",
+              "year": 1975,
+              "tmdb_id": 578
+            },
+            {
+              "title": "Jurassic Park",
+              "year": 1993,
+              "tmdb_id": 329
+            }
           ]
         },
         {
@@ -170,10 +378,26 @@
           "difficulty": 2,
           "color": "#FFC107",
           "movies": [
-            { "title": "Star Wars", "year": 1977, "tmdb_id": null },
-            { "title": "Alien", "year": 1979, "tmdb_id": null },
-            { "title": "Flight of the Navigator", "year": 1986, "tmdb_id": null },
-            { "title": "The Last Starfighter", "year": 1984, "tmdb_id": null }
+            {
+              "title": "Star Wars",
+              "year": 1977,
+              "tmdb_id": 11
+            },
+            {
+              "title": "Alien",
+              "year": 1979,
+              "tmdb_id": 348
+            },
+            {
+              "title": "Flight of the Navigator",
+              "year": 1986,
+              "tmdb_id": 10122
+            },
+            {
+              "title": "The Last Starfighter",
+              "year": 1984,
+              "tmdb_id": 11884
+            }
           ]
         },
         {
@@ -181,10 +405,26 @@
           "difficulty": 3,
           "color": "#2196F3",
           "movies": [
-            { "title": "Reds", "year": 1981, "tmdb_id": null },
-            { "title": "Dances with Wolves", "year": 1990, "tmdb_id": null },
-            { "title": "Yentl", "year": 1983, "tmdb_id": null },
-            { "title": "A Bronx Tale", "year": 1993, "tmdb_id": null }
+            {
+              "title": "Reds",
+              "year": 1981,
+              "tmdb_id": 18254
+            },
+            {
+              "title": "Dances with Wolves",
+              "year": 1990,
+              "tmdb_id": 581
+            },
+            {
+              "title": "Yentl",
+              "year": 1983,
+              "tmdb_id": 10269
+            },
+            {
+              "title": "A Bronx Tale",
+              "year": 1993,
+              "tmdb_id": 1607
+            }
           ]
         },
         {
@@ -192,10 +432,26 @@
           "difficulty": 4,
           "color": "#9C27B0",
           "movies": [
-            { "title": "A Clockwork Orange", "year": 1971, "tmdb_id": null },
-            { "title": "The Texas Chain Saw Massacre", "year": 1974, "tmdb_id": null },
-            { "title": "Cannibal Holocaust", "year": 1980, "tmdb_id": null },
-            { "title": "Faces of Death", "year": 1978, "tmdb_id": null }
+            {
+              "title": "A Clockwork Orange",
+              "year": 1971,
+              "tmdb_id": 185
+            },
+            {
+              "title": "The Texas Chain Saw Massacre",
+              "year": 1974,
+              "tmdb_id": 30497
+            },
+            {
+              "title": "Cannibal Holocaust",
+              "year": 1980,
+              "tmdb_id": 8689
+            },
+            {
+              "title": "Faces of Death",
+              "year": 1978,
+              "tmdb_id": 12237
+            }
           ]
         }
       ]
@@ -209,10 +465,26 @@
           "difficulty": 1,
           "color": "#4CAF50",
           "movies": [
-            { "title": "The Little Mermaid", "year": 1989, "tmdb_id": null },
-            { "title": "Aladdin", "year": 1992, "tmdb_id": null },
-            { "title": "The Lion King", "year": 1994, "tmdb_id": null },
-            { "title": "Beauty and the Beast", "year": 1991, "tmdb_id": null }
+            {
+              "title": "The Little Mermaid",
+              "year": 1989,
+              "tmdb_id": 10144
+            },
+            {
+              "title": "Aladdin",
+              "year": 1992,
+              "tmdb_id": 812
+            },
+            {
+              "title": "The Lion King",
+              "year": 1994,
+              "tmdb_id": 8587
+            },
+            {
+              "title": "Beauty and the Beast",
+              "year": 1991,
+              "tmdb_id": 10020
+            }
           ]
         },
         {
@@ -220,10 +492,26 @@
           "difficulty": 2,
           "color": "#FFC107",
           "movies": [
-            { "title": "Ghostbusters", "year": 1984, "tmdb_id": null },
-            { "title": "Caddyshack", "year": 1980, "tmdb_id": null },
-            { "title": "Stripes", "year": 1981, "tmdb_id": null },
-            { "title": "Groundhog Day", "year": 1993, "tmdb_id": null }
+            {
+              "title": "Ghostbusters",
+              "year": 1984,
+              "tmdb_id": 620
+            },
+            {
+              "title": "Caddyshack",
+              "year": 1980,
+              "tmdb_id": 11977
+            },
+            {
+              "title": "Stripes",
+              "year": 1981,
+              "tmdb_id": 10890
+            },
+            {
+              "title": "Groundhog Day",
+              "year": 1993,
+              "tmdb_id": 137
+            }
           ]
         },
         {
@@ -231,10 +519,26 @@
           "difficulty": 3,
           "color": "#2196F3",
           "movies": [
-            { "title": "The Magnificent Seven", "year": 1960, "tmdb_id": null },
-            { "title": "Scarface", "year": 1983, "tmdb_id": null },
-            { "title": "Three Men and a Baby", "year": 1987, "tmdb_id": null },
-            { "title": "The Birdcage", "year": 1996, "tmdb_id": null }
+            {
+              "title": "The Magnificent Seven",
+              "year": 1960,
+              "tmdb_id": 966
+            },
+            {
+              "title": "Scarface",
+              "year": 1983,
+              "tmdb_id": 111
+            },
+            {
+              "title": "Three Men and a Baby",
+              "year": 1987,
+              "tmdb_id": 12154
+            },
+            {
+              "title": "The Birdcage",
+              "year": 1996,
+              "tmdb_id": 11000
+            }
           ]
         },
         {
@@ -242,10 +546,26 @@
           "difficulty": 4,
           "color": "#9C27B0",
           "movies": [
-            { "title": "Grease", "year": 1978, "tmdb_id": null },
-            { "title": "Tootsie", "year": 1982, "tmdb_id": null },
-            { "title": "The Witches of Eastwick", "year": 1987, "tmdb_id": null },
-            { "title": "Edward Scissorhands", "year": 1990, "tmdb_id": null }
+            {
+              "title": "Grease",
+              "year": 1978,
+              "tmdb_id": 621
+            },
+            {
+              "title": "Tootsie",
+              "year": 1982,
+              "tmdb_id": 9576
+            },
+            {
+              "title": "The Witches of Eastwick",
+              "year": 1987,
+              "tmdb_id": 6069
+            },
+            {
+              "title": "Edward Scissorhands",
+              "year": 1990,
+              "tmdb_id": 162
+            }
           ]
         }
       ]
