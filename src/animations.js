@@ -38,6 +38,10 @@ function easeOutCubic(t) {
   return 1 - Math.pow(1 - t, 3);
 }
 
+function easeOutQuart(t) {
+  return 1 - Math.pow(1 - t, 4);
+}
+
 function easeInOutCubic(t) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
@@ -78,7 +82,11 @@ function addAnimation(duration, update, onComplete) {
 // ---------------------------------------------------------------------------
 
 /**
- * Boxes spin in from above with a staggered, bouncy landing.
+ * Cinematic entrance: tapes fly from behind/around the viewer's head,
+ * starting large and rushing past the camera into the scene, each with
+ * its own personality — some faster, some lazier, extra twirls, varied
+ * arcs. The whole sequence takes ~3 seconds.
+ *
  * @param {THREE.Group[]} boxes
  * @param {() => void}    [onComplete]
  */
@@ -91,53 +99,102 @@ export function animateEntrance(boxes, onComplete) {
     return;
   }
 
-  boxes.forEach((box, i) => {
-    const delay = i * 0.06; // 60 ms stagger
-    const duration = 0.6;
+  // Seeded PRNG so entrance looks the same on every load for a given puzzle
+  // (uses the first box's gridIndex as a simple seed differentiator)
+  let seed = 42 + (boxes[0]?.userData.gridIndex || 0);
+  function rand() {
+    seed = (seed * 16807 + 0) % 2147483647;
+    return (seed - 1) / 2147483646;
+  }
 
-    // Snapshot the landing position
+  // Pre-roll a few values to decorrelate
+  for (let k = 0; k < 10; k++) rand();
+
+  boxes.forEach((box, i) => {
     const targetX = box.userData.originalPosition.x;
     const targetY = box.userData.originalPosition.y;
     const targetZ = box.userData.originalPosition.z;
 
-    // Random starting offsets
-    const startOffsetY = 6 + Math.random() * 2;
-    const startOffsetX = (Math.random() - 0.5) * 0.6;
-    const startRotX = (Math.random() - 0.5) * Math.PI;
-    // Start Y rotation includes a full extra spin (2*PI) so the box
-    // completes at least one full Y revolution during the entrance.
-    const startRotY = (Math.random() - 0.5) * Math.PI + Math.PI * 2;
-    const startRotZ = (Math.random() - 0.5) * Math.PI;
+    // ── Per-tape personality (random scatter with guardrails) ──
 
-    // Place box at starting position immediately
-    box.position.set(targetX + startOffsetX, targetY + startOffsetY, targetZ);
-    box.rotation.set(startRotX, startRotY, startRotZ);
+    // Stagger: 80-140ms apart, so the stream takes ~1.5-2s to start all
+    const delay = i * (0.08 + rand() * 0.06);
+
+    // Flight duration: 1.2 – 1.8s per tape (some zip, some float)
+    const duration = 1.2 + rand() * 0.6;
+
+    // Start behind/around the camera (camera is at z=9)
+    // z: 11-15 (behind camera), x: scattered wide, y: scattered
+    const startX = (rand() - 0.5) * 8;
+    const startY = (rand() - 0.5) * 6 + 1;
+    const startZ = 11 + rand() * 4;
+
+    // Start scale: 1.8 – 2.8x (they appear huge rushing past)
+    const startScale = 1.8 + rand() * 1.0;
+
+    // Y twirls: 1-3 full rotations (some tapes show off more)
+    const twirls = (1 + Math.floor(rand() * 3)) * Math.PI * 2;
+    // Random twirl direction
+    const ySign = rand() > 0.5 ? 1 : -1;
+    const totalRotY = twirls * ySign;
+
+    // X tilt: gentle lean during flight (±20-40 degrees)
+    const tiltX = (rand() - 0.5) * 0.7;
+
+    // Z roll: subtle roll (±15 degrees)
+    const rollZ = (rand() - 0.5) * 0.5;
+
+    // Mid-flight arc: slight curve via a control point offset
+    // This makes them feel like they're swooping, not flying straight
+    const arcX = (rand() - 0.5) * 2;
+    const arcY = rand() * 2 + 1; // upward bias for a nice arc
+
+    // Place at start immediately (invisible — behind camera / in fog)
+    box.position.set(startX, startY, startZ);
+    box.rotation.set(tiltX, totalRotY, rollZ);
+    box.scale.setScalar(startScale);
 
     const animDuration = delay + duration;
 
     addAnimation(
       animDuration,
       (rawT) => {
-        // Before stagger delay: keep at start
+        // Before this tape's stagger kicks in, hold at start
         if (rawT * animDuration < delay) return;
 
-        // Normalised t within the active window
+        // Normalized t within this tape's active window [0..1]
         const localT = Math.min((rawT * animDuration - delay) / duration, 1);
-        const easedT = easeOutBounce(localT);
 
-        box.position.x = targetX + startOffsetX * (1 - localT);
-        box.position.y = targetY + startOffsetY * (1 - easedT);
-        box.position.z = targetZ;
+        // Smooth deceleration — fast rush then gentle settle
+        const eased = easeOutQuart(localT);
 
-        // Spin down to zero — Y includes the full extra revolution
-        box.rotation.x = startRotX * (1 - localT);
-        box.rotation.y = startRotY * (1 - localT);
-        box.rotation.z = startRotZ * (1 - localT);
+        // Position: quadratic bezier through an arc control point
+        // P = (1-t)²·start + 2(1-t)t·control + t²·target
+        const oneMinusT = 1 - eased;
+        const ctrlX = (startX + targetX) / 2 + arcX;
+        const ctrlY = (startY + targetY) / 2 + arcY;
+        const ctrlZ = (startZ + targetZ) / 2;
+
+        box.position.x = oneMinusT * oneMinusT * startX + 2 * oneMinusT * eased * ctrlX + eased * eased * targetX;
+        box.position.y = oneMinusT * oneMinusT * startY + 2 * oneMinusT * eased * ctrlY + eased * eased * targetY;
+        box.position.z = oneMinusT * oneMinusT * startZ + 2 * oneMinusT * eased * ctrlZ + eased * eased * targetZ;
+
+        // Scale: shrink from large to 1
+        const s = startScale + (1 - startScale) * eased;
+        box.scale.setScalar(s);
+
+        // Rotation: wind down from start rotation to zero
+        // Use a slightly different easing so rotation settles later than position
+        const rotT = easeOutCubic(localT);
+        box.rotation.x = tiltX * (1 - rotT);
+        box.rotation.y = totalRotY * (1 - rotT);
+        box.rotation.z = rollZ * (1 - rotT);
       },
       () => {
-        // Snap to exact final state
+        // Snap to exact final resting state
         box.position.set(targetX, targetY, targetZ);
         box.rotation.set(0, 0, 0);
+        box.scale.setScalar(1);
 
         completedCount++;
         if (completedCount === total && typeof onComplete === 'function') {
