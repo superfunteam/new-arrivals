@@ -170,11 +170,10 @@ export function animateLockIn(boxes, targetY, targetPositions, onComplete) {
 
   boxes.forEach((box, i) => {
     const delay = i * 0.1; // 100 ms stagger
-    const duration = 0.4;
+    const duration = 0.5;
     const animDuration = delay + duration;
 
     const startPos = box.position.clone();
-    const startRotY = box.rotation.y;
     const target = targetPositions[i];
 
     addAnimation(
@@ -189,17 +188,11 @@ export function animateLockIn(boxes, targetY, targetPositions, onComplete) {
         box.position.y = startPos.y + (target.y - startPos.y) * easedT;
         box.position.z = startPos.z + (target.z - startPos.z) * easedT;
 
-        // Half-flip around Y so the box visually flips into place
-        box.rotation.y = startRotY + Math.PI * easeInOutCubic(localT);
-
         // Slight rotation wobble on Z
         box.rotation.z = Math.sin(localT * Math.PI * 3) * 0.08 * (1 - localT);
       },
       () => {
         box.position.copy(target);
-        // PI rotation means the box ends facing the same direction (front visible)
-        // since a half-turn of a symmetric box looks the same. Snap to nearest
-        // multiple of 2*PI to avoid drift.
         box.rotation.set(0, 0, 0);
         box.userData.originalPosition.copy(target);
 
@@ -278,19 +271,15 @@ export function animateReflow(boxes, onComplete) {
   }));
 
   boxes.forEach((box, i) => {
-    const { startPos, startRotY, target } = snapshots[i];
+    const { startPos, target } = snapshots[i];
 
     addAnimation(
-      0.6,
+      0.8,
       (t) => {
         const easedT = easeInOutCubic(t);
         box.position.x = startPos.x + (target.x - startPos.x) * easedT;
         box.position.y = startPos.y + (target.y - startPos.y) * easedT;
-        // Keep Z consistent — interpolate smoothly to target Z
         box.position.z = startPos.z + (target.z - startPos.z) * easedT;
-
-        // Full 360-degree Y spin during the transition
-        box.rotation.y = startRotY + Math.PI * 2 * easeInOutCubic(t);
       },
       () => {
         box.position.copy(target);
@@ -377,4 +366,75 @@ export function animateGrayOut(boxes, onComplete) {
       }
     );
   });
+}
+
+// ---------------------------------------------------------------------------
+// Inspect animation (long-press 3D twirl)
+// ---------------------------------------------------------------------------
+
+/**
+ * Animate a box off the shelf toward the camera with a full 360-degree twirl.
+ * @param {THREE.Group}  box
+ * @param {THREE.Camera} camera
+ * @param {() => void}   [onComplete]
+ */
+export function animateInspect(box, camera, onComplete) {
+  const startPos = box.position.clone();
+  const startRotX = box.rotation.x;
+  const startRotY = box.rotation.y;
+
+  const targetPos = new THREE.Vector3(0, camera.position.y, camera.position.z - 2);
+
+  addAnimation(
+    0.8,
+    (t) => {
+      const easedT = easeOutCubic(t);
+
+      box.position.x = startPos.x + (targetPos.x - startPos.x) * easedT;
+      box.position.y = startPos.y + (targetPos.y - startPos.y) * easedT;
+      box.position.z = startPos.z + (targetPos.z - startPos.z) * easedT;
+
+      // Full 360-degree Y twirl
+      box.rotation.y = startRotY + Math.PI * 2 * easedT;
+
+      // Slight X tilt: lean back ~15 degrees then return (peaks at t=0.5)
+      const tiltAmount = 15 * (Math.PI / 180);
+      box.rotation.x = startRotX + Math.sin(t * Math.PI) * tiltAmount;
+    },
+    () => {
+      box.position.copy(targetPos);
+      box.rotation.set(0, 0, 0);
+      if (typeof onComplete === 'function') onComplete();
+    }
+  );
+}
+
+/**
+ * Animate a box back from the inspect position to its shelf position.
+ * @param {THREE.Group}   box
+ * @param {THREE.Vector3} originalPos
+ * @param {() => void}    [onComplete]
+ */
+export function animateReturnToShelf(box, originalPos, onComplete) {
+  const startPos = box.position.clone();
+  const startRotY = box.rotation.y;
+
+  addAnimation(
+    0.5,
+    (t) => {
+      const easedT = easeInOutCubic(t);
+
+      box.position.x = startPos.x + (originalPos.x - startPos.x) * easedT;
+      box.position.y = startPos.y + (originalPos.y - startPos.y) * easedT;
+      box.position.z = startPos.z + (originalPos.z - startPos.z) * easedT;
+
+      // Half twirl on Y (PI)
+      box.rotation.y = startRotY + Math.PI * easedT;
+    },
+    () => {
+      box.position.copy(originalPos);
+      box.rotation.set(0, 0, 0);
+      if (typeof onComplete === 'function') onComplete();
+    }
+  );
 }

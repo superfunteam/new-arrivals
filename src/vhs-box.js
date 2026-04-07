@@ -204,26 +204,30 @@ export function createVHSBox(movie, pixelatedTexture) {
   const backCoverTex = backCovers[tmdbId % 5];
   const backTintColor = BACK_TINT_COLORS[tmdbId % 5];
 
+  // Derive edge colors from the movie's tint palette
+  const tintColor = new THREE.Color(BACK_TINT_COLORS[tmdbId % 5]);
+  const darkTint = tintColor.clone().multiplyScalar(0.5);
+
   const spineMaterial = new THREE.MeshStandardMaterial({
-    color: 0x1a1a1a,
+    color: tintColor,
     roughness: 0.9,
     metalness: 0.05,
   });
 
   const sideMaterial = new THREE.MeshStandardMaterial({
-    color: 0x1c1c1c,
+    color: darkTint,
     roughness: 0.9,
     metalness: 0.05,
   });
 
   const topMaterial = new THREE.MeshStandardMaterial({
-    color: 0x222222,
+    color: darkTint.clone(),
     roughness: 0.85,
     metalness: 0.05,
   });
 
   const bottomMaterial = new THREE.MeshStandardMaterial({
-    color: 0x1a1a1a,
+    color: darkTint.clone(),
     roughness: 0.85,
     metalness: 0.05,
   });

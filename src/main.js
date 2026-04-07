@@ -23,6 +23,8 @@ import {
   animateReflow,
   applyIdleWobble,
   animateGrayOut,
+  animateInspect,
+  animateReturnToShelf,
 } from './animations.js';
 import { setupInteraction } from './interaction.js';
 import {
@@ -434,6 +436,18 @@ async function startGameSession(puzzle, mode, puzzlesData) {
     audio.play('tapInspect');
 
     const movie = box.userData.movie;
+    const originalPos = box.userData.originalPosition.clone();
+
+    // Lock interaction during the inspect animation
+    if (interactionHandle) {
+      interactionHandle.setLocked(true);
+    }
+
+    // Animate the box toward the camera with a 3D twirl
+    animateInspect(box, camera, () => {
+      // Animation complete — now show the lightbox
+      openLightboxForMovie();
+    });
 
     function openLightboxForMovie() {
       const revealedForMovie = game.revealedHints[movie.tmdb_id] || [];
@@ -450,6 +464,14 @@ async function startGameSession(puzzle, mode, puzzlesData) {
         onReturn: () => {
           audio.play('returnToShelf');
           hideLightbox();
+
+          // Animate the box back to its shelf position
+          animateReturnToShelf(box, originalPos, () => {
+            // Unlock interaction once the box is back
+            if (interactionHandle) {
+              interactionHandle.setLocked(false);
+            }
+          });
         },
         onUncover: (tmdbId) => {
           const result = useHint(game, tmdbId);
@@ -509,8 +531,6 @@ async function startGameSession(puzzle, mode, puzzlesData) {
         },
       });
     }
-
-    openLightboxForMovie();
   }
 
   // =========================================================================
