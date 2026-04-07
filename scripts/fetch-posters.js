@@ -101,11 +101,21 @@ async function generatePixelated(sourcePath, destPath) {
     .toFile(destPath);
 }
 
-async function getPosterPath(tmdbId) {
-  const url = `${TMDB_BASE}/movie/${tmdbId}`;
+async function getMovieDetails(tmdbId) {
+  const url = `${TMDB_BASE}/movie/${tmdbId}?append_to_response=credits`;
   const data = await tmdbFetch(url);
   await sleep(RATE_LIMIT_DELAY);
-  return data.poster_path || null;
+
+  const posterPath = data.poster_path || null;
+  const genres = (data.genres || []).map(g => g.name);
+  const director =
+    (data.credits?.crew || []).find(c => c.job === 'Director')?.name || null;
+  const stars = (data.credits?.cast || [])
+    .sort((a, b) => a.order - b.order)
+    .slice(0, 3)
+    .map(c => c.name);
+
+  return { posterPath, genres, director, stars };
 }
 
 async function processMovie(movie) {
@@ -128,47 +138,59 @@ async function processMovie(movie) {
   const posterFile = path.join(POSTERS_DIR, `${tmdb_id}.jpg`);
   const pixelFile = path.join(POSTERS_DIR, `${tmdb_id}_pixel.jpg`);
 
-  // Check if already downloaded
-  if (fs.existsSync(posterFile) && fs.existsSync(pixelFile)) {
-    console.log(`  [skip] Poster already exists for "${title}" (${tmdb_id})`);
+  const postersExist = fs.existsSync(posterFile) && fs.existsSync(pixelFile);
+  const metadataExists =
+    Array.isArray(movie.genres) &&
+    movie.genres.length > 0 &&
+    movie.director != null &&
+    Array.isArray(movie.stars) &&
+    movie.stars.length > 0;
+
+  // Skip entirely only when both posters and metadata are present
+  if (postersExist && metadataExists) {
+    console.log(`  [skip] Poster + metadata already exist for "${title}" (${tmdb_id})`);
     return { ...movie, tmdb_id };
   }
 
-  // Get poster path from TMDB
-  let posterPath;
+  // Fetch movie details (poster path + genres/director/stars in one call)
+  let posterPath, genres, director, stars;
   try {
-    posterPath = await getPosterPath(tmdb_id);
+    ({ posterPath, genres, director, stars } = await getMovieDetails(tmdb_id));
   } catch (err) {
     console.log(`  [error] Failed to get movie details for "${title}": ${err.message}`);
     return { ...movie, tmdb_id };
   }
 
-  if (!posterPath) {
-    console.log(`  [skip] No poster available for "${title}" (${tmdb_id})`);
-    return { ...movie, tmdb_id };
+  if (!postersExist) {
+    if (!posterPath) {
+      console.log(`  [skip] No poster available for "${title}" (${tmdb_id})`);
+      return { ...movie, tmdb_id, genres, director, stars };
+    }
+
+    // Download poster
+    try {
+      console.log(`  Downloading poster for "${title}"...`);
+      await downloadPoster(posterPath, posterFile);
+    } catch (err) {
+      console.log(`  [error] Failed to download poster for "${title}": ${err.message}`);
+      return { ...movie, tmdb_id, genres, director, stars };
+    }
+
+    // Generate pixelated version
+    try {
+      console.log(`  Generating pixelated version for "${title}"...`);
+      await generatePixelated(posterFile, pixelFile);
+    } catch (err) {
+      console.log(`  [error] Failed to generate pixelated poster for "${title}": ${err.message}`);
+      return { ...movie, tmdb_id, genres, director, stars };
+    }
+
+    console.log(`  Done: ${tmdb_id}.jpg + ${tmdb_id}_pixel.jpg`);
+  } else {
+    console.log(`  [skip] Poster already exists for "${title}", fetched metadata only`);
   }
 
-  // Download poster
-  try {
-    console.log(`  Downloading poster for "${title}"...`);
-    await downloadPoster(posterPath, posterFile);
-  } catch (err) {
-    console.log(`  [error] Failed to download poster for "${title}": ${err.message}`);
-    return { ...movie, tmdb_id };
-  }
-
-  // Generate pixelated version
-  try {
-    console.log(`  Generating pixelated version for "${title}"...`);
-    await generatePixelated(posterFile, pixelFile);
-  } catch (err) {
-    console.log(`  [error] Failed to generate pixelated poster for "${title}": ${err.message}`);
-    // Still return with tmdb_id even if pixelation failed
-    return { ...movie, tmdb_id };
-  }
-
-  console.log(`  Done: ${tmdb_id}.jpg + ${tmdb_id}_pixel.jpg`);
-  return { ...movie, tmdb_id };
+  return { ...movie, tmdb_id, genres, director, stars };
 }
 
 async function main() {
@@ -190,11 +212,13 @@ async function main() {
       const updatedMovies = [];
       for (const movie of category.movies) {
         totalMovies++;
-        const wasNull = movie.tmdb_id === null;
         const alreadyExists =
           movie.tmdb_id &&
           fs.existsSync(path.join(POSTERS_DIR, `${movie.tmdb_id}.jpg`)) &&
-          fs.existsSync(path.join(POSTERS_DIR, `${movie.tmdb_id}_pixel.jpg`));
+          fs.existsSync(path.join(POSTERS_DIR, `${movie.tmdb_id}_pixel.jpg`)) &&
+          Array.isArray(movie.genres) && movie.genres.length > 0 &&
+          movie.director != null &&
+          Array.isArray(movie.stars) && movie.stars.length > 0;
 
         const updated = await processMovie(movie);
         updatedMovies.push(updated);

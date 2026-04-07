@@ -12,22 +12,67 @@
             {
               "title": "Total Recall",
               "year": 1990,
-              "tmdb_id": 861
+              "tmdb_id": 861,
+              "genres": [
+                "Action",
+                "Adventure",
+                "Science Fiction"
+              ],
+              "director": "Paul Verhoeven",
+              "stars": [
+                "Arnold Schwarzenegger",
+                "Rachel Ticotin",
+                "Sharon Stone"
+              ]
             },
             {
               "title": "Commando",
               "year": 1985,
-              "tmdb_id": 10999
+              "tmdb_id": 10999,
+              "genres": [
+                "Action",
+                "Adventure",
+                "Thriller"
+              ],
+              "director": "Mark L. Lester",
+              "stars": [
+                "Arnold Schwarzenegger",
+                "Rae Dawn Chong",
+                "Dan Hedaya"
+              ]
             },
             {
               "title": "Predator",
               "year": 1987,
-              "tmdb_id": 106
+              "tmdb_id": 106,
+              "genres": [
+                "Science Fiction",
+                "Action",
+                "Adventure",
+                "Thriller"
+              ],
+              "director": "John McTiernan",
+              "stars": [
+                "Arnold Schwarzenegger",
+                "Carl Weathers",
+                "Kevin Peter Hall"
+              ]
             },
             {
               "title": "The Running Man",
               "year": 1987,
-              "tmdb_id": 865
+              "tmdb_id": 865,
+              "genres": [
+                "Action",
+                "Thriller",
+                "Science Fiction"
+              ],
+              "director": "Paul Michael Glaser",
+              "stars": [
+                "Arnold Schwarzenegger",
+                "Richard Dawson",
+                "María Conchita Alonso"
+              ]
             }
           ]
         },
@@ -39,22 +84,64 @@
             {
               "title": "The Breakfast Club",
               "year": 1985,
-              "tmdb_id": 2108
+              "tmdb_id": 2108,
+              "genres": [
+                "Comedy",
+                "Drama"
+              ],
+              "director": "John Hughes",
+              "stars": [
+                "Emilio Estevez",
+                "Judd Nelson",
+                "Molly Ringwald"
+              ]
             },
             {
               "title": "St. Elmo's Fire",
               "year": 1985,
-              "tmdb_id": 11557
+              "tmdb_id": 11557,
+              "genres": [
+                "Drama",
+                "Romance",
+                "Comedy"
+              ],
+              "director": "Joel Schumacher",
+              "stars": [
+                "Emilio Estevez",
+                "Rob Lowe",
+                "Andrew McCarthy"
+              ]
             },
             {
               "title": "Pretty in Pink",
               "year": 1986,
-              "tmdb_id": 11522
+              "tmdb_id": 11522,
+              "genres": [
+                "Romance",
+                "Drama"
+              ],
+              "director": "Howard Deutch",
+              "stars": [
+                "Molly Ringwald",
+                "Andrew McCarthy",
+                "Jon Cryer"
+              ]
             },
             {
               "title": "About Last Night",
               "year": 1986,
-              "tmdb_id": 18169
+              "tmdb_id": 18169,
+              "genres": [
+                "Comedy",
+                "Drama",
+                "Romance"
+              ],
+              "director": "Edward Zwick",
+              "stars": [
+                "Rob Lowe",
+                "Demi Moore",
+                "Jim Belushi"
+              ]
             }
           ]
         },
@@ -66,22 +153,61 @@
             {
               "title": "Wayne's World",
               "year": 1992,
-              "tmdb_id": 8872
+              "tmdb_id": 8872,
+              "genres": [
+                "Comedy",
+                "Music"
+              ],
+              "director": "Penelope Spheeris",
+              "stars": [
+                "Mike Myers",
+                "Dana Carvey",
+                "Rob Lowe"
+              ]
             },
             {
               "title": "Big",
               "year": 1988,
-              "tmdb_id": 2280
+              "tmdb_id": 2280,
+              "genres": [
+                "Fantasy",
+                "Drama",
+                "Comedy"
+              ],
+              "director": "Penny Marshall",
+              "stars": [
+                "Tom Hanks",
+                "Elizabeth Perkins",
+                "Robert Loggia"
+              ]
             },
             {
               "title": "Pet Sematary",
               "year": 1989,
-              "tmdb_id": 8913
+              "tmdb_id": 8913,
+              "genres": [
+                "Horror"
+              ],
+              "director": "Mary Lambert",
+              "stars": [
+                "Dale Midkiff",
+                "Fred Gwynne",
+                "Denise Crosby"
+              ]
             },
             {
               "title": "Near Dark",
               "year": 1987,
-              "tmdb_id": 11879
+              "tmdb_id": 11879,
+              "genres": [
+                "Horror"
+              ],
+              "director": "Kathryn Bigelow",
+              "stars": [
+                "Adrian Pasdar",
+                "Jenny Wright",
+                "Lance Henriksen"
+              ]
             }
           ]
         },
@@ -93,22 +219,64 @@
             {
               "title": "WarGames",
               "year": 1983,
-              "tmdb_id": 860
+              "tmdb_id": 860,
+              "genres": [
+                "Thriller",
+                "Science Fiction",
+                "Drama"
+              ],
+              "director": "John Badham",
+              "stars": [
+                "Matthew Broderick",
+                "Dabney Coleman",
+                "John Wood"
+              ]
             },
             {
               "title": "2001: A Space Odyssey",
               "year": 1968,
-              "tmdb_id": 62
+              "tmdb_id": 62,
+              "genres": [
+                "Science Fiction",
+                "Mystery",
+                "Adventure"
+              ],
+              "director": "Stanley Kubrick",
+              "stars": [
+                "Keir Dullea",
+                "Gary Lockwood",
+                "William Sylvester"
+              ]
             },
             {
               "title": "Demon Seed",
               "year": 1977,
-              "tmdb_id": 18775
+              "tmdb_id": 18775,
+              "genres": [
+                "Horror",
+                "Science Fiction"
+              ],
+              "director": "Donald Cammell",
+              "stars": [
+                "Julie Christie",
+                "Fritz Weaver",
+                "Gerrit Graham"
+              ]
             },
             {
               "title": "Colossus: The Forbin Project",
               "year": 1970,
-              "tmdb_id": 14801
+              "tmdb_id": 14801,
+              "genres": [
+                "Science Fiction",
+                "Thriller"
+              ],
+              "director": "Joseph Sargent",
+              "stars": [
+                "Eric Braeden",
+                "Susan Clark",
+                "Gordon Pinsent"
+              ]
             }
           ]
         }
@@ -126,22 +294,62 @@
             {
               "title": "Ferris Bueller's Day Off",
               "year": 1986,
-              "tmdb_id": 9377
+              "tmdb_id": 9377,
+              "genres": [
+                "Comedy"
+              ],
+              "director": "John Hughes",
+              "stars": [
+                "Matthew Broderick",
+                "Alan Ruck",
+                "Mia Sara"
+              ]
             },
             {
               "title": "Sixteen Candles",
               "year": 1984,
-              "tmdb_id": 15144
+              "tmdb_id": 15144,
+              "genres": [
+                "Comedy",
+                "Romance"
+              ],
+              "director": "John Hughes",
+              "stars": [
+                "Molly Ringwald",
+                "Michael Schoeffling",
+                "Haviland Morris"
+              ]
             },
             {
               "title": "Weird Science",
               "year": 1985,
-              "tmdb_id": 11814
+              "tmdb_id": 11814,
+              "genres": [
+                "Comedy",
+                "Fantasy",
+                "Science Fiction",
+                "Romance"
+              ],
+              "director": "John Hughes",
+              "stars": [
+                "Anthony Michael Hall",
+                "Ilan Mitchell-Smith",
+                "Kelly LeBrock"
+              ]
             },
             {
               "title": "Planes, Trains and Automobiles",
               "year": 1987,
-              "tmdb_id": 2609
+              "tmdb_id": 2609,
+              "genres": [
+                "Comedy"
+              ],
+              "director": "John Hughes",
+              "stars": [
+                "Steve Martin",
+                "John Candy",
+                "Laila Robins"
+              ]
             }
           ]
         },
@@ -153,22 +361,68 @@
             {
               "title": "Aliens",
               "year": 1986,
-              "tmdb_id": 679
+              "tmdb_id": 679,
+              "genres": [
+                "Action",
+                "Thriller",
+                "Science Fiction"
+              ],
+              "director": "James Cameron",
+              "stars": [
+                "Sigourney Weaver",
+                "Carrie Henn",
+                "Michael Biehn"
+              ]
             },
             {
               "title": "The Empire Strikes Back",
               "year": 1980,
-              "tmdb_id": 1891
+              "tmdb_id": 1891,
+              "genres": [
+                "Adventure",
+                "Action",
+                "Science Fiction"
+              ],
+              "director": "Irvin Kershner",
+              "stars": [
+                "Mark Hamill",
+                "Harrison Ford",
+                "Carrie Fisher"
+              ]
             },
             {
               "title": "The Road Warrior",
               "year": 1981,
-              "tmdb_id": 8810
+              "tmdb_id": 8810,
+              "genres": [
+                "Adventure",
+                "Action",
+                "Thriller",
+                "Science Fiction"
+              ],
+              "director": "George Miller",
+              "stars": [
+                "Mel Gibson",
+                "Bruce Spence",
+                "Michael Preston"
+              ]
             },
             {
               "title": "Star Trek II: The Wrath of Khan",
               "year": 1982,
-              "tmdb_id": 154
+              "tmdb_id": 154,
+              "genres": [
+                "Action",
+                "Adventure",
+                "Science Fiction",
+                "Thriller"
+              ],
+              "director": "Nicholas Meyer",
+              "stars": [
+                "William Shatner",
+                "Leonard Nimoy",
+                "Ricardo Montalban"
+              ]
             }
           ]
         },
@@ -180,22 +434,65 @@
             {
               "title": "Die Hard",
               "year": 1988,
-              "tmdb_id": 562
+              "tmdb_id": 562,
+              "genres": [
+                "Action",
+                "Thriller"
+              ],
+              "director": "John McTiernan",
+              "stars": [
+                "Bruce Willis",
+                "Alan Rickman",
+                "Alexander Godunov"
+              ]
             },
             {
               "title": "The Shining",
               "year": 1980,
-              "tmdb_id": 694
+              "tmdb_id": 694,
+              "genres": [
+                "Horror",
+                "Thriller"
+              ],
+              "director": "Stanley Kubrick",
+              "stars": [
+                "Jack Nicholson",
+                "Shelley Duvall",
+                "Danny Lloyd"
+              ]
             },
             {
               "title": "Clue",
               "year": 1985,
-              "tmdb_id": 15196
+              "tmdb_id": 15196,
+              "genres": [
+                "Comedy",
+                "Thriller",
+                "Crime",
+                "Mystery"
+              ],
+              "director": "Jonathan Lynn",
+              "stars": [
+                "Tim Curry",
+                "Eileen Brennan",
+                "Madeline Kahn"
+              ]
             },
             {
               "title": "Cube",
               "year": 1997,
-              "tmdb_id": 431
+              "tmdb_id": 431,
+              "genres": [
+                "Thriller",
+                "Science Fiction",
+                "Mystery"
+              ],
+              "director": "Vincenzo Natali",
+              "stars": [
+                "Nicole De Boer",
+                "Nicky Guadagni",
+                "Maurice Dean Wint"
+              ]
             }
           ]
         },
@@ -207,22 +504,62 @@
             {
               "title": "Heathers",
               "year": 1988,
-              "tmdb_id": 2640
+              "tmdb_id": 2640,
+              "genres": [
+                "Comedy",
+                "Crime"
+              ],
+              "director": "Michael Lehmann",
+              "stars": [
+                "Winona Ryder",
+                "Christian Slater",
+                "Shannen Doherty"
+              ]
             },
             {
               "title": "Beetlejuice",
               "year": 1988,
-              "tmdb_id": 4011
+              "tmdb_id": 4011,
+              "genres": [
+                "Fantasy",
+                "Comedy"
+              ],
+              "director": "Tim Burton",
+              "stars": [
+                "Alec Baldwin",
+                "Geena Davis",
+                "Winona Ryder"
+              ]
             },
             {
               "title": "Amadeus",
               "year": 1984,
-              "tmdb_id": 279
+              "tmdb_id": 279,
+              "genres": [
+                "History",
+                "Music",
+                "Drama"
+              ],
+              "director": "Miloš Forman",
+              "stars": [
+                "F. Murray Abraham",
+                "Tom Hulce",
+                "Elizabeth Berridge"
+              ]
             },
             {
               "title": "Rocky",
               "year": 1976,
-              "tmdb_id": 1366
+              "tmdb_id": 1366,
+              "genres": [
+                "Drama"
+              ],
+              "director": "John G. Avildsen",
+              "stars": [
+                "Sylvester Stallone",
+                "Talia Shire",
+                "Burt Young"
+              ]
             }
           ]
         }
@@ -240,22 +577,63 @@
             {
               "title": "Beverly Hills Cop",
               "year": 1984,
-              "tmdb_id": 90
+              "tmdb_id": 90,
+              "genres": [
+                "Comedy",
+                "Crime",
+                "Action"
+              ],
+              "director": "Martin Brest",
+              "stars": [
+                "Eddie Murphy",
+                "Judge Reinhold",
+                "John Ashton"
+              ]
             },
             {
               "title": "Coming to America",
               "year": 1988,
-              "tmdb_id": 9602
+              "tmdb_id": 9602,
+              "genres": [
+                "Comedy",
+                "Romance"
+              ],
+              "director": "John Landis",
+              "stars": [
+                "Eddie Murphy",
+                "Arsenio Hall",
+                "Shari Headley"
+              ]
             },
             {
               "title": "Trading Places",
               "year": 1983,
-              "tmdb_id": 1621
+              "tmdb_id": 1621,
+              "genres": [
+                "Comedy"
+              ],
+              "director": "John Landis",
+              "stars": [
+                "Dan Aykroyd",
+                "Eddie Murphy",
+                "Ralph Bellamy"
+              ]
             },
             {
               "title": "48 Hrs.",
               "year": 1982,
-              "tmdb_id": 150
+              "tmdb_id": 150,
+              "genres": [
+                "Crime",
+                "Action",
+                "Comedy"
+              ],
+              "director": "Walter Hill",
+              "stars": [
+                "Nick Nolte",
+                "Eddie Murphy",
+                "Annette O'Toole"
+              ]
             }
           ]
         },
@@ -267,22 +645,61 @@
             {
               "title": "Stand by Me",
               "year": 1986,
-              "tmdb_id": 235
+              "tmdb_id": 235,
+              "genres": [
+                "Crime",
+                "Drama"
+              ],
+              "director": "Rob Reiner",
+              "stars": [
+                "Wil Wheaton",
+                "River Phoenix",
+                "Corey Feldman"
+              ]
             },
             {
               "title": "The Shawshank Redemption",
               "year": 1994,
-              "tmdb_id": 278
+              "tmdb_id": 278,
+              "genres": [
+                "Drama",
+                "Crime"
+              ],
+              "director": "Frank Darabont",
+              "stars": [
+                "Tim Robbins",
+                "Morgan Freeman",
+                "Bob Gunton"
+              ]
             },
             {
               "title": "Misery",
               "year": 1990,
-              "tmdb_id": 1700
+              "tmdb_id": 1700,
+              "genres": [
+                "Drama",
+                "Thriller"
+              ],
+              "director": "Rob Reiner",
+              "stars": [
+                "Kathy Bates",
+                "James Caan",
+                "Richard Farnsworth"
+              ]
             },
             {
               "title": "Christine",
               "year": 1983,
-              "tmdb_id": 8769
+              "tmdb_id": 8769,
+              "genres": [
+                "Horror"
+              ],
+              "director": "John Carpenter",
+              "stars": [
+                "Keith Gordon",
+                "John Stockwell",
+                "Alexandra Paul"
+              ]
             }
           ]
         },
@@ -294,22 +711,64 @@
             {
               "title": "Carrie",
               "year": 1976,
-              "tmdb_id": 7340
+              "tmdb_id": 7340,
+              "genres": [
+                "Horror",
+                "Thriller"
+              ],
+              "director": "Brian De Palma",
+              "stars": [
+                "Sissy Spacek",
+                "Piper Laurie",
+                "Amy Irving"
+              ]
             },
             {
               "title": "Back to the Future",
               "year": 1985,
-              "tmdb_id": 105
+              "tmdb_id": 105,
+              "genres": [
+                "Adventure",
+                "Comedy",
+                "Science Fiction"
+              ],
+              "director": "Robert Zemeckis",
+              "stars": [
+                "Michael J. Fox",
+                "Christopher Lloyd",
+                "Crispin Glover"
+              ]
             },
             {
               "title": "Footloose",
               "year": 1984,
-              "tmdb_id": 1788
+              "tmdb_id": 1788,
+              "genres": [
+                "Drama",
+                "Romance"
+              ],
+              "director": "Herbert Ross",
+              "stars": [
+                "Kevin Bacon",
+                "Lori Singer",
+                "John Lithgow"
+              ]
             },
             {
               "title": "Never Been Kissed",
               "year": 1999,
-              "tmdb_id": 11355
+              "tmdb_id": 11355,
+              "genres": [
+                "Romance",
+                "Comedy",
+                "Drama"
+              ],
+              "director": "Raja Gosnell",
+              "stars": [
+                "Drew Barrymore",
+                "David Arquette",
+                "Molly Shannon"
+              ]
             }
           ]
         },
@@ -321,22 +780,64 @@
             {
               "title": "Home Alone",
               "year": 1990,
-              "tmdb_id": 771
+              "tmdb_id": 771,
+              "genres": [
+                "Comedy",
+                "Family"
+              ],
+              "director": "Chris Columbus",
+              "stars": [
+                "Macaulay Culkin",
+                "Joe Pesci",
+                "Daniel Stern"
+              ]
             },
             {
               "title": "The Blues Brothers",
               "year": 1980,
-              "tmdb_id": 525
+              "tmdb_id": 525,
+              "genres": [
+                "Music",
+                "Comedy",
+                "Action",
+                "Crime"
+              ],
+              "director": "John Landis",
+              "stars": [
+                "Dan Aykroyd",
+                "John Belushi",
+                "James Brown"
+              ]
             },
             {
               "title": "It Came from Hollywood",
               "year": 1982,
-              "tmdb_id": 30168
+              "tmdb_id": 30168,
+              "genres": [
+                "Comedy",
+                "Documentary"
+              ],
+              "director": "Andrew Solt",
+              "stars": [
+                "Dan Aykroyd",
+                "John Candy",
+                "Cheech Marin"
+              ]
             },
             {
               "title": "The Silent Partner",
               "year": 1978,
-              "tmdb_id": 25338
+              "tmdb_id": 25338,
+              "genres": [
+                "Drama",
+                "Thriller"
+              ],
+              "director": "Daryl Duke",
+              "stars": [
+                "Elliott Gould",
+                "Christopher Plummer",
+                "Susannah York"
+              ]
             }
           ]
         }
@@ -354,22 +855,65 @@
             {
               "title": "Raiders of the Lost Ark",
               "year": 1981,
-              "tmdb_id": 85
+              "tmdb_id": 85,
+              "genres": [
+                "Adventure",
+                "Action"
+              ],
+              "director": "Steven Spielberg",
+              "stars": [
+                "Harrison Ford",
+                "Karen Allen",
+                "Paul Freeman"
+              ]
             },
             {
               "title": "E.T. the Extra-Terrestrial",
               "year": 1982,
-              "tmdb_id": 601
+              "tmdb_id": 601,
+              "genres": [
+                "Science Fiction",
+                "Adventure",
+                "Family",
+                "Fantasy"
+              ],
+              "director": "Steven Spielberg",
+              "stars": [
+                "Henry Thomas",
+                "Drew Barrymore",
+                "Robert MacNaughton"
+              ]
             },
             {
               "title": "Jaws",
               "year": 1975,
-              "tmdb_id": 578
+              "tmdb_id": 578,
+              "genres": [
+                "Horror",
+                "Thriller",
+                "Adventure"
+              ],
+              "director": "Steven Spielberg",
+              "stars": [
+                "Roy Scheider",
+                "Robert Shaw",
+                "Richard Dreyfuss"
+              ]
             },
             {
               "title": "Jurassic Park",
               "year": 1993,
-              "tmdb_id": 329
+              "tmdb_id": 329,
+              "genres": [
+                "Adventure",
+                "Science Fiction"
+              ],
+              "director": "Steven Spielberg",
+              "stars": [
+                "Sam Neill",
+                "Laura Dern",
+                "Jeff Goldblum"
+              ]
             }
           ]
         },
@@ -381,22 +925,65 @@
             {
               "title": "Star Wars",
               "year": 1977,
-              "tmdb_id": 11
+              "tmdb_id": 11,
+              "genres": [
+                "Adventure",
+                "Action",
+                "Science Fiction"
+              ],
+              "director": "George Lucas",
+              "stars": [
+                "Mark Hamill",
+                "Harrison Ford",
+                "Carrie Fisher"
+              ]
             },
             {
               "title": "Alien",
               "year": 1979,
-              "tmdb_id": 348
+              "tmdb_id": 348,
+              "genres": [
+                "Horror",
+                "Science Fiction"
+              ],
+              "director": "Ridley Scott",
+              "stars": [
+                "Tom Skerritt",
+                "Sigourney Weaver",
+                "Veronica Cartwright"
+              ]
             },
             {
               "title": "Flight of the Navigator",
               "year": 1986,
-              "tmdb_id": 10122
+              "tmdb_id": 10122,
+              "genres": [
+                "Family",
+                "Science Fiction",
+                "Adventure"
+              ],
+              "director": "Randal Kleiser",
+              "stars": [
+                "Joey Cramer",
+                "Paul Reubens",
+                "Veronica Cartwright"
+              ]
             },
             {
               "title": "The Last Starfighter",
               "year": 1984,
-              "tmdb_id": 11884
+              "tmdb_id": 11884,
+              "genres": [
+                "Adventure",
+                "Science Fiction",
+                "Action"
+              ],
+              "director": "Nick Castle",
+              "stars": [
+                "Lance Guest",
+                "Robert Preston",
+                "Chris Hebert"
+              ]
             }
           ]
         },
@@ -408,22 +995,65 @@
             {
               "title": "Reds",
               "year": 1981,
-              "tmdb_id": 18254
+              "tmdb_id": 18254,
+              "genres": [
+                "Drama",
+                "History",
+                "Romance"
+              ],
+              "director": "Warren Beatty",
+              "stars": [
+                "Warren Beatty",
+                "Diane Keaton",
+                "Edward Herrmann"
+              ]
             },
             {
               "title": "Dances with Wolves",
               "year": 1990,
-              "tmdb_id": 581
+              "tmdb_id": 581,
+              "genres": [
+                "Adventure",
+                "Drama",
+                "Western"
+              ],
+              "director": "Kevin Costner",
+              "stars": [
+                "Kevin Costner",
+                "Mary McDonnell",
+                "Graham Greene"
+              ]
             },
             {
               "title": "Yentl",
               "year": 1983,
-              "tmdb_id": 10269
+              "tmdb_id": 10269,
+              "genres": [
+                "Music",
+                "Drama",
+                "Romance"
+              ],
+              "director": "Barbra Streisand",
+              "stars": [
+                "Barbra Streisand",
+                "Mandy Patinkin",
+                "Amy Irving"
+              ]
             },
             {
               "title": "A Bronx Tale",
               "year": 1993,
-              "tmdb_id": 1607
+              "tmdb_id": 1607,
+              "genres": [
+                "Drama",
+                "Crime"
+              ],
+              "director": "Robert De Niro",
+              "stars": [
+                "Robert De Niro",
+                "Chazz Palminteri",
+                "Lillo Brancato"
+              ]
             }
           ]
         },
@@ -435,22 +1065,60 @@
             {
               "title": "A Clockwork Orange",
               "year": 1971,
-              "tmdb_id": 185
+              "tmdb_id": 185,
+              "genres": [
+                "Science Fiction",
+                "Crime"
+              ],
+              "director": "Stanley Kubrick",
+              "stars": [
+                "Malcolm McDowell",
+                "Patrick Magee",
+                "Carl Duering"
+              ]
             },
             {
               "title": "The Texas Chain Saw Massacre",
               "year": 1974,
-              "tmdb_id": 30497
+              "tmdb_id": 30497,
+              "genres": [
+                "Horror"
+              ],
+              "director": "Tobe Hooper",
+              "stars": [
+                "Marilyn Burns",
+                "Allen Danziger",
+                "Paul A. Partain"
+              ]
             },
             {
               "title": "Cannibal Holocaust",
               "year": 1980,
-              "tmdb_id": 8689
+              "tmdb_id": 8689,
+              "genres": [
+                "Horror"
+              ],
+              "director": "Ruggero Deodato",
+              "stars": [
+                "Robert Kerman",
+                "Francesca Ciardi",
+                "Perry Pirkanen"
+              ]
             },
             {
               "title": "Faces of Death",
               "year": 1978,
-              "tmdb_id": 12237
+              "tmdb_id": 12237,
+              "genres": [
+                "Horror",
+                "Documentary"
+              ],
+              "director": "John Alan Schwartz",
+              "stars": [
+                "Michael Carr",
+                "Samuel Berkowitz",
+                "Mary Ellen Brighton"
+              ]
             }
           ]
         }
@@ -468,22 +1136,70 @@
             {
               "title": "The Little Mermaid",
               "year": 1989,
-              "tmdb_id": 10144
+              "tmdb_id": 10144,
+              "genres": [
+                "Animation",
+                "Family",
+                "Fantasy"
+              ],
+              "director": "Ron Clements",
+              "stars": [
+                "Jodi Benson",
+                "Samuel E. Wright",
+                "Pat Carroll"
+              ]
             },
             {
               "title": "Aladdin",
               "year": 1992,
-              "tmdb_id": 812
+              "tmdb_id": 812,
+              "genres": [
+                "Animation",
+                "Family",
+                "Adventure",
+                "Fantasy",
+                "Romance"
+              ],
+              "director": "John Musker",
+              "stars": [
+                "Scott Weinger",
+                "Robin Williams",
+                "Linda Larkin"
+              ]
             },
             {
               "title": "The Lion King",
               "year": 1994,
-              "tmdb_id": 8587
+              "tmdb_id": 8587,
+              "genres": [
+                "Animation",
+                "Family",
+                "Drama",
+                "Adventure"
+              ],
+              "director": "Roger Allers",
+              "stars": [
+                "Matthew Broderick",
+                "Moira Kelly",
+                "Nathan Lane"
+              ]
             },
             {
               "title": "Beauty and the Beast",
               "year": 1991,
-              "tmdb_id": 10020
+              "tmdb_id": 10020,
+              "genres": [
+                "Romance",
+                "Family",
+                "Animation",
+                "Fantasy"
+              ],
+              "director": "Gary Trousdale",
+              "stars": [
+                "Paige O'Hara",
+                "Robby Benson",
+                "Richard White"
+              ]
             }
           ]
         },
@@ -495,22 +1211,62 @@
             {
               "title": "Ghostbusters",
               "year": 1984,
-              "tmdb_id": 620
+              "tmdb_id": 620,
+              "genres": [
+                "Comedy",
+                "Fantasy"
+              ],
+              "director": "Ivan Reitman",
+              "stars": [
+                "Bill Murray",
+                "Dan Aykroyd",
+                "Sigourney Weaver"
+              ]
             },
             {
               "title": "Caddyshack",
               "year": 1980,
-              "tmdb_id": 11977
+              "tmdb_id": 11977,
+              "genres": [
+                "Comedy"
+              ],
+              "director": "Harold Ramis",
+              "stars": [
+                "Chevy Chase",
+                "Rodney Dangerfield",
+                "Ted Knight"
+              ]
             },
             {
               "title": "Stripes",
               "year": 1981,
-              "tmdb_id": 10890
+              "tmdb_id": 10890,
+              "genres": [
+                "Action",
+                "Comedy"
+              ],
+              "director": "Ivan Reitman",
+              "stars": [
+                "Bill Murray",
+                "Harold Ramis",
+                "Warren Oates"
+              ]
             },
             {
               "title": "Groundhog Day",
               "year": 1993,
-              "tmdb_id": 137
+              "tmdb_id": 137,
+              "genres": [
+                "Romance",
+                "Fantasy",
+                "Comedy"
+              ],
+              "director": "Harold Ramis",
+              "stars": [
+                "Bill Murray",
+                "Andie MacDowell",
+                "Chris Elliott"
+              ]
             }
           ]
         },
@@ -522,22 +1278,62 @@
             {
               "title": "The Magnificent Seven",
               "year": 1960,
-              "tmdb_id": 966
+              "tmdb_id": 966,
+              "genres": [
+                "Western",
+                "Action",
+                "Adventure"
+              ],
+              "director": "John Sturges",
+              "stars": [
+                "Yul Brynner",
+                "Eli Wallach",
+                "Steve McQueen"
+              ]
             },
             {
               "title": "Scarface",
               "year": 1983,
-              "tmdb_id": 111
+              "tmdb_id": 111,
+              "genres": [
+                "Action",
+                "Crime",
+                "Drama"
+              ],
+              "director": "Brian De Palma",
+              "stars": [
+                "Al Pacino",
+                "Steven Bauer",
+                "Michelle Pfeiffer"
+              ]
             },
             {
               "title": "Three Men and a Baby",
               "year": 1987,
-              "tmdb_id": 12154
+              "tmdb_id": 12154,
+              "genres": [
+                "Comedy"
+              ],
+              "director": "Leonard Nimoy",
+              "stars": [
+                "Tom Selleck",
+                "Steve Guttenberg",
+                "Ted Danson"
+              ]
             },
             {
               "title": "The Birdcage",
               "year": 1996,
-              "tmdb_id": 11000
+              "tmdb_id": 11000,
+              "genres": [
+                "Comedy"
+              ],
+              "director": "Mike Nichols",
+              "stars": [
+                "Robin Williams",
+                "Gene Hackman",
+                "Nathan Lane"
+              ]
             }
           ]
         },
@@ -549,22 +1345,64 @@
             {
               "title": "Grease",
               "year": 1978,
-              "tmdb_id": 621
+              "tmdb_id": 621,
+              "genres": [
+                "Romance",
+                "Comedy"
+              ],
+              "director": "Randal Kleiser",
+              "stars": [
+                "Olivia Newton-John",
+                "John Travolta",
+                "Stockard Channing"
+              ]
             },
             {
               "title": "Tootsie",
               "year": 1982,
-              "tmdb_id": 9576
+              "tmdb_id": 9576,
+              "genres": [
+                "Comedy",
+                "Romance"
+              ],
+              "director": "Sydney Pollack",
+              "stars": [
+                "Dustin Hoffman",
+                "Jessica Lange",
+                "Teri Garr"
+              ]
             },
             {
               "title": "The Witches of Eastwick",
               "year": 1987,
-              "tmdb_id": 6069
+              "tmdb_id": 6069,
+              "genres": [
+                "Comedy",
+                "Fantasy",
+                "Horror"
+              ],
+              "director": "George Miller",
+              "stars": [
+                "Jack Nicholson",
+                "Cher",
+                "Susan Sarandon"
+              ]
             },
             {
               "title": "Edward Scissorhands",
               "year": 1990,
-              "tmdb_id": 162
+              "tmdb_id": 162,
+              "genres": [
+                "Fantasy",
+                "Drama",
+                "Romance"
+              ],
+              "director": "Tim Burton",
+              "stars": [
+                "Johnny Depp",
+                "Winona Ryder",
+                "Dianne Wiest"
+              ]
             }
           ]
         }
