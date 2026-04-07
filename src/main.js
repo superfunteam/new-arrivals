@@ -48,6 +48,9 @@ import {
   updateStats,
   isOnboarded,
   setOnboarded,
+  getPastPuzzles,
+  getCompletedDailyIds,
+  markDailyCompleted,
 } from './state.js';
 import {
   createHUD,
@@ -143,16 +146,25 @@ async function main() {
   }
   practicePuzzles = practicePuzzles.slice(0, 4);
 
-  // ── 5. Show welcome screen ───────────────────────────────────────────────
+  // ── 5. Determine past puzzles and completed dailies ───────────────────────
+  const pastPuzzles = getPastPuzzles(puzzlesData);
+  const completedDailyIds = getCompletedDailyIds();
+
+  // ── 6. Show welcome screen ───────────────────────────────────────────────
   showWelcomeScreen({
     dailyPuzzle,
     dailyState,
     practicePuzzles,
+    pastPuzzles,
+    completedDailyIds,
     onStartDaily: () => {
       startGameSession(dailyPuzzle, 'daily', puzzlesData);
     },
     onStartPractice: (index) => {
       startGameSession(practicePuzzles[index], 'practice', puzzlesData);
+    },
+    onStartPast: (puzzle) => {
+      startGameSession(puzzle, 'practice', puzzlesData);
     },
   });
 }
@@ -701,6 +713,7 @@ async function startGameSession(puzzle, mode, puzzlesData) {
     if (isDaily) {
       const finalWage = calculateFinalWage(game);
       updateStats(finalWage, game.won);
+      markDailyCompleted(puzzle.id);
       saveGameState(serializeGame(game));
     }
   }

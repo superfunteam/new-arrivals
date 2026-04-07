@@ -4,10 +4,25 @@ const KEY_ONBOARDED = 'newArrivals_onboarded';
 const KEY_TODAY = 'newArrivals_today';
 const KEY_STATE = 'newArrivals_state';
 const KEY_STATS = 'newArrivals_stats';
+const KEY_COMPLETED_DAILIES = 'newArrivals_completedDailies';
 
-/** ISO date string for today (YYYY-MM-DD). */
-function todayISO() {
-  return new Date().toISOString().slice(0, 10);
+/**
+ * Get the current "puzzle date" based on Central Time (America/Chicago).
+ * The day flips at 10pm (22:00) Central — if it's 10pm or later, the next
+ * day's puzzle is active.
+ * @returns {string} YYYY-MM-DD
+ */
+export function getPuzzleDate() {
+  const centralNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+
+  if (centralNow.getHours() >= 22) {
+    centralNow.setDate(centralNow.getDate() + 1);
+  }
+
+  const year = centralNow.getFullYear();
+  const month = String(centralNow.getMonth() + 1).padStart(2, '0');
+  const day = String(centralNow.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 /**
@@ -18,7 +33,7 @@ function todayISO() {
  */
 export function loadTodaysPuzzle(puzzlesData) {
   const puzzles = puzzlesData.puzzles;
-  const today = todayISO();
+  const today = getPuzzleDate();
 
   const match = puzzles.find((p) => p.id === today);
   if (match) return match;
@@ -33,7 +48,7 @@ export function loadTodaysPuzzle(puzzlesData) {
  */
 export function saveGameState(serialized) {
   try {
-    localStorage.setItem(KEY_TODAY, todayISO());
+    localStorage.setItem(KEY_TODAY, getPuzzleDate());
     localStorage.setItem(KEY_STATE, JSON.stringify(serialized));
   } catch (_) {
     // localStorage may be unavailable (private browsing, quota exceeded, etc.)
@@ -48,7 +63,7 @@ export function saveGameState(serialized) {
 export function loadGameState() {
   try {
     const savedDate = localStorage.getItem(KEY_TODAY);
-    if (savedDate !== todayISO()) return null;
+    if (savedDate !== getPuzzleDate()) return null;
 
     const raw = localStorage.getItem(KEY_STATE);
     if (!raw) return null;
@@ -82,7 +97,7 @@ export function updateStats(finalWage, won) {
     stats.currentStreak = 0;
   }
 
-  stats.history.push({ date: todayISO(), wage: finalWage, won });
+  stats.history.push({ date: getPuzzleDate(), wage: finalWage, won });
 
   try {
     localStorage.setItem(KEY_STATS, JSON.stringify(stats));
@@ -133,4 +148,47 @@ export function setOnboarded() {
   } catch (_) {
     // Ignore storage errors
   }
+}
+
+/**
+ * Returns an array of puzzle IDs the player has completed as daily games.
+ * @returns {string[]}
+ */
+export function getCompletedDailyIds() {
+  try {
+    const raw = localStorage.getItem(KEY_COMPLETED_DAILIES);
+    if (raw) return JSON.parse(raw);
+  } catch (_) {
+    // Fall through to default
+  }
+  return [];
+}
+
+/**
+ * Add a puzzle ID to the completed dailies list (if not already present).
+ * @param {string} puzzleId
+ */
+export function markDailyCompleted(puzzleId) {
+  try {
+    const ids = getCompletedDailyIds();
+    if (!ids.includes(puzzleId)) {
+      ids.push(puzzleId);
+      localStorage.setItem(KEY_COMPLETED_DAILIES, JSON.stringify(ids));
+    }
+  } catch (_) {
+    // Ignore storage errors
+  }
+}
+
+/**
+ * Returns past daily puzzles (dates before the current puzzle date), sorted
+ * most-recent first.
+ * @param {Object} puzzlesData  Object with a `puzzles` array
+ * @returns {Object[]}
+ */
+export function getPastPuzzles(puzzlesData) {
+  const today = getPuzzleDate();
+  return puzzlesData.puzzles
+    .filter((p) => p.id < today)
+    .sort((a, b) => (a.id > b.id ? -1 : a.id < b.id ? 1 : 0));
 }

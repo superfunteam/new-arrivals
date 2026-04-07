@@ -20,6 +20,20 @@ export function formatDate(date) {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
+/**
+ * Milliseconds until the next puzzle reset (10pm Central Time).
+ * @returns {number}
+ */
+function getNextResetMs() {
+  const centralNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+  const next = new Date(centralNow);
+  if (centralNow.getHours() >= 22) {
+    next.setDate(next.getDate() + 1);
+  }
+  next.setHours(22, 0, 0, 0);
+  return Math.max(0, next.getTime() - centralNow.getTime());
+}
+
 // ─── HUD ────────────────────────────────────────────────────────────────────
 
 /**
@@ -239,21 +253,28 @@ export function showOnboarding(onComplete) {
 // ─── Welcome Screen ─────────────────────────────────────────────────────────
 
 /**
- * Shows the welcome/menu screen with Daily Dropoff and Trainee Manual modes.
+ * Shows the welcome/menu screen with Daily Dropoff, Past Returns, and
+ * Trainee Manual modes.
  * @param {Object} options
  * @param {Object}   options.dailyPuzzle        The puzzle object for today
  * @param {string|null} options.dailyState       null | 'in_progress' | 'completed'
  * @param {Object[]} options.practicePuzzles     Array of up to 4 practice puzzle objects
+ * @param {Object[]} options.pastPuzzles         Array of past daily puzzle objects
+ * @param {string[]} options.completedDailyIds   Array of completed puzzle IDs
  * @param {Function} options.onStartDaily        Called when user clicks daily start
  * @param {Function} options.onStartPractice     Called with practice puzzle index
+ * @param {Function} options.onStartPast         Called with past puzzle object
  */
 export function showWelcomeScreen(options = {}) {
   const {
     dailyPuzzle,
     dailyState = null,
     practicePuzzles = [],
+    pastPuzzles = [],
+    completedDailyIds = [],
     onStartDaily,
     onStartPractice,
+    onStartPast,
   } = options;
 
   const overlay = document.getElementById('overlay');
@@ -284,6 +305,41 @@ export function showWelcomeScreen(options = {}) {
     )
     .join('');
 
+  // Past Returns cards HTML
+  const completedSet = new Set(completedDailyIds);
+  const pastCardsHtml = pastPuzzles
+    .map(
+      (p, i) => {
+        const pDate = new Date(p.id + 'T12:00:00');
+        const pDateStr = formatDate(pDate);
+        const isCompleted = completedSet.has(p.id);
+        const checkmark = isCompleted ? '<span class="past-card-check">\u2713</span>' : '';
+        return `
+      <div class="past-card${isCompleted ? ' completed' : ''}">
+        <div class="past-card-info">
+          <div class="past-card-title">${p.title}</div>
+          <div class="past-card-date">${pDateStr}</div>
+        </div>
+        <div class="past-card-action">
+          ${checkmark}
+          <button class="welcome-btn practice" data-past-index="${i}">REPLAY</button>
+        </div>
+      </div>`;
+      }
+    )
+    .join('');
+
+  // Build Past Returns section (only if there are past puzzles)
+  const pastReturnsHtml = pastPuzzles.length > 0
+    ? `
+      <div class="welcome-section">
+        <div class="welcome-section-title">PAST RETURNS</div>
+        <div class="past-returns-list">
+          ${pastCardsHtml}
+        </div>
+      </div>`
+    : '';
+
   overlay.innerHTML = `
     <div class="welcome-screen">
       <div class="welcome-title">NEW ARRIVALS</div>
@@ -297,6 +353,8 @@ export function showWelcomeScreen(options = {}) {
           <button class="${dailyBtnClass}" id="welcome-daily-btn"${dailyDisabled ? ' disabled' : ''}>${dailyBtnLabel}</button>
         </div>
       </div>
+
+      ${pastReturnsHtml}
 
       <div class="welcome-section">
         <div class="welcome-section-title">TRAINEE MANUAL</div>
@@ -326,6 +384,16 @@ export function showWelcomeScreen(options = {}) {
       overlay.innerHTML = '';
       overlay.classList.remove('active');
       if (typeof onStartPractice === 'function') onStartPractice(idx);
+    });
+  });
+
+  // Past Returns button handlers
+  overlay.querySelectorAll('[data-past-index]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-past-index'), 10);
+      overlay.innerHTML = '';
+      overlay.classList.remove('active');
+      if (typeof onStartPast === 'function') onStartPast(pastPuzzles[idx]);
     });
   });
 }
@@ -751,11 +819,8 @@ export function showEndScreen(result = {}) {
       </div>
     `;
   } else {
-    // Daily mode: share button + countdown
-    const now = new Date();
-    const midnight = new Date(now);
-    midnight.setHours(24, 0, 0, 0);
-    const msLeft = midnight - now;
+    // Daily mode: share button + countdown to next 10pm Central
+    const msLeft = getNextResetMs();
     const hoursLeft = Math.floor(msLeft / 3600000);
     const minsLeft = Math.floor((msLeft % 3600000) / 60000);
     const countdownText = `Next shift in ${hoursLeft}h ${minsLeft}m`;
@@ -797,17 +862,14 @@ export function showEndScreen(result = {}) {
       });
     }
 
-    // Live countdown tick
+    // Live countdown tick (counts down to 10pm Central)
     const countdownEl = document.getElementById('end-countdown');
     const ticker = setInterval(() => {
       if (!countdownEl || !document.body.contains(countdownEl)) {
         clearInterval(ticker);
         return;
       }
-      const n = new Date();
-      const m = new Date(n);
-      m.setHours(24, 0, 0, 0);
-      const ms = m - n;
+      const ms = getNextResetMs();
       const h = Math.floor(ms / 3600000);
       const min = Math.floor((ms % 3600000) / 60000);
       countdownEl.textContent = `Next shift in ${h}h ${min}m`;
