@@ -40,7 +40,7 @@ export function preloadTextures(urls) {
  * @returns {{ width: number, height: number, depth: number }}
  */
 export function getBoxDimensions() {
-  return { width: 0.55, height: 0.85, depth: 0.35 };
+  return { width: 0.55, height: 0.85, depth: 0.23 };
 }
 
 // ---------------------------------------------------------------------------
@@ -70,18 +70,19 @@ function getBackCoverTextures() {
     const ctx = canvas.getContext('2d');
 
     // Dark background
-    ctx.fillStyle = '#1a1a1a';
+    ctx.fillStyle = '#222222';
     ctx.fillRect(0, 0, W, H);
 
     // Thin border
-    ctx.strokeStyle = '#2a2a2a';
+    ctx.strokeStyle = '#3a3a3a';
     ctx.lineWidth = 2;
     ctx.strokeRect(8, 8, W - 16, H - 16);
 
     // --- Layout varies by variant ---
-    const imgColor = '#2e2e2e';
-    const textColor = '#333333';
-    const barcodeColor = '#3a3a3a';
+    // Higher contrast so shapes read when tapes twirl during entrance
+    const imgColor = '#444444';
+    const textColor = '#4a4a4a';
+    const barcodeColor = '#555555';
 
     if (variant === 0) {
       // Two screenshot blocks side by side at top
