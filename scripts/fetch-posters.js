@@ -95,7 +95,7 @@ async function downloadPoster(posterPath, destPath) {
 
 async function generatePixelated(sourcePath, destPath) {
   await sharp(sourcePath)
-    .resize(24, 36, { kernel: sharp.kernel.nearest })
+    .resize(12, 18, { kernel: sharp.kernel.nearest })
     .resize(320, 480, { kernel: sharp.kernel.nearest })
     .jpeg({ quality: 80 })
     .toFile(destPath);
@@ -107,6 +107,7 @@ async function getMovieDetails(tmdbId) {
   await sleep(RATE_LIMIT_DELAY);
 
   const posterPath = data.poster_path || null;
+  const summary = data.overview || null;
   const genres = (data.genres || []).map(g => g.name);
   const director =
     (data.credits?.crew || []).find(c => c.job === 'Director')?.name || null;
@@ -115,7 +116,7 @@ async function getMovieDetails(tmdbId) {
     .slice(0, 3)
     .map(c => c.name);
 
-  return { posterPath, genres, director, stars };
+  return { posterPath, summary, genres, director, stars };
 }
 
 async function processMovie(movie) {
@@ -144,7 +145,8 @@ async function processMovie(movie) {
     movie.genres.length > 0 &&
     movie.director != null &&
     Array.isArray(movie.stars) &&
-    movie.stars.length > 0;
+    movie.stars.length > 0 &&
+    movie.summary != null;
 
   // Skip entirely only when both posters and metadata are present
   if (postersExist && metadataExists) {
@@ -152,10 +154,10 @@ async function processMovie(movie) {
     return { ...movie, tmdb_id };
   }
 
-  // Fetch movie details (poster path + genres/director/stars in one call)
-  let posterPath, genres, director, stars;
+  // Fetch movie details (poster path + summary/genres/director/stars in one call)
+  let posterPath, summary, genres, director, stars;
   try {
-    ({ posterPath, genres, director, stars } = await getMovieDetails(tmdb_id));
+    ({ posterPath, summary, genres, director, stars } = await getMovieDetails(tmdb_id));
   } catch (err) {
     console.log(`  [error] Failed to get movie details for "${title}": ${err.message}`);
     return { ...movie, tmdb_id };
@@ -164,7 +166,7 @@ async function processMovie(movie) {
   if (!postersExist) {
     if (!posterPath) {
       console.log(`  [skip] No poster available for "${title}" (${tmdb_id})`);
-      return { ...movie, tmdb_id, genres, director, stars };
+      return { ...movie, tmdb_id, summary, genres, director, stars };
     }
 
     // Download poster
@@ -173,7 +175,7 @@ async function processMovie(movie) {
       await downloadPoster(posterPath, posterFile);
     } catch (err) {
       console.log(`  [error] Failed to download poster for "${title}": ${err.message}`);
-      return { ...movie, tmdb_id, genres, director, stars };
+      return { ...movie, tmdb_id, summary, genres, director, stars };
     }
 
     // Generate pixelated version
@@ -182,7 +184,7 @@ async function processMovie(movie) {
       await generatePixelated(posterFile, pixelFile);
     } catch (err) {
       console.log(`  [error] Failed to generate pixelated poster for "${title}": ${err.message}`);
-      return { ...movie, tmdb_id, genres, director, stars };
+      return { ...movie, tmdb_id, summary, genres, director, stars };
     }
 
     console.log(`  Done: ${tmdb_id}.jpg + ${tmdb_id}_pixel.jpg`);
@@ -190,7 +192,7 @@ async function processMovie(movie) {
     console.log(`  [skip] Poster already exists for "${title}", fetched metadata only`);
   }
 
-  return { ...movie, tmdb_id, genres, director, stars };
+  return { ...movie, tmdb_id, summary, genres, director, stars };
 }
 
 async function main() {
@@ -218,7 +220,8 @@ async function main() {
           fs.existsSync(path.join(POSTERS_DIR, `${movie.tmdb_id}_pixel.jpg`)) &&
           Array.isArray(movie.genres) && movie.genres.length > 0 &&
           movie.director != null &&
-          Array.isArray(movie.stars) && movie.stars.length > 0;
+          Array.isArray(movie.stars) && movie.stars.length > 0 &&
+          movie.summary != null;
 
         const updated = await processMovie(movie);
         updatedMovies.push(updated);
