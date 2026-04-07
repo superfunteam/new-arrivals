@@ -32,6 +32,7 @@ import {
   toggleSelection,
   checkGuess,
   useHint,
+  revealHint,
   getTimePenalty,
   calculateFinalWage,
   getElapsedTime,
@@ -60,6 +61,7 @@ import {
   onMuteClick,
   setMuteIcon,
   onHelpClick,
+  addSolvedRowLabel,
 } from './ui.js';
 import { audio } from './audio.js';
 import { triggerShare } from './share.js';
@@ -144,7 +146,7 @@ async function main() {
 
   // Update HUD to match restored state
   updateWage(game.wage);
-  updateHints(5 - game.hintsUsed);
+  updateHints(game.wage);
   if (game.startTime) {
     updateTimer(getElapsedTime(game.startTime));
   }
@@ -393,45 +395,77 @@ async function main() {
 
     const movie = box.userData.movie;
 
-    showLightbox(movie, {
-      uncovered: game.uncoveredIds.includes(movie.tmdb_id),
-      hintsLeft: 5 - game.hintsUsed,
-      wage: game.wage,
-      onReturn: () => {
-        audio.play('returnToShelf');
-        hideLightbox();
-      },
-      onUncover: (tmdbId) => {
-        const result = useHint(game, tmdbId);
-        if (!result.success) return;
+    function openLightboxForMovie() {
+      const revealedForMovie = game.revealedHints[movie.tmdb_id] || [];
 
-        audio.play('uncover');
-        audio.play('penalty');
-
-        // Update HUD
-        updateWage(game.wage, true);
-        updateHints(5 - game.hintsUsed);
-
-        // Swap 3D texture on the actual box
-        const targetBox = allBoxes.find((b) => b.userData.movie.tmdb_id === tmdbId);
-        if (targetBox) {
-          loadTexture(`/posters/${tmdbId}.jpg`)
-            .then((fullTex) => swapToFullTexture(targetBox, fullTex))
-            .catch(() => {
-              // Keep pixelated if full fails
-            });
-        }
-
-        // Save state
-        saveGameState(serializeGame(game));
-
-        // Check if game over (wage hit 0)
-        if (game.completed) {
+      showLightbox(movie, {
+        uncovered: game.uncoveredIds.includes(movie.tmdb_id),
+        hintsLeft: game.wage,
+        wage: game.wage,
+        genres: movie.genres || [],
+        director: movie.director || '',
+        stars: movie.stars || [],
+        year: movie.year || 0,
+        revealedFields: revealedForMovie,
+        onReturn: () => {
+          audio.play('returnToShelf');
           hideLightbox();
-          handleGameOver();
-        }
-      },
-    });
+        },
+        onUncover: (tmdbId) => {
+          const result = useHint(game, tmdbId);
+          if (!result.success) return;
+
+          audio.play('uncover');
+          audio.play('penalty');
+
+          // Update HUD
+          updateWage(game.wage, true);
+          updateHints(game.wage);
+
+          // Swap 3D texture on the actual box
+          const targetBox = allBoxes.find((b) => b.userData.movie.tmdb_id === tmdbId);
+          if (targetBox) {
+            loadTexture(`/posters/${tmdbId}.jpg`)
+              .then((fullTex) => swapToFullTexture(targetBox, fullTex))
+              .catch(() => {
+                // Keep pixelated if full fails
+              });
+          }
+
+          // Save state
+          saveGameState(serializeGame(game));
+
+          // Check if game over (wage hit 0)
+          if (game.completed) {
+            hideLightbox();
+            handleGameOver();
+          }
+        },
+        onRevealHint: (fieldName) => {
+          const result = revealHint(game, movie.tmdb_id, fieldName);
+          if (!result.success) return;
+
+          audio.play('penalty');
+
+          // Update HUD
+          updateWage(game.wage, true);
+          updateHints(game.wage);
+
+          // Save state
+          saveGameState(serializeGame(game));
+
+          // Re-render lightbox to show the revealed field
+          if (game.completed) {
+            hideLightbox();
+            handleGameOver();
+          } else {
+            openLightboxForMovie();
+          }
+        },
+      });
+    }
+
+    openLightboxForMovie();
   }
 
   // =========================================================================
@@ -482,6 +516,12 @@ async function main() {
           setSpineColor(box, parseInt(cat.color.replace('#', ''), 16));
         }
 
+        // Project 3D row position to screen space for the solved label
+        const rowCenter = new THREE.Vector3(0, targetY, z);
+        rowCenter.project(camera);
+        const screenY = (-rowCenter.y * 0.5 + 0.5) * renderer.domElement.clientHeight;
+        addSolvedRowLabel(cat.name, cat.color, screenY);
+
         // Update solved count
         solvedRowCount++;
 
@@ -516,6 +556,7 @@ async function main() {
 
       // Update wage display
       updateWage(game.wage, true);
+      updateHints(game.wage);
 
       // Find selected boxes (they were just cleared by checkGuess, but we
       // can identify them as boxes still in 'selected' state visually)

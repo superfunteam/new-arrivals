@@ -45,7 +45,7 @@ export function createHUD() {
 
     <div class="hud-bottom">
       <div class="hud-hints">
-        <span class="hint-count" id="hud-hint-count">5</span> uncover
+        $<span class="hint-count" id="hud-hint-count">10</span> hints left
       </div>
       <button class="shelve-btn" id="shelve-btn" disabled>SHELVE IT</button>
       <div class="hud-timer" id="hud-timer">0:00</div>
@@ -222,42 +222,118 @@ export function showOnboarding(onComplete) {
   render();
 }
 
+// ─── Genre Color Map ────────────────────────────────────────────────────────
+
+const GENRE_COLORS = {
+  'Horror': '#8B0000',
+  'Comedy': '#DAA520',
+  'Action': '#FF4500',
+  'Drama': '#4169E1',
+  'Science Fiction': '#7B68EE',
+  'Thriller': '#2F4F4F',
+  'Adventure': '#228B22',
+  'Animation': '#FF69B4',
+  'Fantasy': '#9932CC',
+  'Romance': '#C71585',
+  'Crime': '#696969',
+  'Mystery': '#483D8B',
+  'Music': '#FF1493',
+  'Family': '#32CD32',
+  'War': '#556B2F',
+  'Western': '#8B4513',
+  'Documentary': '#4682B4',
+  'History': '#B8860B',
+};
+
 // ─── Lightbox ────────────────────────────────────────────────────────────────
 
 /**
  * Show the inspect lightbox for a movie.
  * @param {Object} movie  Must have tmdb_id and title
  * @param {Object} options
- * @param {boolean} options.uncovered
- * @param {number}  options.hintsLeft
- * @param {number}  options.wage
+ * @param {boolean}  options.uncovered
+ * @param {number}   options.hintsLeft
+ * @param {number}   options.wage
  * @param {Function} options.onReturn
  * @param {Function} options.onUncover  Called with tmdb_id
+ * @param {string[]} options.genres
+ * @param {string}   options.director
+ * @param {string[]} options.stars
+ * @param {number}   options.year
+ * @param {string[]} options.revealedFields  Already-revealed field names
+ * @param {Function} options.onRevealHint  Called with fieldName
  */
 export function showLightbox(movie, options = {}) {
-  const { uncovered = false, hintsLeft = 0, wage = 0, onReturn, onUncover } = options;
+  const {
+    uncovered = false,
+    hintsLeft = 0,
+    wage = 0,
+    onReturn,
+    onUncover,
+    genres = [],
+    director = '',
+    stars = [],
+    year = 0,
+    revealedFields = [],
+    onRevealHint,
+  } = options;
   const overlay = document.getElementById('overlay');
   if (!overlay) return;
 
-  const isUncoverDisabled = uncovered || hintsLeft <= 0 || wage <= 0;
+  const isUncoverDisabled = uncovered || wage <= 0;
   const posterSrc = uncovered
     ? `/posters/${movie.tmdb_id}.jpg`
     : `/posters/${movie.tmdb_id}_pixel.jpg`;
   const posterClass = uncovered ? 'lightbox-poster uncovered' : 'lightbox-poster';
-  const outOfFocusHtml = !uncovered && hintsLeft <= 0
-    ? `<div style="font-family:var(--font-body);font-size:11px;color:rgba(255,255,255,0.5);margin-top:8px;">Out of Focus</div>`
+
+  // Genre sticker (free hint)
+  const primaryGenre = genres.length > 0 ? genres[0] : '';
+  const genreColor = GENRE_COLORS[primaryGenre] || '#666';
+  const genreStickerHtml = primaryGenre
+    ? `<div class="genre-sticker" style="background:${genreColor}">${primaryGenre.toUpperCase()}</div>`
     : '';
+
+  // Hint rows for director/stars/year
+  function buildHintRow(label, fieldName, value) {
+    const isRevealed = revealedFields.includes(fieldName);
+    const displayValue = Array.isArray(value) ? value.join(', ') : String(value);
+    if (isRevealed) {
+      return `<div class="hint-row">
+        <span class="hint-label">${label}:</span>
+        <span class="hint-value">${displayValue}</span>
+      </div>`;
+    }
+    const redactLen = fieldName === 'year' ? 4 : Math.min(displayValue.length, 12);
+    const redactBlock = '\u2588'.repeat(redactLen);
+    const btnDisabled = wage <= 0 ? ' disabled' : '';
+    return `<div class="hint-row">
+      <span class="hint-label">${label}:</span>
+      <span class="hint-redacted">${redactBlock}</span>
+      <button class="hint-reveal-btn" data-field="${fieldName}"${btnDisabled}>$1</button>
+    </div>`;
+  }
+
+  const hintsHtml = `
+    <div class="lightbox-hints">
+      ${buildHintRow('Director', 'director', director)}
+      ${buildHintRow('Stars', 'stars', stars)}
+      ${buildHintRow('Year', 'year', year)}
+    </div>
+  `;
 
   overlay.innerHTML = `
     <div class="lightbox" id="lightbox-inner">
-      <img
-        class="${posterClass}"
-        id="lightbox-poster"
-        src="${posterSrc}"
-        alt="${movie.title}"
-      />
+      <div class="lightbox-poster-wrap">
+        <img
+          class="${posterClass}"
+          id="lightbox-poster"
+          src="${posterSrc}"
+          alt="${movie.title}"
+        />
+        ${genreStickerHtml}
+      </div>
       <div class="lightbox-title">${movie.title}</div>
-      ${outOfFocusHtml}
+      ${hintsHtml}
       <div class="lightbox-buttons">
         <button class="lightbox-btn return" id="lightbox-return">Return to Shelf</button>
         <button class="lightbox-btn uncover" id="lightbox-uncover"${isUncoverDisabled ? ' disabled' : ''}>
@@ -294,6 +370,15 @@ export function showLightbox(movie, options = {}) {
 
     if (typeof onUncover === 'function') onUncover(movie.tmdb_id);
   });
+
+  // Hint reveal buttons
+  overlay.querySelectorAll('.hint-reveal-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (btn.disabled) return;
+      const fieldName = btn.getAttribute('data-field');
+      if (typeof onRevealHint === 'function') onRevealHint(fieldName);
+    });
+  });
 }
 
 /**
@@ -304,6 +389,26 @@ export function hideLightbox() {
   if (!overlay) return;
   overlay.innerHTML = '';
   overlay.classList.remove('active');
+}
+
+// ─── Solved Row Label ───────────────────────────────────────────────────────
+
+/**
+ * Creates an absolutely positioned label in #hud for a solved row.
+ * @param {string} categoryName
+ * @param {string} categoryColor  CSS color string
+ * @param {number} screenY  Y position in pixels from top of viewport
+ */
+export function addSolvedRowLabel(categoryName, categoryColor, screenY) {
+  const hud = document.getElementById('hud');
+  if (!hud) return;
+
+  const label = document.createElement('div');
+  label.className = 'solved-row-label';
+  label.textContent = categoryName.toUpperCase();
+  label.style.top = `${screenY}px`;
+  label.style.background = categoryColor;
+  hud.appendChild(label);
 }
 
 // ─── End Screen ──────────────────────────────────────────────────────────────

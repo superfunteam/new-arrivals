@@ -13,6 +13,7 @@ export function createGame(puzzle) {
     hintsUsed: 0,
     uncoveredIds: [],
     selectedIds: [],
+    revealedHints: {},
     wage: 10,
     startTime: null,
     completed: false,
@@ -120,9 +121,6 @@ export function checkGuess(game) {
  * @returns {{ success: boolean, reason?: string, wage?: number }}
  */
 export function useHint(game, tmdbId) {
-  if (game.hintsUsed >= 5) {
-    return { success: false, reason: 'maxHints' };
-  }
   if (game.uncoveredIds.includes(tmdbId)) {
     return { success: false, reason: 'alreadyUncovered' };
   }
@@ -132,6 +130,37 @@ export function useHint(game, tmdbId) {
 
   game.hintsUsed += 1;
   game.uncoveredIds.push(tmdbId);
+  game.wage = Math.max(0, game.wage - 1);
+
+  if (game.wage <= 0) {
+    game.completed = true;
+    game.won = false;
+  }
+
+  return { success: true, wage: game.wage };
+}
+
+/**
+ * Reveal a paid hint (director, stars, or year) for a movie.
+ * Mutates game in place.
+ * @param {Object} game
+ * @param {number|string} tmdbId
+ * @param {string} field  'director', 'stars', or 'year'
+ * @returns {{ success: boolean, reason?: string, wage?: number }}
+ */
+export function revealHint(game, tmdbId, field) {
+  if (game.revealedHints[tmdbId]?.includes(field)) {
+    return { success: false, reason: 'alreadyRevealed' };
+  }
+  if (game.wage <= 0) {
+    return { success: false, reason: 'broke' };
+  }
+
+  if (!game.revealedHints[tmdbId]) {
+    game.revealedHints[tmdbId] = [];
+  }
+  game.revealedHints[tmdbId].push(field);
+  game.hintsUsed += 1;
   game.wage = Math.max(0, game.wage - 1);
 
   if (game.wage <= 0) {
@@ -201,6 +230,7 @@ export function serializeGame(game) {
     hintsUsed: game.hintsUsed,
     uncoveredIds: [...game.uncoveredIds],
     selectedIds: [...game.selectedIds],
+    revealedHints: JSON.parse(JSON.stringify(game.revealedHints)),
     wage: game.wage,
     startTime: game.startTime,
     completed: game.completed,
@@ -225,6 +255,7 @@ export function restoreGame(saved, puzzle) {
     hintsUsed: saved.hintsUsed,
     uncoveredIds: [...saved.uncoveredIds],
     selectedIds: [...saved.selectedIds],
+    revealedHints: saved.revealedHints ? JSON.parse(JSON.stringify(saved.revealedHints)) : {},
     wage: saved.wage,
     startTime: saved.startTime,
     completed: saved.completed,

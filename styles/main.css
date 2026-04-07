@@ -309,6 +309,11 @@ html, body {
   opacity: 1;
 }
 
+.lightbox-poster-wrap {
+  position: relative;
+  display: inline-block;
+}
+
 .lightbox-title {
   font-family: var(--font-display);
   font-size: 12px;
@@ -324,10 +329,94 @@ html, body {
   object-fit: cover;
   border: 3px solid var(--shelf-wood);
   image-rendering: pixelated;
+  display: block;
 }
 
 .lightbox-poster.uncovered {
   image-rendering: auto;
+}
+
+/* === Genre Sticker === */
+.genre-sticker {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.2;
+  padding: 4px;
+  box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.5);
+  transform: rotate(8deg);
+  pointer-events: none;
+}
+
+/* === Lightbox Hint Rows === */
+.lightbox-hints {
+  margin-top: 14px;
+  width: 260px;
+}
+
+.hint-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.hint-label {
+  color: rgba(255, 255, 255, 0.5);
+  flex-shrink: 0;
+  min-width: 60px;
+}
+
+.hint-value {
+  color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hint-redacted {
+  color: #000;
+  background: #333;
+  padding: 1px 4px;
+  border-radius: 2px;
+  letter-spacing: 1px;
+  font-size: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hint-reveal-btn {
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-size: 8px;
+  padding: 3px 8px;
+  background: var(--neon-blue);
+  color: #000;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+.hint-reveal-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
 }
 
 .lightbox-buttons {
@@ -497,21 +586,28 @@ html, body {
   z-index: 10;
 }
 
-/* === Category Label (shown on solved rows) === */
-.category-label {
+/* === Solved Row Label (NYT Connections-style band) === */
+.solved-row-label {
   position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   font-family: var(--font-display);
-  font-size: 8px;
+  font-size: 9px;
   text-transform: uppercase;
   text-align: center;
-  width: 100%;
+  color: #fff;
+  padding: 6px 24px;
+  border-radius: 4px;
   pointer-events: none;
-  text-shadow: 0 0 8px currentColor;
+  letter-spacing: 2px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
   opacity: 0;
   animation: labelReveal 0.6s ease-out forwards;
 }
 
 @keyframes labelReveal {
-  0% { opacity: 0; transform: translateY(5px); letter-spacing: 8px; }
-  100% { opacity: 1; transform: translateY(0); letter-spacing: 2px; }
+  0% { opacity: 0; transform: translateX(-50%) translateY(5px); letter-spacing: 8px; }
+  100% { opacity: 1; transform: translateX(-50%) translateY(0); letter-spacing: 2px; }
 }
