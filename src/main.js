@@ -3,9 +3,10 @@
 
 import * as THREE from 'three';
 
-import { createScene, resizeScene, getRowPositions, getShelfWidth } from './scene.js';
+import { createScene, resizeScene, getRowPositions } from './scene.js';
 import {
   loadTexture,
+  preloadTextures,
   createVHSBox,
   setBoxState,
   setSpineColor,
@@ -29,13 +30,11 @@ import {
   startTimer,
   getAllMovies,
   toggleSelection,
-  clearSelection,
   checkGuess,
   useHint,
   getTimePenalty,
   calculateFinalWage,
   getElapsedTime,
-  getElapsedSeconds,
   serializeGame,
   restoreGame,
 } from './game-logic.js';
@@ -44,7 +43,6 @@ import {
   saveGameState,
   loadGameState,
   updateStats,
-  loadStats,
   isOnboarded,
   setOnboarded,
 } from './state.js';
@@ -165,6 +163,10 @@ async function main() {
       }
     })
   );
+
+  // Preload full-res posters in background for instant uncover
+  const fullResUrls = shuffledMovies.map(m => `/posters/${m.tmdb_id}.jpg`);
+  preloadTextures(fullResUrls);
 
   // Create box meshes
   const allBoxes = shuffledMovies.map((movie, i) => {

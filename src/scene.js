@@ -118,9 +118,10 @@ function buildShelf() {
   rightSide.castShadow = true;
   group.add(rightSide);
 
-  // Store row Y positions
+  // Store row Y positions (index 0 = top row, index 3 = bottom row)
+  // Spec: rows fill top (easiest) to bottom (hardest)
   group.userData.rowPositions = [];
-  for (let i = 0; i < numRows; i++) {
+  for (let i = numRows - 1; i >= 0; i--) {
     group.userData.rowPositions.push(bottomY + i * rowSpacing + plankThickness / 2 + 0.55);
   }
   group.userData.shelfWidth = shelfWidth;

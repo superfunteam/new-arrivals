@@ -20,7 +20,7 @@ export function loadTodaysPuzzle(puzzlesData) {
   const puzzles = puzzlesData.puzzles;
   const today = todayISO();
 
-  const match = puzzles.find((p) => p.date === today);
+  const match = puzzles.find((p) => p.id === today);
   if (match) return match;
 
   const daysSinceEpoch = Math.floor(Date.now() / 86400000);

@@ -106,16 +106,13 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
     }
   }
 
+  // Use pointer events only (unified API, works on desktop + mobile)
+  // Avoid also registering touch events which causes double-fire on mobile
   const el = renderer.domElement;
-  el.addEventListener('pointerdown', onPointerDown);
-  el.addEventListener('pointermove', onPointerMove);
+  el.addEventListener('pointerdown', onPointerDown, { passive: false });
+  el.addEventListener('pointermove', onPointerMove, { passive: false });
   el.addEventListener('pointerup', onPointerUp);
   el.addEventListener('pointercancel', onPointerUp);
-
-  el.addEventListener('touchstart', onPointerDown, { passive: false });
-  el.addEventListener('touchmove', onPointerMove, { passive: false });
-  el.addEventListener('touchend', onPointerUp);
-  el.addEventListener('touchcancel', onPointerUp);
 
   return {
     setLocked,
@@ -124,10 +121,6 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
       el.removeEventListener('pointermove', onPointerMove);
       el.removeEventListener('pointerup', onPointerUp);
       el.removeEventListener('pointercancel', onPointerUp);
-      el.removeEventListener('touchstart', onPointerDown);
-      el.removeEventListener('touchmove', onPointerMove);
-      el.removeEventListener('touchend', onPointerUp);
-      el.removeEventListener('touchcancel', onPointerUp);
     },
   };
 }
