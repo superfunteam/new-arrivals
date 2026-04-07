@@ -14,7 +14,7 @@ export function createGame(puzzle) {
     uncoveredIds: [],
     selectedIds: [],
     revealedHints: {},
-    wage: 10,
+    wage: 25,
     startTime: null,
     completed: false,
     won: false,

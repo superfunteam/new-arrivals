@@ -174,7 +174,7 @@ export async function generateShareImage(result) {
   ctx.font = 'bold 20px "Space Mono"';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
-  const scoreText = `$${finalWage} / $10`;
+  const scoreText = `$${finalWage} / $25`;
   ctx.fillText(scoreText, CANVAS_W / 2 - 40, scoreY);
 
   ctx.fillStyle = MUTED_WHITE;
@@ -210,7 +210,7 @@ export function generateTextFallback(result) {
   const lines = [];
 
   lines.push(`📼 NEW ARRIVALS — ${dateLabel}`);
-  lines.push(`💰 $${finalWage} / $10 | ⏱ ${timeStr}`);
+  lines.push(`💰 $${finalWage} / $25 | ⏱ ${timeStr}`);
 
   for (const cat of sortedCategories) {
     const emoji = DIFF_EMOJI[cat.difficulty] ?? '⬛';

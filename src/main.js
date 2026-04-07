@@ -62,6 +62,7 @@ import {
   setMuteIcon,
   onHelpClick,
   addSolvedRowLabel,
+  revealHintInPlace,
 } from './ui.js';
 import { audio } from './audio.js';
 import { triggerShare } from './share.js';
@@ -451,15 +452,16 @@ async function main() {
           updateWage(game.wage, true);
           updateHints(game.wage);
 
+          // Animate the reveal in-place (no modal rebuild)
+          const valueMap = { director: movie.director, stars: movie.stars, year: movie.year };
+          revealHintInPlace(fieldName, valueMap[fieldName]);
+
           // Save state
           saveGameState(serializeGame(game));
 
-          // Re-render lightbox to show the revealed field
           if (game.completed) {
             hideLightbox();
             handleGameOver();
-          } else {
-            openLightboxForMovie();
           }
         },
       });
@@ -637,7 +639,7 @@ async function main() {
       won: g.won,
       finalWage,
       wrongGuesses: g.wrongGuesses,
-      hintsUsed: g.hintsUsed,
+      hintsUsed: g.hintsUsed + Object.values(g.revealedHints).reduce((sum, arr) => sum + arr.length, 0),
       timePenalty,
       timeStr,
       solvedCategories: g.solvedCategories,

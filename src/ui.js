@@ -37,7 +37,7 @@ export function createHUD() {
         NEW ARRIVALS
         <span class="hud-date">${dateStr}</span>
       </div>
-      <div class="hud-wage" id="hud-wage">$10.00</div>
+      <div class="hud-wage" id="hud-wage">$25.00</div>
     </div>
 
     <button class="mute-btn" id="mute-btn" aria-label="Toggle mute">♪</button>
@@ -45,7 +45,7 @@ export function createHUD() {
 
     <div class="hud-bottom">
       <div class="hud-hints">
-        $<span class="hint-count" id="hud-hint-count">10</span> hints left
+        $<span class="hint-count" id="hud-hint-count">25</span> hints left
       </div>
       <button class="shelve-btn" id="shelve-btn" disabled>SHELVE IT</button>
       <div class="hud-timer" id="hud-timer">0:00</div>
@@ -171,7 +171,7 @@ export function showOnboarding(onComplete) {
     {
       title: 'Watch Your Wallet',
       anim: `<div class="dollar-icon">💸</div>`,
-      body: 'You start with $10. Wrong guesses cost $1. Hints cost $1. Take too long and the clock eats your paycheck. Can you keep the store profitable?',
+      body: 'You start with $25. Wrong guesses cost $1. Hints cost $1. Take too long and the clock eats your paycheck. Can you keep the store profitable?',
       btn: 'Start My Shift',
     },
   ];
@@ -382,6 +382,46 @@ export function showLightbox(movie, options = {}) {
 }
 
 /**
+ * Reveal a hint field in-place with a typing animation (no modal rebuild).
+ * @param {string} fieldName  'director', 'stars', or 'year'
+ * @param {string|string[]} value  The value to type in
+ */
+export function revealHintInPlace(fieldName, value) {
+  const overlay = document.getElementById('overlay');
+  if (!overlay) return;
+
+  const row = overlay.querySelector(`.hint-reveal-btn[data-field="${fieldName}"]`)?.closest('.hint-row');
+  if (!row) return;
+
+  const displayValue = Array.isArray(value) ? value.join(', ') : String(value);
+
+  // Remove the redacted text and button
+  const redacted = row.querySelector('.hint-redacted');
+  const btn = row.querySelector('.hint-reveal-btn');
+  if (btn) btn.remove();
+
+  if (redacted) {
+    // Replace redacted block with a typing span
+    const typingSpan = document.createElement('span');
+    typingSpan.className = 'hint-value hint-typing';
+    typingSpan.textContent = '';
+    redacted.replaceWith(typingSpan);
+
+    // Type out the text character by character
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < displayValue.length) {
+        typingSpan.textContent += displayValue[i];
+        i++;
+      } else {
+        clearInterval(interval);
+        typingSpan.classList.remove('hint-typing');
+      }
+    }, 35);
+  }
+}
+
+/**
  * Hides and clears the overlay.
  */
 export function hideLightbox() {
@@ -453,7 +493,7 @@ export function showEndScreen(result = {}) {
   const title = won ? 'SHIFT COMPLETE' : 'STORE CLOSED EARLY';
 
   // Score card rows
-  const startingWage = 10;
+  const startingWage = 25;
   const wrongDeduction = wrongGuesses * 1;
   const hintDeduction = hintsUsed * 1;
 
