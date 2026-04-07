@@ -222,6 +222,100 @@ export function showOnboarding(onComplete) {
   render();
 }
 
+// ─── Welcome Screen ─────────────────────────────────────────────────────────
+
+/**
+ * Shows the welcome/menu screen with Daily Dropoff and Trainee Manual modes.
+ * @param {Object} options
+ * @param {Object}   options.dailyPuzzle        The puzzle object for today
+ * @param {string|null} options.dailyState       null | 'in_progress' | 'completed'
+ * @param {Object[]} options.practicePuzzles     Array of up to 4 practice puzzle objects
+ * @param {Function} options.onStartDaily        Called when user clicks daily start
+ * @param {Function} options.onStartPractice     Called with practice puzzle index
+ */
+export function showWelcomeScreen(options = {}) {
+  const {
+    dailyPuzzle,
+    dailyState = null,
+    practicePuzzles = [],
+    onStartDaily,
+    onStartPractice,
+  } = options;
+
+  const overlay = document.getElementById('overlay');
+  if (!overlay) return;
+
+  const dateStr = formatDate(new Date());
+
+  // Daily button label and class
+  let dailyBtnLabel = 'START SHIFT';
+  let dailyBtnClass = 'welcome-btn daily';
+  let dailyDisabled = false;
+  if (dailyState === 'completed') {
+    dailyBtnLabel = 'COMPLETED \u2713';
+    dailyBtnClass = 'welcome-btn completed';
+    dailyDisabled = true;
+  } else if (dailyState === 'in_progress') {
+    dailyBtnLabel = 'CONTINUE';
+  }
+
+  // Practice cards HTML
+  const practiceCardsHtml = practicePuzzles
+    .map(
+      (p, i) => `
+      <div class="practice-card">
+        <div class="practice-card-title">${p.title}</div>
+        <button class="welcome-btn practice" data-practice-index="${i}">PRACTICE</button>
+      </div>`
+    )
+    .join('');
+
+  overlay.innerHTML = `
+    <div class="welcome-screen">
+      <div class="welcome-title">NEW ARRIVALS</div>
+      <div class="welcome-tagline">Be kind, rewind</div>
+
+      <div class="welcome-section">
+        <div class="welcome-section-title">DAILY DROPOFF</div>
+        <div class="daily-card">
+          <div class="daily-card-title">${dailyPuzzle.title}</div>
+          <div class="daily-card-date">${dateStr}</div>
+          <button class="${dailyBtnClass}" id="welcome-daily-btn"${dailyDisabled ? ' disabled' : ''}>${dailyBtnLabel}</button>
+        </div>
+      </div>
+
+      <div class="welcome-section">
+        <div class="welcome-section-title">TRAINEE MANUAL</div>
+        <div class="practice-grid">
+          ${practiceCardsHtml}
+        </div>
+      </div>
+    </div>
+  `;
+
+  overlay.classList.add('active');
+
+  // Daily button handler
+  const dailyBtn = document.getElementById('welcome-daily-btn');
+  if (dailyBtn && !dailyDisabled) {
+    dailyBtn.addEventListener('click', () => {
+      overlay.innerHTML = '';
+      overlay.classList.remove('active');
+      if (typeof onStartDaily === 'function') onStartDaily();
+    });
+  }
+
+  // Practice button handlers
+  overlay.querySelectorAll('[data-practice-index]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-practice-index'), 10);
+      overlay.innerHTML = '';
+      overlay.classList.remove('active');
+      if (typeof onStartPractice === 'function') onStartPractice(idx);
+    });
+  });
+}
+
 // ─── Genre Color Map ────────────────────────────────────────────────────────
 
 const GENRE_COLORS = {
@@ -473,6 +567,9 @@ const CATEGORY_COLORS = {
  * @param {Object[]} result.solvedCategories  Array of solved category objects
  * @param {Object[]} result.allCategories     All 4 category objects
  * @param {Function} result.onShare
+ * @param {string}   [result.mode]            'daily' (default) or 'practice'
+ * @param {Function} [result.onBackToMenu]    Called in practice mode for back to menu
+ * @param {Function} [result.onPlayAgain]     Called in practice mode for replay
  */
 export function showEndScreen(result = {}) {
   const {
@@ -485,6 +582,9 @@ export function showEndScreen(result = {}) {
     solvedCategories = [],
     allCategories = [],
     onShare,
+    mode = 'daily',
+    onBackToMenu,
+    onPlayAgain,
   } = result;
 
   const overlay = document.getElementById('overlay');
@@ -526,46 +626,78 @@ export function showEndScreen(result = {}) {
     })
     .join('');
 
-  // Countdown to midnight
-  const now = new Date();
-  const midnight = new Date(now);
-  midnight.setHours(24, 0, 0, 0);
-  const msLeft = midnight - now;
-  const hoursLeft = Math.floor(msLeft / 3600000);
-  const minsLeft = Math.floor((msLeft % 3600000) / 60000);
-  const countdownText = `Next shift in ${hoursLeft}h ${minsLeft}m`;
+  // Bottom section differs by mode
+  let bottomHtml = '';
+  if (mode === 'practice') {
+    bottomHtml = `
+      <div class="end-practice-buttons">
+        <button class="end-practice-btn menu" id="end-back-menu">BACK TO MENU</button>
+        <button class="end-practice-btn replay" id="end-play-again">PLAY AGAIN</button>
+      </div>
+    `;
+  } else {
+    // Daily mode: share button + countdown
+    const now = new Date();
+    const midnight = new Date(now);
+    midnight.setHours(24, 0, 0, 0);
+    const msLeft = midnight - now;
+    const hoursLeft = Math.floor(msLeft / 3600000);
+    const minsLeft = Math.floor((msLeft % 3600000) / 60000);
+    const countdownText = `Next shift in ${hoursLeft}h ${minsLeft}m`;
+    bottomHtml = `
+      <button class="share-btn" id="end-share-btn">Share Result</button>
+      <div class="countdown" id="end-countdown">${countdownText}</div>
+    `;
+  }
 
   overlay.innerHTML = `
     <div class="end-screen">
       <div class="end-title">${title}</div>
       ${scoreCardHtml}
       <div class="category-recap">${categoryRowsHtml}</div>
-      <button class="share-btn" id="end-share-btn">Share Result</button>
-      <div class="countdown" id="end-countdown">${countdownText}</div>
+      ${bottomHtml}
     </div>
   `;
 
   overlay.classList.add('active');
 
-  document.getElementById('end-share-btn').addEventListener('click', () => {
-    if (typeof onShare === 'function') onShare();
-  });
-
-  // Live countdown tick
-  const countdownEl = document.getElementById('end-countdown');
-  const ticker = setInterval(() => {
-    if (!countdownEl || !document.body.contains(countdownEl)) {
-      clearInterval(ticker);
-      return;
+  if (mode === 'practice') {
+    const backBtn = document.getElementById('end-back-menu');
+    if (backBtn) {
+      backBtn.addEventListener('click', () => {
+        if (typeof onBackToMenu === 'function') onBackToMenu();
+      });
     }
-    const n = new Date();
-    const m = new Date(n);
-    m.setHours(24, 0, 0, 0);
-    const ms = m - n;
-    const h = Math.floor(ms / 3600000);
-    const min = Math.floor((ms % 3600000) / 60000);
-    countdownEl.textContent = `Next shift in ${h}h ${min}m`;
-  }, 60000);
+    const replayBtn = document.getElementById('end-play-again');
+    if (replayBtn) {
+      replayBtn.addEventListener('click', () => {
+        if (typeof onPlayAgain === 'function') onPlayAgain();
+      });
+    }
+  } else {
+    const shareBtn = document.getElementById('end-share-btn');
+    if (shareBtn) {
+      shareBtn.addEventListener('click', () => {
+        if (typeof onShare === 'function') onShare();
+      });
+    }
+
+    // Live countdown tick
+    const countdownEl = document.getElementById('end-countdown');
+    const ticker = setInterval(() => {
+      if (!countdownEl || !document.body.contains(countdownEl)) {
+        clearInterval(ticker);
+        return;
+      }
+      const n = new Date();
+      const m = new Date(n);
+      m.setHours(24, 0, 0, 0);
+      const ms = m - n;
+      const h = Math.floor(ms / 3600000);
+      const min = Math.floor((ms % 3600000) / 60000);
+      countdownEl.textContent = `Next shift in ${h}h ${min}m`;
+    }, 60000);
+  }
 }
 
 // ─── VHS Tracking Flash ──────────────────────────────────────────────────────

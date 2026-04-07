@@ -54,6 +54,7 @@ import {
   updateHints,
   setShelveButton,
   showOnboarding,
+  showWelcomeScreen,
   showLightbox,
   hideLightbox,
   showEndScreen,
@@ -104,11 +105,11 @@ function createPlaceholderTexture(title) {
 }
 
 // ---------------------------------------------------------------------------
-// Main
+// Main — Welcome Screen Entry Point
 // ---------------------------------------------------------------------------
 
 async function main() {
-  // ── 1. Fetch puzzles, find today's puzzle ─────────────────────────────────
+  // ── 1. Fetch puzzles ──────────────────────────────────────────────────────
   let puzzlesData;
   try {
     const res = await fetch('/puzzles.json');
@@ -117,27 +118,71 @@ async function main() {
     console.error('Failed to load puzzles.json:', err);
     return;
   }
-  const puzzle = loadTodaysPuzzle(puzzlesData);
 
-  // ── 2. Check localStorage for saved state ─────────────────────────────────
+  // ── 2. Determine daily puzzle ─────────────────────────────────────────────
+  const dailyPuzzle = loadTodaysPuzzle(puzzlesData);
+
+  // ── 3. Check daily state ──────────────────────────────────────────────────
   const savedState = loadGameState();
-  const isRestoring = savedState && savedState.puzzleId === puzzle.id;
+  const hasSavedDaily = savedState && savedState.puzzleId === dailyPuzzle.id;
+  let dailyState = null; // null | 'in_progress' | 'completed'
+  if (hasSavedDaily) {
+    dailyState = savedState.completed ? 'completed' : 'in_progress';
+  }
 
-  // ── 3. Create Three.js scene ──────────────────────────────────────────────
+  // ── 4. Determine practice puzzles (up to 4 that aren't today's daily) ────
+  const allPuzzles = puzzlesData.puzzles;
+  let practicePuzzles = allPuzzles.filter((p) => p.id !== dailyPuzzle.id);
+  if (practicePuzzles.length === 0) {
+    // Fallback: if all puzzles somehow match, use indices 1-4
+    practicePuzzles = allPuzzles.slice(1);
+  }
+  practicePuzzles = practicePuzzles.slice(0, 4);
+
+  // ── 5. Show welcome screen ───────────────────────────────────────────────
+  showWelcomeScreen({
+    dailyPuzzle,
+    dailyState,
+    practicePuzzles,
+    onStartDaily: () => {
+      startGameSession(dailyPuzzle, 'daily', puzzlesData);
+    },
+    onStartPractice: (index) => {
+      startGameSession(practicePuzzles[index], 'practice', puzzlesData);
+    },
+  });
+}
+
+// ---------------------------------------------------------------------------
+// startGameSession — Full Game Flow (extracted from original main)
+// ---------------------------------------------------------------------------
+
+async function startGameSession(puzzle, mode, puzzlesData) {
+  const isDaily = mode === 'daily';
+
+  // ── 1. Check localStorage for saved state (daily only) ────────────────────
+  let savedState = null;
+  let isRestoring = false;
+  if (isDaily) {
+    savedState = loadGameState();
+    isRestoring = savedState && savedState.puzzleId === puzzle.id;
+  }
+
+  // ── 2. Create Three.js scene ──────────────────────────────────────────────
   const canvas = document.getElementById('game-canvas');
   const { scene, camera, renderer, shelfGroup } = createScene(canvas);
 
-  // ── 4. Create HUD ─────────────────────────────────────────────────────────
+  // ── 3. Create HUD ─────────────────────────────────────────────────────────
   createHUD();
 
-  // ── 5. Setup mute button ──────────────────────────────────────────────────
+  // ── 4. Setup mute button ──────────────────────────────────────────────────
   onMuteClick(() => {
     const nowMuted = !audio.isMuted();
     audio.setMuted(nowMuted);
     setMuteIcon(nowMuted);
   });
 
-  // ── 6. Create or restore game state ───────────────────────────────────────
+  // ── 5. Create or restore game state ───────────────────────────────────────
   let game;
   if (isRestoring) {
     game = restoreGame(savedState, puzzle);
@@ -152,7 +197,7 @@ async function main() {
     updateTimer(getElapsedTime(game.startTime));
   }
 
-  // ── 7. Load poster textures, create 16 VHS boxes ─────────────────────────
+  // ── 6. Load poster textures, create 16 VHS boxes ─────────────────────────
   const allMovies = getAllMovies(puzzle);
   const shuffledMovies = shuffleWithSeed(allMovies, puzzle.id);
 
@@ -177,7 +222,7 @@ async function main() {
     return box;
   });
 
-  // ── 8. Layout boxes on shelf ──────────────────────────────────────────────
+  // ── 7. Layout boxes on shelf ──────────────────────────────────────────────
   layoutBoxes(allBoxes, shelfGroup);
 
   // Add all boxes to the scene
@@ -189,7 +234,7 @@ async function main() {
   let unsolvedBoxes = [...allBoxes];
   let solvedRowCount = 0;
 
-  // ── 9. If restoring: apply solved state ───────────────────────────────────
+  // ── 8. If restoring: apply solved state ───────────────────────────────────
   if (isRestoring && game.solvedCategories.length > 0) {
     const rowPositions = getRowPositions(shelfGroup);
     const { width } = getBoxDimensions();
@@ -227,7 +272,7 @@ async function main() {
     }
   }
 
-  // ── 10. If restoring: apply uncovered state ───────────────────────────────
+  // ── 9. If restoring: apply uncovered state ────────────────────────────────
   if (isRestoring && game.uncoveredIds.length > 0) {
     const uncoveredSet = new Set(game.uncoveredIds);
     for (const box of allBoxes) {
@@ -262,26 +307,26 @@ async function main() {
   let renderLoopStarted = false;
   const clock = new THREE.Clock();
 
-  // ── 11. If game already completed: show end screen, render, return ────────
+  // ── 10. If game already completed: show end screen, render, return ────────
   if (game.completed) {
     showEndScreenForGame(game);
     startRenderLoop();
     return;
   }
 
-  // ── 12. If first visit: show onboarding ───────────────────────────────────
-  if (!isOnboarded()) {
+  // ── 11. If first visit: show onboarding (daily only) ──────────────────────
+  if (isDaily && !isOnboarded()) {
     // Start render loop immediately so shelf is visible behind onboarding
     startRenderLoop();
     showOnboarding(() => {
       setOnboarded();
-      startGameAfterOnboarding();
+      startGamePlay();
     });
   } else {
-    startGame();
+    startGamePlay();
   }
 
-  function startGame() {
+  function startGamePlay() {
     // Start render loop (if not already started by onboarding path)
     if (!renderLoopStarted) {
       startRenderLoop();
@@ -305,14 +350,6 @@ async function main() {
         setupGameInteraction();
       });
     }
-  }
-
-  /** Called when onboarding completes (render loop already running). */
-  function startGameAfterOnboarding() {
-    // Entrance animation + interaction — render loop is already running
-    animateEntrance(unsolvedBoxes, () => {
-      setupGameInteraction();
-    });
   }
 
   // =========================================================================
@@ -378,8 +415,10 @@ async function main() {
     // 6. Update shelve button (active when 4 selected)
     setShelveButton(game.selectedIds.length === 4, handleShelveIt);
 
-    // 7. Save state
-    saveGameState(serializeGame(game));
+    // 7. Save state (daily only)
+    if (isDaily) {
+      saveGameState(serializeGame(game));
+    }
   }
 
   // =========================================================================
@@ -433,8 +472,10 @@ async function main() {
               });
           }
 
-          // Save state
-          saveGameState(serializeGame(game));
+          // Save state (daily only)
+          if (isDaily) {
+            saveGameState(serializeGame(game));
+          }
 
           // Check if game over (wage hit 0)
           if (game.completed) {
@@ -456,8 +497,10 @@ async function main() {
           const valueMap = { director: movie.director, stars: movie.stars, year: movie.year };
           revealHintInPlace(fieldName, valueMap[fieldName]);
 
-          // Save state
-          saveGameState(serializeGame(game));
+          // Save state (daily only)
+          if (isDaily) {
+            saveGameState(serializeGame(game));
+          }
 
           if (game.completed) {
             hideLightbox();
@@ -539,8 +582,10 @@ async function main() {
           // Clear button state
           setShelveButton(false, handleShelveIt);
 
-          // Save state
-          saveGameState(serializeGame(game));
+          // Save state (daily only)
+          if (isDaily) {
+            saveGameState(serializeGame(game));
+          }
 
           // Check if game complete
           if (game.completed) {
@@ -577,8 +622,10 @@ async function main() {
         // Clear button state
         setShelveButton(false, handleShelveIt);
 
-        // Save state
-        saveGameState(serializeGame(game));
+        // Save state (daily only)
+        if (isDaily) {
+          saveGameState(serializeGame(game));
+        }
 
         // Check if game over (wage hit 0)
         if (game.completed) {
@@ -620,10 +667,12 @@ async function main() {
       }, 1500);
     }
 
-    // Update stats
-    const finalWage = calculateFinalWage(game);
-    updateStats(finalWage, game.won);
-    saveGameState(serializeGame(game));
+    // Update stats (daily only)
+    if (isDaily) {
+      const finalWage = calculateFinalWage(game);
+      updateStats(finalWage, game.won);
+      saveGameState(serializeGame(game));
+    }
   }
 
   // =========================================================================
@@ -635,7 +684,7 @@ async function main() {
     const timePenalty = getTimePenalty(g.startTime);
     const timeStr = getElapsedTime(g.startTime);
 
-    showEndScreen({
+    const endScreenOpts = {
       won: g.won,
       finalWage,
       wrongGuesses: g.wrongGuesses,
@@ -644,7 +693,11 @@ async function main() {
       timeStr,
       solvedCategories: g.solvedCategories,
       allCategories: g.puzzle.categories,
-      onShare: () => {
+      mode,
+    };
+
+    if (isDaily) {
+      endScreenOpts.onShare = () => {
         audio.play('share');
         triggerShare({
           finalWage,
@@ -656,8 +709,28 @@ async function main() {
             uncoveredIds: g.uncoveredIds,
           },
         });
-      },
-    });
+      };
+    } else {
+      // Practice mode: back to menu or play again
+      endScreenOpts.onBackToMenu = () => {
+        window.location.reload();
+      };
+      endScreenOpts.onPlayAgain = () => {
+        // Clear overlay and HUD, restart this same puzzle fresh
+        const overlay = document.getElementById('overlay');
+        if (overlay) {
+          overlay.innerHTML = '';
+          overlay.classList.remove('active');
+        }
+        const hud = document.getElementById('hud');
+        if (hud) hud.innerHTML = '';
+        // Remove solved row labels
+        document.querySelectorAll('.solved-row-label').forEach((el) => el.remove());
+        startGameSession(puzzle, 'practice', puzzlesData);
+      };
+    }
+
+    showEndScreen(endScreenOpts);
   }
 
   // =========================================================================
