@@ -155,22 +155,36 @@ export function showOnboarding(onComplete) {
   const overlay = document.getElementById('overlay');
   if (!overlay) return;
 
+  // Poster images from well-known movies in the game
+  const posterIds = { predator: 106, totalRecall: 861, dieHard: 562, ghostbusters: 620 };
+
   const slides = [
     {
       title: 'Welcome to the Store',
-      anim: `<div class="vhs-icon"></div>`,
+      anim: `<div class="onboarding-posters">
+        <img class="onboarding-poster" src="/posters/${posterIds.predator}_pixel.jpg" alt="Predator" />
+        <img class="onboarding-poster" src="/posters/${posterIds.totalRecall}_pixel.jpg" alt="Total Recall" />
+        <img class="onboarding-poster" src="/posters/${posterIds.dieHard}_pixel.jpg" alt="Die Hard" />
+        <img class="onboarding-poster" src="/posters/${posterIds.ghostbusters}_pixel.jpg" alt="Ghostbusters" />
+      </div>`,
       body: "You're the new clerk at NEW ARRIVALS VIDEO. Sort 16 tapes into 4 mystery categories to earn your daily wages.",
       btn: 'Next',
     },
     {
       title: 'How to Sort',
-      anim: `<div style="font-size:48px;margin-bottom:0;">🖐️📼</div>`,
-      body: 'Tap 4 movies you think belong together, then hit SHELVE IT. Get it right and the category reveals itself. Long-press any tape to inspect it up close.',
+      anim: `<div class="onboarding-poster-tap">
+        <img class="onboarding-poster-single" src="/posters/${posterIds.predator}_pixel.jpg" alt="Predator" />
+        <div class="onboarding-tap-icon">TAP</div>
+      </div>`,
+      body: 'Tap a tape to select it. Pick 4 you think belong together, then hit SHELVE IT. Long-press any tape to view its details up close.',
       btn: 'Next',
     },
     {
       title: 'Watch Your Wallet',
-      anim: `<div class="dollar-icon">💸</div>`,
+      anim: `<div class="onboarding-poster-price">
+        <img class="onboarding-poster-single" src="/posters/${posterIds.ghostbusters}_pixel.jpg" alt="Ghostbusters" />
+        <div class="onboarding-price-tag">$1</div>
+      </div>`,
       body: 'You start with $25. Wrong guesses cost $1. Hints cost $1. Take too long and the clock eats your paycheck. Can you keep the store profitable?',
       btn: 'Start My Shift',
     },
@@ -354,8 +368,9 @@ const GENRE_COLORS = {
  * @param {string}   options.director
  * @param {string[]} options.stars
  * @param {number}   options.year
+ * @param {string}   options.summary
  * @param {string[]} options.revealedFields  Already-revealed field names
- * @param {Function} options.onRevealHint  Called with fieldName
+ * @param {Function} options.onRevealHint  Called with fieldName ('details' or 'summary')
  */
 export function showLightbox(movie, options = {}) {
   const {
@@ -368,6 +383,7 @@ export function showLightbox(movie, options = {}) {
     director = '',
     stars = [],
     year = 0,
+    summary = '',
     revealedFields = [],
     onRevealHint,
   } = options;
@@ -387,31 +403,52 @@ export function showLightbox(movie, options = {}) {
     ? `<div class="genre-sticker" style="background:${genreColor}">${primaryGenre.toUpperCase()}</div>`
     : '';
 
-  // Hint rows for director/stars/year
-  function buildHintRow(label, fieldName, value) {
-    const isRevealed = revealedFields.includes(fieldName);
+  // Details section (director, stars, year — bundled as one $1 reveal)
+  const detailsRevealed = ['director', 'stars', 'year'].every(f => revealedFields.includes(f));
+
+  function buildDetailLine(label, value) {
     const displayValue = Array.isArray(value) ? value.join(', ') : String(value);
-    if (isRevealed) {
+    if (detailsRevealed) {
       return `<div class="hint-row">
         <span class="hint-label">${label}:</span>
         <span class="hint-value">${displayValue}</span>
       </div>`;
     }
-    const redactLen = fieldName === 'year' ? 4 : Math.min(displayValue.length, 12);
+    const redactLen = label === 'Year' ? 4 : Math.min(displayValue.length, 12);
     const redactBlock = '\u2588'.repeat(redactLen);
-    const btnDisabled = wage <= 0 ? ' disabled' : '';
     return `<div class="hint-row">
       <span class="hint-label">${label}:</span>
-      <span class="hint-redacted">${redactBlock}</span>
-      <button class="hint-reveal-btn" data-field="${fieldName}"${btnDisabled}>$1</button>
+      <span class="hint-redacted" data-detail="${label.toLowerCase()}">${redactBlock}</span>
     </div>`;
   }
 
-  const hintsHtml = `
-    <div class="lightbox-hints">
-      ${buildHintRow('Director', 'director', director)}
-      ${buildHintRow('Stars', 'stars', stars)}
-      ${buildHintRow('Year', 'year', year)}
+  const detailsBtnHtml = detailsRevealed
+    ? ''
+    : `<button class="hint-reveal-btn details-reveal-btn" data-field="details"${wage <= 0 ? ' disabled' : ''}>REVEAL DETAILS — $1</button>`;
+
+  const detailsHtml = `
+    <div class="lightbox-details" id="lightbox-details">
+      ${buildDetailLine('Director', director)}
+      ${buildDetailLine('Stars', stars)}
+      ${buildDetailLine('Year', year)}
+      ${detailsBtnHtml}
+    </div>
+  `;
+
+  // Summary section (separate $1 reveal)
+  const summaryRevealed = revealedFields.includes('summary');
+  const summaryRedact = '\u2588'.repeat(18);
+  const summaryBtnHtml = summaryRevealed
+    ? ''
+    : `<button class="hint-reveal-btn summary-reveal-btn" data-field="summary"${wage <= 0 ? ' disabled' : ''}>REVEAL SUMMARY — $1</button>`;
+  const summaryContentHtml = summaryRevealed
+    ? `<span class="hint-value summary-text">${summary}</span>`
+    : `<span class="hint-redacted summary-redacted">${summaryRedact}</span>`;
+
+  const summaryHtml = `
+    <div class="lightbox-summary" id="lightbox-summary">
+      ${summaryContentHtml}
+      ${summaryBtnHtml}
     </div>
   `;
 
@@ -427,7 +464,8 @@ export function showLightbox(movie, options = {}) {
         ${genreStickerHtml}
       </div>
       <div class="lightbox-title">${movie.title}</div>
-      ${hintsHtml}
+      ${detailsHtml}
+      ${summaryHtml}
       <div class="lightbox-buttons">
         <button class="lightbox-btn return" id="lightbox-return">Return to Shelf</button>
         <button class="lightbox-btn uncover" id="lightbox-uncover"${isUncoverDisabled ? ' disabled' : ''}>
@@ -465,7 +503,7 @@ export function showLightbox(movie, options = {}) {
     if (typeof onUncover === 'function') onUncover(movie.tmdb_id);
   });
 
-  // Hint reveal buttons
+  // Hint reveal buttons (details and summary)
   overlay.querySelectorAll('.hint-reveal-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       if (btn.disabled) return;
@@ -512,6 +550,83 @@ export function revealHintInPlace(fieldName, value) {
         typingSpan.classList.remove('hint-typing');
       }
     }, 35);
+  }
+}
+
+/**
+ * Animate typing for a single redacted span, returning a promise when done.
+ * @param {HTMLElement} redacted  The .hint-redacted element
+ * @param {string} displayValue  Text to type in
+ * @returns {Promise<void>}
+ */
+function _animateTyping(redacted, displayValue) {
+  return new Promise((resolve) => {
+    const typingSpan = document.createElement('span');
+    typingSpan.className = 'hint-value hint-typing';
+    typingSpan.textContent = '';
+    redacted.replaceWith(typingSpan);
+
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < displayValue.length) {
+        typingSpan.textContent += displayValue[i];
+        i++;
+      } else {
+        clearInterval(interval);
+        typingSpan.classList.remove('hint-typing');
+        resolve();
+      }
+    }, 35);
+  });
+}
+
+/**
+ * Reveal all three detail fields (director, stars, year) in-place simultaneously.
+ * Removes the "REVEAL DETAILS" button and animates all three fields at once.
+ * @param {string} director
+ * @param {string[]} stars
+ * @param {number} year
+ */
+export function revealDetailsInPlace(director, stars, year) {
+  const overlay = document.getElementById('overlay');
+  if (!overlay) return;
+
+  // Remove the details reveal button
+  const detailsBtn = overlay.querySelector('.details-reveal-btn');
+  if (detailsBtn) detailsBtn.remove();
+
+  // Find all three redacted spans by data-detail attribute
+  const fields = [
+    { attr: 'director', value: director },
+    { attr: 'stars', value: Array.isArray(stars) ? stars.join(', ') : String(stars) },
+    { attr: 'year', value: String(year) },
+  ];
+
+  for (const field of fields) {
+    const redacted = overlay.querySelector(`.hint-redacted[data-detail="${field.attr}"]`);
+    if (redacted) {
+      _animateTyping(redacted, field.value);
+    }
+  }
+}
+
+/**
+ * Reveal the summary text in-place with a typing animation.
+ * Removes the "REVEAL SUMMARY" button and animates the summary text.
+ * @param {string} summary
+ */
+export function revealSummaryInPlace(summary) {
+  const overlay = document.getElementById('overlay');
+  if (!overlay) return;
+
+  // Remove the summary reveal button
+  const summaryBtn = overlay.querySelector('.summary-reveal-btn');
+  if (summaryBtn) summaryBtn.remove();
+
+  // Find the redacted summary span
+  const redacted = overlay.querySelector('.summary-redacted');
+  if (redacted) {
+    _animateTyping(redacted, summary);
   }
 }
 

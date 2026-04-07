@@ -141,27 +141,52 @@ export function useHint(game, tmdbId) {
 }
 
 /**
- * Reveal a paid hint (director, stars, or year) for a movie.
+ * Reveal a paid hint for a movie.
+ * When field is 'details', reveals director, stars, and year all at once for $1.
+ * When field is 'summary', reveals the summary for $1.
  * Mutates game in place.
  * @param {Object} game
  * @param {number|string} tmdbId
- * @param {string} field  'director', 'stars', or 'year'
+ * @param {string} field  'details' or 'summary'
  * @returns {{ success: boolean, reason?: string, wage?: number }}
  */
 export function revealHint(game, tmdbId, field) {
-  if (game.revealedHints[tmdbId]?.includes(field)) {
-    return { success: false, reason: 'alreadyRevealed' };
-  }
-  if (game.wage <= 0) {
-    return { success: false, reason: 'broke' };
-  }
-
   if (!game.revealedHints[tmdbId]) {
     game.revealedHints[tmdbId] = [];
   }
-  game.revealedHints[tmdbId].push(field);
-  game.hintsUsed += 1;
-  game.wage = Math.max(0, game.wage - 1);
+
+  if (field === 'details') {
+    // Check if all three detail fields are already revealed
+    const detailFields = ['director', 'stars', 'year'];
+    const allRevealed = detailFields.every(f => game.revealedHints[tmdbId].includes(f));
+    if (allRevealed) {
+      return { success: false, reason: 'alreadyRevealed' };
+    }
+    if (game.wage <= 0) {
+      return { success: false, reason: 'broke' };
+    }
+
+    // Reveal all three fields at once for $1
+    for (const f of detailFields) {
+      if (!game.revealedHints[tmdbId].includes(f)) {
+        game.revealedHints[tmdbId].push(f);
+      }
+    }
+    game.hintsUsed += 1;
+    game.wage = Math.max(0, game.wage - 1);
+  } else {
+    // 'summary' or any single field
+    if (game.revealedHints[tmdbId].includes(field)) {
+      return { success: false, reason: 'alreadyRevealed' };
+    }
+    if (game.wage <= 0) {
+      return { success: false, reason: 'broke' };
+    }
+
+    game.revealedHints[tmdbId].push(field);
+    game.hintsUsed += 1;
+    game.wage = Math.max(0, game.wage - 1);
+  }
 
   if (game.wage <= 0) {
     game.completed = true;

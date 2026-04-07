@@ -66,6 +66,8 @@ import {
   onHelpClick,
   addSolvedRowLabel,
   revealHintInPlace,
+  revealDetailsInPlace,
+  revealSummaryInPlace,
 } from './ui.js';
 import { audio } from './audio.js';
 import { triggerShare } from './share.js';
@@ -460,6 +462,7 @@ async function startGameSession(puzzle, mode, puzzlesData) {
         director: movie.director || '',
         stars: movie.stars || [],
         year: movie.year || 0,
+        summary: movie.summary || '',
         revealedFields: revealedForMovie,
         onReturn: () => {
           audio.play('returnToShelf');
@@ -515,9 +518,16 @@ async function startGameSession(puzzle, mode, puzzlesData) {
           updateWage(game.wage, true);
           updateHints(game.wage);
 
-          // Animate the reveal in-place (no modal rebuild)
-          const valueMap = { director: movie.director, stars: movie.stars, year: movie.year };
-          revealHintInPlace(fieldName, valueMap[fieldName]);
+          // Animate the reveal in-place
+          if (fieldName === 'details') {
+            revealDetailsInPlace(movie.director, movie.stars, movie.year);
+          } else if (fieldName === 'summary') {
+            revealSummaryInPlace(movie.summary || '');
+          } else {
+            // Fallback for individual fields (legacy)
+            const valueMap = { director: movie.director, stars: movie.stars, year: movie.year };
+            revealHintInPlace(fieldName, valueMap[fieldName]);
+          }
 
           // Save state (daily only)
           if (isDaily) {
