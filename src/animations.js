@@ -104,7 +104,9 @@ export function animateEntrance(boxes, onComplete) {
     const startOffsetY = 6 + Math.random() * 2;
     const startOffsetX = (Math.random() - 0.5) * 0.6;
     const startRotX = (Math.random() - 0.5) * Math.PI;
-    const startRotY = (Math.random() - 0.5) * Math.PI;
+    // Start Y rotation includes a full extra spin (2*PI) so the box
+    // completes at least one full Y revolution during the entrance.
+    const startRotY = (Math.random() - 0.5) * Math.PI + Math.PI * 2;
     const startRotZ = (Math.random() - 0.5) * Math.PI;
 
     // Place box at starting position immediately
@@ -127,7 +129,7 @@ export function animateEntrance(boxes, onComplete) {
         box.position.y = targetY + startOffsetY * (1 - easedT);
         box.position.z = targetZ;
 
-        // Spin down to zero
+        // Spin down to zero — Y includes the full extra revolution
         box.rotation.x = startRotX * (1 - localT);
         box.rotation.y = startRotY * (1 - localT);
         box.rotation.z = startRotZ * (1 - localT);
@@ -172,6 +174,7 @@ export function animateLockIn(boxes, targetY, targetPositions, onComplete) {
     const animDuration = delay + duration;
 
     const startPos = box.position.clone();
+    const startRotY = box.rotation.y;
     const target = targetPositions[i];
 
     addAnimation(
@@ -186,11 +189,17 @@ export function animateLockIn(boxes, targetY, targetPositions, onComplete) {
         box.position.y = startPos.y + (target.y - startPos.y) * easedT;
         box.position.z = startPos.z + (target.z - startPos.z) * easedT;
 
-        // Slight rotation wobble
+        // Half-flip around Y so the box visually flips into place
+        box.rotation.y = startRotY + Math.PI * easeInOutCubic(localT);
+
+        // Slight rotation wobble on Z
         box.rotation.z = Math.sin(localT * Math.PI * 3) * 0.08 * (1 - localT);
       },
       () => {
         box.position.copy(target);
+        // PI rotation means the box ends facing the same direction (front visible)
+        // since a half-turn of a symmetric box looks the same. Snap to nearest
+        // multiple of 2*PI to avoid drift.
         box.rotation.set(0, 0, 0);
         box.userData.originalPosition.copy(target);
 
@@ -260,20 +269,32 @@ export function animateReflow(boxes, onComplete) {
     return;
   }
 
-  boxes.forEach((box) => {
-    const startPos = box.position.clone();
-    const target = box.userData.originalPosition.clone();
+  // Capture ALL start positions and targets BEFORE any animation begins,
+  // preventing flicker from mid-flight reads of originalPosition.
+  const snapshots = boxes.map((box) => ({
+    startPos: box.position.clone(),
+    startRotY: box.rotation.y,
+    target: box.userData.originalPosition.clone(),
+  }));
+
+  boxes.forEach((box, i) => {
+    const { startPos, startRotY, target } = snapshots[i];
 
     addAnimation(
-      0.5,
+      0.6,
       (t) => {
         const easedT = easeInOutCubic(t);
         box.position.x = startPos.x + (target.x - startPos.x) * easedT;
         box.position.y = startPos.y + (target.y - startPos.y) * easedT;
+        // Keep Z consistent — interpolate smoothly to target Z
         box.position.z = startPos.z + (target.z - startPos.z) * easedT;
+
+        // Full 360-degree Y spin during the transition
+        box.rotation.y = startRotY + Math.PI * 2 * easeInOutCubic(t);
       },
       () => {
         box.position.copy(target);
+        box.rotation.set(0, 0, 0);
         completedCount++;
         if (completedCount === total && typeof onComplete === 'function') {
           onComplete();

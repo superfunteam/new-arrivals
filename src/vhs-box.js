@@ -40,8 +40,145 @@ export function preloadTextures(urls) {
  * @returns {{ width: number, height: number, depth: number }}
  */
 export function getBoxDimensions() {
-  return { width: 0.55, height: 0.85, depth: 0.18 };
+  return { width: 0.55, height: 0.85, depth: 0.35 };
 }
+
+// ---------------------------------------------------------------------------
+// Procedural back cover textures
+// ---------------------------------------------------------------------------
+
+/** Cache of the 5 generated back cover CanvasTextures. */
+let backCoverTextures = null;
+
+/**
+ * Generate 5 procedural back-cover textures that mimic real VHS box backs.
+ * Each has a dark background, placeholder image blocks, simulated text lines,
+ * and a barcode element — all drawn in low-contrast grays.
+ * @returns {THREE.CanvasTexture[]}
+ */
+function getBackCoverTextures() {
+  if (backCoverTextures) return backCoverTextures;
+
+  const W = 256;
+  const H = 384;
+
+  /** Draw a single design variant and return a CanvasTexture. */
+  function makeVariant(variant) {
+    const canvas = document.createElement('canvas');
+    canvas.width = W;
+    canvas.height = H;
+    const ctx = canvas.getContext('2d');
+
+    // Dark background
+    ctx.fillStyle = '#1a1a1a';
+    ctx.fillRect(0, 0, W, H);
+
+    // Thin border
+    ctx.strokeStyle = '#2a2a2a';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(8, 8, W - 16, H - 16);
+
+    // --- Layout varies by variant ---
+    const imgColor = '#2e2e2e';
+    const textColor = '#333333';
+    const barcodeColor = '#3a3a3a';
+
+    if (variant === 0) {
+      // Two screenshot blocks side by side at top
+      ctx.fillStyle = imgColor;
+      ctx.fillRect(16, 20, 108, 72);
+      ctx.fillRect(132, 20, 108, 72);
+      // Text lines
+      ctx.fillStyle = textColor;
+      for (let i = 0; i < 10; i++) {
+        const w = 180 + ((i * 17) % 40);
+        ctx.fillRect(16, 108 + i * 14, Math.min(w, W - 32), 6);
+      }
+    } else if (variant === 1) {
+      // One large screenshot
+      ctx.fillStyle = imgColor;
+      ctx.fillRect(16, 20, W - 32, 100);
+      // Text lines below
+      ctx.fillStyle = textColor;
+      for (let i = 0; i < 8; i++) {
+        const w = 160 + ((i * 23) % 60);
+        ctx.fillRect(16, 136 + i * 14, Math.min(w, W - 32), 6);
+      }
+      // Small image at bottom-left
+      ctx.fillStyle = imgColor;
+      ctx.fillRect(16, 260, 80, 60);
+    } else if (variant === 2) {
+      // Three small screenshots in a row
+      ctx.fillStyle = imgColor;
+      ctx.fillRect(16, 20, 68, 52);
+      ctx.fillRect(94, 20, 68, 52);
+      ctx.fillRect(172, 20, 68, 52);
+      // Text
+      ctx.fillStyle = textColor;
+      for (let i = 0; i < 12; i++) {
+        const w = 140 + ((i * 19) % 80);
+        ctx.fillRect(16, 88 + i * 13, Math.min(w, W - 32), 5);
+      }
+    } else if (variant === 3) {
+      // Large image left, text right
+      ctx.fillStyle = imgColor;
+      ctx.fillRect(16, 20, 110, 140);
+      ctx.fillStyle = textColor;
+      for (let i = 0; i < 9; i++) {
+        ctx.fillRect(136, 24 + i * 15, 104, 5);
+      }
+      // More text below
+      for (let i = 0; i < 6; i++) {
+        const w = 170 + ((i * 13) % 50);
+        ctx.fillRect(16, 180 + i * 14, Math.min(w, W - 32), 6);
+      }
+    } else {
+      // Two stacked images with text between
+      ctx.fillStyle = imgColor;
+      ctx.fillRect(16, 20, W - 32, 64);
+      ctx.fillStyle = textColor;
+      for (let i = 0; i < 5; i++) {
+        const w = 150 + ((i * 21) % 70);
+        ctx.fillRect(16, 98 + i * 13, Math.min(w, W - 32), 5);
+      }
+      ctx.fillStyle = imgColor;
+      ctx.fillRect(16, 172, W - 32, 64);
+      ctx.fillStyle = textColor;
+      for (let i = 0; i < 4; i++) {
+        const w = 160 + ((i * 29) % 50);
+        ctx.fillRect(16, 250 + i * 13, Math.min(w, W - 32), 5);
+      }
+    }
+
+    // Barcode at bottom-center (common to all variants)
+    ctx.fillStyle = barcodeColor;
+    const barcodeX = W / 2 - 40;
+    const barcodeY = H - 50;
+    for (let b = 0; b < 30; b++) {
+      const barW = (b % 3 === 0) ? 3 : 1;
+      ctx.fillRect(barcodeX + b * 2.7, barcodeY, barW, 28);
+    }
+
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    return tex;
+  }
+
+  backCoverTextures = [0, 1, 2, 3, 4].map(makeVariant);
+  return backCoverTextures;
+}
+
+/**
+ * Tint colors indexed 0-4 — earthy/muted palette used for back covers.
+ * Multiplied with the back cover texture to give each box a unique hue.
+ */
+const BACK_TINT_COLORS = [
+  0x6b4226, // warm brown
+  0x5c1a1a, // dark red
+  0x1a2a4a, // navy
+  0x1a3a1a, // dark green
+  0x3a3a3a, // charcoal
+];
 
 /**
  * Create a VHS clamshell box mesh group for a movie.
@@ -60,6 +197,12 @@ export function getBoxDimensions() {
  */
 export function createVHSBox(movie, pixelatedTexture) {
   const { width, height, depth } = getBoxDimensions();
+
+  // Select back cover variant and tint based on tmdb_id
+  const tmdbId = movie.tmdb_id || 0;
+  const backCovers = getBackCoverTextures();
+  const backCoverTex = backCovers[tmdbId % 5];
+  const backTintColor = BACK_TINT_COLORS[tmdbId % 5];
 
   const spineMaterial = new THREE.MeshStandardMaterial({
     color: 0x1a1a1a,
@@ -93,7 +236,8 @@ export function createVHSBox(movie, pixelatedTexture) {
   });
 
   const backMaterial = new THREE.MeshStandardMaterial({
-    color: 0x1e1e1e,
+    map: backCoverTex,
+    color: backTintColor,
     roughness: 0.9,
     metalness: 0.05,
   });
