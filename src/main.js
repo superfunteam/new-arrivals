@@ -602,6 +602,9 @@ async function startGameSession(puzzle, mode, puzzlesData) {
 
     const currentBox = getCurrentBox();
 
+    // Swap outgoing box back to shelf texture
+    swapToShelfTexture(currentBox);
+
     // Twirl current box back to its shelf position
     const returnPos = currentBox.userData.originalPosition.clone();
     animateReturnToShelf(currentBox, returnPos, () => {
@@ -610,6 +613,9 @@ async function startGameSession(puzzle, mode, puzzlesData) {
 
     // Set new box as current
     setCurrentBox(newBox);
+
+    // Swap incoming box to detail texture for zoom view
+    swapToDetailTexture(newBox);
 
     // Twirl new box up to inspect position (same animateInspect used for initial long-press)
     newBox.scale.setScalar(1);
@@ -644,11 +650,11 @@ async function startGameSession(puzzle, mode, puzzlesData) {
         // Clean up canvas swipe listeners
         if (lightboxSwipeCleanup) lightboxSwipeCleanup();
 
-        // Animate the currently viewed box back to its shelf position
+        // Swap back to shelf texture and animate back
         const currentBox = getCurrentBox();
+        swapToShelfTexture(currentBox);
         const returnPos = currentBox.userData.originalPosition.clone();
         animateReturnToShelf(currentBox, returnPos, () => {
-          // Unlock interaction once the box is back
           if (interactionHandle) {
             interactionHandle.setLocked(false);
           }
@@ -722,6 +728,27 @@ async function startGameSession(puzzle, mode, puzzlesData) {
     });
   }
 
+  // Swap a box's front texture to the detail (chunkier) version for zoom view
+  function swapToDetailTexture(box) {
+    if (box.userData.uncovered) return; // already uncovered, keep full-res
+    const movie = box.userData.movie;
+    loadTexture(`/posters/${movie.tmdb_id}_pixel_detail.png`).then(tex => {
+      box.userData._shelfTexture = box.userData.frontMaterial.map; // save shelf version
+      box.userData.frontMaterial.map = tex;
+      box.userData.frontMaterial.needsUpdate = true;
+    }).catch(() => {});
+  }
+
+  // Swap back to the shelf (less chunky) texture
+  function swapToShelfTexture(box) {
+    if (box.userData.uncovered) return;
+    if (box.userData._shelfTexture) {
+      box.userData.frontMaterial.map = box.userData._shelfTexture;
+      box.userData.frontMaterial.needsUpdate = true;
+      delete box.userData._shelfTexture;
+    }
+  }
+
   function handleLongPress(box) {
     // Ensure audio is initialized (fallback)
     if (!audioInitialized) { audio.init(); audioInitialized = true; }
@@ -739,6 +766,9 @@ async function startGameSession(puzzle, mode, puzzlesData) {
 
     // Reset scale to 1 (entrance animation may have scaled boxes)
     box.scale.setScalar(1);
+
+    // Swap to chunkier detail texture for zoom view
+    swapToDetailTexture(box);
 
     // Animate the box toward the camera with a 3D twirl
     animateInspect(box, camera, () => {
