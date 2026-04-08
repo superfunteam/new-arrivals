@@ -775,13 +775,15 @@ html, body {
   background: rgba(255, 255, 255, 0.1);
   border: 2px solid rgba(255, 255, 255, 0.3);
   color: #fff;
-  font-size: 26px;
-  font-family: var(--font-display);
+  font-size: 24px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  image-rendering: pixelated;
+  line-height: 1;
+  padding: 0;
+  padding-bottom: 2px;
   z-index: 60;
   transition: background 0.2s;
   -webkit-tap-highlight-color: transparent;
@@ -823,8 +825,8 @@ html, body {
 /* Genre sticker (floating circle above the info panel) */
 .lightbox-sticker {
   position: absolute;
-  bottom: calc(45vh + 122px);
-  right: -10px;
+  top: 25%;
+  right: calc(50% - 100px);
   width: 68px;
   height: 68px;
   border-radius: 50%;
@@ -1270,7 +1272,8 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 8px;
+  padding: 0 4px;
+  padding-bottom: 10vh;
   transition: opacity 0.3s;
 }
 
@@ -1278,7 +1281,8 @@ html, body {
 .swipe-hint-right {
   display: flex;
   align-items: center;
-  gap: 0;
+  gap: -4px;
+  margin: 0 -2px;
 }
 
 .swipe-hint-left {
@@ -1286,7 +1290,7 @@ html, body {
 }
 
 .swipe-arrow {
-  font-size: 28px;
+  font-size: 22px;
   color: rgba(255, 255, 255, 0.15);
   animation: arrowPulse 1.5s ease-in-out infinite;
   font-variation-settings: 'FILL' 1;
