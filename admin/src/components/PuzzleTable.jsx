@@ -22,7 +22,7 @@ const STATUS_STYLES = {
 
 const TABS = ['All', 'Featured', 'Scheduled', 'Floating', 'Training'];
 
-export default function PuzzleTable({ puzzles }) {
+export default function PuzzleTable({ puzzles, onNewPuzzle, onEditPuzzle }) {
   const [activeTab, setActiveTab] = useState('All');
 
   const enriched = puzzles.map((p) => ({
@@ -53,7 +53,10 @@ export default function PuzzleTable({ puzzles }) {
             </button>
           ))}
         </div>
-        <button className="px-4 py-2 bg-black text-white text-sm font-medium rounded-md hover:bg-gray-800 transition-colors">
+        <button
+          onClick={() => onNewPuzzle && onNewPuzzle()}
+          className="px-4 py-2 bg-black text-white text-sm font-medium rounded-md hover:bg-gray-800 transition-colors"
+        >
           New Puzzle
         </button>
       </div>
@@ -72,7 +75,7 @@ export default function PuzzleTable({ puzzles }) {
             {filtered.map((puzzle) => (
               <tr
                 key={puzzle.id}
-                onClick={() => console.log('Edit puzzle:', puzzle.id)}
+                onClick={() => onEditPuzzle && onEditPuzzle(puzzle)}
                 className="border-b last:border-b-0 hover:bg-gray-50 cursor-pointer transition-colors"
               >
                 <td className="px-4 py-3 font-medium">{puzzle.title}</td>
@@ -102,7 +105,7 @@ export default function PuzzleTable({ puzzles }) {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      console.log('Edit puzzle:', puzzle.id);
+                      onEditPuzzle && onEditPuzzle(puzzle);
                     }}
                     className="text-gray-400 hover:text-black text-xs font-medium"
                   >

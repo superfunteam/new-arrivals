@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
+import PuzzleEditor from './components/PuzzleEditor';
 
 export default function App() {
   const [authed, setAuthed] = useState(false);
@@ -8,6 +9,8 @@ export default function App() {
   const [puzzles, setPuzzles] = useState([]);
   const [sha, setSha] = useState(null);
   const [loadError, setLoadError] = useState(null);
+  const [view, setView] = useState('dashboard');
+  const [editingPuzzle, setEditingPuzzle] = useState(null);
 
   useEffect(() => {
     fetch('/api/admin-puzzles')
@@ -33,6 +36,27 @@ export default function App() {
       });
   }, []);
 
+  function handleNewPuzzle() {
+    setEditingPuzzle(null);
+    setView('editor');
+  }
+
+  function handleEditPuzzle(puzzle) {
+    setEditingPuzzle(puzzle);
+    setView('editor');
+  }
+
+  function handleEditorCancel() {
+    setEditingPuzzle(null);
+    setView('dashboard');
+  }
+
+  function handleEditorSave(puzzleData) {
+    console.log('Puzzle saved:', puzzleData);
+    setEditingPuzzle(null);
+    setView('dashboard');
+  }
+
   if (checking) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -57,19 +81,38 @@ export default function App() {
   return (
     <div className="min-h-screen bg-white">
       <header className="border-b px-6 py-4 flex items-center justify-between">
-        <h1 className="text-xl font-semibold">New Arrivals — Backroom</h1>
-        <span className="text-sm text-gray-400">Puzzle Admin</span>
+        <h1
+          className="text-xl font-semibold"
+          style={{ cursor: view !== 'dashboard' ? 'pointer' : 'default' }}
+          onClick={() => { if (view !== 'dashboard') handleEditorCancel(); }}
+        >
+          New Arrivals — Backroom
+        </h1>
+        <span className="text-sm text-gray-400">
+          {view === 'editor' ? (editingPuzzle ? 'Edit Puzzle' : 'New Puzzle') : 'Puzzle Admin'}
+        </span>
       </header>
       <main className="p-6">
         {loadError && (
           <p className="text-red-500 text-sm mb-4">{loadError}</p>
         )}
-        <Dashboard
-          puzzles={puzzles}
-          sha={sha}
-          onPuzzlesChange={setPuzzles}
-          onShaChange={setSha}
-        />
+        {view === 'dashboard' && (
+          <Dashboard
+            puzzles={puzzles}
+            sha={sha}
+            onPuzzlesChange={setPuzzles}
+            onShaChange={setSha}
+            onNewPuzzle={handleNewPuzzle}
+            onEditPuzzle={handleEditPuzzle}
+          />
+        )}
+        {view === 'editor' && (
+          <PuzzleEditor
+            puzzle={editingPuzzle}
+            onSave={handleEditorSave}
+            onCancel={handleEditorCancel}
+          />
+        )}
       </main>
     </div>
   );

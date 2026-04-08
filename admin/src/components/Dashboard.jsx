@@ -17,7 +17,7 @@ function StatCard({ label, value, color }) {
   );
 }
 
-export default function Dashboard({ puzzles, sha, onPuzzlesChange, onShaChange }) {
+export default function Dashboard({ puzzles, sha, onPuzzlesChange, onShaChange, onNewPuzzle, onEditPuzzle }) {
   const statuses = puzzles.map((p) => getPuzzleStatus(p.id));
   const total = puzzles.length;
   const floating = statuses.filter((s) => s === 'Floating').length;
@@ -73,7 +73,7 @@ export default function Dashboard({ puzzles, sha, onPuzzlesChange, onShaChange }
         <StatCard label="Scheduled" value={scheduled} color="blue" />
         <StatCard label="Featured" value={featured} color="green" />
       </div>
-      <PuzzleTable puzzles={puzzles} />
+      <PuzzleTable puzzles={puzzles} onNewPuzzle={onNewPuzzle} onEditPuzzle={onEditPuzzle} />
     </div>
   );
 }
