@@ -3,10 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>New Arrivals</title>
+
+  <title>New Arrivals — Daily VHS Sorting Puzzle</title>
+  <meta name="description" content="Sort 16 VHS tapes into 4 mystery categories. A daily puzzle game set in a retro video store. Think Connections meets Blockbuster.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="New Arrivals — Daily VHS Sorting Puzzle">
+  <meta property="og:description" content="Sort 16 VHS tapes into 4 mystery categories. A daily puzzle set in a retro video store.">
+  <meta property="og:image" content="https://game.vhsgarage.com/unfurl.webp">
+  <meta property="og:url" content="https://game.vhsgarage.com">
+  <meta property="og:site_name" content="New Arrivals">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="New Arrivals — Daily VHS Sorting Puzzle">
+  <meta name="twitter:description" content="Sort 16 VHS tapes into 4 mystery categories. A daily puzzle set in a retro video store.">
+  <meta name="twitter:image" content="https://game.vhsgarage.com/unfurl.webp">
+
+  <!-- Theme -->
+  <meta name="theme-color" content="#FF6B9D">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="New Arrivals">
+
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="/styles/main.css">
 </head>
 <body>
@@ -17,5 +49,10 @@
     <div id="overlay"></div>
   </div>
   <script type="module" src="/src/main.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
+  </script>
 </body>
 </html>
