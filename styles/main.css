@@ -854,11 +854,14 @@ html, body {
 /* Hide HUD corners when lightbox is open */
 .hud-inspect-mode .hud-top,
 .hud-inspect-mode .hud-shelve-row,
-.hud-inspect-mode .hud-bottom,
-.hud-inspect-mode .solved-row-label {
+.hud-inspect-mode .hud-bottom {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s;
+}
+
+.hud-inspect-mode .solved-row-label {
+  display: none !important;
 }
 
 /* === Lightbox Hint Rows === */
@@ -1571,7 +1574,7 @@ html, body {
 #interrupt-container {
   position: fixed;
   inset: 0;
-  z-index: 200;
+  z-index: 999999;
   pointer-events: none;
 }
 
@@ -1588,7 +1591,7 @@ html, body {
   border-top: 3px solid var(--neon-pink);
   padding: 16px;
   padding-bottom: max(16px, env(safe-area-inset-bottom));
-  z-index: 200;
+  z-index: 999999;
   animation: interruptSlideUp 0.3s ease-out;
 }
 
