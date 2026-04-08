@@ -60,6 +60,7 @@ import {
   updateWage,
   updateTimer,
   setShelveButton,
+  showSplashScreen,
   showOnboarding,
   showWelcomeScreen,
   showLightbox,
@@ -200,7 +201,22 @@ async function main() {
   const pastPuzzles = getPastPuzzles(puzzlesData);
   const completedDailyIds = getCompletedDailyIds();
 
-  // ── 6. Show onboarding / welcome ────────────────────────────────────────────
+  // ── 6. Collect poster IDs for splash screen marquee ─────────────────────────
+  const allPosterIds = [];
+  const seenIds = new Set();
+  for (const p of allPuzzles) {
+    for (const cat of p.categories) {
+      for (const m of cat.movies) {
+        if (!seenIds.has(m.tmdb_id)) {
+          seenIds.add(m.tmdb_id);
+          allPosterIds.push(m.tmdb_id);
+        }
+      }
+    }
+  }
+  const splashPosterIds = allPosterIds.slice(0, 30);
+
+  // ── 7. Show splash → onboarding → welcome ─────────────────────────────────
   function showWelcome() {
     showWelcomeScreen({
       dailyPuzzle,
@@ -223,15 +239,29 @@ async function main() {
     });
   }
 
-  if (!isSkipIntro()) {
-    showOnboarding((skipChecked) => {
+  function proceedAfterSplash(startMuted) {
+    if (startMuted) {
+      audio.setMuted(true);
+      radioEl.muted = true;
+    } else {
       ensureRadioStarted();
-      setSkipIntro(skipChecked);
+    }
+
+    if (!isSkipIntro()) {
+      showOnboarding((skipChecked) => {
+        setSkipIntro(skipChecked);
+        showWelcome();
+      });
+    } else {
       showWelcome();
-    });
-  } else {
-    showWelcome();
+    }
   }
+
+  showSplashScreen({
+    posterIds: splashPosterIds,
+    onStart: () => proceedAfterSplash(false),
+    onStartMuted: () => proceedAfterSplash(true),
+  });
 }
 
 // ---------------------------------------------------------------------------

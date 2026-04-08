@@ -453,7 +453,6 @@ export function animateInspect(box, camera, onComplete) {
   // Slightly above center so tape sits above the bottom info panel
   const targetPos = new THREE.Vector3(0, camera.position.y + 0.25, camera.position.z - 2);
 
-  // TEST: end at PI (back face visible) to verify back cover textures
   addAnimation(
     0.8,
     (t) => {
@@ -463,8 +462,8 @@ export function animateInspect(box, camera, onComplete) {
       box.position.y = startPos.y + (targetPos.y - startPos.y) * easedT;
       box.position.z = startPos.z + (targetPos.z - startPos.z) * easedT;
 
-      // 1.5 turns: lands showing back face (PI)
-      box.rotation.y = startRotY + Math.PI * 3 * easedT;
+      // Full 360 twirl: lands showing front face
+      box.rotation.y = startRotY + Math.PI * 2 * easedT;
 
       // Slight X tilt: lean back ~15 degrees then return (peaks at t=0.5)
       const tiltAmount = 15 * (Math.PI / 180);
@@ -472,7 +471,7 @@ export function animateInspect(box, camera, onComplete) {
     },
     () => {
       box.position.copy(targetPos);
-      box.rotation.set(0, Math.PI, 0); // back face toward camera
+      box.rotation.set(0, 0, 0); // front face toward camera
       if (typeof onComplete === 'function') onComplete();
     }
   );

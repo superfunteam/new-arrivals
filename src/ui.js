@@ -227,6 +227,66 @@ export function onHelpClick(callback) {
   if (_helpBtn) _helpBtn.addEventListener('click', callback);
 }
 
+// ─── Splash Screen ──────────────────────────────────────────────────────────
+
+/**
+ * Shows the splash/welcome screen with marquee VHS posters and the logo.
+ * This is the very first screen users see before onboarding.
+ * @param {Object} options
+ * @param {number[]} options.posterIds    Array of tmdb_ids for marquee images
+ * @param {Function} options.onStart      Called when "START YOUR SHIFT" is clicked
+ * @param {Function} options.onStartMuted Called when "start on mute" is clicked
+ */
+export function showSplashScreen(options = {}) {
+  const { posterIds = [], onStart, onStartMuted } = options;
+
+  const overlay = document.getElementById('overlay');
+  if (!overlay) return;
+
+  // Build poster image HTML — duplicate the set for seamless looping
+  const posterHtml = posterIds
+    .map(
+      (id) =>
+        `<img class="marquee-poster" src="/posters/${id}_pixel.jpg" alt="" />`
+    )
+    .join('');
+  const doubledPosterHtml = posterHtml + posterHtml;
+
+  // Create 5 rows with alternating directions and varied speeds
+  const speeds = [28, 32, 26, 35, 30];
+  const rowsHtml = speeds
+    .map((speed, i) => {
+      const dirClass = i % 2 === 1 ? ' reverse' : '';
+      return `<div class="marquee-row${dirClass}" style="animation-duration:${speed}s">${doubledPosterHtml}</div>`;
+    })
+    .join('');
+
+  overlay.innerHTML = `
+    <div class="splash-screen">
+      <div class="splash-marquees">${rowsHtml}</div>
+      <div class="splash-content">
+        <img class="splash-logo" src="/logo-overlay.png" alt="New Arrivals" />
+        <button class="splash-btn" id="splash-start">START YOUR SHIFT</button>
+        <button class="splash-mute-link" id="splash-mute">start on mute</button>
+      </div>
+    </div>
+  `;
+
+  overlay.classList.add('active');
+
+  document.getElementById('splash-start').addEventListener('click', () => {
+    overlay.innerHTML = '';
+    overlay.classList.remove('active');
+    if (typeof onStart === 'function') onStart();
+  });
+
+  document.getElementById('splash-mute').addEventListener('click', () => {
+    overlay.innerHTML = '';
+    overlay.classList.remove('active');
+    if (typeof onStartMuted === 'function') onStartMuted();
+  });
+}
+
 // ─── Onboarding Modal ────────────────────────────────────────────────────────
 
 /**
