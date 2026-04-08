@@ -450,22 +450,27 @@ async function startGameSession(puzzle, mode, puzzlesData) {
     }
     audio.play('tapInspect');
 
-    const movie = box.userData.movie;
-    const originalPos = box.userData.originalPosition.clone();
-
     // Lock interaction during the inspect animation
     if (interactionHandle) {
       interactionHandle.setLocked(true);
     }
 
+    // Track the currently inspected box so swipe navigation can update it
+    let currentBox = box;
+
     // Animate the box toward the camera with a 3D twirl
     animateInspect(box, camera, () => {
       // Animation complete — now show the lightbox
-      openLightboxForMovie();
+      openLightboxForCurrentBox();
     });
 
-    function openLightboxForMovie() {
+    function openLightboxForCurrentBox() {
+      const movie = currentBox.userData.movie;
       const revealedForMovie = game.revealedHints[movie.tmdb_id] || [];
+
+      // Build the list of unsolved tapes and find the current index
+      const allTapes = unsolvedBoxes.map((b) => b.userData.movie);
+      const currentIndex = allTapes.findIndex((m) => m.tmdb_id === movie.tmdb_id);
 
       showLightbox(movie, {
         uncovered: game.uncoveredIds.includes(movie.tmdb_id),
@@ -477,12 +482,32 @@ async function startGameSession(puzzle, mode, puzzlesData) {
         year: movie.year || 0,
         summary: movie.summary || '',
         revealedFields: revealedForMovie,
+        allTapes,
+        currentIndex: currentIndex >= 0 ? currentIndex : 0,
+        onNavigate: (newIndex) => {
+          // Return current 3D box to its shelf position instantly (no animation)
+          currentBox.position.copy(currentBox.userData.originalPosition);
+
+          // Switch to the new tape's box
+          const newMovie = allTapes[newIndex];
+          const newBox = unsolvedBoxes.find((b) => b.userData.movie.tmdb_id === newMovie.tmdb_id);
+          if (!newBox) return;
+
+          currentBox = newBox;
+
+          // Move new box to inspect position instantly (just hide it behind lightbox)
+          animateInspect(newBox, camera, () => {});
+
+          // Rebuild lightbox for the new tape
+          openLightboxForCurrentBox();
+        },
         onReturn: () => {
           audio.play('returnToShelf');
           hideLightbox();
 
-          // Animate the box back to its shelf position
-          animateReturnToShelf(box, originalPos, () => {
+          // Animate the currently viewed box back to its shelf position
+          const returnPos = currentBox.userData.originalPosition.clone();
+          animateReturnToShelf(currentBox, returnPos, () => {
             // Unlock interaction once the box is back
             if (interactionHandle) {
               interactionHandle.setLocked(false);
@@ -521,6 +546,7 @@ async function startGameSession(puzzle, mode, puzzlesData) {
           }
         },
         onRevealHint: (fieldName) => {
+          const movie = currentBox.userData.movie;
           const result = revealHint(game, movie.tmdb_id, fieldName);
           if (!result.success) return;
 

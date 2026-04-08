@@ -522,6 +522,9 @@ export function showLightbox(movie, options = {}) {
     summary = '',
     revealedFields = [],
     onRevealHint,
+    allTapes = [],
+    currentIndex = 0,
+    onNavigate,
   } = options;
   const overlay = document.getElementById('overlay');
   if (!overlay) return;
@@ -590,23 +593,26 @@ export function showLightbox(movie, options = {}) {
 
   overlay.innerHTML = `
     <div class="lightbox" id="lightbox-inner">
-      <div class="lightbox-poster-wrap">
-        <img
-          class="${posterClass}"
-          id="lightbox-poster"
-          src="${posterSrc}"
-          alt="${movie.title}"
-        />
-        ${genreStickerHtml}
-      </div>
-      <div class="lightbox-title">${movie.title}</div>
-      ${detailsHtml}
-      ${summaryHtml}
-      <div class="lightbox-buttons">
-        <button class="lightbox-btn return" id="lightbox-return">Return to Shelf</button>
-        <button class="lightbox-btn uncover" id="lightbox-uncover"${isUncoverDisabled ? ' disabled' : ''}>
-          Uncover — $1
-        </button>
+      <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+      <div class="lightbox-content" id="lightbox-content">
+        <div class="lightbox-poster-wrap">
+          <img
+            class="${posterClass}"
+            id="lightbox-poster"
+            src="${posterSrc}"
+            alt="${movie.title}"
+          />
+          ${genreStickerHtml}
+        </div>
+        <div class="lightbox-title">${movie.title}</div>
+        ${detailsHtml}
+        ${summaryHtml}
+        <div class="lightbox-buttons">
+          <button class="lightbox-btn return" id="lightbox-return">Return to Shelf</button>
+          <button class="lightbox-btn uncover" id="lightbox-uncover"${isUncoverDisabled ? ' disabled' : ''}>
+            Uncover — $1
+          </button>
+        </div>
       </div>
     </div>
   `;
@@ -617,6 +623,11 @@ export function showLightbox(movie, options = {}) {
   requestAnimationFrame(() => {
     const inner = document.getElementById('lightbox-inner');
     if (inner) inner.classList.add('visible');
+  });
+
+  // Close button (same action as Return to Shelf)
+  document.getElementById('lightbox-close').addEventListener('click', () => {
+    if (typeof onReturn === 'function') onReturn();
   });
 
   document.getElementById('lightbox-return').addEventListener('click', () => {
@@ -647,6 +658,59 @@ export function showLightbox(movie, options = {}) {
       if (typeof onRevealHint === 'function') onRevealHint(fieldName);
     });
   });
+
+  // Swipe navigation between unsolved tapes
+  if (allTapes.length > 1 && typeof onNavigate === 'function') {
+    const lightboxEl = document.getElementById('lightbox-inner');
+    const contentEl = document.getElementById('lightbox-content');
+    if (lightboxEl && contentEl) {
+      let touchStartX = 0;
+      let touchDeltaX = 0;
+      let isSwiping = false;
+
+      lightboxEl.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+          touchStartX = e.touches[0].clientX;
+          touchDeltaX = 0;
+          isSwiping = true;
+          // Remove any leftover transition so drag feels immediate
+          contentEl.style.transition = 'none';
+        }
+      });
+
+      lightboxEl.addEventListener('touchmove', (e) => {
+        if (!isSwiping) return;
+        touchDeltaX = e.touches[0].clientX - touchStartX;
+        contentEl.style.transform = `translateX(${touchDeltaX}px)`;
+        contentEl.style.opacity = Math.max(0.3, 1 - Math.abs(touchDeltaX) / 300);
+      });
+
+      lightboxEl.addEventListener('touchend', () => {
+        if (!isSwiping) return;
+        isSwiping = false;
+
+        const threshold = 80;
+        if (Math.abs(touchDeltaX) > threshold) {
+          const direction = touchDeltaX > 0 ? -1 : 1; // swipe left = next, swipe right = prev
+          const newIndex = currentIndex + direction;
+          if (newIndex >= 0 && newIndex < allTapes.length) {
+            // Slide out animation
+            contentEl.style.transition = 'transform 0.25s ease-out, opacity 0.25s';
+            contentEl.style.transform = `translateX(${touchDeltaX > 0 ? '100%' : '-100%'})`;
+            contentEl.style.opacity = '0';
+            setTimeout(() => {
+              onNavigate(newIndex);
+            }, 250);
+            return;
+          }
+        }
+        // Snap back
+        contentEl.style.transition = 'transform 0.2s ease-out, opacity 0.2s';
+        contentEl.style.transform = 'translateX(0)';
+        contentEl.style.opacity = '1';
+      });
+    }
+  }
 }
 
 /**
