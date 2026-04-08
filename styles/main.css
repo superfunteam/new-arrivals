@@ -1672,7 +1672,7 @@ html, body {
   border-radius: 6px;
   padding: 6px 10px;
   white-space: nowrap;
-  min-width: 80px;
+  width: 110px;
   justify-content: center;
 }
 
@@ -1686,11 +1686,14 @@ html, body {
   color: #fff;
   background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 6px 16px;
+  padding: 6px 10px;
   border-radius: 6px;
   text-transform: uppercase;
   letter-spacing: 1px;
   white-space: nowrap;
+  width: 110px;
+  text-align: center;
+  display: inline-block;
 }
 
 .daily-play-btn {
