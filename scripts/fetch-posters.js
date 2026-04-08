@@ -94,8 +94,18 @@ async function downloadPoster(posterPath, destPath) {
 }
 
 async function generatePixelated(sourcePath, destPath) {
+  // Shelf version: 6x9 mosaic — very chunky, hard to identify
   await sharp(sourcePath)
-    .resize(12, 18, { kernel: sharp.kernel.nearest })
+    .resize(6, 9, { kernel: sharp.kernel.nearest })
+    .resize(320, 480, { kernel: sharp.kernel.nearest })
+    .jpeg({ quality: 80 })
+    .toFile(destPath);
+}
+
+async function generatePixelatedDetail(sourcePath, destPath) {
+  // Detail/lightbox version: 4x6 mosaic — even chunkier, makes uncover worthwhile
+  await sharp(sourcePath)
+    .resize(4, 6, { kernel: sharp.kernel.nearest })
     .resize(320, 480, { kernel: sharp.kernel.nearest })
     .jpeg({ quality: 80 })
     .toFile(destPath);
@@ -178,16 +188,18 @@ async function processMovie(movie) {
       return { ...movie, tmdb_id, summary, genres, director, stars };
     }
 
-    // Generate pixelated version
+    // Generate pixelated versions (shelf + detail)
+    const pixelDetailFile = path.join(POSTERS_DIR, `${tmdb_id}_pixel_detail.jpg`);
     try {
-      console.log(`  Generating pixelated version for "${title}"...`);
+      console.log(`  Generating pixelated versions for "${title}"...`);
       await generatePixelated(posterFile, pixelFile);
+      await generatePixelatedDetail(posterFile, pixelDetailFile);
     } catch (err) {
       console.log(`  [error] Failed to generate pixelated poster for "${title}": ${err.message}`);
       return { ...movie, tmdb_id, summary, genres, director, stars };
     }
 
-    console.log(`  Done: ${tmdb_id}.jpg + ${tmdb_id}_pixel.jpg`);
+    console.log(`  Done: ${tmdb_id}.jpg + pixel + pixel_detail`);
   } else {
     console.log(`  [skip] Poster already exists for "${title}", fetched metadata only`);
   }
