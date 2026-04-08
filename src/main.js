@@ -365,11 +365,18 @@ async function main() {
     }
   }
 
-  showSplashScreen({
-    posterIds: splashPosterIds,
-    onStart: () => proceedAfterSplash(false),
-    onStartMuted: () => proceedAfterSplash(true),
-  });
+  // Check if returning from a finished game — skip straight to menu
+  if (sessionStorage.getItem('skipToMenu')) {
+    sessionStorage.removeItem('skipToMenu');
+    ensureRadioStarted();
+    showWelcome();
+  } else {
+    showSplashScreen({
+      posterIds: splashPosterIds,
+      onStart: () => proceedAfterSplash(false),
+      onStartMuted: () => proceedAfterSplash(true),
+    });
+  }
 }
 
 // ---------------------------------------------------------------------------

@@ -1083,7 +1083,7 @@ export function showEndScreen(result = {}) {
   if (mode === 'practice') {
     bottomHtml = `
       <div class="end-buttons">
-        <button class="return-store-btn" id="end-back-menu">BACK TO MENU</button>
+        <button class="return-store-btn" id="end-back-menu" style="flex:1.4;white-space:nowrap">Back to Store</button>
         <button class="share-btn" id="end-play-again">PLAY AGAIN</button>
       </div>
     `;
@@ -1095,7 +1095,7 @@ export function showEndScreen(result = {}) {
     const countdownText = `Next shift in ${hoursLeft}h ${minsLeft}m`;
     bottomHtml = `
       <div class="end-buttons">
-        <button class="return-store-btn" id="end-return-btn">Return to Store</button>
+        <button class="return-store-btn" id="end-return-btn" style="flex:1.4;white-space:nowrap">Back to Store</button>
         <button class="share-btn" id="end-share-btn">Share</button>
       </div>
       <div class="countdown" id="end-countdown">${countdownText}</div>
@@ -1105,7 +1105,7 @@ export function showEndScreen(result = {}) {
   // Star rating based on final wage
   const stars = finalWage >= 25 ? 3 : finalWage > 15 ? 2 : 1;
   const starsHtml = Array.from({ length: 3 }, (_, i) =>
-    `<span class="end-star ${i < stars ? 'earned' : 'empty'}" style="animation-delay:${i * 0.2}s">★</span>`
+    `<span class="end-star ${i < stars ? 'earned' : 'empty'}" style="animation-delay:${0.3 + i * 0.35}s">★</span>`
   ).join('');
 
   overlay.innerHTML = `
@@ -1125,7 +1125,8 @@ export function showEndScreen(result = {}) {
     const backBtn = document.getElementById('end-back-menu');
     if (backBtn) {
       backBtn.addEventListener('click', () => {
-        if (typeof onBackToMenu === 'function') onBackToMenu();
+        sessionStorage.setItem('skipToMenu', 'true');
+        location.reload();
       });
     }
     const replayBtn = document.getElementById('end-play-again');
@@ -1145,6 +1146,7 @@ export function showEndScreen(result = {}) {
     const returnBtn = document.getElementById('end-return-btn');
     if (returnBtn) {
       returnBtn.addEventListener('click', () => {
+        sessionStorage.setItem('skipToMenu', 'true');
         location.reload();
       });
     }

@@ -1066,7 +1066,7 @@ html, body {
   padding: 14px 20px;
   margin-bottom: 14px;
   width: 100%;
-  max-width: 320px;
+  max-width: 100%;
   position: relative;
   border-left: 1px solid rgba(255, 255, 255, 0.1);
   border-right: 1px solid rgba(255, 255, 255, 0.1);
@@ -1163,7 +1163,7 @@ html, body {
   display: flex;
   gap: 10px;
   width: 100%;
-  max-width: 320px;
+  max-width: 100%;
   margin-bottom: 14px;
 }
 
@@ -1215,7 +1215,7 @@ html, body {
 
 .category-recap {
   width: 100%;
-  max-width: 320px;
+  max-width: 100%;
   margin-bottom: 14px;
 }
 
