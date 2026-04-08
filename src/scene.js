@@ -67,16 +67,27 @@ export function createScene(canvas) {
   const shelfGroup = buildShelf();
   scene.add(shelfGroup);
 
-  // Back wall
-  const wallGeo = new THREE.PlaneGeometry(20, 15);
+  // Neighbor shelves (left and right) with dark dummy cases
+  const leftShelf = buildShelf();
+  leftShelf.position.set(-5.0, 0, -1.5);
+  scene.add(leftShelf);
+  addDummyCases(leftShelf, scene);
+
+  const rightShelf = buildShelf();
+  rightShelf.position.set(5.0, 0, -1.5);
+  scene.add(rightShelf);
+  addDummyCases(rightShelf, scene);
+
+  // Back wall (wider to cover neighbor shelves)
+  const wallGeo = new THREE.PlaneGeometry(30, 15);
   const wallMat = new THREE.MeshStandardMaterial({ color: 0x12121f, roughness: 0.9 });
   const wall = new THREE.Mesh(wallGeo, wallMat);
-  wall.position.set(0, 0, -1.5);
+  wall.position.set(0, 0, -2.5);
   wall.receiveShadow = true;
   scene.add(wall);
 
-  // Floor
-  const floorGeo = new THREE.PlaneGeometry(20, 10);
+  // Floor (wider)
+  const floorGeo = new THREE.PlaneGeometry(30, 10);
   const floorMat = new THREE.MeshStandardMaterial({ color: 0x0a0a15, roughness: 1 });
   const floor = new THREE.Mesh(floorGeo, floorMat);
   floor.rotation.x = -Math.PI / 2;
@@ -142,6 +153,76 @@ function buildShelf() {
   group.userData.rowSpacing = rowSpacing;
 
   return group;
+}
+
+// Add dark/empty dummy VHS cases to a neighbor shelf
+function addDummyCases(shelfGroup, scene) {
+  const caseMat = new THREE.MeshStandardMaterial({
+    color: 0x1a1a1a,
+    roughness: 0.9,
+  });
+  const caseGeo = new THREE.BoxGeometry(0.5, 0.8, 0.2);
+  const rowPositions = shelfGroup.userData.rowPositions;
+  const cols = 4;
+  const gap = 0.12;
+  const totalW = cols * 0.5 + (cols - 1) * gap;
+  const startX = -totalW / 2 + 0.25;
+
+  for (let row = 0; row < rowPositions.length; row++) {
+    for (let col = 0; col < cols; col++) {
+      // Skip some randomly for variety
+      if (Math.random() < 0.2) continue;
+      const caseMesh = new THREE.Mesh(caseGeo, caseMat.clone());
+      // Slight color variation
+      caseMesh.material.color.setHex(0x1a1a1a + Math.floor(Math.random() * 0x101010));
+      const x = shelfGroup.position.x + startX + col * (0.5 + gap);
+      const y = rowPositions[row];
+      const z = shelfGroup.position.z + 0.15;
+      caseMesh.position.set(x, y, z);
+      caseMesh.castShadow = true;
+      scene.add(caseMesh);
+    }
+  }
+}
+
+/**
+ * Animate camera from a wide establishing shot to the close-up game position.
+ * Call this before the tape entrance animation.
+ * @param {THREE.PerspectiveCamera} camera
+ * @param {Function} onComplete
+ */
+export function animateShelfZoomIn(camera, onComplete) {
+  // Start pulled back and slightly higher to see neighbor shelves
+  const startZ = camera.position.z * 2.2;
+  const startY = camera.position.y + 1.5;
+  const targetZ = camera.position.z;
+  const targetY = camera.position.y;
+
+  camera.position.z = startZ;
+  camera.position.y = startY;
+
+  const duration = 2000; // 2 seconds
+  const startTime = performance.now();
+
+  function step(now) {
+    const elapsed = now - startTime;
+    const t = Math.min(elapsed / duration, 1);
+    // Smooth ease-out
+    const e = 1 - Math.pow(1 - t, 3);
+
+    camera.position.z = startZ + (targetZ - startZ) * e;
+    camera.position.y = startY + (targetY - startY) * e;
+
+    if (t < 1) {
+      requestAnimationFrame(step);
+    } else {
+      camera.position.z = targetZ;
+      camera.position.y = targetY;
+      if (onComplete) onComplete();
+    }
+  }
+
+  requestAnimationFrame(step);
 }
 
 export function resizeScene(camera, renderer) {

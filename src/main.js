@@ -3,7 +3,7 @@
 
 import * as THREE from 'three';
 
-import { createScene, resizeScene, getRowPositions } from './scene.js';
+import { createScene, resizeScene, getRowPositions, animateShelfZoomIn } from './scene.js';
 import {
   loadTexture,
   preloadTextures,
@@ -632,17 +632,19 @@ async function startGameSession(puzzle, mode, puzzlesData) {
       // Start interrupt system for restored games
       startInterruptSystem();
     } else {
-      // Fresh game — play entrance animation, then enable interaction
-      animateEntrance(unsolvedBoxes, () => {
-        // Start timer when tapes land
-        startTimer(game);
-        timerStarted = true;
-        timerInterval = setInterval(() => {
-          updateTimer(getElapsedTime(game.startTime));
-        }, 1000);
-        setupGameInteraction();
-        // Start interrupt system after entrance animation completes
-        startInterruptSystem();
+      // Fresh game — zoom into shelf, then play entrance animation
+      animateShelfZoomIn(camera, () => {
+        animateEntrance(unsolvedBoxes, () => {
+          // Start timer when tapes land
+          startTimer(game);
+          timerStarted = true;
+          timerInterval = setInterval(() => {
+            updateTimer(getElapsedTime(game.startTime));
+          }, 1000);
+          setupGameInteraction();
+          // Start interrupt system after entrance animation completes
+          startInterruptSystem();
+        });
       });
     }
   }
