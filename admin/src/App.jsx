@@ -55,6 +55,16 @@ export default function App() {
     console.log('Puzzle saved:', puzzleData);
     setEditingPuzzle(null);
     setView('dashboard');
+    // Re-fetch puzzles from GitHub to reflect the committed changes
+    fetch('/api/admin-puzzles')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data) {
+          setPuzzles(data.puzzles || []);
+          setSha(data.sha || null);
+        }
+      })
+      .catch(() => setLoadError('Failed to refresh puzzles'));
   }
 
   if (checking) {
