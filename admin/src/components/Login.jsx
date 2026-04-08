@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Loader2, Lock } from 'lucide-react';
+import { Loader2, Lock, Puzzle } from 'lucide-react';
 
 export default function Login({ onLogin }) {
   const [password, setPassword] = useState('');
@@ -33,31 +33,36 @@ export default function Login({ onLogin }) {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-gray-100">
-      <Card className="w-full max-w-sm mx-4 shadow-lg border-border/60">
-        <CardHeader className="text-center pb-2">
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary/5">
-            <Lock className="h-5 w-5 text-primary" />
+    <div className="flex min-h-svh items-center justify-center bg-background p-4">
+      <Card className="w-full max-w-sm">
+        <CardHeader className="text-center">
+          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+            <Puzzle className="size-6" />
           </div>
-          <CardTitle className="text-2xl">New Arrivals</CardTitle>
-          <CardDescription className="text-muted-foreground">
-            Backroom puzzle admin
+          <CardTitle className="text-xl">New Arrivals</CardTitle>
+          <CardDescription>
+            Enter your password to access the backroom
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password"
-                autoFocus
-                className="h-10"
-              />
+              <div className="relative">
+                <Lock className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                  autoFocus
+                  className="h-10 pl-9"
+                />
+              </div>
             </div>
             {error && (
-              <p className="text-sm text-destructive font-medium">{error}</p>
+              <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2">
+                <p className="text-sm text-destructive font-medium">{error}</p>
+              </div>
             )}
             <Button
               type="submit"
@@ -66,7 +71,7 @@ export default function Login({ onLogin }) {
             >
               {loading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="mr-2 size-4 animate-spin" />
                   Checking...
                 </>
               ) : (

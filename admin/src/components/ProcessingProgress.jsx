@@ -6,9 +6,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
+  DialogFooter,
 } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 import { Check, X, Loader2, Circle } from 'lucide-react';
 
 const STEPS = [
@@ -20,29 +23,28 @@ const STEPS = [
 function StepIcon({ status }) {
   if (status === 'complete') {
     return (
-      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 flex-shrink-0">
-        <Check className="h-3.5 w-3.5 text-white" />
+      <div className="flex size-6 items-center justify-center rounded-full bg-emerald-500 flex-shrink-0">
+        <Check className="size-3.5 text-white" />
       </div>
     );
   }
   if (status === 'active') {
     return (
-      <div className="flex h-6 w-6 items-center justify-center flex-shrink-0">
-        <Loader2 className="h-5 w-5 text-primary animate-spin" />
+      <div className="flex size-6 items-center justify-center flex-shrink-0">
+        <Loader2 className="size-5 text-primary animate-spin" />
       </div>
     );
   }
   if (status === 'error') {
     return (
-      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-destructive flex-shrink-0">
-        <X className="h-3.5 w-3.5 text-white" />
+      <div className="flex size-6 items-center justify-center rounded-full bg-destructive flex-shrink-0">
+        <X className="size-3.5 text-white" />
       </div>
     );
   }
-  // pending
   return (
-    <div className="flex h-6 w-6 items-center justify-center flex-shrink-0">
-      <Circle className="h-5 w-5 text-muted-foreground/30" />
+    <div className="flex size-6 items-center justify-center flex-shrink-0">
+      <Circle className="size-5 text-muted-foreground/30" />
     </div>
   );
 }
@@ -107,7 +109,10 @@ export default function ProcessingProgress({ puzzle, onComplete, onClose }) {
 
   return (
     <Dialog open onOpenChange={(open) => { if (!open && !isRunning) onClose(); }}>
-      <DialogContent className="max-w-md" onPointerDownOutside={(e) => { if (isRunning) e.preventDefault(); }}>
+      <DialogContent
+        className="sm:max-w-md"
+        onPointerDownOutside={(e) => { if (isRunning) e.preventDefault(); }}
+      >
         <DialogHeader>
           <DialogTitle>
             {isDone ? 'Published!' : hasError ? 'Processing Failed' : 'Processing & Publishing'}
@@ -125,7 +130,7 @@ export default function ProcessingProgress({ puzzle, onComplete, onClose }) {
         <Progress value={progressValue} className="mb-2" />
 
         {/* Step list */}
-        <div className="flex flex-col gap-4 py-2">
+        <div className="flex flex-col gap-3 py-2">
           {STEPS.map((step, i) => (
             <div key={step.key} className="flex items-center gap-3">
               <StepIcon status={stepStates[i]} />
@@ -142,6 +147,9 @@ export default function ProcessingProgress({ puzzle, onComplete, onClose }) {
               >
                 {step.label}
               </span>
+              {stepStates[i] === 'complete' && (
+                <Badge variant="secondary" className="ml-auto text-[10px]">Done</Badge>
+              )}
             </div>
           ))}
         </div>
@@ -157,7 +165,7 @@ export default function ProcessingProgress({ puzzle, onComplete, onClose }) {
         {result && result.ok && (
           <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3">
             <p className="text-sm text-emerald-800">
-              Commit: <code className="font-mono text-xs bg-emerald-100 px-1 py-0.5 rounded">
+              Commit: <code className="rounded bg-emerald-100 px-1 py-0.5 font-mono text-xs">
                 {result.commitSha?.slice(0, 7)}
               </code>
               {' '}&mdash; {result.filesCommitted} files committed
@@ -165,8 +173,7 @@ export default function ProcessingProgress({ puzzle, onComplete, onClose }) {
           </div>
         )}
 
-        {/* Actions */}
-        <div className="flex justify-end pt-2">
+        <DialogFooter>
           <Button
             onClick={onClose}
             disabled={isRunning}
@@ -174,7 +181,7 @@ export default function ProcessingProgress({ puzzle, onComplete, onClose }) {
           >
             {isDone ? 'Done' : hasError ? 'Close' : 'Processing...'}
           </Button>
-        </div>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

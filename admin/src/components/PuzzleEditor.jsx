@@ -1,18 +1,26 @@
 import React, { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select';
+import { ArrowLeft, Loader2, Save } from 'lucide-react';
 import MovieSearch from './MovieSearch';
 import { FullPuzzleSparkle, CategorySparkle } from './AiGeneratePanel';
 import ProcessingProgress from './ProcessingProgress';
 
 const DIFFICULTIES = [
-  { value: 1, label: 'Easy', tw: 'border-l-emerald-500', dot: 'bg-emerald-500' },
-  { value: 2, label: 'Medium', tw: 'border-l-amber-500', dot: 'bg-amber-500' },
-  { value: 3, label: 'Hard', tw: 'border-l-blue-500', dot: 'bg-blue-500' },
-  { value: 4, label: 'Devious', tw: 'border-l-purple-500', dot: 'bg-purple-500' },
+  { value: 1, label: 'Easy', tw: 'border-l-emerald-500', dot: 'bg-emerald-500', text: 'text-emerald-700' },
+  { value: 2, label: 'Medium', tw: 'border-l-amber-500', dot: 'bg-amber-500', text: 'text-amber-700' },
+  { value: 3, label: 'Hard', tw: 'border-l-blue-500', dot: 'bg-blue-500', text: 'text-blue-700' },
+  { value: 4, label: 'Devious', tw: 'border-l-purple-500', dot: 'bg-purple-500', text: 'text-purple-700' },
 ];
 
 const DIFFICULTY_COLORS = {
@@ -174,19 +182,24 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel }) {
   }
 
   return (
-    <div className="max-w-3xl mx-auto pb-24">
+    <div className="mx-auto max-w-3xl pb-24">
       {/* Page Header */}
       <div className="mb-6">
-        <button
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={onCancel}
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-3"
+          className="mb-3 -ml-2 text-muted-foreground"
         >
-          <ArrowLeft className="h-4 w-4" />
+          <ArrowLeft className="mr-1.5 size-4" />
           Back to Dashboard
-        </button>
-        <h1 className="text-2xl font-semibold text-foreground">
+        </Button>
+        <h1 className="text-2xl font-bold tracking-tight">
           {puzzle ? `Edit: ${puzzle.title}` : 'New Puzzle'}
         </h1>
+        <p className="text-sm text-muted-foreground mt-1">
+          Fill in the categories and select 4 movies per group.
+        </p>
       </div>
 
       {/* AI Full Puzzle Generator */}
@@ -196,33 +209,43 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel }) {
       />
 
       {/* Title Input */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-foreground mb-2">
-          Puzzle Title
-        </label>
-        <Input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="e.g. Scary Halloween"
-          className={`h-11 text-base font-medium ${submitted && errors.title ? 'border-destructive focus-visible:ring-destructive' : ''}`}
-        />
-        {submitted && errors.title && (
-          <p className="text-xs text-destructive mt-1.5">{errors.title}</p>
-        )}
-      </div>
+      <Card className="mb-6">
+        <CardContent className="pt-4">
+          <label className="text-sm font-medium text-foreground mb-2 block">
+            Puzzle Title
+          </label>
+          <Input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="e.g. Scary Halloween"
+            className={`h-11 text-base font-medium ${submitted && errors.title ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+          />
+          {submitted && errors.title && (
+            <p className="text-xs text-destructive mt-1.5">{errors.title}</p>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Category Cards */}
       <div className="space-y-4">
         {categories.map((cat, ci) => {
           const diff = DIFFICULTIES.find((d) => d.value === cat.difficulty) || DIFFICULTIES[ci];
           return (
-            <Card key={ci} className={`border-l-4 ${diff.tw} overflow-hidden`}>
-              <CardContent className="p-5">
-                {/* Category Header */}
-                <div className="flex gap-3 mb-4 items-start">
+            <Card key={ci} className={`border-l-4 ${diff.tw}`}>
+              <CardHeader className="pb-2">
+                <div className="flex items-center gap-2">
+                  <div className={`size-2 rounded-full ${diff.dot}`} />
+                  <CardTitle className="text-sm">
+                    Category {ci + 1} — {diff.label}
+                  </CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Category Name + AI + Difficulty */}
+                <div className="flex gap-3 items-end">
                   <div className="flex-1 space-y-1.5">
-                    <label className="block text-xs font-medium text-muted-foreground">
+                    <label className="text-xs font-medium text-muted-foreground">
                       Category Name
                     </label>
                     <div className="flex items-center gap-2">
@@ -231,7 +254,7 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel }) {
                         value={cat.name}
                         onChange={(e) => updateCategory(ci, 'name', e.target.value)}
                         placeholder="e.g. Horror Classics"
-                        className={`h-9 ${submitted && errors[`cat_${ci}_name`] ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+                        className={submitted && errors[`cat_${ci}_name`] ? 'border-destructive focus-visible:ring-destructive' : ''}
                       />
                       <CategorySparkle
                         categoryName={cat.name}
@@ -243,41 +266,40 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel }) {
                       <p className="text-xs text-destructive">{errors[`cat_${ci}_name`]}</p>
                     )}
                   </div>
-                  <div className="w-40 space-y-1.5">
-                    <label className="block text-xs font-medium text-muted-foreground">
+                  <div className="w-36 space-y-1.5">
+                    <label className="text-xs font-medium text-muted-foreground">
                       Difficulty
                     </label>
-                    <select
-                      value={cat.difficulty}
-                      onChange={(e) =>
-                        updateCategory(ci, 'difficulty', parseInt(e.target.value, 10))
+                    <Select
+                      value={String(cat.difficulty)}
+                      onValueChange={(val) =>
+                        updateCategory(ci, 'difficulty', parseInt(val, 10))
                       }
-                      className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring cursor-pointer"
                     >
-                      {DIFFICULTIES.map((d) => (
-                        <option key={d.value} value={d.value}>
-                          {d.label}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="flex gap-1 mt-1">
-                      {DIFFICULTIES.map((d) => (
-                        <span
-                          key={d.value}
-                          className={`h-2 w-2 rounded-full transition-colors ${
-                            d.value === cat.difficulty ? d.dot : 'bg-muted'
-                          }`}
-                        />
-                      ))}
-                    </div>
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {DIFFICULTIES.map((d) => (
+                          <SelectItem key={d.value} value={String(d.value)}>
+                            <span className="flex items-center gap-2">
+                              <span className={`size-2 rounded-full ${d.dot}`} />
+                              {d.label}
+                            </span>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
+
+                <Separator />
 
                 {/* Movie Grid - 2x2 */}
                 <div className="grid grid-cols-2 gap-3">
                   {cat.items.map((movie, mi) => (
-                    <div key={mi} className="space-y-1">
-                      <label className="block text-xs text-muted-foreground/70">
+                    <div key={mi} className="space-y-1.5">
+                      <label className="text-xs text-muted-foreground">
                         Movie {mi + 1}
                       </label>
                       <MovieSearch
@@ -300,21 +322,27 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel }) {
 
       {/* Sticky bottom bar */}
       <div className="fixed bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur-sm z-40">
-        <div className="max-w-3xl mx-auto flex items-center justify-end gap-3 px-6 py-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onCancel}
-          >
-            Cancel
-          </Button>
-          <Button
-            type="button"
-            onClick={handleSave}
-            disabled={submitted && !isValid()}
-          >
-            Process & Publish
-          </Button>
+        <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-3">
+          <p className="text-xs text-muted-foreground hidden sm:block">
+            {isValid() ? 'Ready to process and publish' : 'Fill all fields to continue'}
+          </p>
+          <div className="flex items-center gap-3 ml-auto">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onCancel}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              onClick={handleSave}
+              disabled={submitted && !isValid()}
+            >
+              <Save className="mr-2 size-4" />
+              Process & Publish
+            </Button>
+          </div>
         </div>
       </div>
 

@@ -3,6 +3,7 @@ import { apiPost, apiFetch } from '@/lib/api';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Sparkles, Loader2 } from 'lucide-react';
 
 // Look up a movie on TMDB by title+year, return full details
@@ -84,13 +85,18 @@ export function FullPuzzleSparkle({ onGenerated, existingTitle }) {
   }
 
   return (
-    <Card className="border-amber-200 bg-amber-50/50 mb-6">
-      <CardContent className="p-4">
+    <Card className="mb-6 border-amber-200 bg-amber-50/30">
+      <CardContent className="pt-4">
         <div className="flex items-center gap-2 mb-3">
-          <Sparkles className="h-4 w-4 text-amber-600" />
+          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-amber-500/10">
+            <Sparkles className="size-3.5 text-amber-600" />
+          </div>
           <span className="text-sm font-semibold text-amber-800">
             AI Puzzle Generator
           </span>
+          <Badge variant="outline" className="ml-auto border-amber-200 text-amber-700 text-[10px]">
+            Claude
+          </Badge>
         </div>
         <div className="flex gap-2">
           <Input
@@ -110,12 +116,12 @@ export function FullPuzzleSparkle({ onGenerated, existingTitle }) {
           >
             {loading ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="mr-2 size-4 animate-spin" />
                 Generating...
               </>
             ) : (
               <>
-                <Sparkles className="mr-2 h-4 w-4" />
+                <Sparkles className="mr-2 size-4" />
                 Generate Full Puzzle
               </>
             )}
@@ -173,13 +179,13 @@ export function CategorySparkle({ categoryName, existingMovies, onMoviesGenerate
       onClick={handleGenerate}
       disabled={loading || !categoryName.trim()}
       title={categoryName.trim() ? `Generate 4 movies for "${categoryName}"` : 'Enter a category name first'}
-      className="bg-amber-500 text-white hover:bg-amber-600 shadow-none h-8 px-2.5 text-xs disabled:opacity-40"
+      className="bg-amber-500 text-white hover:bg-amber-600 shadow-none px-2.5 text-xs disabled:opacity-40"
     >
       {loading ? (
-        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+        <Loader2 className="size-3.5 animate-spin" />
       ) : (
         <>
-          <Sparkles className="h-3.5 w-3.5 mr-1" />
+          <Sparkles className="mr-1 size-3.5" />
           AI Fill
         </>
       )}
