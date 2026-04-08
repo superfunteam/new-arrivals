@@ -28,6 +28,7 @@ import {
   animateReturnToShelf,
   animateSlideOut,
   animateSlideIn,
+  animateBump,
 } from './animations.js';
 import { setupInteraction } from './interaction.js';
 import {
@@ -667,6 +668,38 @@ async function startGameSession(puzzle, mode, puzzlesData) {
     // Set up help button — reloads to show onboarding + welcome screen
     onHelpClick(() => {
       location.reload();
+    });
+
+    // Device shake (sustained 1s+) → bump all tapes on the shelf
+    let shakeCount = 0;
+    let shakeWindowStart = 0;
+    let lastBumpTime = 0;
+    const SHAKE_THRESHOLD = 20;
+    const SHAKE_HITS_NEEDED = 5;  // need 5 spikes within the window
+    const SHAKE_WINDOW = 1000;    // within 1 second
+    const BUMP_COOLDOWN = 2000;
+
+    window.addEventListener('devicemotion', (e) => {
+      const acc = e.accelerationIncludingGravity;
+      if (!acc) return;
+      const force = Math.sqrt(acc.x * acc.x + acc.y * acc.y + acc.z * acc.z);
+      const now = Date.now();
+
+      if (force > SHAKE_THRESHOLD) {
+        if (now - shakeWindowStart > SHAKE_WINDOW) {
+          // Reset window
+          shakeCount = 0;
+          shakeWindowStart = now;
+        }
+        shakeCount++;
+
+        if (shakeCount >= SHAKE_HITS_NEEDED && now - lastBumpTime > BUMP_COOLDOWN) {
+          lastBumpTime = now;
+          shakeCount = 0;
+          animateBump(allBoxes);
+          audio.play('dropInPlace');
+        }
+      }
     });
   }
 

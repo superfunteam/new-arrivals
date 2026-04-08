@@ -379,6 +379,42 @@ export function applyIdleWobble(box, time) {
 }
 
 // ---------------------------------------------------------------------------
+// Shelf bump — all boxes get a random jolt (triggered by device shake)
+// ---------------------------------------------------------------------------
+
+export function animateBump(boxes) {
+  boxes.forEach((box) => {
+    if (box.userData.state === 'locked' || box.userData.state === 'grayed') return;
+    const origPos = box.userData.originalPosition;
+    if (!origPos) return;
+
+    // Random jolt per box
+    const joltX = (Math.random() - 0.5) * 0.15;
+    const joltY = (Math.random() - 0.5) * 0.08;
+    const joltRotZ = (Math.random() - 0.5) * 0.12;
+    const joltRotX = (Math.random() - 0.5) * 0.06;
+
+    const startX = box.position.x;
+    const startY = box.position.y;
+
+    addAnimation(0.5, (t) => {
+      // Quick jolt then decay
+      const decay = Math.pow(1 - t, 3);
+      const bounce = Math.sin(t * Math.PI * 4) * decay;
+      box.position.x = startX + joltX * bounce;
+      box.position.y = startY + joltY * bounce;
+      box.rotation.z = joltRotZ * bounce;
+      box.rotation.x = joltRotX * bounce;
+    }, () => {
+      box.position.x = origPos.x;
+      box.position.y = origPos.y;
+      box.rotation.z = 0;
+      box.rotation.x = 0;
+    });
+  });
+}
+
+// ---------------------------------------------------------------------------
 // Gray-out animation (game over)
 // ---------------------------------------------------------------------------
 
