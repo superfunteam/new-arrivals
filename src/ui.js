@@ -788,7 +788,7 @@ export function showLightbox(movie, options = {}) {
 
   overlay.innerHTML = `
     <div class="lightbox" id="lightbox-inner">
-      <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+      <button class="lightbox-close" id="lightbox-close" aria-label="Close"><svg width="18" height="18" viewBox="0 0 175 175" fill="none"><path d="M0 175V125H25V100H50V75H25V50H0V0H50V50H75V75H100V50H125V0H175V50H150V75H125V100H150V125H175V175H125V125H100V100H75V125H50V175H0Z" fill="white"/></svg></button>
       ${genreStickerHtml}
       <div class="lightbox-content" id="lightbox-content">
         <div class="lightbox-title">${movie.title}${genreInlineHtml}</div>

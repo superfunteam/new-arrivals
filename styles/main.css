@@ -775,16 +775,13 @@ html, body {
   background: rgba(255, 255, 255, 0.1);
   border: 2px solid rgba(255, 255, 255, 0.3);
   color: #fff;
-  font-size: 24px;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 1;
   padding: 0;
-  padding-bottom: 2px;
   z-index: 60;
+  image-rendering: pixelated;
   transition: background 0.2s;
   -webkit-tap-highlight-color: transparent;
 }
