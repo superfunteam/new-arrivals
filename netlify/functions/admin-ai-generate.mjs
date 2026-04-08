@@ -121,6 +121,3 @@ Remember:
   }
 };
 
-export const config = {
-  path: '/api/admin-ai-generate',
-};

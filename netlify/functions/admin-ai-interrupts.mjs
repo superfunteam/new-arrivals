@@ -125,6 +125,3 @@ Generate 10 interruptions with these exact character/sprite/folder values.`;
   }
 };
 
-export const config = {
-  path: '/api/admin-ai-interrupts',
-};

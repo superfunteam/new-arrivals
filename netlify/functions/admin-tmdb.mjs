@@ -12,11 +12,8 @@ function tmdbHeaders() {
 // Netlify Functions v2
 export default async (req, context) => {
   const cookie = req.headers.get('cookie');
-  console.log('TMDB auth debug — cookie present:', !!cookie, 'cookie value:', cookie?.substring(0, 50));
-  const authResult = await verifyToken(cookie);
-  console.log('TMDB auth debug — verifyToken result:', authResult);
-  if (!authResult) {
-    return Response.json({ error: 'Unauthorized', debug: { hasCookie: !!cookie } }, { status: 401 });
+  if (!(await verifyToken(cookie))) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   if (req.method !== 'GET') {
@@ -81,6 +78,3 @@ export default async (req, context) => {
   }
 };
 
-export const config = {
-  path: '/api/admin-tmdb',
-};
