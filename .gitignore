@@ -2,5 +2,9 @@ node_modules/
 dist/
 .env
 
+# Admin subdirectory build artifacts
+admin/node_modules/
+admin/dist/
+
 # Local Netlify folder
 .netlify
