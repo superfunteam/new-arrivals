@@ -70,19 +70,19 @@ function getBackCoverTextures() {
     const ctx = canvas.getContext('2d');
 
     // Dark background
-    ctx.fillStyle = '#222222';
+    ctx.fillStyle = '#333333';
     ctx.fillRect(0, 0, W, H);
 
     // Thin border
-    ctx.strokeStyle = '#3a3a3a';
+    ctx.strokeStyle = '#555555';
     ctx.lineWidth = 2;
     ctx.strokeRect(8, 8, W - 16, H - 16);
 
     // --- Layout varies by variant ---
-    // Higher contrast so shapes read when tapes twirl during entrance
-    const imgColor = '#444444';
-    const textColor = '#4a4a4a';
-    const barcodeColor = '#555555';
+    // High contrast so shapes are clearly visible on the back
+    const imgColor = '#666666';
+    const textColor = '#777777';
+    const barcodeColor = '#888888';
 
     if (variant === 0) {
       // Two screenshot blocks side by side at top
@@ -240,11 +240,14 @@ export function createVHSBox(movie, pixelatedTexture) {
     metalness: 0.0,
   });
 
+  // Back cover: show texture at full brightness, use emissive for tint
   const backMaterial = new THREE.MeshStandardMaterial({
     map: backCoverTex,
-    color: backTintColor,
+    color: 0xffffff,
     roughness: 0.9,
     metalness: 0.05,
+    emissive: backTintColor,
+    emissiveIntensity: 0.15,
   });
 
   // Face order: +x, -x, +y, -y, +z, -z

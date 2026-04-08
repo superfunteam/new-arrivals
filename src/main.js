@@ -214,7 +214,8 @@ async function main() {
       }
     }
   }
-  const splashPosterIds = allPosterIds.slice(0, 30);
+  // Use up to 60 unique posters (12 per row × 5 rows, no repeats in viewport)
+  const splashPosterIds = allPosterIds.slice(0, 60);
 
   // ── 7. Show splash → onboarding → welcome ─────────────────────────────────
   function showWelcome() {

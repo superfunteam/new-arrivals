@@ -237,33 +237,37 @@ export function onHelpClick(callback) {
  * @param {Function} options.onStart      Called when "START YOUR SHIFT" is clicked
  * @param {Function} options.onStartMuted Called when "start on mute" is clicked
  */
+// Cache marquee HTML so onboarding and welcome screens can reuse it
+let _marqueeHtml = '';
+
+function buildMarqueeHtml(posterIds) {
+  const numRows = 5;
+  const perRow = Math.max(8, Math.floor(posterIds.length / numRows));
+  const rows = [];
+  for (let r = 0; r < numRows; r++) {
+    const start = r * perRow;
+    const rowIds = posterIds.slice(start, start + perRow);
+    const html = [...rowIds, ...rowIds]
+      .map(id => `<img class="marquee-poster" src="/posters/${id}_pixel.jpg" alt="" />`)
+      .join('');
+    rows.push(html);
+  }
+  return `<div class="splash-marquees">${rows
+    .map((html, i) => `<div class="marquee-row${i % 2 === 1 ? ' reverse' : ''}">${html}</div>`)
+    .join('')}</div>`;
+}
+
 export function showSplashScreen(options = {}) {
   const { posterIds = [], onStart, onStartMuted } = options;
 
   const overlay = document.getElementById('overlay');
   if (!overlay) return;
 
-  // Build poster image HTML — duplicate the set for seamless looping
-  const posterHtml = posterIds
-    .map(
-      (id) =>
-        `<img class="marquee-poster" src="/posters/${id}_pixel.jpg" alt="" />`
-    )
-    .join('');
-  const doubledPosterHtml = posterHtml + posterHtml;
-
-  // Create 5 rows with alternating directions and varied speeds
-  const speeds = [28, 32, 26, 35, 30];
-  const rowsHtml = speeds
-    .map((speed, i) => {
-      const dirClass = i % 2 === 1 ? ' reverse' : '';
-      return `<div class="marquee-row${dirClass}" style="animation-duration:${speed}s">${doubledPosterHtml}</div>`;
-    })
-    .join('');
+  _marqueeHtml = buildMarqueeHtml(posterIds);
 
   overlay.innerHTML = `
     <div class="splash-screen">
-      <div class="splash-marquees">${rowsHtml}</div>
+      ${_marqueeHtml}
       <div class="splash-content">
         <img class="splash-logo" src="/logo-overlay.png" alt="New Arrivals" />
         <button class="splash-btn" id="splash-start">START YOUR SHIFT</button>
@@ -364,10 +368,13 @@ export function showOnboarding(onComplete) {
 
     overlay.innerHTML = `
       <div class="onboarding">
-        ${slidesHtml}
-        <div class="onboarding-dots">${dotsHtml}</div>
-        ${skipCheckboxHtml}
-        <button class="onboarding-btn" id="onboarding-next">${slides[current].btn}</button>
+        ${_marqueeHtml}
+        <div class="onboarding-card">
+          ${slidesHtml}
+          <div class="onboarding-dots">${dotsHtml}</div>
+          ${skipCheckboxHtml}
+          <button class="onboarding-btn" id="onboarding-next">${slides[current].btn}</button>
+        </div>
       </div>
     `;
 
@@ -490,6 +497,8 @@ export function showWelcomeScreen(options = {}) {
 
   overlay.innerHTML = `
     <div class="welcome-screen">
+      ${_marqueeHtml}
+      <div class="welcome-inner">
       <div class="welcome-title">NEW ARRIVALS</div>
       <div class="welcome-tagline">Be kind, rewind</div>
 
@@ -509,6 +518,7 @@ export function showWelcomeScreen(options = {}) {
         <div class="practice-grid">
           ${practiceCardsHtml}
         </div>
+      </div>
       </div>
     </div>
   `;

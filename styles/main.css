@@ -254,9 +254,14 @@ html, body {
 .marquee-row {
   display: flex;
   flex-shrink: 0;
-  gap: 6px;
-  animation: marquee-left 30s linear infinite;
+  gap: 10px;
+  animation: marquee-left 45s linear infinite;
 }
+
+.marquee-row:nth-child(2) { animation-duration: 50s; }
+.marquee-row:nth-child(3) { animation-duration: 40s; }
+.marquee-row:nth-child(4) { animation-duration: 55s; }
+.marquee-row:nth-child(5) { animation-duration: 42s; }
 
 .marquee-row.reverse {
   animation-name: marquee-right;
@@ -273,11 +278,12 @@ html, body {
 }
 
 .marquee-poster {
-  width: 60px;
-  height: 90px;
+  width: 100px;
+  height: 150px;
   object-fit: cover;
   flex-shrink: 0;
   image-rendering: pixelated;
+  border-radius: 2px;
 }
 
 .splash-content {
@@ -334,12 +340,25 @@ html, body {
 .onboarding {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 100;
+}
+
+.onboarding-card {
+  position: relative;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.88);
+  border-radius: 16px;
+  padding: 28px 24px;
+  max-width: 360px;
+  width: calc(100% - 40px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .onboarding-slide {
@@ -1002,14 +1021,28 @@ html, body {
 .welcome-screen {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.97);
+  background: rgba(0, 0, 0, 0.65);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 48px 20px 32px;
+  padding: 0;
   overflow-y: auto;
   z-index: 100;
+}
+
+.welcome-inner {
+  position: relative;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.88);
+  border-radius: 16px;
+  padding: 32px 20px 24px;
+  margin: 48px 20px 32px;
+  max-width: 400px;
+  width: calc(100% - 40px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .welcome-title {
