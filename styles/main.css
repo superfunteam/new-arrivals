@@ -1216,15 +1216,16 @@ html, body {
 
 .score-pill {
   position: absolute;
-  top: -8px;
-  right: -4px;
+  top: 6px;
+  right: 6px;
   font-family: var(--font-body);
   font-size: 9px;
-  color: var(--wage-green);
-  background: rgba(0, 20, 10, 0.9);
-  border: 1px solid rgba(0, 230, 118, 0.3);
+  color: #000;
+  background: var(--wage-green);
+  border: none;
   border-radius: 10px;
-  padding: 2px 8px;
+  padding: 3px 8px;
+  font-weight: 700;
   letter-spacing: 0.5px;
   white-space: nowrap;
   z-index: 1;
