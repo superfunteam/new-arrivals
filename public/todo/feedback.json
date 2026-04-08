@@ -17,7 +17,7 @@
     {
       "id": 2,
       "title": "Faster tape inspection / quick-browse mode",
-      "done": false,
+      "done": true,
       "actions": [
         "Speed up the long-press-to-inspect flow — feels slow",
         "Consider a quick-browse mode: tap left/right shelf edges to zoom into a 2x2 grid of that section",

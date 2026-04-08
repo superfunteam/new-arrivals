@@ -200,10 +200,27 @@ function typeDialogue(text, interrupt, onComplete) {
   if (!dialogueEl) return;
 
   let charIndex = 0;
+  let completed = false;
+
+  function finishTyping() {
+    if (completed) return;
+    completed = true;
+    clearTimeout(typeTimeout);
+    dialogueEl.textContent = text;
+    if (onComplete) onComplete();
+  }
+
+  // Tap anywhere on the dialogue to skip/reveal all text
+  dialogueEl.addEventListener('click', finishTyping);
+  const box = document.querySelector('.interrupt-box');
+  if (box) box.addEventListener('click', function skipHandler() {
+    if (!completed) finishTyping();
+    box.removeEventListener('click', skipHandler);
+  });
 
   function typeNext() {
-    if (stopped || charIndex >= text.length) {
-      if (onComplete) onComplete();
+    if (stopped || completed || charIndex >= text.length) {
+      if (!completed) finishTyping();
       return;
     }
 
@@ -218,7 +235,7 @@ function typeDialogue(text, interrupt, onComplete) {
       navigator.vibrate(10);
     }
 
-    typeTimeout = setTimeout(typeNext, 40);
+    typeTimeout = setTimeout(typeNext, 20);
   }
 
   typeNext();

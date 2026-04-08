@@ -875,7 +875,7 @@ export function revealHintInPlace(fieldName, value) {
         clearInterval(interval);
         typingSpan.classList.remove('hint-typing');
       }
-    }, 35);
+    }, 18);
   }
 }
 
