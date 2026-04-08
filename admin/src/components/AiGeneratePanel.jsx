@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { apiPost, apiGet } from '../lib/api';
+import { apiPost, apiFetch } from '../lib/api';
 
 function SparkleIcon({ size = 20 }) {
   return (
@@ -15,13 +15,12 @@ async function tmdbLookup(title, year) {
     const params = new URLSearchParams({ query: title });
     if (year) params.set('year', String(year));
 
-    const res = await fetch(`/api/admin-tmdb?${params}`);
-    if (!res.ok) return null;
-    const results = await res.json();
+    const searchRes = await apiFetch(`/admin-tmdb?${params}`);
+    if (!searchRes.ok) return null;
+    const results = await searchRes.json();
     if (!Array.isArray(results) || results.length === 0) return null;
 
-    // Get full details for the first match
-    const detailRes = await fetch(`/api/admin-tmdb?id=${results[0].tmdb_id}`);
+    const detailRes = await apiFetch(`/admin-tmdb?id=${results[0].tmdb_id}`);
     if (!detailRes.ok) return results[0];
     return detailRes.json();
   } catch {
