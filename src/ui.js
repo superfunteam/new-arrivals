@@ -584,7 +584,7 @@ export function showWelcomeScreen(options = {}) {
       ${_marqueeHtml}
       <div class="welcome-inner">
       <div class="welcome-title">NEW ARRIVALS</div>
-      <div class="welcome-tagline">Be kind, rewind</div>
+      <div class="welcome-tagline">The video rental store game</div>
 
       <div class="welcome-section">
         <div class="welcome-section-title">DAILY DROPOFF</div>
