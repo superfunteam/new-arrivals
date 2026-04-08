@@ -198,12 +198,12 @@ html, body {
 
 .radio-icon {
   font-size: 22px;
-  color: var(--neon-blue);
+  color: var(--penalty-red);
   cursor: pointer;
   transition: color 0.3s;
   line-height: 1;
   padding: 10px;
-  margin: -10px;
+  margin: -10px -14px -10px -10px;
   -webkit-tap-highlight-color: transparent;
   font-variation-settings: 'FILL' 1;
 }
@@ -213,7 +213,7 @@ html, body {
 }
 
 .hud-radio.muted .radio-icon {
-  color: var(--penalty-red);
+  color: var(--neon-blue);
   opacity: 1;
 }
 
@@ -228,6 +228,7 @@ html, body {
   font-family: var(--font-body);
   font-size: 14px;
   color: rgba(255, 255, 255, 0.3);
+  margin-right: 50px;
 }
 
 /* === Shelve It Button === */
