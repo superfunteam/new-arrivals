@@ -197,6 +197,22 @@ export function revealHint(game, tmdbId, field) {
 }
 
 /**
+ * Adjust wage by a positive or negative amount.
+ * Clamps to 0. If wage hits 0, marks game as lost.
+ * @param {Object} game
+ * @param {number} amount  positive to add, negative to deduct
+ * @returns {number} new wage
+ */
+export function adjustWage(game, amount) {
+  game.wage = Math.max(0, game.wage + amount);
+  if (game.wage <= 0) {
+    game.completed = true;
+    game.won = false;
+  }
+  return game.wage;
+}
+
+/**
  * Calculate a time penalty based on elapsed seconds.
  * <2 min → $0, 2–5 min → $1, >5 min → $2
  * @param {number|null} startTime  Date.now() timestamp

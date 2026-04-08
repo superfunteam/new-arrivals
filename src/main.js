@@ -83,6 +83,7 @@ import {
 } from './ui.js';
 import { audio } from './audio.js';
 import { triggerShare } from './share.js';
+import { initInterrupts, stopInterrupts, pauseInterrupts, resumeInterrupts } from './interrupts.js';
 
 // ---------------------------------------------------------------------------
 // Utilities
@@ -524,6 +525,7 @@ async function startGameSession(puzzle, mode, puzzlesData) {
   let audioInitialized = false;
   let timerStarted = false;
   let timerInterval = null;
+  let interruptsData = null;
 
   // If restoring a game that had the timer running, resume the timer display
   if (isRestoring && game.startTime && !game.completed) {
@@ -535,6 +537,54 @@ async function startGameSession(puzzle, mode, puzzlesData) {
 
   let renderLoopStarted = false;
   const clock = new THREE.Clock();
+
+  // ── 10a. Fetch interrupts data ──────────────────────────────────────────────
+  try {
+    const intRes = await fetch('/interrupts.json');
+    interruptsData = await intRes.json();
+  } catch (err) {
+    console.warn('Failed to load interrupts.json:', err);
+  }
+
+  // Helper to start the interrupt system for this session
+  function startInterruptSystem() {
+    if (!interruptsData) return;
+    initInterrupts({
+      puzzleId: puzzle.id,
+      game,
+      onWageChange: (newWage, isGain) => {
+        updateWage(newWage, !isGain);
+      },
+      onPause: () => {
+        // Pause game timer
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+        // Lock interaction
+        if (interactionHandle) {
+          interactionHandle.setLocked(true);
+        }
+      },
+      onResume: () => {
+        // Resume game timer
+        if (timerStarted && game.startTime && !game.completed) {
+          timerInterval = setInterval(() => {
+            updateTimer(getElapsedTime(game.startTime));
+          }, 1000);
+        }
+        // Unlock interaction
+        if (interactionHandle) {
+          interactionHandle.setLocked(false);
+        }
+        // Check if game over (wage hit 0 from interrupt cost)
+        if (game.completed) {
+          handleGameOver();
+        }
+      },
+      interruptsData,
+    });
+  }
 
   // ── 10. If game already completed: show end screen, render, return ────────
   if (game.completed) {
@@ -564,6 +614,8 @@ async function startGameSession(puzzle, mode, puzzlesData) {
       setupGameInteraction();
       // Re-enable shelve button if 4 are selected
       setShelveButton(game.selectedIds.length === 4, handleShelveIt, game.selectedIds.length);
+      // Start interrupt system for restored games
+      startInterruptSystem();
     } else {
       // Fresh game — play entrance animation, then enable interaction
       animateEntrance(unsolvedBoxes, () => {
@@ -574,6 +626,8 @@ async function startGameSession(puzzle, mode, puzzlesData) {
           updateTimer(getElapsedTime(game.startTime));
         }, 1000);
         setupGameInteraction();
+        // Start interrupt system after entrance animation completes
+        startInterruptSystem();
       });
     }
   }
@@ -755,6 +809,9 @@ async function startGameSession(puzzle, mode, puzzlesData) {
         // Clean up canvas swipe listeners
         if (lightboxSwipeCleanup) lightboxSwipeCleanup();
 
+        // Resume interrupts now that lightbox is closing
+        resumeInterrupts();
+
         // Animate back — swap texture mid-twirl when back face is toward camera
         const currentBox = getCurrentBox();
         const returnPos = currentBox.userData.originalPosition.clone();
@@ -859,6 +916,9 @@ async function startGameSession(puzzle, mode, puzzlesData) {
     // Ensure audio is initialized (fallback)
     if (!audioInitialized) { audio.init(); audioInitialized = true; }
     audio.play('tapInspect');
+
+    // Pause interrupts while lightbox is open
+    pauseInterrupts();
 
     // Lock interaction during the inspect animation
     if (interactionHandle) {
@@ -1010,6 +1070,9 @@ async function startGameSession(puzzle, mode, puzzlesData) {
   // =========================================================================
 
   function handleGameOver() {
+    // Stop customer interrupts
+    stopInterrupts();
+
     // Clear timer interval
     if (timerInterval) {
       clearInterval(timerInterval);

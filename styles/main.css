@@ -1547,3 +1547,124 @@ html, body {
   background: var(--neon-blue);
   color: #000;
 }
+
+/* === Customer Interrupt Chat Box === */
+#interrupt-container {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+}
+
+#interrupt-container > * {
+  pointer-events: auto;
+}
+
+.interrupt-box {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.95);
+  border-top: 3px solid var(--neon-pink);
+  padding: 16px;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 200;
+  animation: interruptSlideUp 0.3s ease-out;
+}
+
+@keyframes interruptSlideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.interrupt-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.interrupt-sprite {
+  width: 64px;
+  height: 64px;
+  image-rendering: pixelated;
+  background-size: 256px 512px;
+  background-repeat: no-repeat;
+  flex-shrink: 0;
+}
+
+.interrupt-name {
+  font-family: 'Caprasimo', cursive;
+  font-size: 14px;
+  color: var(--neon-pink);
+}
+
+.interrupt-dialogue {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: #fff;
+  line-height: 1.5;
+  min-height: 40px;
+  margin-bottom: 12px;
+}
+
+.interrupt-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.interrupt-btn {
+  font-family: var(--font-display);
+  font-size: 9px;
+  padding: 10px 16px;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  flex: 1;
+  min-width: 0;
+  transition: opacity 0.2s;
+}
+
+.interrupt-btn:disabled {
+  cursor: default;
+}
+
+.interrupt-btn.primary {
+  background: var(--neon-pink);
+  color: #fff;
+}
+
+.interrupt-btn.secondary {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.interrupt-btn.correct {
+  background: var(--wage-green);
+  color: #000;
+}
+
+.interrupt-btn.wrong {
+  background: var(--penalty-red);
+  color: #fff;
+  opacity: 0.6;
+}
+
+.interrupt-result {
+  font-family: var(--font-display);
+  font-size: 11px;
+  text-align: center;
+  padding: 8px;
+}
+
+.interrupt-result.win {
+  color: var(--wage-green);
+}
+
+.interrupt-result.lose {
+  color: rgba(255, 255, 255, 0.5);
+}
