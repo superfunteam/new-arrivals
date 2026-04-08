@@ -986,9 +986,15 @@ async function startGameSession(puzzle, mode, puzzlesData) {
         );
       });
 
-      // Animate lock-in
+      // Update solved count and unsolved list BEFORE animating
+      // so reflow positions are calculated correctly
+      solvedRowCount++;
+      unsolvedBoxes = unsolvedBoxes.filter((b) => !catMovieIds.has(b.userData.movie.tmdb_id));
+      reflowBoxes(unsolvedBoxes, shelfGroup, solvedRowCount);
+
+      // Animate lock-in AND reflow simultaneously
       animateLockIn(catBoxes, targetY, targetPositions, () => {
-        // Set box states and spine colors
+        // Set box states and spine colors once lock-in finishes
         for (const box of catBoxes) {
           setBoxState(box, 'locked');
           setSpineColor(box, parseInt(cat.color.replace('#', ''), 16));
@@ -999,17 +1005,11 @@ async function startGameSession(puzzle, mode, puzzlesData) {
         rowCenter.project(camera);
         const screenY = (-rowCenter.y * 0.5 + 0.5) * renderer.domElement.clientHeight;
         addSolvedRowLabel(cat.name, cat.color, screenY);
+      });
 
-        // Update solved count
-        solvedRowCount++;
-
-        // Remove from unsolved list
-        unsolvedBoxes = unsolvedBoxes.filter((b) => !catMovieIds.has(b.userData.movie.tmdb_id));
-
-        // Reflow remaining unsolved boxes
-        reflowBoxes(unsolvedBoxes, shelfGroup, solvedRowCount);
-        animateReflow(unsolvedBoxes, () => {
-          // Unlock interaction
+      // Reflow remaining tapes at the same time
+      animateReflow(unsolvedBoxes, () => {
+          // Unlock interaction once both animations done
           interactionHandle.setLocked(false);
 
           // Clear button state
@@ -1024,7 +1024,6 @@ async function startGameSession(puzzle, mode, puzzlesData) {
           if (game.completed) {
             handleGameOver();
           }
-        });
       });
     } else {
       // ── WRONG ────────────────────────────────────────────────────────────
