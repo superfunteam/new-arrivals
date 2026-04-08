@@ -111,9 +111,8 @@ html, body {
 }
 
 .hud-wage {
-  font-family: var(--font-body);
-  font-size: 20px;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 14px;
   color: var(--wage-green);
   text-shadow: 0 0 8px rgba(0, 230, 118, 0.4);
   transition: color 0.3s, text-shadow 0.3s;

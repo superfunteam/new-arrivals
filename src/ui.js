@@ -53,7 +53,7 @@ export function createHUD() {
         <span class="hud-date">${dateStr}</span>
       </div>
       <div class="hud-wage-wrap">
-        <div class="hud-wage" id="hud-wage">$25.00</div>
+        <div class="hud-wage" id="hud-wage">$25</div>
         <span class="hud-wage-label">Current Pay</span>
       </div>
     </div>
@@ -94,7 +94,7 @@ export function updateWage(wage, isPenalty = false) {
   if (!_wage) return;
   const formatted =
     typeof wage === 'number'
-      ? '$' + wage.toFixed(2)
+      ? '$' + Math.round(wage)
       : String(wage);
   _wage.textContent = formatted;
 
