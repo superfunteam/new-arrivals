@@ -1023,17 +1023,11 @@ html, body {
 }
 
 .lightbox-link {
-  opacity: 0.4;
-  transition: opacity 0.2s;
+  opacity: 1;
   display: flex;
   align-items: center;
   padding: 6px;
   -webkit-tap-highlight-color: transparent;
-}
-
-.lightbox-link:active,
-.lightbox-link:hover {
-  opacity: 0.8;
 }
 
 .lightbox-btn {
