@@ -605,11 +605,9 @@ async function startGameSession(puzzle, mode, puzzlesData) {
 
     const currentBox = getCurrentBox();
 
-    // Swap outgoing box back to shelf texture
-    swapToShelfTexture(currentBox);
-
-    // Twirl current box back to its shelf position
+    // Twirl current box back — swap texture mid-twirl when back is visible
     const returnPos = currentBox.userData.originalPosition.clone();
+    setTimeout(() => swapToShelfTexture(currentBox), 125);
     animateReturnToShelf(currentBox, returnPos, () => {
       currentBox.scale.setScalar(1);
     });
@@ -653,10 +651,11 @@ async function startGameSession(puzzle, mode, puzzlesData) {
         // Clean up canvas swipe listeners
         if (lightboxSwipeCleanup) lightboxSwipeCleanup();
 
-        // Swap back to shelf texture and animate back
+        // Animate back — swap texture mid-twirl when back face is toward camera
         const currentBox = getCurrentBox();
-        swapToShelfTexture(currentBox);
         const returnPos = currentBox.userData.originalPosition.clone();
+        // Delay texture swap ~125ms (quarter of 0.5s animation = first half-turn)
+        setTimeout(() => swapToShelfTexture(currentBox), 125);
         animateReturnToShelf(currentBox, returnPos, () => {
           if (interactionHandle) {
             interactionHandle.setLocked(false);
