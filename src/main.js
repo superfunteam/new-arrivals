@@ -70,6 +70,7 @@ import {
   hideLightbox,
   showEndScreen,
   showTrackingFlash,
+  showShiftStatsButton,
   showGuessMessage,
   onMuteClick,
   setMuteIcon,
@@ -1109,11 +1110,17 @@ async function startGameSession(puzzle, mode, puzzlesData) {
         }, 500);
       });
     } else {
-      // Win: play gameWin, brief delay, then show end screen
+      // Win: play gameWin, then show countdown button — let the solve breathe
       audio.play('gameWin');
+
+      // Show the HUD again so labels are visible
+      const hud = document.getElementById('hud');
+      if (hud) hud.classList.remove('hud-inspect-mode');
+
+      // After a brief moment, show the countdown "View Your Shift Stats" button
       setTimeout(() => {
-        showEndScreenForGame(game);
-      }, 1500);
+        showShiftStatsButton(() => showEndScreenForGame(game));
+      }, 1000);
     }
 
     // Save score for all modes (best score kept)

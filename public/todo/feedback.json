@@ -75,7 +75,7 @@
     {
       "id": 6,
       "title": "Pause before end screen — let the last solve breathe",
-      "done": false,
+      "done": true,
       "actions": [
         "After solving the final category, pause on the completed shelf view",
         "Show a 'View Results' or 'Next' button instead of auto-jumping to end screen",

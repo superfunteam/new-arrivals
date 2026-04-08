@@ -1145,6 +1145,54 @@ html, body {
 }
 
 /* === VHS Tracking Distortion Flash === */
+/* === Shift Stats Countdown Button === */
+.shift-stats-btn {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: 12px;
+  padding: 18px 24px;
+  background: var(--neon-pink);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  box-shadow: 0 0 30px rgba(255, 107, 157, 0.5), inset 0 -3px 0 rgba(0, 0, 0, 0.2);
+  animation: statsButtonPulse 2s ease-in-out infinite;
+}
+
+.shift-stats-btn:active {
+  transform: scale(0.97);
+}
+
+.shift-stats-label {
+  position: relative;
+  z-index: 1;
+}
+
+.shift-stats-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.shift-stats-bar {
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.6);
+  transition: width 0.05s linear;
+}
+
+@keyframes statsButtonPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 107, 157, 0.4), inset 0 -3px 0 rgba(0, 0, 0, 0.2); }
+  50% { box-shadow: 0 0 40px rgba(255, 107, 157, 0.7), inset 0 -3px 0 rgba(0, 0, 0, 0.2); }
+}
+
 .tracking-flash {
   position: fixed;
   inset: 0;

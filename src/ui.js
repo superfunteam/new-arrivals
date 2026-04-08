@@ -1154,6 +1154,54 @@ export function showEndScreen(result = {}) {
   }
 }
 
+// ─── Shift Stats Countdown Button ───────────────────────────────────────────
+
+/**
+ * Show a "View Your Shift Stats" button with a 10s countdown progress bar.
+ * The button sits in the shelve-button row. Auto-fires after 10s if not clicked.
+ * @param {Function} onContinue — called when clicked or countdown finishes
+ */
+export function showShiftStatsButton(onContinue) {
+  const shelveRow = document.querySelector('.hud-shelve-row');
+  if (!shelveRow) { onContinue(); return; }
+
+  let done = false;
+  function proceed() {
+    if (done) return;
+    done = true;
+    clearInterval(ticker);
+    shelveRow.innerHTML = '';
+    onContinue();
+  }
+
+  shelveRow.innerHTML = `
+    <button class="shift-stats-btn" id="shift-stats-btn">
+      <span class="shift-stats-label">VIEW YOUR SHIFT STATS</span>
+      <div class="shift-stats-progress">
+        <div class="shift-stats-bar" id="shift-stats-bar"></div>
+      </div>
+    </button>
+  `;
+
+  // Show HUD bottom so the button is visible
+  const hudBottom = document.querySelector('.hud-bottom');
+  if (hudBottom) hudBottom.style.opacity = '0';
+
+  document.getElementById('shift-stats-btn').addEventListener('click', proceed);
+
+  // Countdown: 10 seconds, bar shrinks
+  const duration = 10000;
+  const start = Date.now();
+  const bar = document.getElementById('shift-stats-bar');
+
+  const ticker = setInterval(() => {
+    const elapsed = Date.now() - start;
+    const remaining = Math.max(0, 1 - elapsed / duration);
+    if (bar) bar.style.width = `${remaining * 100}%`;
+    if (elapsed >= duration) proceed();
+  }, 50);
+}
+
 // ─── VHS Tracking Flash ──────────────────────────────────────────────────────
 
 /**
