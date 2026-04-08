@@ -309,13 +309,27 @@ export function showSplashScreen(options = {}) {
 
   overlay.classList.add('active');
 
+  // Inject jam widget script
+  const jamScript = document.createElement('script');
+  jamScript.src = 'https://jam.pieter.com/2026/widget.js';
+  jamScript.async = true;
+  document.head.appendChild(jamScript);
+
+  function removeJamWidget() {
+    jamScript.remove();
+    // Remove any injected widget elements
+    document.querySelectorAll('[id*="jam"], [class*="jam"]').forEach(el => el.remove());
+  }
+
   document.getElementById('splash-start').addEventListener('click', () => {
+    removeJamWidget();
     overlay.innerHTML = '';
     overlay.classList.remove('active');
     if (typeof onStart === 'function') onStart();
   });
 
   document.getElementById('splash-mute').addEventListener('click', () => {
+    removeJamWidget();
     overlay.innerHTML = '';
     overlay.classList.remove('active');
     if (typeof onStartMuted === 'function') onStartMuted();
