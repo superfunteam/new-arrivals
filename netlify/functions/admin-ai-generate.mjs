@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { verifyToken, authResponse } from './lib/auth.mjs';
+import { verifyToken } from './lib/auth.mjs';
 
 const FULL_PUZZLE_SYSTEM_PROMPT = `You are a puzzle designer for "New Arrivals," a daily VHS rental store trivia game.
 
@@ -48,15 +48,9 @@ OUTPUT: Valid JSON array only, no commentary.
   { "title": "Movie Title", "year": 1994 }
 ]`;
 
-// Lazy init — Netlify AI Gateway injects env vars at runtime, not module load
-let _anthropic;
-function getClient() {
-  if (!_anthropic) _anthropic = new Anthropic();
-  return _anthropic;
-}
-
 async function callClaude(systemPrompt, userPrompt) {
-  const message = await getClient().messages.create({
+  const client = new Anthropic();
+  const message = await client.messages.create({
     model: 'claude-sonnet-4-5-20250929',
     max_tokens: 4096,
     system: systemPrompt,
@@ -64,8 +58,6 @@ async function callClaude(systemPrompt, userPrompt) {
   });
 
   const text = message.content?.[0]?.text || '';
-
-  // Extract JSON from response (handle markdown code blocks)
   const jsonMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/) || [null, text];
   const jsonStr = jsonMatch[1].trim();
 
@@ -76,8 +68,27 @@ async function callClaude(systemPrompt, userPrompt) {
   }
 }
 
-async function handleFullPuzzle(theme) {
-  const prompt = `Design a New Arrivals puzzle with the theme: "${theme}"
+// Netlify Functions v2 format
+export default async (req, context) => {
+  // Auth check
+  const cookie = req.headers.get('cookie');
+  if (!(await verifyToken(cookie))) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  if (req.method !== 'POST') {
+    return Response.json({ error: 'Method not allowed' }, { status: 405 });
+  }
+
+  try {
+    const body = await req.json();
+    const { mode } = body;
+
+    if (mode === 'full_puzzle') {
+      const { theme } = body;
+      if (!theme) return Response.json({ error: 'Theme is required' }, { status: 400 });
+
+      const prompt = `Design a New Arrivals puzzle with the theme: "${theme}"
 
 Remember:
 - 4 categories with difficulty 1-4 (one of each)
@@ -86,49 +97,30 @@ Remember:
 - Include 2-3 overlap traps (movies that could plausibly fit multiple categories)
 - Use exact TMDB titles`;
 
-  const result = await callClaude(FULL_PUZZLE_SYSTEM_PROMPT, prompt);
-  return result;
-}
-
-async function handleCategory(name, existingMovies = []) {
-  let prompt = `Find 4 movies that fit this category: "${name}"`;
-  if (existingMovies.length > 0) {
-    prompt += `\n\nAvoid these already-used movies:\n${existingMovies.map((m) => `- ${m}`).join('\n')}`;
-  }
-
-  const result = await callClaude(CATEGORY_SYSTEM_PROMPT, prompt);
-  return result;
-}
-
-export async function handler(event) {
-  const isAuthed = await verifyToken(event.headers.cookie);
-  if (!isAuthed) return authResponse(401, { error: 'Unauthorized' });
-
-  if (event.httpMethod !== 'POST') {
-    return authResponse(405, { error: 'Method not allowed' });
-  }
-
-  try {
-    const body = JSON.parse(event.body || '{}');
-    const { mode } = body;
-
-    if (mode === 'full_puzzle') {
-      const { theme } = body;
-      if (!theme) return authResponse(400, { error: 'Theme is required' });
-      const result = await handleFullPuzzle(theme);
-      return authResponse(200, result);
+      const result = await callClaude(FULL_PUZZLE_SYSTEM_PROMPT, prompt);
+      return Response.json(result);
     }
 
     if (mode === 'category') {
-      const { name, existingMovies } = body;
-      if (!name) return authResponse(400, { error: 'Category name is required' });
-      const result = await handleCategory(name, existingMovies);
-      return authResponse(200, result);
+      const { name, existingMovies = [] } = body;
+      if (!name) return Response.json({ error: 'Category name is required' }, { status: 400 });
+
+      let prompt = `Find 4 movies that fit this category: "${name}"`;
+      if (existingMovies.length > 0) {
+        prompt += `\n\nAvoid these already-used movies:\n${existingMovies.map((m) => `- ${m}`).join('\n')}`;
+      }
+
+      const result = await callClaude(CATEGORY_SYSTEM_PROMPT, prompt);
+      return Response.json(result);
     }
 
-    return authResponse(400, { error: 'Invalid mode. Use "full_puzzle" or "category"' });
+    return Response.json({ error: 'Invalid mode' }, { status: 400 });
   } catch (err) {
     console.error('AI generate error:', err);
-    return authResponse(500, { error: err.message });
+    return Response.json({ error: err.message }, { status: 500 });
   }
-}
+};
+
+export const config = {
+  path: '/api/admin-ai-generate',
+};

@@ -1,14 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { verifyToken, authResponse } from './lib/auth.mjs';
+import { verifyToken } from './lib/auth.mjs';
 
-// Lazy init — Netlify AI Gateway injects env vars at runtime
-let _anthropic;
-function getClient() {
-  if (!_anthropic) _anthropic = new Anthropic();
-  return _anthropic;
-}
-
-// All 24 available characters with their sprite/folder data and type
+// All 24 available characters
 const CHARACTERS = [
   { character: 'Blonde Kid Girl', sprite: 'blonde_kid_girl', folder: 'Blonde Kid Girl', type: 'kid' },
   { character: 'Blonde Man', sprite: 'blonde_man', folder: 'Blonde Man', type: 'adult' },
@@ -36,11 +29,6 @@ const CHARACTERS = [
   { character: 'Viking Woman', sprite: 'viking_woman', folder: 'Viking Woman', type: 'adult' },
 ];
 
-function pickRandomCharacters(count) {
-  const shuffled = [...CHARACTERS].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count);
-}
-
 const INTERRUPT_SYSTEM_PROMPT = `You are writing customer dialogue for "New Arrivals," a VHS rental store game. Customers interrupt the player while they sort tapes.
 
 SETTING: A video rental store, Friday night, 1987. Customers are browsing, chatting, looking for movies.
@@ -59,53 +47,33 @@ Keep dialogue SHORT (1-3 sentences max). These are quick interruptions.
 
 OUTPUT: Valid JSON array only, no commentary. Each object must include ALL required fields for its type.`;
 
-async function callClaude(systemPrompt, userPrompt) {
-  const message = await getClient().messages.create({
-    model: 'claude-sonnet-4-5-20250929',
-    max_tokens: 4096,
-    system: systemPrompt,
-    messages: [{ role: 'user', content: userPrompt }],
-  });
-
-  const text = message.content?.[0]?.text || '';
-
-  // Extract JSON from response (handle markdown code blocks)
-  const jsonMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/) || [null, text];
-  const jsonStr = jsonMatch[1].trim();
-
-  try {
-    return JSON.parse(jsonStr);
-  } catch (e) {
-    throw new Error(`Failed to parse AI response as JSON: ${e.message}\nRaw: ${text.slice(0, 500)}`);
+// Netlify Functions v2 format
+export default async (req, context) => {
+  const cookie = req.headers.get('cookie');
+  if (!(await verifyToken(cookie))) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
   }
-}
 
-export async function handler(event) {
-  const isAuthed = await verifyToken(event.headers.cookie);
-  if (!isAuthed) return authResponse(401, { error: 'Unauthorized' });
-
-  if (event.httpMethod !== 'POST') {
-    return authResponse(405, { error: 'Method not allowed' });
+  if (req.method !== 'POST') {
+    return Response.json({ error: 'Method not allowed' }, { status: 405 });
   }
 
   try {
-    const body = JSON.parse(event.body || '{}');
+    const body = await req.json();
     const { puzzle } = body;
 
     if (!puzzle || !puzzle.categories) {
-      return authResponse(400, { error: 'Puzzle data with categories is required' });
+      return Response.json({ error: 'Puzzle data with categories is required' }, { status: 400 });
     }
 
-    // Build movie list and category list from puzzle
     const allMovies = puzzle.categories.flatMap((cat) =>
       (cat.items || cat.movies || []).map((m) => `${m.title} (${m.year})`)
     );
     const categoryNames = puzzle.categories.map((cat) => cat.name);
 
     // Pick 10 random characters
-    const selected = pickRandomCharacters(10);
-
-    // Build character assignments: 4 trivia, 3 hints, 3 stories
+    const shuffled = [...CHARACTERS].sort(() => Math.random() - 0.5);
+    const selected = shuffled.slice(0, 10);
     const assignments = selected.map((char, i) => {
       if (i < 4) return { ...char, role: 'trivia' };
       if (i < 7) return { ...char, role: 'hint' };
@@ -122,29 +90,26 @@ ${allMovies.map((m) => `- ${m}`).join('\n')}
 PUZZLE CATEGORIES:
 ${categoryNames.map((n) => `- ${n}`).join('\n')}
 
-CHARACTERS (use these exact names, sprites, and folders — assign each to their designated type):
+CHARACTERS:
 ${characterDescriptions}
 
-Generate 10 interruptions. Each must include:
-- For trivia: { "type": "trivia", "character": "...", "sprite": "...", "folder": "...", "dialogue": "...", "answers": ["A","B","C","D"], "correct": 0-3 }
-- For hints: { "type": "hint", "character": "...", "sprite": "...", "folder": "...", "dialogue": "...", "hintCategory": "exact category name from list above", "cost": 3 }
-- For stories: { "type": "story", "character": "...", "sprite": "...", "folder": "...", "dialogue": "...", "dismiss": "fun button label" }
+Generate 10 interruptions with these exact character/sprite/folder values.`;
 
-Use the character, sprite, and folder values EXACTLY as provided above.`;
+    const client = new Anthropic();
+    const message = await client.messages.create({
+      model: 'claude-sonnet-4-5-20250929',
+      max_tokens: 4096,
+      system: INTERRUPT_SYSTEM_PROMPT,
+      messages: [{ role: 'user', content: prompt }],
+    });
 
-    const interrupts = await callClaude(INTERRUPT_SYSTEM_PROMPT, prompt);
+    const text = message.content?.[0]?.text || '';
+    const jsonMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/) || [null, text];
+    const parsed = JSON.parse(jsonMatch[1].trim());
 
-    // Validate and fix the interrupts structure
-    if (!Array.isArray(interrupts) || interrupts.length !== 10) {
-      throw new Error(`Expected 10 interrupts, got ${Array.isArray(interrupts) ? interrupts.length : 'non-array'}`);
-    }
-
-    // Ensure sprite/folder fields match our character data
-    const charMap = Object.fromEntries(
-      assignments.map((a) => [a.character, a])
-    );
-
-    const validated = interrupts.map((interrupt) => {
+    // Validate and fix sprite/folder fields
+    const charMap = Object.fromEntries(assignments.map((a) => [a.character, a]));
+    const validated = (Array.isArray(parsed) ? parsed : []).map((interrupt) => {
       const charData = charMap[interrupt.character];
       if (charData) {
         interrupt.sprite = charData.sprite;
@@ -153,9 +118,13 @@ Use the character, sprite, and folder values EXACTLY as provided above.`;
       return interrupt;
     });
 
-    return authResponse(200, validated);
+    return Response.json(validated);
   } catch (err) {
     console.error('AI interrupts error:', err);
-    return authResponse(500, { error: err.message });
+    return Response.json({ error: err.message }, { status: 500 });
   }
-}
+};
+
+export const config = {
+  path: '/api/admin-ai-interrupts',
+};
