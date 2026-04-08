@@ -103,11 +103,12 @@ async function generatePixelated(sourcePath, destPath) {
 }
 
 async function generatePixelatedDetail(sourcePath, destPath) {
-  // Detail/lightbox version: 2x3 mosaic — just big color blocks, uncover is essential
+  // Detail/lightbox version: 3x5 actual pixels, saved as tiny PNG.
+  // Browser's image-rendering: pixelated does the upscaling with perfect crisp blocks.
+  // No pre-upscale — the file is literally 3x5 pixels.
   await sharp(sourcePath)
-    .resize(2, 3, { kernel: sharp.kernel.nearest })
-    .resize(320, 480, { kernel: sharp.kernel.nearest })
-    .jpeg({ quality: 80 })
+    .resize(3, 5, { kernel: sharp.kernel.nearest })
+    .png()
     .toFile(destPath);
 }
 
@@ -189,7 +190,7 @@ async function processMovie(movie) {
     }
 
     // Generate pixelated versions (shelf + detail)
-    const pixelDetailFile = path.join(POSTERS_DIR, `${tmdb_id}_pixel_detail.jpg`);
+    const pixelDetailFile = path.join(POSTERS_DIR, `${tmdb_id}_pixel_detail.png`);
     try {
       console.log(`  Generating pixelated versions for "${title}"...`);
       await generatePixelated(posterFile, pixelFile);

@@ -532,7 +532,7 @@ export function showLightbox(movie, options = {}) {
   const isUncoverDisabled = uncovered || wage <= 0;
   const posterSrc = uncovered
     ? `/posters/${movie.tmdb_id}.jpg`
-    : `/posters/${movie.tmdb_id}_pixel_detail.jpg`;
+    : `/posters/${movie.tmdb_id}_pixel_detail.png`;
   const posterClass = uncovered ? 'lightbox-poster uncovered' : 'lightbox-poster';
 
   // Genre sticker (free hint)
