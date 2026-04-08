@@ -819,6 +819,28 @@ export function showLightbox(movie, options = {}) {
   const hud = document.getElementById('hud');
   if (hud) hud.classList.add('hud-inspect-mode');
 
+  // Swipe hint arrows (show once until user swipes, then set cookie)
+  if (!localStorage.getItem('newArrivals_swipeHintSeen')) {
+    setTimeout(() => {
+      const hint = document.createElement('div');
+      hint.id = 'swipe-hint';
+      hint.className = 'swipe-hint';
+      hint.innerHTML = `
+        <div class="swipe-hint-left">
+          <span class="material-symbols-rounded swipe-arrow sa-1">keyboard_double_arrow_left</span>
+          <span class="material-symbols-rounded swipe-arrow sa-2">keyboard_double_arrow_left</span>
+          <span class="material-symbols-rounded swipe-arrow sa-3">keyboard_double_arrow_left</span>
+        </div>
+        <div class="swipe-hint-right">
+          <span class="material-symbols-rounded swipe-arrow sa-1">keyboard_double_arrow_right</span>
+          <span class="material-symbols-rounded swipe-arrow sa-2">keyboard_double_arrow_right</span>
+          <span class="material-symbols-rounded swipe-arrow sa-3">keyboard_double_arrow_right</span>
+        </div>
+      `;
+      document.body.appendChild(hint);
+    }, 1200);
+  }
+
   // Fade in
   requestAnimationFrame(() => {
     const inner = document.getElementById('lightbox-inner');
@@ -973,11 +995,24 @@ export function revealSummaryInPlace(summary) {
 /**
  * Hides and clears the overlay.
  */
+export function dismissSwipeHint() {
+  const hint = document.getElementById('swipe-hint');
+  if (hint) {
+    hint.style.opacity = '0';
+    setTimeout(() => hint.remove(), 300);
+  }
+  localStorage.setItem('newArrivals_swipeHintSeen', 'true');
+}
+
 export function hideLightbox() {
   const overlay = document.getElementById('overlay');
   if (!overlay) return;
   overlay.innerHTML = '';
   overlay.classList.remove('active');
+
+  // Remove swipe hint if present
+  const hint = document.getElementById('swipe-hint');
+  if (hint) hint.remove();
 
   // Restore HUD corners
   const hud = document.getElementById('hud');

@@ -73,6 +73,7 @@ import {
   showTrackingFlash,
   showShiftStatsButton,
   showGuessMessage,
+  dismissSwipeHint,
   onMuteClick,
   setMuteIcon,
   onStationClick,
@@ -780,9 +781,10 @@ async function startGameSession(puzzle, mode, puzzlesData) {
         // Loop: wrap around at both ends
         const newIndex = (currentIndex + direction + allTapes.length) % allTapes.length;
         if (allTapes.length > 1) {
-          // Fade sticker out immediately
+          // Fade sticker + swipe hint out immediately
           const sticker = document.querySelector('.lightbox-sticker');
           if (sticker) sticker.classList.add('sticker-out');
+          dismissSwipeHint();
           navigateToTape(newIndex, deltaX > 0 ? 'right' : 'left', getCurrentBox, setCurrentBox);
           return;
         }
