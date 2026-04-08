@@ -429,6 +429,7 @@ export function showOnboarding(onComplete) {
  * @param {Object[]} options.practicePuzzles     Array of up to 4 practice puzzle objects
  * @param {Object[]} options.pastPuzzles         Array of past daily puzzle objects
  * @param {string[]} options.completedDailyIds   Array of completed puzzle IDs
+ * @param {Object}   options.gameScores          { [puzzleId]: { wage, stars } }
  * @param {Function} options.onStartDaily        Called when user clicks daily start
  * @param {Function} options.onStartPractice     Called with practice puzzle index
  * @param {Function} options.onStartPast         Called with past puzzle object
@@ -440,6 +441,7 @@ export function showWelcomeScreen(options = {}) {
     practicePuzzles = [],
     pastPuzzles = [],
     completedDailyIds = [],
+    gameScores = {},
     onStartDaily,
     onStartPractice,
     onStartPast,
@@ -449,6 +451,13 @@ export function showWelcomeScreen(options = {}) {
   if (!overlay) return;
 
   const dateStr = formatDate(new Date());
+
+  function scorePill(puzzleId) {
+    const score = gameScores[puzzleId];
+    if (!score) return '';
+    const starsStr = '\u2605'.repeat(score.stars) + '\u2606'.repeat(3 - score.stars);
+    return `<span class="score-pill">${starsStr} $${score.wage}</span>`;
+  }
 
   // Daily button label and class
   let dailyBtnLabel = 'START SHIFT';
@@ -468,6 +477,7 @@ export function showWelcomeScreen(options = {}) {
       (p, i) => `
       <div class="practice-card">
         <div class="practice-card-title">${p.title}</div>
+        ${scorePill(p.id)}
         <button class="welcome-btn practice" data-practice-index="${i}">PRACTICE</button>
       </div>`
     )
@@ -481,15 +491,14 @@ export function showWelcomeScreen(options = {}) {
         const pDate = new Date(p.id + 'T12:00:00');
         const pDateStr = formatDate(pDate);
         const isCompleted = completedSet.has(p.id);
-        const checkmark = isCompleted ? '<span class="past-card-check">\u2713</span>' : '';
         return `
       <div class="past-card${isCompleted ? ' completed' : ''}">
         <div class="past-card-info">
           <div class="past-card-title">${p.title}</div>
           <div class="past-card-date">${pDateStr}</div>
+          ${scorePill(p.id)}
         </div>
         <div class="past-card-action">
-          ${checkmark}
           <button class="welcome-btn practice" data-past-index="${i}">REPLAY</button>
         </div>
       </div>`;
@@ -520,6 +529,7 @@ export function showWelcomeScreen(options = {}) {
         <div class="daily-card">
           <div class="daily-card-title">${dailyPuzzle.title}</div>
           <div class="daily-card-date">${dateStr}</div>
+          ${scorePill(dailyPuzzle.id)}
           <button class="${dailyBtnClass}" id="welcome-daily-btn"${dailyDisabled ? ' disabled' : ''}>${dailyBtnLabel}</button>
         </div>
       </div>

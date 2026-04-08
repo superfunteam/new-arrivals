@@ -54,6 +54,8 @@ import {
   getPastPuzzles,
   getCompletedDailyIds,
   markDailyCompleted,
+  getGameScores,
+  saveGameScore,
 } from './state.js';
 import {
   createHUD,
@@ -225,6 +227,7 @@ async function main() {
       practicePuzzles,
       pastPuzzles,
       completedDailyIds,
+      gameScores: getGameScores(),
       onStartDaily: () => {
         ensureRadioStarted();
         startGameSession(dailyPuzzle, 'daily', puzzlesData);
@@ -931,9 +934,12 @@ async function startGameSession(puzzle, mode, puzzlesData) {
       }, 1500);
     }
 
+    // Save score for all modes (best score kept)
+    const finalWage = calculateFinalWage(game);
+    saveGameScore(puzzle.id, finalWage);
+
     // Update stats (daily only)
     if (isDaily) {
-      const finalWage = calculateFinalWage(game);
       updateStats(finalWage, game.won);
       markDailyCompleted(puzzle.id);
       saveGameState(serializeGame(game));

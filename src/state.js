@@ -6,6 +6,7 @@ const KEY_TODAY = 'newArrivals_today';
 const KEY_STATE = 'newArrivals_state';
 const KEY_STATS = 'newArrivals_stats';
 const KEY_COMPLETED_DAILIES = 'newArrivals_completedDailies';
+const KEY_GAME_SCORES = 'newArrivals_gameScores';
 
 /**
  * Get the current "puzzle date" based on Central Time (America/Chicago).
@@ -216,4 +217,35 @@ export function getPastPuzzles(puzzlesData) {
   return puzzlesData.puzzles
     .filter((p) => p.id < today)
     .sort((a, b) => (a.id > b.id ? -1 : a.id < b.id ? 1 : 0));
+}
+
+/**
+ * Get all saved game scores. Returns { [puzzleId]: { wage, stars } }.
+ * @returns {Object}
+ */
+export function getGameScores() {
+  try {
+    const raw = localStorage.getItem(KEY_GAME_SCORES);
+    if (raw) return JSON.parse(raw);
+  } catch (_) {}
+  return {};
+}
+
+/**
+ * Save a game score for a puzzle. Keeps the best score.
+ * Stars: $25 = 3 stars, > $15 = 2 stars, finished = 1 star.
+ * @param {string} puzzleId
+ * @param {number} finalWage
+ */
+export function saveGameScore(puzzleId, finalWage) {
+  try {
+    const scores = getGameScores();
+    const stars = finalWage >= 25 ? 3 : finalWage > 15 ? 2 : 1;
+    const existing = scores[puzzleId];
+    // Keep best score
+    if (!existing || finalWage > existing.wage) {
+      scores[puzzleId] = { wage: finalWage, stars };
+      localStorage.setItem(KEY_GAME_SCORES, JSON.stringify(scores));
+    }
+  } catch (_) {}
 }

@@ -1212,6 +1212,20 @@ html, body {
   line-height: 1.5;
 }
 
+.score-pill {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 10px;
+  color: var(--wage-green);
+  background: rgba(0, 230, 118, 0.1);
+  border: 1px solid rgba(0, 230, 118, 0.25);
+  border-radius: 12px;
+  padding: 2px 8px;
+  margin: 4px 0;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
 .welcome-btn {
   font-family: var(--font-display);
   font-size: 9px;
