@@ -202,12 +202,17 @@ async function startGameSession(puzzle, mode, puzzlesData) {
   // ── 3. Create HUD ─────────────────────────────────────────────────────────
   createHUD();
 
-  // ── 4. Setup mute button (radio widget) ────────────────────────────────────
+  // ── 4. Setup radio audio + mute toggle ──────────────────────────────────────
+  const radioEl = new Audio('/audio/kpez.mp3');
+  radioEl.loop = true;
+  radioEl.volume = 0.65;
+
   let _isMuted = audio.isMuted();
   setMuteIcon(_isMuted);
   onMuteClick(() => {
     _isMuted = !_isMuted;
     audio.setMuted(_isMuted);
+    radioEl.muted = _isMuted;
     setMuteIcon(_isMuted);
   });
 
@@ -409,9 +414,10 @@ async function startGameSession(puzzle, mode, puzzlesData) {
       }, 1000);
     }
 
-    // 2. Init audio on first interaction
+    // 2. Init audio + start radio on first interaction
     if (!audioInitialized) {
       audio.init();
+      radioEl.play().catch(() => {});
       audioInitialized = true;
     }
 
@@ -443,9 +449,10 @@ async function startGameSession(puzzle, mode, puzzlesData) {
   // =========================================================================
 
   function handleLongPress(box) {
-    // Init audio
+    // Init audio + start radio on first interaction
     if (!audioInitialized) {
       audio.init();
+      radioEl.play().catch(() => {});
       audioInitialized = true;
     }
     audio.play('tapInspect');

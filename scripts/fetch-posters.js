@@ -103,11 +103,11 @@ async function generatePixelated(sourcePath, destPath) {
 }
 
 async function generatePixelatedDetail(sourcePath, destPath) {
-  // Detail/lightbox version: 4x6 actual pixels as tiny PNG.
-  // Browser's image-rendering: pixelated upscales with crisp blocks.
-  // ~3x chunkier than shelf version (6x9), but enough detail to intrigue.
+  // Detail/lightbox version: 48x72 — nearly readable but still mosaic.
+  // Upscaled to 320x480 with nearest-neighbor so blocks stay crisp.
   await sharp(sourcePath)
-    .resize(4, 6, { kernel: sharp.kernel.nearest })
+    .resize(48, 72, { kernel: sharp.kernel.nearest })
+    .resize(320, 480, { kernel: sharp.kernel.nearest })
     .png()
     .toFile(destPath);
 }
