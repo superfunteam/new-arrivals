@@ -4,7 +4,7 @@ const TMDB_BASE = 'https://api.themoviedb.org/3';
 
 function tmdbHeaders() {
   return {
-    Authorization: `Bearer ${process.env.TMDB_READ_ACCESS_TOKEN}`,
+    Authorization: `Bearer ${Netlify.env.get("TMDB_READ_ACCESS_TOKEN")}`,
     Accept: 'application/json',
   };
 }

@@ -1,6 +1,6 @@
 import { SignJWT, jwtVerify } from 'jose';
 
-const SECRET = () => new TextEncoder().encode(process.env.ADMIN_JWT_SECRET || 'dev-secret');
+const SECRET = () => new TextEncoder().encode(Netlify.env.get("ADMIN_JWT_SECRET") || "dev-secret");
 
 export async function createToken() {
   return new SignJWT({ role: 'admin' })

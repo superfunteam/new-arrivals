@@ -4,7 +4,7 @@ const TMDB_BASE = 'https://api.themoviedb.org/3';
 
 function tmdbHeaders() {
   return {
-    Authorization: `Bearer ${process.env.TMDB_READ_ACCESS_TOKEN}`,
+    Authorization: `Bearer ${Netlify.env.get("TMDB_READ_ACCESS_TOKEN")}`,
     Accept: 'application/json',
   };
 }
@@ -65,7 +65,7 @@ export default async (req, context) => {
       if (year) params.set('year', year);
 
       console.log(`[admin-tmdb] Searching TMDB: query=${query}, year=${year}`);
-      console.log(`[admin-tmdb] TMDB token present: ${!!process.env.TMDB_READ_ACCESS_TOKEN}`);
+      console.log(`[admin-tmdb] TMDB token present: ${!!Netlify.env.get("TMDB_READ_ACCESS_TOKEN")}`);
       const res = await fetch(`${TMDB_BASE}/search/movie?${params}`, {
         headers: tmdbHeaders(),
       });

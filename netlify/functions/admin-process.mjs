@@ -6,7 +6,7 @@ const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
 
 function ghHeaders() {
   return {
-    Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+    Authorization: `Bearer ${Netlify.env.get("GITHUB_TOKEN")}`,
     Accept: 'application/vnd.github.v3+json',
     'User-Agent': 'new-arrivals-admin',
     'Content-Type': 'application/json',

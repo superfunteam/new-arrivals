@@ -6,7 +6,7 @@ const API_BASE = `https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`;
 
 function ghHeaders() {
   return {
-    Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+    Authorization: `Bearer ${Netlify.env.get("GITHUB_TOKEN")}`,
     Accept: 'application/vnd.github.v3+json',
     'User-Agent': 'new-arrivals-admin',
   };
