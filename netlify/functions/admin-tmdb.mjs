@@ -11,7 +11,7 @@ function getEnv(name) {
 
 function tmdbHeaders() {
   return {
-    Authorization: `Bearer ${getEnv("TMDB_READ_ACCESS_TOKEN")}`,
+    Authorization: `Bearer ${getEnv("TMDB_ACCESS_TOKEN")}`,
     Accept: 'application/json',
   };
 }
@@ -21,12 +21,12 @@ export default async (req, context) => {
   console.log(`[admin-tmdb] ${req.method} ${req.url}`);
   console.log(`[admin-tmdb] ENV DEBUG: Netlify global exists: ${typeof Netlify !== 'undefined'}`);
   console.log(`[admin-tmdb] ENV DEBUG: process.env exists: ${typeof process !== 'undefined' && !!process.env}`);
-  console.log(`[admin-tmdb] ENV DEBUG: TMDB token via getEnv: ${!!getEnv("TMDB_READ_ACCESS_TOKEN")}`);
+  console.log(`[admin-tmdb] ENV DEBUG: TMDB token via getEnv: ${!!getEnv("TMDB_ACCESS_TOKEN")}`);
   if (typeof Netlify !== 'undefined' && Netlify.env) {
-    console.log(`[admin-tmdb] ENV DEBUG: Netlify.env.get result: ${!!Netlify.env.get("TMDB_READ_ACCESS_TOKEN")}`);
+    console.log(`[admin-tmdb] ENV DEBUG: Netlify.env.get result: ${!!Netlify.env.get("TMDB_ACCESS_TOKEN")}`);
   }
   if (typeof process !== 'undefined' && process.env) {
-    console.log(`[admin-tmdb] ENV DEBUG: process.env result: ${!!process.env.TMDB_READ_ACCESS_TOKEN}`);
+    console.log(`[admin-tmdb] ENV DEBUG: process.env result: ${!!process.env.TMDB_ACCESS_TOKEN}`);
     console.log(`[admin-tmdb] ENV DEBUG: env var keys count: ${Object.keys(process.env).length}`);
     console.log(`[admin-tmdb] ENV DEBUG: sample keys: ${Object.keys(process.env).slice(0, 5).join(', ')}`);
   }
@@ -83,7 +83,7 @@ export default async (req, context) => {
       if (year) params.set('year', year);
 
       console.log(`[admin-tmdb] Searching TMDB: query=${query}, year=${year}`);
-      console.log(`[admin-tmdb] TMDB token present: ${!!Netlify.env.get("TMDB_READ_ACCESS_TOKEN")}`);
+      console.log(`[admin-tmdb] TMDB token present: ${!!Netlify.env.get("TMDB_ACCESS_TOKEN")}`);
       const res = await fetch(`${TMDB_BASE}/search/movie?${params}`, {
         headers: tmdbHeaders(),
       });
