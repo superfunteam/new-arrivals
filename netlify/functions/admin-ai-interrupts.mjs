@@ -1,6 +1,8 @@
+import Anthropic from '@anthropic-ai/sdk';
 import { verifyToken, authResponse } from './lib/auth.mjs';
 
-const ANTHROPIC_API = 'https://api.anthropic.com/v1/messages';
+// Netlify AI Gateway auto-injects ANTHROPIC_API_KEY and ANTHROPIC_BASE_URL
+const anthropic = new Anthropic();
 
 // All 24 available characters with their sprite/folder data and type
 const CHARACTERS = [
@@ -54,33 +56,14 @@ Keep dialogue SHORT (1-3 sentences max). These are quick interruptions.
 OUTPUT: Valid JSON array only, no commentary. Each object must include ALL required fields for its type.`;
 
 async function callClaude(systemPrompt, userPrompt) {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    throw new Error('ANTHROPIC_API_KEY not configured');
-  }
-
-  const response = await fetch(ANTHROPIC_API, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-    },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 4096,
-      messages: [{ role: 'user', content: userPrompt }],
-      system: systemPrompt,
-    }),
+  const message = await anthropic.messages.create({
+    model: 'claude-sonnet-4-5-20250929',
+    max_tokens: 4096,
+    system: systemPrompt,
+    messages: [{ role: 'user', content: userPrompt }],
   });
 
-  if (!response.ok) {
-    const errText = await response.text();
-    throw new Error(`Anthropic API error ${response.status}: ${errText}`);
-  }
-
-  const data = await response.json();
-  const text = data.content?.[0]?.text || '';
+  const text = message.content?.[0]?.text || '';
 
   // Extract JSON from response (handle markdown code blocks)
   const jsonMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/) || [null, text];

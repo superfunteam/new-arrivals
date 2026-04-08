@@ -10,6 +10,7 @@
     "fetch-posters": "node scripts/fetch-posters.js"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.86.0",
     "jose": "^6.2.2",
     "sharp": "^0.34.5",
     "three": "^0.183.2",
