@@ -11,8 +11,6 @@ export async function apiFetch(path, options = {}) {
   });
 
   if (res.status === 401) {
-    // Session expired — reload to show login
-    window.location.reload();
     throw new Error('Unauthorized');
   }
 
