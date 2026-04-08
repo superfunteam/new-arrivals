@@ -518,13 +518,17 @@ export function showWelcomeScreen(options = {}) {
 
   const dateStr = formatDate(new Date());
 
-  function scorePill(puzzleId) {
+  function hasScore(puzzleId) {
+    return !!gameScores[puzzleId];
+  }
+
+  function scoreButton(puzzleId) {
     const score = gameScores[puzzleId];
     if (!score) return '';
     const stars = Array.from({ length: score.stars }, () =>
       '<span class="material-symbols-rounded score-star">star</span>'
     ).join('');
-    return `<span class="score-pill">${stars} $${score.wage}</span>`;
+    return `<span class="score-btn">${stars} $${score.wage}</span>`;
   }
 
   // Daily button label and class
@@ -539,39 +543,40 @@ export function showWelcomeScreen(options = {}) {
     dailyBtnLabel = 'CONTINUE';
   }
 
-  // Practice cards HTML
+  // Practice cards HTML — whole card is tappable
   const practiceCardsHtml = practicePuzzles
     .map(
-      (p, i) => `
-      <div class="past-card">
-        <div class="past-card-info">
-          <div class="past-card-title">${p.title}</div>
+      (p, i) => {
+        const played = hasScore(p.id);
+        return `
+      <div class="game-card" data-practice-index="${i}">
+        <div class="game-card-info">
+          <div class="game-card-title">${p.title}</div>
         </div>
-        <div class="past-card-action">
-          ${scorePill(p.id)}
-          <button class="welcome-btn practice" data-practice-index="${i}">PRACTICE</button>
+        <div class="game-card-action">
+          ${played ? `<span class="game-card-replay">↻</span>${scoreButton(p.id)}` : '<span class="game-card-play-btn">PRACTICE</span>'}
         </div>
-      </div>`
+      </div>`;
+      }
     )
     .join('');
 
-  // Past Returns cards HTML
+  // Past Returns cards HTML — whole card is tappable
   const completedSet = new Set(completedDailyIds);
   const pastCardsHtml = pastPuzzles
     .map(
       (p, i) => {
         const pDate = new Date(p.id + 'T12:00:00');
         const pDateStr = formatDate(pDate);
-        const isCompleted = completedSet.has(p.id) || !!gameScores[p.id];
+        const played = completedSet.has(p.id) || hasScore(p.id);
         return `
-      <div class="past-card${isCompleted ? ' completed' : ''}">
-        <div class="past-card-info">
-          <div class="past-card-title">${p.title}</div>
-          <div class="past-card-date">${pDateStr}</div>
-          ${scorePill(p.id)}
+      <div class="game-card" data-past-index="${i}">
+        <div class="game-card-info">
+          <div class="game-card-title">${p.title}</div>
+          <div class="game-card-date">${pDateStr}</div>
         </div>
-        <div class="past-card-action">
-          <button class="welcome-btn practice" data-past-index="${i}">${isCompleted ? 'REPLAY' : 'PLAY'}</button>
+        <div class="game-card-action">
+          ${played ? `<span class="game-card-replay">↻</span>${scoreButton(p.id)}` : '<span class="game-card-play-btn">PLAY</span>'}
         </div>
       </div>`;
       }
@@ -598,11 +603,10 @@ export function showWelcomeScreen(options = {}) {
 
       <div class="welcome-section">
         <div class="welcome-section-title">DAILY DROPOFF</div>
-        <div class="daily-card">
+        <div class="daily-card" id="welcome-daily-btn">
           <div class="daily-card-title">${dailyPuzzle.title}</div>
           <div class="daily-card-date">${dateStr}</div>
-          ${scorePill(dailyPuzzle.id)}
-          <button class="${dailyBtnClass}" id="welcome-daily-btn"${dailyDisabled ? ' disabled' : ''}>${dailyBtnLabel}</button>
+          ${hasScore(dailyPuzzle.id) ? scoreButton(dailyPuzzle.id) : `<span class="game-card-play-btn daily-play-btn">${dailyBtnLabel}</span>`}
         </div>
       </div>
 

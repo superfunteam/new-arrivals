@@ -152,5 +152,21 @@
         { "from": "Tom Ivey", "date": "2026-04-08", "text": "Yeah if you could get some good AI directives (making categories that could be reused basically, and having it figure out how to make good combinations of a) themed days and b) no brainer, easy, medium, hard categories for each day like connections does, you could just end up having to proof it's work and have tons of weeks of content." }
       ]
     }
+    ,{
+      "id": 12,
+      "title": "Replace practice/replay buttons with score badges on game cards",
+      "done": true,
+      "actions": [
+        "Replace PRACTICE/REPLAY button with green score button (stars + wage) for played games",
+        "Add small replay icon to the left of the score button",
+        "Make the whole card tappable to start/replay the game",
+        "Allow title text to word-wrap instead of truncating",
+        "Unplayed games keep a PLAY/PRACTICE button",
+        "Apply same pattern to Past Returns and Trainee Manual cards"
+      ],
+      "feedback": [
+        { "from": "Tom Ivey", "date": "2026-04-08", "text": "You may also just want to entirely replace the practice button with the star/money that you got i.e. you finished it. This is what you have. If you click on it you can review that information though, but you don't need the prompt to tell you that. Will look cleaner and clearly separate ones you haven't done with the results of ones you have done." }
+      ]
+    }
   ]
 }
