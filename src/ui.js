@@ -602,7 +602,7 @@ export function showWelcomeScreen(options = {}) {
 
       <div class="welcome-section">
         <div class="welcome-section-title">TRAINEE MANUAL</div>
-        <div class="past-returns-list">
+        <div class="trainee-list">
           ${practiceCardsHtml}
         </div>
       </div>
@@ -1016,6 +1016,8 @@ export function showEndScreen(result = {}) {
     mode = 'daily',
     onBackToMenu,
     onPlayAgain,
+    interruptHintCost = 0,
+    triviaEarnings = 0,
   } = result;
 
   const overlay = document.getElementById('overlay');
@@ -1028,15 +1030,24 @@ export function showEndScreen(result = {}) {
   const wrongDeduction = wrongGuesses * 1;
   const hintDeduction = hintsUsed * 1;
 
+  const interruptHintLine = interruptHintCost > 0
+    ? `<div class="line"><span>Customer hints</span><span style="color:var(--penalty-red)">-$${interruptHintCost}</span></div>`
+    : '';
+  const triviaLine = triviaEarnings > 0
+    ? `<div class="line"><span>Trivia tips</span><span style="color:var(--wage-green)">+$${triviaEarnings}</span></div>`
+    : '';
+
   const scoreCardHtml = `
     <div class="score-card">
-      <div class="line"><span>Starting wage</span><span>$${startingWage.toFixed(2)}</span></div>
-      <div class="line"><span>Wrong guesses (${wrongGuesses})</span><span>-$${wrongDeduction.toFixed(2)}</span></div>
-      <div class="line"><span>Hints used (${hintsUsed})</span><span>-$${hintDeduction.toFixed(2)}</span></div>
-      <div class="line"><span>Time penalty</span><span>-$${timePenalty.toFixed(2)}</span></div>
+      <div class="line"><span>Starting wage</span><span>$${startingWage}</span></div>
+      <div class="line"><span>Wrong guesses (${wrongGuesses})</span><span style="color:var(--penalty-red)">-$${wrongDeduction}</span></div>
+      <div class="line"><span>Hints used (${hintsUsed})</span><span style="color:var(--penalty-red)">-$${hintDeduction}</span></div>
+      ${interruptHintLine}
+      ${triviaLine}
+      <div class="line"><span>Time penalty</span><span style="color:var(--penalty-red)">-$${timePenalty}</span></div>
       <div class="line"><span>Time</span><span>${timeStr}</span></div>
       <div class="divider"></div>
-      <div class="line final"><span>Final Wage</span><span>$${finalWage.toFixed(2)}</span></div>
+      <div class="line final"><span>Final Wage</span><span>$${finalWage}</span></div>
     </div>
   `;
 

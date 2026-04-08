@@ -1458,6 +1458,12 @@ html, body {
   padding-right: 4px;
 }
 
+.trainee-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .past-returns-list::-webkit-scrollbar {
   width: 4px;
 }

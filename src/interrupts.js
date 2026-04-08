@@ -5,6 +5,31 @@ import * as Tone from 'tone';
 import { adjustWage } from './game-logic.js';
 
 // ---------------------------------------------------------------------------
+// Retail store door chime (DONG DONGGGG)
+// ---------------------------------------------------------------------------
+
+function playDoorChime() {
+  try {
+    const now = Tone.now();
+    // First dong — short
+    const s1 = new Tone.Synth({
+      oscillator: { type: 'sine' },
+      envelope: { attack: 0.01, decay: 0.6, sustain: 0, release: 0.3 },
+    }).toDestination();
+    s1.triggerAttackRelease('E5', '8n', now);
+    setTimeout(() => s1.dispose(), 1500);
+
+    // Second dong — longer, lower
+    const s2 = new Tone.Synth({
+      oscillator: { type: 'sine' },
+      envelope: { attack: 0.01, decay: 1.2, sustain: 0.1, release: 0.5 },
+    }).toDestination();
+    s2.triggerAttackRelease('C5', '4n', now + 0.25);
+    setTimeout(() => s2.dispose(), 3000);
+  } catch (_) {}
+}
+
+// ---------------------------------------------------------------------------
 // Module state
 // ---------------------------------------------------------------------------
 
@@ -124,6 +149,9 @@ function showInterrupt(interrupt) {
   `;
 
   document.body.appendChild(containerEl);
+
+  // Play retail store door chime
+  playDoorChime();
 
   // Start sprite animation (top row: 4 frames at 4fps)
   startSpriteAnimation();
@@ -286,6 +314,7 @@ function handleTriviaAnswer(interrupt, answerIndex, actionsEl) {
   if (answerIndex === interrupt.correct) {
     // Correct answer: +$2
     const newWage = adjustWage(opts.game, 2);
+    opts.game.triviaEarnings = (opts.game.triviaEarnings || 0) + 2;
     if (opts.onWageChange) opts.onWageChange(newWage, true);
 
     // Show result
@@ -342,10 +371,11 @@ function showHintActions(interrupt, actionsEl) {
 
   const payBtn = document.createElement('button');
   payBtn.className = 'interrupt-btn primary';
-  payBtn.textContent = `Pay $${cost}`;
+  payBtn.textContent = `Pay $${cost} for Hint`;
   payBtn.addEventListener('click', () => {
-    // Deduct wage
+    // Deduct wage and track interrupt hint spending
     const newWage = adjustWage(opts.game, -cost);
+    opts.game.interruptHintCost = (opts.game.interruptHintCost || 0) + cost;
     if (opts.onWageChange) opts.onWageChange(newWage, false);
 
     // Check if bankrupt

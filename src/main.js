@@ -1123,6 +1123,8 @@ async function startGameSession(puzzle, mode, puzzlesData) {
       finalWage,
       wrongGuesses: g.wrongGuesses,
       hintsUsed: g.hintsUsed + Object.values(g.revealedHints).reduce((sum, arr) => sum + arr.length, 0),
+      interruptHintCost: g.interruptHintCost || 0,
+      triviaEarnings: g.triviaEarnings || 0,
       timePenalty,
       timeStr,
       solvedCategories: g.solvedCategories,
