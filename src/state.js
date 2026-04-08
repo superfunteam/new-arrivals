@@ -249,3 +249,31 @@ export function saveGameScore(puzzleId, finalWage) {
     }
   } catch (_) {}
 }
+
+/**
+ * Get the last 7 days of daily paycheck data.
+ * Returns { days: [{ date, wage, played }], total }.
+ * Days are ordered oldest → newest, always exactly 7 slots.
+ */
+export function getPaycheckData(puzzlesData) {
+  const scores = getGameScores();
+  const today = getPuzzleDate();
+  const days = [];
+
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(today + 'T12:00:00');
+    d.setDate(d.getDate() - i);
+    const dateStr = d.toISOString().slice(0, 10);
+    const score = scores[dateStr];
+    const puzzle = puzzlesData.puzzles.find(p => p.id === dateStr);
+    days.push({
+      date: dateStr,
+      wage: score ? score.wage : 0,
+      played: !!score,
+      puzzleTitle: puzzle ? puzzle.title : null,
+    });
+  }
+
+  const total = days.reduce((sum, d) => sum + d.wage, 0);
+  return { days, total };
+}

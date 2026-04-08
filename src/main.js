@@ -56,6 +56,7 @@ import {
   markDailyCompleted,
   getGameScores,
   saveGameScore,
+  getPaycheckData,
 } from './state.js';
 import {
   createHUD,
@@ -228,6 +229,7 @@ async function main() {
       pastPuzzles,
       completedDailyIds,
       gameScores: getGameScores(),
+      paycheckData: getPaycheckData(puzzlesData),
       onStartDaily: () => {
         ensureRadioStarted();
         startGameSession(dailyPuzzle, 'daily', puzzlesData);

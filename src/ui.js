@@ -434,6 +434,41 @@ export function showOnboarding(onComplete) {
  * @param {Function} options.onStartPractice     Called with practice puzzle index
  * @param {Function} options.onStartPast         Called with past puzzle object
  */
+function buildPaycheckHtml(data) {
+  if (!data) return '';
+
+  const dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  const hasAnyPlayed = data.days.some(d => d.played);
+
+  const blocksHtml = data.days.map(d => {
+    const dayOfWeek = new Date(d.date + 'T12:00:00').getDay();
+    const label = dayNames[dayOfWeek];
+    if (d.played) {
+      return `<div class="paycheck-block filled" title="$${d.wage}">
+        <span class="paycheck-day">${label}</span>
+        <span class="paycheck-amount">$${d.wage}</span>
+      </div>`;
+    }
+    return `<div class="paycheck-block empty">
+      <span class="paycheck-day">${label}</span>
+    </div>`;
+  }).join('');
+
+  const content = hasAnyPlayed
+    ? `<div class="paycheck-total">$${data.total} <span class="paycheck-total-label">earned this week</span></div>
+       <div class="paycheck-timeline">${blocksHtml}</div>`
+    : `<div class="paycheck-timeline">${blocksHtml}</div>
+       <div class="paycheck-empty">Play your first game to start making money</div>`;
+
+  return `
+    <div class="welcome-section">
+      <div class="welcome-section-title">YOUR PAYCHECK</div>
+      <div class="paycheck-card">
+        ${content}
+      </div>
+    </div>`;
+}
+
 export function showWelcomeScreen(options = {}) {
   const {
     dailyPuzzle,
@@ -442,6 +477,7 @@ export function showWelcomeScreen(options = {}) {
     pastPuzzles = [],
     completedDailyIds = [],
     gameScores = {},
+    paycheckData = null,
     onStartDaily,
     onStartPractice,
     onStartPast,
@@ -535,6 +571,8 @@ export function showWelcomeScreen(options = {}) {
           <button class="${dailyBtnClass}" id="welcome-daily-btn"${dailyDisabled ? ' disabled' : ''}>${dailyBtnLabel}</button>
         </div>
       </div>
+
+      ${buildPaycheckHtml(paycheckData)}
 
       ${pastReturnsHtml}
 
