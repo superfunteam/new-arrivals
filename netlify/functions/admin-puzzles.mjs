@@ -1,4 +1,4 @@
-import { verifyToken, authResponse } from './lib/auth.mjs';
+import { verifyToken } from './lib/auth.mjs';
 
 const REPO = 'superfunteam/new-arrivals';
 const FILE_PATH = 'public/puzzles.json';
@@ -12,55 +12,48 @@ function ghHeaders() {
   };
 }
 
-async function handleGet() {
-  const res = await fetch(API_BASE, { headers: ghHeaders() });
-  if (!res.ok) {
-    const err = await res.text();
-    return authResponse(res.status, { error: `GitHub API error: ${err}` });
-  }
-  const data = await res.json();
-  const puzzles = JSON.parse(Buffer.from(data.content, 'base64').toString());
-  return authResponse(200, { puzzles: puzzles.puzzles, sha: data.sha });
-}
-
-async function handlePut(body) {
-  const { puzzles, sha, message } = JSON.parse(body);
-  if (!puzzles || !sha) {
-    return authResponse(400, { error: 'Missing puzzles or sha' });
-  }
-  const content = Buffer.from(
-    JSON.stringify({ puzzles }, null, 2)
-  ).toString('base64');
-
-  const res = await fetch(API_BASE, {
-    method: 'PUT',
-    headers: ghHeaders(),
-    body: JSON.stringify({
-      message: message || 'Update puzzles.json via admin dashboard',
-      content,
-      sha,
-    }),
-  });
-
-  if (!res.ok) {
-    const err = await res.text();
-    return authResponse(res.status, { error: `GitHub API error: ${err}` });
-  }
-  const data = await res.json();
-  return authResponse(200, { sha: data.content.sha });
-}
-
-export async function handler(event) {
-  const isAuthed = await verifyToken(event.headers.cookie);
-  if (!isAuthed) return authResponse(401, { error: 'Unauthorized' });
-
-  if (event.httpMethod === 'GET') {
-    return handleGet();
+export default async (req, context) => {
+  const cookie = req.headers.get('cookie');
+  if (!(await verifyToken(cookie))) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  if (event.httpMethod === 'PUT') {
-    return handlePut(event.body);
-  }
+  try {
+    if (req.method === 'GET') {
+      const res = await fetch(API_BASE, { headers: ghHeaders() });
+      if (!res.ok) return Response.json({ error: 'GitHub API error' }, { status: res.status });
+      const data = await res.json();
+      const puzzles = JSON.parse(Buffer.from(data.content, 'base64').toString());
+      return Response.json({ puzzles: puzzles.puzzles, sha: data.sha });
+    }
 
-  return authResponse(405, { error: 'Method not allowed' });
-}
+    if (req.method === 'PUT') {
+      const body = await req.json();
+      const { puzzles, sha, message } = body;
+      if (!puzzles || !sha) return Response.json({ error: 'Missing puzzles or sha' }, { status: 400 });
+
+      const content = Buffer.from(JSON.stringify({ puzzles }, null, 2)).toString('base64');
+      const res = await fetch(API_BASE, {
+        method: 'PUT',
+        headers: { ...ghHeaders(), 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: message || 'Update puzzles.json via admin dashboard',
+          content,
+          sha,
+        }),
+      });
+
+      if (!res.ok) return Response.json({ error: 'GitHub API error' }, { status: res.status });
+      const data = await res.json();
+      return Response.json({ sha: data.content.sha });
+    }
+
+    return Response.json({ error: 'Method not allowed' }, { status: 405 });
+  } catch (err) {
+    return Response.json({ error: err.message }, { status: 500 });
+  }
+};
+
+export const config = {
+  path: '/api/admin-puzzles',
+};

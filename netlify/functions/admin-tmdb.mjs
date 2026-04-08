@@ -1,4 +1,4 @@
-import { verifyToken, authResponse } from './lib/auth.mjs';
+import { verifyToken } from './lib/auth.mjs';
 
 const TMDB_BASE = 'https://api.themoviedb.org/3';
 
@@ -9,76 +9,75 @@ function tmdbHeaders() {
   };
 }
 
-async function handleSearch(query, year) {
-  const params = new URLSearchParams({ query });
-  if (year) params.set('year', year);
-
-  const res = await fetch(`${TMDB_BASE}/search/movie?${params}`, {
-    headers: tmdbHeaders(),
-  });
-
-  if (!res.ok) {
-    const err = await res.text();
-    return authResponse(res.status, { error: `TMDB API error: ${err}` });
+// Netlify Functions v2
+export default async (req, context) => {
+  const cookie = req.headers.get('cookie');
+  if (!(await verifyToken(cookie))) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const data = await res.json();
-  const results = (data.results || []).slice(0, 10).map((m) => ({
-    tmdb_id: m.id,
-    title: m.title,
-    year: m.release_date ? m.release_date.slice(0, 4) : null,
-    poster_path: m.poster_path,
-    overview: m.overview,
-  }));
-
-  return authResponse(200, results);
-}
-
-async function handleDetails(id) {
-  const res = await fetch(
-    `${TMDB_BASE}/movie/${id}?append_to_response=credits`,
-    { headers: tmdbHeaders() }
-  );
-
-  if (!res.ok) {
-    const err = await res.text();
-    return authResponse(res.status, { error: `TMDB API error: ${err}` });
+  if (req.method !== 'GET') {
+    return Response.json({ error: 'Method not allowed' }, { status: 405 });
   }
 
-  const m = await res.json();
-  const director =
-    m.credits?.crew?.find((c) => c.job === 'Director')?.name || null;
-  const stars = (m.credits?.cast || []).slice(0, 5).map((c) => c.name);
+  const url = new URL(req.url);
+  const query = url.searchParams.get('query');
+  const year = url.searchParams.get('year');
+  const id = url.searchParams.get('id');
 
-  return authResponse(200, {
-    tmdb_id: m.id,
-    title: m.title,
-    year: m.release_date ? m.release_date.slice(0, 4) : null,
-    poster_path: m.poster_path,
-    genres: (m.genres || []).map((g) => g.name),
-    director,
-    stars,
-    summary: m.overview,
-  });
-}
+  try {
+    if (id) {
+      // Movie details + credits
+      const res = await fetch(
+        `${TMDB_BASE}/movie/${id}?append_to_response=credits`,
+        { headers: tmdbHeaders() }
+      );
+      if (!res.ok) return Response.json({ error: 'TMDB error' }, { status: res.status });
 
-export async function handler(event) {
-  const isAuthed = await verifyToken(event.headers.cookie);
-  if (!isAuthed) return authResponse(401, { error: 'Unauthorized' });
+      const m = await res.json();
+      const director = m.credits?.crew?.find((c) => c.job === 'Director')?.name || null;
+      const stars = (m.credits?.cast || []).slice(0, 5).map((c) => c.name);
 
-  if (event.httpMethod !== 'GET') {
-    return authResponse(405, { error: 'Method not allowed' });
+      return Response.json({
+        tmdb_id: m.id,
+        title: m.title,
+        year: m.release_date ? m.release_date.slice(0, 4) : null,
+        poster_path: m.poster_path,
+        genres: (m.genres || []).map((g) => g.name),
+        director,
+        stars,
+        summary: m.overview,
+      });
+    }
+
+    if (query) {
+      // Search movies
+      const params = new URLSearchParams({ query });
+      if (year) params.set('year', year);
+
+      const res = await fetch(`${TMDB_BASE}/search/movie?${params}`, {
+        headers: tmdbHeaders(),
+      });
+      if (!res.ok) return Response.json({ error: 'TMDB error' }, { status: res.status });
+
+      const data = await res.json();
+      const results = (data.results || []).slice(0, 10).map((m) => ({
+        tmdb_id: m.id,
+        title: m.title,
+        year: m.release_date ? m.release_date.slice(0, 4) : null,
+        poster_path: m.poster_path,
+        overview: m.overview,
+      }));
+
+      return Response.json(results);
+    }
+
+    return Response.json({ error: 'Provide ?query= or ?id= parameter' }, { status: 400 });
+  } catch (err) {
+    return Response.json({ error: err.message }, { status: 500 });
   }
+};
 
-  const params = event.queryStringParameters || {};
-
-  if (params.id) {
-    return handleDetails(params.id);
-  }
-
-  if (params.query) {
-    return handleSearch(params.query, params.year);
-  }
-
-  return authResponse(400, { error: 'Provide ?query= or ?id= parameter' });
-}
+export const config = {
+  path: '/api/admin-tmdb',
+};

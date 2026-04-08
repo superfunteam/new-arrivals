@@ -1,4 +1,4 @@
-import { verifyToken, authResponse } from './lib/auth.mjs';
+import { verifyToken } from './lib/auth.mjs';
 
 const REPO = 'superfunteam/new-arrivals';
 const GH_API = `https://api.github.com/repos/${REPO}`;
@@ -173,24 +173,20 @@ async function createBlobsBatch(files, batchSize = 5) {
   return results;
 }
 
-export async function handler(event) {
-  const isAuthed = await verifyToken(event.headers.cookie);
-  if (!isAuthed) return authResponse(401, { error: 'Unauthorized' });
-
-  if (event.httpMethod !== 'POST') {
-    return authResponse(405, { error: 'Method not allowed' });
-  }
+export default async (req, context) => {
+  const cookie = req.headers.get('cookie');
+  if (!(await verifyToken(cookie))) return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  if (req.method !== 'POST') return Response.json({ error: 'Method not allowed' }, { status: 405 });
 
   try {
-    const body = JSON.parse(event.body || '{}');
-    const { puzzle, interrupts } = body;
+    const { puzzle, interrupts } = await req.json();
 
     if (!puzzle || !puzzle.categories || !puzzle.id || !puzzle.title) {
-      return authResponse(400, { error: 'Complete puzzle data is required' });
+      return Response.json({ error: 'Complete puzzle data is required' }, { status: 400 });
     }
 
     if (!interrupts || !Array.isArray(interrupts)) {
-      return authResponse(400, { error: 'Interrupts array is required' });
+      return Response.json({ error: 'Interrupts array is required' }, { status: 400 });
     }
 
     // Format puzzle for puzzles.json (use "movies" key, not "items")
@@ -276,7 +272,7 @@ export async function handler(event) {
     // Update ref
     await updateRef(newCommitSha);
 
-    return authResponse(200, {
+    return Response.json({
       ok: true,
       commitSha: newCommitSha,
       message: commitMessage,
@@ -284,6 +280,8 @@ export async function handler(event) {
     });
   } catch (err) {
     console.error('Process error:', err);
-    return authResponse(500, { error: err.message });
+    return Response.json({ error: err.message }, { status: 500 });
   }
-}
+};
+
+export const config = { path: '/api/admin-process' };
