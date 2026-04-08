@@ -715,8 +715,8 @@ html, body {
 /* Genre sticker (floating circle above the info panel) */
 .lightbox-sticker {
   position: absolute;
-  bottom: calc(45vh + 20px);
-  right: 24px;
+  bottom: calc(45vh + 122px);
+  right: -10px;
   width: 68px;
   height: 68px;
   border-radius: 50%;
