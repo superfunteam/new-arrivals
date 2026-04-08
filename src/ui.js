@@ -300,6 +300,7 @@ export function showSplashScreen(options = {}) {
       <div class="splash-content">
         <img class="splash-logo" src="/logo-overlay.png" alt="New Arrivals" />
         <p class="splash-tagline">The year is 19XX. You still live at home. You work at the rental store. And you need this paycheck.</p>
+        <p class="splash-tagline splash-blink">New games daily at 10pm</p>
         <button class="splash-btn" id="splash-start">START YOUR SHIFT</button>
         <button class="splash-mute-link" id="splash-mute">start on mute</button>
       </div>
