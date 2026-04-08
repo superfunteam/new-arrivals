@@ -139,8 +139,10 @@ function showInterrupt(interrupt) {
   containerEl.innerHTML = `
     <div class="interrupt-box">
       <div class="interrupt-header">
-        <div class="interrupt-sprite" id="interrupt-sprite"
-             style="background-image: url('${spritePath}')"></div>
+        <div class="interrupt-sprite-wrap">
+          <div class="interrupt-sprite" id="interrupt-sprite"
+               style="background-image: url('${spritePath}')"></div>
+        </div>
         <div class="interrupt-name">${interrupt.character}</div>
       </div>
       <div class="interrupt-dialogue" id="interrupt-dialogue"></div>
@@ -173,10 +175,10 @@ function startSpriteAnimation() {
   if (!spriteEl) return;
 
   spriteAnimInterval = setInterval(() => {
-    // Each frame is 32x32 in the sheet, displayed at 2x (64x64)
-    // background-size is 256px 512px (128*2 x 256*2)
+    // Each frame is 32x32 in the sheet, displayed at 4x (128x128)
+    // background-size is 512px 1024px (128*4 x 256*4)
     // Top row (y=0), columns 0-3
-    const xOffset = -(frame * 64);
+    const xOffset = -(frame * 128);
     spriteEl.style.backgroundPosition = `${xOffset}px 0px`;
     frame = (frame + 1) % 4;
   }, 250);

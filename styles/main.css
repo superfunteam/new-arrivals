@@ -1589,6 +1589,7 @@ html, body {
   right: 0;
   background: rgba(0, 0, 0, 0.95);
   border-top: 3px solid var(--neon-pink);
+  border-radius: 16px 16px 0 0;
   padding: 16px;
   padding-bottom: max(16px, env(safe-area-inset-bottom));
   z-index: 999999;
@@ -1607,19 +1608,31 @@ html, body {
   margin-bottom: 10px;
 }
 
-.interrupt-sprite {
-  width: 64px;
-  height: 64px;
-  image-rendering: pixelated;
-  background-size: 256px 512px;
-  background-repeat: no-repeat;
+.interrupt-sprite-wrap {
+  width: 96px;
+  height: 96px;
+  overflow: hidden;
   flex-shrink: 0;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.interrupt-sprite {
+  width: 128px;
+  height: 128px;
+  image-rendering: pixelated;
+  background-size: 512px 1024px;
+  background-repeat: no-repeat;
+  /* Offset to crop empty space above the character */
+  margin-top: -16px;
+  margin-left: -16px;
 }
 
 .interrupt-name {
   font-family: 'Caprasimo', cursive;
-  font-size: 14px;
+  font-size: 16px;
   color: var(--neon-pink);
+  align-self: center;
 }
 
 .interrupt-dialogue {
