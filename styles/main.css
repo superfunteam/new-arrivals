@@ -124,6 +124,17 @@ html, body {
   text-shadow: 0 0 12px rgba(255, 23, 68, 0.6);
 }
 
+.hud-wage-wrap {
+  text-align: right;
+}
+.hud-wage-label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 2px;
+}
+
 .hud-bottom {
   position: absolute;
   bottom: 0;
@@ -312,12 +323,12 @@ html, body {
 
 .splash-tagline {
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 700;
   color: #ffffff;
   text-align: center;
   line-height: 1.6;
-  max-width: 280px;
+  max-width: 320px;
   margin-bottom: 4px;
 }
 
@@ -392,13 +403,20 @@ html, body {
 
 .onboarding-slide.active {
   display: flex;
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(30%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
 }
 
 .onboarding-slide h2 {
   font-family: var(--font-display);
   font-size: 14px;
   color: var(--neon-pink);
-  margin-bottom: 16px;
+  line-height: 1.6;
+  margin-bottom: 20px;
 }
 
 .onboarding-slide p {
@@ -429,12 +447,19 @@ html, body {
 .onboarding-btn {
   font-family: var(--font-display);
   font-size: 10px;
-  padding: 12px 24px;
+  padding: 14px 28px;
+  min-height: 44px;
   background: var(--neon-pink);
   color: #fff;
   border: none;
   cursor: pointer;
   text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 0 20px rgba(255, 107, 157, 0.4), inset 0 -3px 0 rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s;
+}
+.onboarding-btn:active {
+  transform: scale(0.95);
 }
 
 .skip-checkbox {
@@ -535,6 +560,17 @@ html, body {
   text-transform: uppercase;
   letter-spacing: 1px;
   animation: tapPulse 1.2s ease-in-out infinite;
+}
+
+.onboarding-pill {
+  font-family: var(--font-display);
+  font-size: 8px;
+  color: #fff;
+  background: var(--neon-blue);
+  padding: 6px 14px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .demo-tape {

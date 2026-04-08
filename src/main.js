@@ -460,6 +460,12 @@ async function startGameSession(puzzle, mode, puzzlesData) {
     } else {
       // Fresh game — play entrance animation, then enable interaction
       animateEntrance(unsolvedBoxes, () => {
+        // Start timer when tapes land
+        startTimer(game);
+        timerStarted = true;
+        timerInterval = setInterval(() => {
+          updateTimer(getElapsedTime(game.startTime));
+        }, 1000);
         setupGameInteraction();
       });
     }
@@ -494,16 +500,7 @@ async function startGameSession(puzzle, mode, puzzlesData) {
   // =========================================================================
 
   function handleTap(box) {
-    // 1. Start timer on first interaction
-    if (!timerStarted) {
-      startTimer(game);
-      timerStarted = true;
-      timerInterval = setInterval(() => {
-        updateTimer(getElapsedTime(game.startTime));
-      }, 1000);
-    }
-
-    // 2. Ensure audio is initialized (fallback if welcome screen didn't start it)
+    // 1. Ensure audio is initialized (fallback if welcome screen didn't start it)
     if (!audioInitialized) { audio.init(); audioInitialized = true; }
 
     // 3. Toggle selection

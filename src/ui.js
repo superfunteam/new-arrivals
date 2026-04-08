@@ -52,7 +52,10 @@ export function createHUD() {
         NEW ARRIVALS
         <span class="hud-date">${dateStr}</span>
       </div>
-      <div class="hud-wage" id="hud-wage">$25.00</div>
+      <div class="hud-wage-wrap">
+        <div class="hud-wage" id="hud-wage">$25.00</div>
+        <span class="hud-wage-label">Current Pay</span>
+      </div>
     </div>
 
     <div class="hud-bottom">
@@ -331,7 +334,7 @@ export function showOnboarding(onComplete) {
       title: 'How to Sort',
       anim: `<div class="onboarding-poster-tap">
         <img class="demo-tape" id="demo-tape" src="/posters/${posterIds.dieHard}_pixel.jpg" alt="Die Hard" />
-        <div class="onboarding-tap-hint">Tap to select</div>
+        <div class="onboarding-pill">TAP TO SELECT</div>
       </div>`,
       body: 'Tap a tape to select it. Pick 4 you think belong together, then hit SHELVE IT. Long-press any tape to view its details up close.',
       btn: 'Next',
