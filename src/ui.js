@@ -528,9 +528,12 @@ export function showLightbox(movie, options = {}) {
 
   const isUncoverDisabled = uncovered || wage <= 0;
 
-  // Genre displayed inline with title
+  // Genre sticker (colored circle floating above the info panel)
   const primaryGenre = genres.length > 0 ? genres[0] : '';
   const genreColor = GENRE_COLORS[primaryGenre] || '#666';
+  const genreStickerHtml = primaryGenre
+    ? `<div class="lightbox-sticker" style="background:${genreColor}">${primaryGenre.toUpperCase()}</div>`
+    : '';
   const genreInlineHtml = primaryGenre
     ? ` <span class="lightbox-genre" style="color:${genreColor}">&bull; ${primaryGenre.toUpperCase()}</span>`
     : '';
@@ -592,6 +595,7 @@ export function showLightbox(movie, options = {}) {
   overlay.innerHTML = `
     <div class="lightbox" id="lightbox-inner">
       <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+      ${genreStickerHtml}
       <div class="lightbox-content" id="lightbox-content">
         <div class="lightbox-title">${movie.title}${genreInlineHtml}</div>
         ${detailsHtml}
@@ -605,6 +609,10 @@ export function showLightbox(movie, options = {}) {
   `;
 
   overlay.classList.add('active');
+
+  // Hide HUD corners for a cleaner look
+  const hud = document.getElementById('hud');
+  if (hud) hud.classList.add('hud-inspect-mode');
 
   // Fade in
   requestAnimationFrame(() => {
@@ -765,6 +773,10 @@ export function hideLightbox() {
   if (!overlay) return;
   overlay.innerHTML = '';
   overlay.classList.remove('active');
+
+  // Restore HUD corners
+  const hud = document.getElementById('hud');
+  if (hud) hud.classList.remove('hud-inspect-mode');
 }
 
 // ─── Solved Row Label ───────────────────────────────────────────────────────
