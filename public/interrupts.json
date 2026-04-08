@@ -111,110 +111,111 @@
   "2026-04-08": [
     {
       "type": "trivia",
-      "character": "Blonde Man",
-      "sprite": "blonde_man",
-      "folder": "Blonde Man",
-      "dialogue": "Settle a bet -- in Ferris Bueller's Day Off, what kind of car do they take out for the joyride?",
+      "character": "Knight Kid",
+      "sprite": "knight_kid",
+      "folder": "Knight Kid",
+      "dialogue": "UHHH MY MOM SAID I CAN'T WATCH ALIENS UNTIL I'M LIKE TWELVE BUT HOW MANY XENOMORPHS ARE IN THAT MOVIE ANYWAY??",
+      "question": "How many xenomorphs are in Aliens?",
       "answers": [
-        "Ferrari 250 GT California",
-        "Porsche 911",
-        "Corvette Stingray",
-        "Lamborghini Countach"
+        "Hundreds (correct)",
+        "Just one queen",
+        "Exactly 57",
+        "Only 6 or 7"
       ],
-      "correct": 0
+      "correctAnswer": 0
     },
     {
       "type": "trivia",
-      "character": "Policeman",
-      "sprite": "policeman",
-      "folder": "Policeman",
-      "dialogue": "I'm testing you. In Aliens, what is the name of the planet the Colonial Marines go back to?",
+      "character": "Blonde Woman",
+      "sprite": "blonde_woman",
+      "folder": "Blonde Woman",
+      "dialogue": "My boyfriend keeps quoting that elevator scene from Die Hard. What does Hans say to the executive again?",
+      "question": "What does Hans Gruber say to executive Takagi in Die Hard?",
       "answers": [
-        "LV-426",
-        "LV-223",
-        "Pandora",
-        "Kepler-442b"
+        "\"I wanted to meet you\" (correct)",
+        "\"Give me the codes\"",
+        "\"It's nothing personal\"",
+        "\"Welcome to the party\""
       ],
-      "correct": 0
-    },
-    {
-      "type": "trivia",
-      "character": "Blue Haired Woman",
-      "sprite": "blue_haired_woman",
-      "folder": "Blue Haired Woman",
-      "dialogue": "I love Heathers. What are the first names of the three Heathers in the clique?",
-      "answers": [
-        "Heather, Heather, and Heather",
-        "Heather, Holly, and Helen",
-        "Heather, Hannah, and Heidi",
-        "Heather, Heather, and Veronica"
-      ],
-      "correct": 0
+      "correctAnswer": 0
     },
     {
       "type": "trivia",
       "character": "Viking Woman",
       "sprite": "viking_woman",
       "folder": "Viking Woman",
-      "dialogue": "ANSWER ME THIS! In The Empire Strikes Back, who reveals he is Luke's father?",
+      "dialogue": "Settling a bet with my sister. Who directed The Shining?",
+      "question": "Who directed The Shining?",
       "answers": [
-        "Darth Vader",
-        "Obi-Wan Kenobi",
-        "Yoda",
-        "Emperor Palpatine"
+        "Stanley Kubrick (correct)",
+        "Alfred Hitchcock",
+        "Brian De Palma",
+        "Roman Polanski"
       ],
-      "correct": 0
+      "correctAnswer": 0
     },
     {
-      "type": "hint",
-      "character": "Farmer",
-      "sprite": "farmer",
-      "folder": "Farmer",
-      "dialogue": "I'm lookin' for movies where the whole dang thing happens inside four walls. No going outside, no road trips, just stuck in one spot.",
-      "hintCategory": "Set Entirely in One Building",
-      "cost": 3
+      "type": "trivia",
+      "character": "Blue Haired Kid Girl",
+      "sprite": "blue_haired_kid_girl",
+      "folder": "Blue Haired Kid Girl",
+      "dialogue": "MY FRIEND SAYS FERRIS BUELLER BREAKS THE FOURTH WALL BUT WHAT DOES THAT EVEN MEAN??? DOES HE LIKE, PUNCH A WALL OR SOMETHING??",
+      "question": "What does 'breaking the fourth wall' mean in Ferris Bueller's Day Off?",
+      "answers": [
+        "Talking directly to the audience (correct)",
+        "Escaping from school",
+        "Destroying property",
+        "Lying to parents"
+      ],
+      "correctAnswer": 0
     },
     {
       "type": "hint",
       "character": "Old Man",
       "sprite": "old_man",
       "folder": "Old Man",
-      "dialogue": "I remember a group of films where the follow-up was even better than the first one. The second chapters that outshine their predecessors, you know?",
-      "hintCategory": "Sequel is Better Than the Original",
-      "cost": 3
+      "dialogue": "Looking for something my grandson might like... you know, the follow-up picture that folks liked even more than the first one. Hard to believe sometimes.",
+      "hintCategory": "Sequel Better Received Than the Original"
     },
     {
       "type": "hint",
-      "character": "Bride",
-      "sprite": "bride",
-      "folder": "Bride",
-      "dialogue": "I'm looking for movies named after people! Just a single first name as the whole title. Like naming your baby something iconic, you know?",
-      "hintCategory": "Title is a Character's First Name Only",
-      "cost": 3
+      "character": "Blonde Man",
+      "sprite": "blonde_man",
+      "folder": "Blonde Man",
+      "dialogue": "Date night. Need something that takes place basically all in one spot, really intense, you know? Keeps you locked in.",
+      "hintCategory": "Set Almost Entirely in One Building"
+    },
+    {
+      "type": "hint",
+      "character": "Chef",
+      "sprite": "chef",
+      "folder": "Chef",
+      "dialogue": "My wife wants something where the title is just somebody's name. Like, just their first name, nothing else.",
+      "hintCategory": "Title is a Character's First Name Only"
     },
     {
       "type": "story",
-      "character": "Blonde Kid Girl",
-      "sprite": "blonde_kid_girl",
-      "folder": "Blonde Kid Girl",
-      "dialogue": "My dad said I could rent TWO movies if I cleaned my room but I just shoved everything under the bed. SHHH don't tell him he's in the car!!",
-      "dismiss": "Secret's safe"
+      "character": "Viking Kid Boy",
+      "sprite": "viking_kid_boy",
+      "folder": "Viking Kid Boy",
+      "dialogue": "ONE TIME I REWOUND A TAPE SO FAST THE MACHINE STARTED SMOKING AND MY DAD SAID IT WAS GONNA EXPLODE BUT IT DIDN'T BUT NOW WE HAVE TO REWIND TAPES REAL SLOW LIKE GRANDMA DRIVES!!!",
+      "dismissLabel": "Cool story bro"
     },
     {
       "type": "story",
-      "character": "Punk Woman",
-      "sprite": "punk_woman",
-      "folder": "Punk Woman",
-      "dialogue": "I once rewound a tape so many times trying to pause on one frame that the machine ate it. The rental place still has my picture on the wall. Not in a good way.",
-      "dismiss": "Legend"
+      "character": "Firefighter",
+      "sprite": "firefighter",
+      "folder": "Firefighter",
+      "dialogue": "Guy came in last week, returned Planes, Trains and Automobiles, said it gave him PTSD from his actual Thanksgiving commute. Still charged him the late fee though.",
+      "dismissLabel": "Brutal"
     },
     {
       "type": "story",
-      "character": "Knight Kid",
-      "sprite": "knight_kid",
-      "folder": "Knight Kid",
-      "dialogue": "My mom says I watch TOO MANY movies but she fell asleep during Beetlejuice and I had to watch the WHOLE THING alone and it was AMAZING.",
-      "dismiss": "Brave knight"
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "My kid keeps asking why they don't just call these 'movie stores' instead of 'video stores.' I told him it's because we're fancy.",
+      "dismissLabel": "Sure, fancy"
     }
   ],
   "2026-04-09": [

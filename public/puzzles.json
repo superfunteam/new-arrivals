@@ -1498,6 +1498,7 @@
               "title": "Ferris Bueller's Day Off",
               "year": 1986,
               "tmdb_id": 9377,
+              "summary": "After high school slacker Ferris Bueller successfully fakes an illness in order to skip school for the day, he goes on a series of adventures throughout Chicago with his girlfriend Sloane and best friend Cameron, all the while trying to outwit his wily school principal and fed-up sister.",
               "genres": [
                 "Comedy"
               ],
@@ -1506,13 +1507,13 @@
                 "Matthew Broderick",
                 "Alan Ruck",
                 "Mia Sara"
-              ],
-              "summary": "After high school slacker Ferris Bueller successfully fakes an illness in order to skip school for the day, he goes on a series of adventures throughout Chicago with his girlfriend Sloane and best friend Cameron, all the while trying to outwit his wily school principal and fed-up sister."
+              ]
             },
             {
               "title": "Sixteen Candles",
               "year": 1984,
               "tmdb_id": 15144,
+              "summary": "With the occasion all but overshadowed by her sister's upcoming wedding, angst-ridden Samantha faces her 16th birthday with typical adolescent dread. Samantha pines for studly older boy Jake, but worries that her chastity will be a turnoff for the popular senior. Meanwhile, she must constantly rebuff the affections of nerdy Ted, who is unfortunately the only boy in school who seems to take an interest in her.",
               "genres": [
                 "Comedy",
                 "Romance"
@@ -1522,13 +1523,13 @@
                 "Molly Ringwald",
                 "Michael Schoeffling",
                 "Haviland Morris"
-              ],
-              "summary": "With the occasion all but overshadowed by her sister's upcoming wedding, angst-ridden Samantha faces her 16th birthday with typical adolescent dread. Samantha pines for studly older boy Jake, but worries that her chastity will be a turnoff for the popular senior. Meanwhile, she must constantly rebuff the affections of nerdy Ted, who is unfortunately the only boy in school who seems to take an interest in her."
+              ]
             },
             {
               "title": "Weird Science",
               "year": 1985,
               "tmdb_id": 11814,
+              "summary": "Two unpopular teenagers, Gary and Wyatt, fail at all attempts to be accepted by their peers. Their desperation to be liked leads them to \"create\" a woman via their computer. Their living and breathing creation is a gorgeous woman, Lisa, whose purpose is to boost their confidence level by putting them into situations which require Gary and Wyatt to act like men.",
               "genres": [
                 "Comedy",
                 "Fantasy",
@@ -1540,13 +1541,13 @@
                 "Anthony Michael Hall",
                 "Ilan Mitchell-Smith",
                 "Kelly LeBrock"
-              ],
-              "summary": "Two unpopular teenagers, Gary and Wyatt, fail at all attempts to be accepted by their peers. Their desperation to be liked leads them to \"create\" a woman via their computer. Their living and breathing creation is a gorgeous woman, Lisa, whose purpose is to boost their confidence level by putting them into situations which require Gary and Wyatt to act like men."
+              ]
             },
             {
               "title": "Planes, Trains and Automobiles",
               "year": 1987,
               "tmdb_id": 2609,
+              "summary": "An irritable marketing executive, Neal Page, is heading home to Chicago for Thanksgiving when a number of delays force him to travel with a well meaning but overbearing shower curtain ring salesman, Del Griffith.",
               "genres": [
                 "Comedy"
               ],
@@ -1555,13 +1556,12 @@
                 "Steve Martin",
                 "John Candy",
                 "Laila Robins"
-              ],
-              "summary": "An irritable marketing executive, Neal Page, is heading home to Chicago for Thanksgiving when a number of delays force him to travel with a well meaning but overbearing shower curtain ring salesman, Del Griffith."
+              ]
             }
           ]
         },
         {
-          "name": "Sequel is Better Than the Original",
+          "name": "Sequel Better Received Than the Original",
           "difficulty": 2,
           "color": "#FFC107",
           "movies": [
@@ -1569,6 +1569,7 @@
               "title": "Aliens",
               "year": 1986,
               "tmdb_id": 679,
+              "summary": "Ripley, the sole survivor of the Nostromo's deadly encounter with the monstrous Alien, returns to Earth after drifting through space in hypersleep for 57 years. Although her story is initially met with skepticism, she agrees to accompany a team of Colonial Marines back to LV-426.",
               "genres": [
                 "Action",
                 "Thriller",
@@ -1579,13 +1580,13 @@
                 "Sigourney Weaver",
                 "Carrie Henn",
                 "Michael Biehn"
-              ],
-              "summary": "Ripley, the sole survivor of the Nostromo's deadly encounter with the monstrous Alien, returns to Earth after drifting through space in hypersleep for 57 years. Although her story is initially met with skepticism, she agrees to accompany a team of Colonial Marines back to LV-426."
+              ]
             },
             {
               "title": "The Empire Strikes Back",
               "year": 1980,
               "tmdb_id": 1891,
+              "summary": "The epic saga continues as Luke Skywalker, in hopes of defeating the evil Galactic Empire, learns the ways of the Jedi from aging master Yoda. But Darth Vader is more determined than ever to capture Luke. Meanwhile, rebel leader Princess Leia, cocky Han Solo, Chewbacca, and droids C-3PO and R2-D2 are thrown into various stages of capture, betrayal and despair.",
               "genres": [
                 "Adventure",
                 "Action",
@@ -1596,13 +1597,13 @@
                 "Mark Hamill",
                 "Harrison Ford",
                 "Carrie Fisher"
-              ],
-              "summary": "The epic saga continues as Luke Skywalker, in hopes of defeating the evil Galactic Empire, learns the ways of the Jedi from aging master Yoda. But Darth Vader is more determined than ever to capture Luke. Meanwhile, rebel leader Princess Leia, cocky Han Solo, Chewbacca, and droids C-3PO and R2-D2 are thrown into various stages of capture, betrayal and despair."
+              ]
             },
             {
-              "title": "The Road Warrior",
+              "title": "Mad Max 2",
               "year": 1981,
               "tmdb_id": 8810,
+              "summary": "Max Rockatansky returns as the heroic loner who drives the dusty roads of a postapocalyptic Australian Outback in an unending search for gasoline. Arrayed against him and the other scraggly defendants of a fuel-depot encampment are the bizarre warriors commanded by the charismatic Lord Humungus, a violent leader whose scruples are as barren as the surrounding landscape.",
               "genres": [
                 "Adventure",
                 "Action",
@@ -1614,13 +1615,13 @@
                 "Mel Gibson",
                 "Bruce Spence",
                 "Michael Preston"
-              ],
-              "summary": "Max Rockatansky returns as the heroic loner who drives the dusty roads of a postapocalyptic Australian Outback in an unending search for gasoline. Arrayed against him and the other scraggly defendants of a fuel-depot encampment are the bizarre warriors commanded by the charismatic Lord Humungus, a violent leader whose scruples are as barren as the surrounding landscape."
+              ]
             },
             {
               "title": "Star Trek II: The Wrath of Khan",
               "year": 1982,
               "tmdb_id": 154,
+              "summary": "The starship Enterprise and its crew is pulled back into action when old nemesis, Khan, steals a top secret device called Project Genesis.",
               "genres": [
                 "Action",
                 "Adventure",
@@ -1632,13 +1633,12 @@
                 "William Shatner",
                 "Leonard Nimoy",
                 "Ricardo Montalban"
-              ],
-              "summary": "The starship Enterprise and its crew is pulled back into action when old nemesis, Khan, steals a top secret device called Project Genesis."
+              ]
             }
           ]
         },
         {
-          "name": "Set Entirely in One Building",
+          "name": "Set Almost Entirely in One Building",
           "difficulty": 3,
           "color": "#2196F3",
           "movies": [
@@ -1646,6 +1646,7 @@
               "title": "Die Hard",
               "year": 1988,
               "tmdb_id": 562,
+              "summary": "NYPD cop John McClane's plan to reconcile with his estranged wife is thrown for a serious loop when, minutes after he arrives at her office's Christmas Party, the entire building is overtaken by a group of terrorists. With little help from the LAPD, wisecracking McClane sets out to single-handedly rescue the hostages and bring the bad guys down.",
               "genres": [
                 "Action",
                 "Thriller"
@@ -1655,13 +1656,13 @@
                 "Bruce Willis",
                 "Alan Rickman",
                 "Alexander Godunov"
-              ],
-              "summary": "NYPD cop John McClane's plan to reconcile with his estranged wife is thrown for a serious loop when, minutes after he arrives at her office's Christmas Party, the entire building is overtaken by a group of terrorists. With little help from the LAPD, wisecracking McClane sets out to single-handedly rescue the hostages and bring the bad guys down."
+              ]
             },
             {
               "title": "The Shining",
               "year": 1980,
               "tmdb_id": 694,
+              "summary": "Jack Torrance accepts a caretaker job at the Overlook Hotel, where he, along with his wife Wendy and their son Danny, must live isolated from the rest of the world for the winter. But they aren't prepared for the madness that lurks within.",
               "genres": [
                 "Horror",
                 "Thriller"
@@ -1671,13 +1672,13 @@
                 "Jack Nicholson",
                 "Shelley Duvall",
                 "Danny Lloyd"
-              ],
-              "summary": "Jack Torrance accepts a caretaker job at the Overlook Hotel, where he, along with his wife Wendy and their son Danny, must live isolated from the rest of the world for the winter. But they aren't prepared for the madness that lurks within."
+              ]
             },
             {
               "title": "Clue",
               "year": 1985,
               "tmdb_id": 15196,
+              "summary": "Clue finds six colorful dinner guests gathered at the mansion of their host, Mr. Boddy -- who turns up dead after his secret is exposed: He was blackmailing all of them. With the killer among them, the guests and Boddy's chatty butler must suss out the culprit before the body count rises.",
               "genres": [
                 "Comedy",
                 "Thriller",
@@ -1689,13 +1690,13 @@
                 "Tim Curry",
                 "Eileen Brennan",
                 "Madeline Kahn"
-              ],
-              "summary": "Clue finds six colorful dinner guests gathered at the mansion of their host, Mr. Boddy -- who turns up dead after his secret is exposed: He was blackmailing all of them. With the killer among them, the guests and Boddy's chatty butler must suss out the culprit before the body count rises."
+              ]
             },
             {
               "title": "Cube",
-              "year": 1997,
+              "year": 1998,
               "tmdb_id": 431,
+              "summary": "A group of strangers find themselves trapped in a maze-like prison. It soon becomes clear that each of them possesses the peculiar skills necessary to escape, if they don't wind up dead first.",
               "genres": [
                 "Thriller",
                 "Science Fiction",
@@ -1706,8 +1707,7 @@
                 "Nicole De Boer",
                 "Nicky Guadagni",
                 "Maurice Dean Wint"
-              ],
-              "summary": "A group of strangers find themselves trapped in a maze-like prison. It soon becomes clear that each of them possesses the peculiar skills necessary to escape, if they don't wind up dead first."
+              ]
             }
           ]
         },
@@ -1718,8 +1718,9 @@
           "movies": [
             {
               "title": "Heathers",
-              "year": 1988,
+              "year": 1989,
               "tmdb_id": 2640,
+              "summary": "A girl who halfheartedly tries to be part of the \"in crowd\" of her school meets a rebel who teaches her a more devious way to play social politics: by killing the popular kids.",
               "genres": [
                 "Comedy",
                 "Crime"
@@ -1729,13 +1730,13 @@
                 "Winona Ryder",
                 "Christian Slater",
                 "Shannen Doherty"
-              ],
-              "summary": "A girl who halfheartedly tries to be part of the \"in crowd\" of her school meets a rebel who teaches her a more devious way to play social politics: by killing the popular kids."
+              ]
             },
             {
               "title": "Beetlejuice",
               "year": 1988,
               "tmdb_id": 4011,
+              "summary": "A newly dead New England couple seeks help from a deranged demon exorcist to scare an affluent New York family out of their home.",
               "genres": [
                 "Fantasy",
                 "Comedy"
@@ -1745,13 +1746,13 @@
                 "Alec Baldwin",
                 "Geena Davis",
                 "Winona Ryder"
-              ],
-              "summary": "A newly dead New England couple seeks help from a deranged demon exorcist to scare an affluent New York family out of their home."
+              ]
             },
             {
               "title": "Amadeus",
               "year": 1984,
               "tmdb_id": 279,
+              "summary": "Disciplined Italian composer Antonio Salieri becomes consumed by jealousy and resentment towards the hedonistic and remarkably talented young Salzburger composer Wolfgang Amadeus Mozart.",
               "genres": [
                 "History",
                 "Music",
@@ -1762,13 +1763,13 @@
                 "F. Murray Abraham",
                 "Tom Hulce",
                 "Elizabeth Berridge"
-              ],
-              "summary": "Disciplined Italian composer Antonio Salieri becomes consumed by jealousy and resentment towards the hedonistic and remarkably talented young Salzburger composer Wolfgang Amadeus Mozart."
+              ]
             },
             {
               "title": "Rocky",
               "year": 1976,
               "tmdb_id": 1366,
+              "summary": "Rocky Balboa is a Philadelphia club fighter who seems to be going nowhere. But when a stroke of fate puts him in the ring with a world heavyweight champion, Rocky knows that it's his one shot at the big time — a once-in-a-lifetime opportunity to go the distance and come out a winner!",
               "genres": [
                 "Drama"
               ],
@@ -1777,8 +1778,7 @@
                 "Sylvester Stallone",
                 "Talia Shire",
                 "Burt Young"
-              ],
-              "summary": "Rocky Balboa is a Philadelphia club fighter who seems to be going nowhere. But when a stroke of fate puts him in the ring with a world heavyweight champion, Rocky knows that it's his one shot at the big time — a once-in-a-lifetime opportunity to go the distance and come out a winner!"
+              ]
             }
           ]
         }
