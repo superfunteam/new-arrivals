@@ -128,9 +128,9 @@ function TimelineStrip({ puzzles }) {
             return (
               <div
                 key={day.dateStr}
-                className={`flex-shrink-0 w-[90px] rounded-lg border p-2 text-center text-xs ${
-                  isToday ? 'ring-2 ring-primary ring-offset-1' : ''
-                } ${day.puzzle ? '' : 'border-dashed'}`}
+                className={`flex-shrink-0 w-[90px] rounded-lg p-2 text-center text-xs ${
+                  isToday ? 'border-2 border-primary' : 'border'
+                } ${!day.puzzle && !isToday ? 'border-dashed' : ''}`}
               >
                 <div className="text-muted-foreground">{day.dayName}</div>
                 <div className={`text-lg font-bold ${isToday ? 'text-primary' : ''}`}>{day.dayNum}</div>
