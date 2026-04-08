@@ -284,14 +284,11 @@ async function main() {
     dailyState = savedState.completed ? 'completed' : 'in_progress';
   }
 
-  // ── 4. Determine practice puzzles (up to 4 that aren't today's daily) ────
+  // ── 4. Determine practice puzzles (training first, then others) ──────────
   const allPuzzles = puzzlesData.puzzles;
-  let practicePuzzles = allPuzzles.filter((p) => p.id !== dailyPuzzle.id);
-  if (practicePuzzles.length === 0) {
-    // Fallback: if all puzzles somehow match, use indices 1-4
-    practicePuzzles = allPuzzles.slice(1);
-  }
-  practicePuzzles = practicePuzzles.slice(0, 4);
+  const trainingPuzzles = allPuzzles.filter(p => p.id.startsWith('training-'));
+  const otherPractice = allPuzzles.filter(p => !p.id.startsWith('training-') && p.id !== dailyPuzzle.id);
+  let practicePuzzles = [...trainingPuzzles, ...otherPractice];
 
   // ── 5. Determine past puzzles and completed dailies ───────────────────────
   const pastPuzzles = getPastPuzzles(puzzlesData);
