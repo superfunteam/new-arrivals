@@ -135,8 +135,8 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
     const worldH = 2 * Math.tan(fovRad / 2) * camera.position.z;
     const worldW = worldH * camera.aspect;
     return {
-      x: -(dx / rect.width) * worldW,
-      y: (dy / rect.height) * worldH,
+      x: (dx / rect.width) * worldW,
+      y: -(dy / rect.height) * worldH,
     };
   }
 
