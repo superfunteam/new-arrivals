@@ -562,7 +562,7 @@ export function showWelcomeScreen(options = {}) {
       (p, i) => {
         const pDate = new Date(p.id + 'T12:00:00');
         const pDateStr = formatDate(pDate);
-        const isCompleted = completedSet.has(p.id);
+        const isCompleted = completedSet.has(p.id) || !!gameScores[p.id];
         return `
       <div class="past-card${isCompleted ? ' completed' : ''}">
         <div class="past-card-info">
@@ -571,7 +571,7 @@ export function showWelcomeScreen(options = {}) {
           ${scorePill(p.id)}
         </div>
         <div class="past-card-action">
-          <button class="welcome-btn practice" data-past-index="${i}">REPLAY</button>
+          <button class="welcome-btn practice" data-past-index="${i}">${isCompleted ? 'REPLAY' : 'PLAY'}</button>
         </div>
       </div>`;
       }

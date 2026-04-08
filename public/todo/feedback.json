@@ -102,7 +102,7 @@
     {
       "id": 8,
       "title": "Fix menu navigation and 'Replay' label",
-      "done": false,
+      "done": true,
       "actions": [
         "Return to main menu after finishing a game, not the splash page",
         "Fix 'Replay' label for puzzles the player hasn't played yet",
