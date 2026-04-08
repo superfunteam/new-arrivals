@@ -1,0 +1,155 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "title": "Improve mobile readability and shelf layout",
+      "done": false,
+      "actions": [
+        "Reduce shelf/plank gap sizes to show more tapes on screen",
+        "Reduce dead space above and below the shelf",
+        "Make completed row labels smaller or collapsible so they don't block the view",
+        "Improve pinch-zoom to focus on the area being zoomed (not always center)"
+      ],
+      "feedback": [
+        { "from": "Tom Ivey", "date": "2026-04-08", "text": "A bit hard to read - can pinch zoom but it's always central, and once a row has been completed it blocks view. You're using up room for the music stuff for example, and big gaps under shelf, and even above. Make more compact to show more of titles. Make shelf graphics and gaps smaller for more room for tapes." }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Faster tape inspection / quick-browse mode",
+      "done": false,
+      "actions": [
+        "Speed up the long-press-to-inspect flow — feels slow",
+        "Consider a quick-browse mode: tap left/right shelf edges to zoom into a 2x2 grid of that section",
+        "Make the X close on inspect view more responsive",
+        "Allow tap-to-fast-skip on character dialogue text"
+      ],
+      "feedback": [
+        { "from": "Tom Ivey", "date": "2026-04-08", "text": "Hold on single title is a bit slow and you have to x close it, it's awkward - need something much faster to just get lots of information. Allow clicking on left or right of shelf to do a zoom in to show what's on there maybe? Showing 4 titles in a big zoomed in 2x2 grid or something while you hold?" }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Rethink customer interrupts — make them opt-in",
+      "done": false,
+      "actions": [
+        "Change interrupts from auto-popup to player-initiated (e.g., 'Ask the Boss' button)",
+        "Add tap-to-skip for interrupt text animation",
+        "Don't offer hints for already-solved categories",
+        "Don't give away free hints — player should always choose to spend money",
+        "If keeping auto-interrupts, make them less frequent and non-blocking"
+      ],
+      "feedback": [
+        { "from": "Tom Ivey", "date": "2026-04-08", "text": "Characters coming up is very distracting - if players want hint should just have a button so they can ask for one at the moment THEY become frustrated rather than intruding (maybe it's asking your nerdy boss or something) - it blocks when trying to select stuff. You also get a hint without paying for it. People want to try it themselves. If keeping this HAVE to allow tap to fast-skip text. Seems to offer hints for rows you've already guessed as well." }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Weekly difficulty progression (Mon=easy → Sun=hard)",
+      "done": false,
+      "actions": [
+        "Structure puzzles Mon–Sun with increasing difficulty like NYT Crossword",
+        "Monday: heavily themed, obvious categories (genre, franchise)",
+        "Friday+: mixed categories, overlapping movies, discovery-based",
+        "Show the week as Mon–Sun layout, not a rolling date strip",
+        "Let players see upcoming puzzle names to build anticipation",
+        "Themed days should be clearly labeled (puzzle title visible on game screen)"
+      ],
+      "feedback": [
+        { "from": "Tom Ivey", "date": "2026-04-08", "text": "Day of week should complicate categories - so Mondays are always easy like type etc or have a very clearly described theme. Later are like starring, decade, director, etc, or mixing up categories where earlier days of week are themed and specifically called out by the name like you have now, which is easier and then gets harder through week being more of a jumble and having titles that overlap categories Ala connections. Week seems to have current date at the end - might be better to have it laid out Monday to Sunday and refresh each week so people feel progression and want to complete each day slot and feel that completion as well as their overall day streak. This can also help understand the clear ramp up of each day in terms of difficulty, like NYT crossword." }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Show puzzle title/theme on the game screen",
+      "done": false,
+      "actions": [
+        "Display the puzzle title next to the date in the HUD during gameplay",
+        "Include the day of week",
+        "This serves as a hint for themed puzzles and context for mixed ones"
+      ],
+      "feedback": [
+        { "from": "Tom Ivey", "date": "2026-04-08", "text": "When on the game screen should have the day's title by the date too - to remind you of the hint / theme category if there is one or if it's a mix (maybe day of week as well). Right now it just shows New Arrivals and the date. It's Wednesday but the game today is Friday night Rush - should be themed around day of week consistently." }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Pause before end screen — let the last solve breathe",
+      "done": false,
+      "actions": [
+        "After solving the final category, pause on the completed shelf view",
+        "Show a 'View Results' or 'Next' button instead of auto-jumping to end screen",
+        "Give the player a moment to see all 4 categories revealed before stats"
+      ],
+      "feedback": [
+        { "from": "Tom Ivey", "date": "2026-04-08", "text": "The game skips straight to end screen when completing - should wait at end and have a stats button or next button (where the pick 4 was) so you have a chance to read the last category and see the arrangements if you have no idea what it was. Even tho it has this on the next screen it feels like you want that moment with what you did before going to detailed stats." }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Remove or minimize the radio/music UI",
+      "done": false,
+      "actions": [
+        "Consider removing the KPEZ radio from the HUD — takes up space",
+        "If keeping, make it much smaller or hide-able",
+        "Music may not fit the core experience for all players"
+      ],
+      "feedback": [
+        { "from": "Tom Ivey", "date": "2026-04-08", "text": "Should remove the music thing - takes up UI room and is distracting I think. And also doesn't fit with theme." }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Fix menu navigation and 'Replay' label",
+      "done": false,
+      "actions": [
+        "Return to main menu after finishing a game, not the splash page",
+        "Fix 'Replay' label for puzzles the player hasn't played yet",
+        "Clarify if replay lets you improve your score",
+        "Add a help button on the main menu for returning players"
+      ],
+      "feedback": [
+        { "from": "Tom Ivey", "date": "2026-04-08", "text": "Back button after finishing a round should not return to start page, should return to main menu (to select another day). For a day I hadn't done before (Tuesday in this case) it says replay but I've never played it. Also what does replay allow? Can you improve score? Main menu should have a help button on it to show you how to play again (if you've said to skip from start page) - since can't go back to start and should always return to main menu." }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Add external movie links (IMDb, Letterboxd, streaming)",
+      "done": false,
+      "actions": [
+        "In the tape inspect view, add links to IMDb/Letterboxd/Rotten Tomatoes",
+        "Could show 'Where to Watch' streaming info",
+        "Encourages movie discovery beyond the game"
+      ],
+      "feedback": [
+        { "from": "Tom Ivey", "date": "2026-04-08", "text": "I like that people can learn about movies tho - might be good to have the rotten tomatoes or IMDb or the where to stream link or letterboxd on the page so you can go find out more about movies." }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Ensure clear difficulty tiers within each puzzle",
+      "done": false,
+      "actions": [
+        "Make sure every puzzle has one easy, one medium, one hard, one devious category (like Connections)",
+        "The easy category should be 'stumble-upon-able' to help narrow down harder ones",
+        "Consider using IMDB review count as a proxy for movie recognizability"
+      ],
+      "feedback": [
+        { "from": "Tom Ivey", "date": "2026-04-08", "text": "DO the categories have increasing difficulty within each puzzle like connections? Connections works by having an 'easier' category in the group of 4 categories so you can maybe stumble on that one which eliminates a lot of the crossover possibilities and helps you figure out the harder ones. Could probably gather that information from like # of reviews on IMDb or something." }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "AI-powered puzzle generation pipeline",
+      "done": true,
+      "actions": [
+        "AI generates themed and mixed puzzles with proper difficulty tiers",
+        "Admin can proof and edit AI output before publishing",
+        "Backroom admin built with AI sparkle generation"
+      ],
+      "feedback": [
+        { "from": "Tom Ivey", "date": "2026-04-08", "text": "Yeah if you could get some good AI directives (making categories that could be reused basically, and having it figure out how to make good combinations of a) themed days and b) no brainer, easy, medium, hard categories for each day like connections does, you could just end up having to proof it's work and have tons of weeks of content." }
+      ]
+    }
+  ]
+}

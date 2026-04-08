@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Arrivals — Feedback Todo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fafafa; color: #1a1a1a; line-height: 1.5; padding: 24px; max-width: 800px; margin: 0 auto; }
+    h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+    .subtitle { font-size: 14px; color: #888; margin-bottom: 24px; }
+    .stats { display: flex; gap: 16px; margin-bottom: 24px; font-size: 13px; color: #666; }
+    .stat { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 8px 14px; }
+    .stat strong { color: #1a1a1a; }
+
+    .item { background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; margin-bottom: 12px; overflow: hidden; transition: box-shadow 0.15s; }
+    .item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .item.done { opacity: 0.6; }
+    .item.done .item-title { text-decoration: line-through; }
+
+    .item-header { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; cursor: pointer; }
+    .item-check { width: 20px; height: 20px; border: 2px solid #d4d4d4; border-radius: 6px; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s; }
+    .item-check:hover { border-color: #888; }
+    .item.done .item-check { background: #22c55e; border-color: #22c55e; }
+    .item.done .item-check::after { content: '✓'; color: #fff; font-size: 12px; font-weight: 700; }
+    .item-content { flex: 1; }
+    .item-title { font-size: 15px; font-weight: 600; }
+    .item-meta { font-size: 12px; color: #999; margin-top: 2px; }
+    .item-expand { width: 28px; height: 28px; border: none; background: none; cursor: pointer; color: #999; font-size: 18px; transition: transform 0.2s; border-radius: 6px; }
+    .item-expand:hover { background: #f5f5f5; }
+    .item-expand.open { transform: rotate(90deg); }
+
+    .item-body { display: none; padding: 0 16px 14px 48px; }
+    .item-body.open { display: block; }
+
+    .actions-label { font-size: 11px; font-weight: 600; text-transform: uppercase; color: #999; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .action { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: #444; padding: 3px 0; }
+    .action::before { content: '→'; color: #ccc; flex-shrink: 0; }
+
+    .feedback-section { margin-top: 14px; padding-top: 12px; border-top: 1px solid #f0f0f0; }
+    .feedback-label { font-size: 11px; font-weight: 600; text-transform: uppercase; color: #999; letter-spacing: 0.5px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .feedback-count { background: #e5e5e5; color: #666; font-size: 10px; padding: 1px 6px; border-radius: 10px; }
+    .feedback-quote { background: #f9f9f9; border-left: 3px solid #e0e0e0; padding: 10px 12px; margin-bottom: 8px; border-radius: 0 6px 6px 0; font-size: 13px; color: #555; }
+    .feedback-quote .from { font-weight: 600; color: #1a1a1a; font-size: 12px; }
+    .feedback-quote .date { color: #999; font-size: 11px; }
+    .feedback-quote .text { margin-top: 4px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>📋 Feedback Todo</h1>
+  <p class="subtitle">Player feedback sorted into action items</p>
+  <div class="stats" id="stats"></div>
+  <div id="list"></div>
+
+  <script>
+    let data = { items: [] };
+
+    async function load() {
+      const res = await fetch('/todo/feedback.json');
+      data = await res.json();
+      render();
+    }
+
+    function render() {
+      const done = data.items.filter(i => i.done).length;
+      const total = data.items.length;
+      const people = [...new Set(data.items.flatMap(i => i.feedback.map(f => f.from)))];
+
+      document.getElementById('stats').innerHTML = `
+        <div class="stat"><strong>${total}</strong> items</div>
+        <div class="stat"><strong>${done}</strong> done</div>
+        <div class="stat"><strong>${total - done}</strong> open</div>
+        <div class="stat"><strong>${people.length}</strong> contributor${people.length !== 1 ? 's' : ''}</div>
+      `;
+
+      // Sort: open items first, then done
+      const sorted = [...data.items].sort((a, b) => a.done - b.done);
+
+      document.getElementById('list').innerHTML = sorted.map(item => `
+        <div class="item ${item.done ? 'done' : ''}" data-id="${item.id}">
+          <div class="item-header">
+            <div class="item-check" onclick="toggle(${item.id}, event)"></div>
+            <div class="item-content" onclick="expand(${item.id})">
+              <div class="item-title">${item.title}</div>
+              <div class="item-meta">${item.actions.length} action${item.actions.length !== 1 ? 's' : ''} · ${item.feedback.length} feedback${item.feedback.length !== 1 ? 's' : ''} · ${item.feedback.map(f => f.from).join(', ')}</div>
+            </div>
+            <button class="item-expand" onclick="expand(${item.id})" id="expand-${item.id}">›</button>
+          </div>
+          <div class="item-body" id="body-${item.id}">
+            <div class="actions-label">Action Items</div>
+            ${item.actions.map(a => `<div class="action">${a}</div>`).join('')}
+            <div class="feedback-section">
+              <div class="feedback-label">Source Feedback <span class="feedback-count">${item.feedback.length}</span></div>
+              ${item.feedback.map(f => `
+                <div class="feedback-quote">
+                  <span class="from">${f.from}</span> <span class="date">${f.date}</span>
+                  <div class="text">${f.text}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggle(id, e) {
+      e.stopPropagation();
+      const item = data.items.find(i => i.id === id);
+      if (item) item.done = !item.done;
+      render();
+    }
+
+    function expand(id) {
+      const body = document.getElementById(`body-${id}`);
+      const btn = document.getElementById(`expand-${id}`);
+      if (body && btn) {
+        body.classList.toggle('open');
+        btn.classList.toggle('open');
+      }
+    }
+
+    load();
+  </script>
+</body>
+</html>
