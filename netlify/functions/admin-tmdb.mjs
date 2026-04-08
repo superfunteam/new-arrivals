@@ -11,8 +11,11 @@ function tmdbHeaders() {
 
 // Netlify Functions v2
 export default async (req, context) => {
+  console.log(`[admin-tmdb] ${req.method} ${req.url}`);
   const cookie = req.headers.get('cookie');
-  if (!(await verifyToken(cookie))) {
+  const authed = await verifyToken(cookie);
+  console.log(`[admin-tmdb] Auth: cookie=${!!cookie}, verified=${authed}`);
+  if (!authed) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -78,3 +81,5 @@ export default async (req, context) => {
   }
 };
 
+
+export const config = { path: '/api/admin-tmdb' };

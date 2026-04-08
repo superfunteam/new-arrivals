@@ -70,6 +70,7 @@ async function callClaude(systemPrompt, userPrompt) {
 
 // Netlify Functions v2 format
 export default async (req, context) => {
+  console.log(`[admin-ai-generate] ${req.method} ${req.url}`);
   // Auth check
   const cookie = req.headers.get('cookie');
   if (!(await verifyToken(cookie))) {
@@ -121,3 +122,5 @@ Remember:
   }
 };
 
+
+export const config = { path: '/api/admin-ai-generate' };

@@ -49,6 +49,7 @@ OUTPUT: Valid JSON array only, no commentary. Each object must include ALL requi
 
 // Netlify Functions v2 format
 export default async (req, context) => {
+  console.log(`[admin-ai-interrupts] ${req.method} ${req.url}`);
   const cookie = req.headers.get('cookie');
   if (!(await verifyToken(cookie))) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -125,3 +126,5 @@ Generate 10 interruptions with these exact character/sprite/folder values.`;
   }
 };
 
+
+export const config = { path: '/api/admin-ai-interrupts' };

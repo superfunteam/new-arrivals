@@ -174,6 +174,7 @@ async function createBlobsBatch(files, batchSize = 5) {
 }
 
 export default async (req, context) => {
+  console.log(`[admin-process] ${req.method} ${req.url}`);
   const cookie = req.headers.get('cookie');
   if (!(await verifyToken(cookie))) return Response.json({ error: 'Unauthorized' }, { status: 401 });
   if (req.method !== 'POST') return Response.json({ error: 'Method not allowed' }, { status: 405 });
@@ -284,3 +285,5 @@ export default async (req, context) => {
   }
 };
 
+
+export const config = { path: '/api/admin-process' };

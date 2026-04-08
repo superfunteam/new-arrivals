@@ -1,6 +1,7 @@
 import { createToken } from './lib/auth.mjs';
 
 export default async (req, context) => {
+  console.log(`[admin-auth] ${req.method} ${req.url}`);
   if (req.method !== 'POST') {
     return Response.json({ error: 'Method not allowed' }, { status: 405 });
   }
@@ -22,3 +23,5 @@ export default async (req, context) => {
   });
 };
 
+
+export const config = { path: '/api/admin-auth' };

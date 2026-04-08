@@ -17,10 +17,5 @@
   to = "/backroom/index.html"
   status = 200
 
-# V2 functions register their own paths via export const config — no redirect needed
-
-# SPA fallback — all routes serve index.html
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# NO /api/* redirect — v2 functions with config.path handle their own routes
+# NO /* catch-all — game served from dist/index.html by default

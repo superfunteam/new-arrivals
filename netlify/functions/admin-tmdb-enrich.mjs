@@ -51,6 +51,7 @@ async function enrichBatch(movies, batchSize = 4) {
 }
 
 export default async (req, context) => {
+  console.log(`[admin-tmdb-enrich] ${req.method} ${req.url}`);
   const cookie = req.headers.get('cookie');
   if (!(await verifyToken(cookie))) return Response.json({ error: 'Unauthorized' }, { status: 401 });
   if (req.method !== 'POST') return Response.json({ error: 'Method not allowed' }, { status: 405 });
@@ -79,3 +80,5 @@ export default async (req, context) => {
   }
 };
 
+
+export const config = { path: '/api/admin-tmdb-enrich' };
