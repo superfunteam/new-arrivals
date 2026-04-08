@@ -62,7 +62,7 @@
     {
       "id": 5,
       "title": "Show puzzle title/theme on the game screen",
-      "done": false,
+      "done": true,
       "actions": [
         "Display the puzzle title next to the date in the HUD during gameplay",
         "Include the day of week",

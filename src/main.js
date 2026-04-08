@@ -395,6 +395,14 @@ async function startGameSession(puzzle, mode, puzzlesData) {
   createHUD();
   setStationName(STATIONS[currentStationIdx].name);
 
+  // Show puzzle title + day of week in HUD
+  const hudDate = document.querySelector('.hud-date');
+  if (hudDate && puzzle.title) {
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const dayName = days[new Date().getDay()];
+    hudDate.innerHTML = `${dayName} · ${hudDate.textContent}<br><span class="hud-puzzle-title">${puzzle.title}</span>`;
+  }
+
   // ── 4. Setup radio + mute + station switching ──────────────────────────────
   let _isMuted = audio.isMuted();
   setMuteIcon(_isMuted);
