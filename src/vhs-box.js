@@ -302,9 +302,9 @@ export function setBoxState(box, state) {
         originalPosition.y,
         originalPosition.z + 0.25
       );
-      // Blue emissive on front face
-      frontMaterial.emissive.setHex(0x00d4ff);
-      frontMaterial.emissiveIntensity = 0.15;
+      // Bright cyan emissive on front face
+      frontMaterial.emissive.setHex(0x00ffff);
+      frontMaterial.emissiveIntensity = 0.3;
       break;
 
     case 'default':

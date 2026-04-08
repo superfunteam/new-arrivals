@@ -316,8 +316,10 @@ html, body {
 .onboarding-poster-tap {
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 10px;
 }
 
 .onboarding-poster-single {
@@ -326,6 +328,31 @@ html, body {
   object-fit: cover;
   border: 2px solid var(--shelf-wood);
   image-rendering: pixelated;
+}
+
+.onboarding-tap-hint {
+  font-family: var(--font-display);
+  font-size: 8px;
+  color: var(--neon-blue);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: tapPulse 1.2s ease-in-out infinite;
+}
+
+.demo-tape {
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+  border: 3px solid transparent;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
+  image-rendering: pixelated;
+}
+
+.demo-tape.demo-selected {
+  border-color: var(--neon-blue);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.6), 0 0 40px rgba(0, 212, 255, 0.2);
+  transform: scale(1.05);
 }
 
 .onboarding-tap-icon {

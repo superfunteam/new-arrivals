@@ -360,8 +360,18 @@ export function animateReflow(boxes, onComplete) {
  * @param {number}      time  - elapsed time in seconds (e.g. from clock.getElapsedTime())
  */
 export function applyIdleWobble(box, time) {
-  const { state, gridIndex } = box.userData;
+  const { state, gridIndex, selected, frontMaterial } = box.userData;
   if (state === 'locked' || state === 'grayed') return;
+
+  // Selected boxes get a pulsing glow + breathing scale instead of idle wobble
+  if (selected) {
+    const pulse = Math.sin(time * 3) * 0.5 + 0.5; // 0..1
+    frontMaterial.emissiveIntensity = 0.15 + pulse * 0.2;
+    // Subtle scale breathing
+    const s = 1.0 + Math.sin(time * 2) * 0.015;
+    box.scale.setScalar(s);
+    return;
+  }
 
   const offset = gridIndex >= 0 ? gridIndex : 0;
   box.rotation.z = Math.sin(time * 1.5 + offset * 0.7) * 0.01;

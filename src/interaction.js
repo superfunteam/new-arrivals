@@ -106,6 +106,71 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
     }
   }
 
+  // ── Pinch-to-zoom (touch events, separate from pointer events) ──
+  let isPinching = false;
+  let initialPinchDistance = 0;
+  let initialFov = 50;
+  let snapBackRaf = null;
+
+  function getTouchDistance(touches) {
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  function animateSnapBack() {
+    if (snapBackRaf) cancelAnimationFrame(snapBackRaf);
+    const startFov = camera.fov;
+    const targetFov = 50;
+    const startTime = performance.now();
+    const duration = 300; // ms
+
+    function step(now) {
+      const elapsed = now - startTime;
+      const t = Math.min(elapsed / duration, 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - t, 3);
+      camera.fov = startFov + (targetFov - startFov) * eased;
+      camera.updateProjectionMatrix();
+      if (t < 1) {
+        snapBackRaf = requestAnimationFrame(step);
+      } else {
+        snapBackRaf = null;
+      }
+    }
+    snapBackRaf = requestAnimationFrame(step);
+  }
+
+  function onPinchTouchStart(e) {
+    if (e.touches.length === 2) {
+      isPinching = true;
+      initialPinchDistance = getTouchDistance(e.touches);
+      initialFov = camera.fov;
+      // Cancel any tap/long-press in progress
+      pointerDown = false;
+      if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null; }
+    }
+  }
+
+  function onPinchTouchMove(e) {
+    if (isPinching && e.touches.length === 2) {
+      e.preventDefault();
+      const currentDist = getTouchDistance(e.touches);
+      const scale = currentDist / initialPinchDistance;
+
+      // Zoom: reduce FOV (min 20, max 50)
+      camera.fov = Math.max(20, Math.min(50, initialFov / scale));
+      camera.updateProjectionMatrix();
+    }
+  }
+
+  function onPinchTouchEnd(e) {
+    if (isPinching && e.touches.length < 2) {
+      isPinching = false;
+      animateSnapBack();
+    }
+  }
+
   // Use pointer events only (unified API, works on desktop + mobile)
   // Avoid also registering touch events which causes double-fire on mobile
   const el = renderer.domElement;
@@ -114,6 +179,11 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
   el.addEventListener('pointerup', onPointerUp);
   el.addEventListener('pointercancel', onPointerUp);
 
+  // Touch events specifically for pinch-zoom (multi-touch only)
+  el.addEventListener('touchstart', onPinchTouchStart, { passive: true });
+  el.addEventListener('touchmove', onPinchTouchMove, { passive: false });
+  el.addEventListener('touchend', onPinchTouchEnd, { passive: true });
+
   return {
     setLocked,
     destroy() {
@@ -121,6 +191,10 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
       el.removeEventListener('pointermove', onPointerMove);
       el.removeEventListener('pointerup', onPointerUp);
       el.removeEventListener('pointercancel', onPointerUp);
+      el.removeEventListener('touchstart', onPinchTouchStart);
+      el.removeEventListener('touchmove', onPinchTouchMove);
+      el.removeEventListener('touchend', onPinchTouchEnd);
+      if (snapBackRaf) cancelAnimationFrame(snapBackRaf);
     },
   };
 }

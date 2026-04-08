@@ -187,8 +187,8 @@ export function showOnboarding(onComplete) {
     {
       title: 'How to Sort',
       anim: `<div class="onboarding-poster-tap">
-        <img class="onboarding-poster-single" src="/posters/${posterIds.predator}_pixel.jpg" alt="Predator" />
-        <div class="onboarding-tap-icon">TAP</div>
+        <img class="demo-tape" id="demo-tape" src="/posters/${posterIds.dieHard}_pixel.jpg" alt="Die Hard" />
+        <div class="onboarding-tap-hint">Tap to select</div>
       </div>`,
       body: 'Tap a tape to select it. Pick 4 you think belong together, then hit SHELVE IT. Long-press any tape to view its details up close.',
       btn: 'Next',
@@ -245,6 +245,14 @@ export function showOnboarding(onComplete) {
         if (typeof onComplete === 'function') onComplete();
       }
     });
+
+    // Interactive demo tape on slide 2
+    const demoTape = document.getElementById('demo-tape');
+    if (demoTape) {
+      demoTape.addEventListener('click', () => {
+        demoTape.classList.toggle('demo-selected');
+      });
+    }
   }
 
   render();
@@ -461,7 +469,7 @@ export function showLightbox(movie, options = {}) {
   const isUncoverDisabled = uncovered || wage <= 0;
   const posterSrc = uncovered
     ? `/posters/${movie.tmdb_id}.jpg`
-    : `/posters/${movie.tmdb_id}_pixel.jpg`;
+    : `/posters/${movie.tmdb_id}_pixel_detail.jpg`;
   const posterClass = uncovered ? 'lightbox-poster uncovered' : 'lightbox-poster';
 
   // Genre sticker (free hint)
