@@ -48,7 +48,7 @@ export function createHUD() {
 
   hud.innerHTML = `
     <div class="hud-top">
-      <div class="hud-logo">
+      <div class="hud-logo" id="hud-logo" style="cursor:pointer">
         NEW ARRIVALS
         <span class="hud-date">${dateStr}</span>
       </div>
@@ -67,10 +67,7 @@ export function createHUD() {
         <span class="radio-icon" id="radio-icon">♪</span>
       </div>
       <button class="shelve-btn" id="shelve-btn" disabled>PICK 4</button>
-      <div class="hud-bottom-right">
-        <div class="hud-timer" id="hud-timer">0:00</div>
-        <button class="help-btn" id="help-btn" aria-label="Help">?</button>
-      </div>
+      <div class="hud-timer" id="hud-timer">0:00</div>
     </div>
   `;
 
@@ -236,7 +233,8 @@ export function updateRadioViz(time, muted) {
  * @param {Function} callback
  */
 export function onHelpClick(callback) {
-  if (_helpBtn) _helpBtn.addEventListener('click', callback);
+  const logo = document.getElementById('hud-logo');
+  if (logo) logo.addEventListener('click', callback);
 }
 
 // ─── Splash Screen ──────────────────────────────────────────────────────────
@@ -315,21 +313,13 @@ export function showSplashScreen(options = {}) {
   jamScript.async = true;
   document.head.appendChild(jamScript);
 
-  function removeJamWidget() {
-    jamScript.remove();
-    // Remove any injected widget elements
-    document.querySelectorAll('[id*="jam"], [class*="jam"]').forEach(el => el.remove());
-  }
-
   document.getElementById('splash-start').addEventListener('click', () => {
-    removeJamWidget();
     overlay.innerHTML = '';
     overlay.classList.remove('active');
     if (typeof onStart === 'function') onStart();
   });
 
   document.getElementById('splash-mute').addEventListener('click', () => {
-    removeJamWidget();
     overlay.innerHTML = '';
     overlay.classList.remove('active');
     if (typeof onStartMuted === 'function') onStartMuted();
@@ -543,10 +533,14 @@ export function showWelcomeScreen(options = {}) {
   const practiceCardsHtml = practicePuzzles
     .map(
       (p, i) => `
-      <div class="practice-card">
-        <div class="practice-card-title">${p.title}</div>
-        ${scorePill(p.id)}
-        <button class="welcome-btn practice" data-practice-index="${i}">PRACTICE</button>
+      <div class="past-card">
+        <div class="past-card-info">
+          <div class="past-card-title">${p.title}</div>
+        </div>
+        <div class="past-card-action">
+          ${scorePill(p.id)}
+          <button class="welcome-btn practice" data-practice-index="${i}">PRACTICE</button>
+        </div>
       </div>`
     )
     .join('');
@@ -608,7 +602,7 @@ export function showWelcomeScreen(options = {}) {
 
       <div class="welcome-section">
         <div class="welcome-section-title">TRAINEE MANUAL</div>
-        <div class="practice-grid">
+        <div class="past-returns-list">
           ${practiceCardsHtml}
         </div>
       </div>
