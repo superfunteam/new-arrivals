@@ -88,7 +88,8 @@
     {
       "id": 7,
       "title": "Remove or minimize the radio/music UI",
-      "done": false,
+      "done": "noted",
+      "note": "We have to include the 'Game Jam 2026' tag at the bottom, so we have a few pixels of space, and I really like the radio idea. Maybe I'll pick some better music/sounds, and make it clearer you can mute.",
       "actions": [
         "Consider removing the KPEZ radio from the HUD — takes up space",
         "If keeping, make it much smaller or hide-able",

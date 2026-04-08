@@ -17,12 +17,17 @@
     .item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
     .item.done { opacity: 0.6; }
     .item.done .item-title { text-decoration: line-through; }
+    .item.noted { opacity: 0.75; }
+    .item.noted .item-title { text-decoration: line-through; color: #92400e; }
 
     .item-header { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; cursor: pointer; }
     .item-check { width: 20px; height: 20px; border: 2px solid #d4d4d4; border-radius: 6px; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s; }
     .item-check:hover { border-color: #888; }
     .item.done .item-check { background: #22c55e; border-color: #22c55e; }
     .item.done .item-check::after { content: '✓'; color: #fff; font-size: 12px; font-weight: 700; }
+    .item.noted .item-check { background: #f59e0b; border-color: #f59e0b; }
+    .item.noted .item-check::after { content: '✓'; color: #fff; font-size: 12px; font-weight: 700; }
+    .item-note { background: #fefce8; border-left: 3px solid #f59e0b; padding: 8px 12px; margin-top: 10px; border-radius: 0 6px 6px 0; font-size: 13px; color: #92400e; font-style: italic; }
     .item-content { flex: 1; }
     .item-title { font-size: 15px; font-weight: 600; }
     .item-meta { font-size: 12px; color: #999; margin-top: 2px; }
@@ -62,22 +67,25 @@
     }
 
     function render() {
-      const done = data.items.filter(i => i.done).length;
+      const done = data.items.filter(i => i.done === true).length;
+      const noted = data.items.filter(i => i.done === 'noted').length;
       const total = data.items.length;
       const people = [...new Set(data.items.flatMap(i => i.feedback.map(f => f.from)))];
 
       document.getElementById('stats').innerHTML = `
         <div class="stat"><strong>${total}</strong> items</div>
         <div class="stat"><strong>${done}</strong> done</div>
-        <div class="stat"><strong>${total - done}</strong> open</div>
+        <div class="stat"><strong>${noted}</strong> noted</div>
+        <div class="stat"><strong>${total - done - noted}</strong> open</div>
         <div class="stat"><strong>${people.length}</strong> contributor${people.length !== 1 ? 's' : ''}</div>
       `;
 
       // Sort: open items first, then done
-      const sorted = [...data.items].sort((a, b) => a.done - b.done);
+      const sortKey = (i) => i.done === true ? 2 : i.done === 'noted' ? 1 : 0;
+      const sorted = [...data.items].sort((a, b) => sortKey(a) - sortKey(b));
 
       document.getElementById('list').innerHTML = sorted.map(item => `
-        <div class="item ${item.done ? 'done' : ''}" data-id="${item.id}">
+        <div class="item ${item.done === true ? 'done' : item.done === 'noted' ? 'noted' : ''}" data-id="${item.id}">
           <div class="item-header">
             <div class="item-check" onclick="toggle(${item.id}, event)"></div>
             <div class="item-content" onclick="expand(${item.id})">
@@ -87,6 +95,7 @@
             <button class="item-expand" onclick="expand(${item.id})" id="expand-${item.id}">›</button>
           </div>
           <div class="item-body" id="body-${item.id}">
+            ${item.note ? `<div class="item-note">📝 ${item.note}</div>` : ''}
             <div class="actions-label">Action Items</div>
             ${item.actions.map(a => `<div class="action">${a}</div>`).join('')}
             <div class="feedback-section">
