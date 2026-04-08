@@ -1,0 +1,1337 @@
+{
+  "2026-04-07": [
+    {
+      "type": "trivia",
+      "character": "Punk Kid Boy",
+      "sprite": "punk_kid_boy",
+      "folder": "Punk Kid Boy",
+      "dialogue": "Yo dude, in Total Recall, what planet is Quaid OBSESSED with going to?",
+      "answers": ["Mars", "Venus", "Jupiter", "Saturn"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Woman",
+      "sprite": "blonde_woman",
+      "folder": "Blonde Woman",
+      "dialogue": "Quick question -- who directed The Breakfast Club?",
+      "answers": ["John Hughes", "Joel Schumacher", "Howard Deutch", "Rob Reiner"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Viking Man",
+      "sprite": "viking_man",
+      "folder": "Viking Man",
+      "dialogue": "TELL ME, MORTAL! In Predator, where does the alien hunt Arnold's team?",
+      "answers": ["A Central American jungle", "The Arctic tundra", "An African savanna", "The Australian outback"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Businessman",
+      "sprite": "businessman",
+      "folder": "Businessman",
+      "dialogue": "I'll bet you twenty bucks -- what's the name of the computer in WarGames that nearly starts World War III?",
+      "answers": ["WOPR", "HAL 9000", "Colossus", "Proteus"],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "Dearie, I'm looking for picture shows where the big muscly fellow is in all of them, you know, the Austrian bodybuilder...",
+      "hintCategory": "Arnold's Greatest Hits",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Knight",
+      "sprite": "knight",
+      "folder": "Knight",
+      "dialogue": "Good shopkeep, I seek tales where the young nobles gather in fellowship. A breakfast gathering, perhaps, or a night at St. Elmo's...",
+      "hintCategory": "Brat Pack Roll Call",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Ninja",
+      "sprite": "ninja",
+      "folder": "Ninja",
+      "dialogue": "There is a thread connecting certain films... the machine that thinks, the machine that schemes, the machine that turns against its master.",
+      "hintCategory": "The Villain is a Computer",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Chef",
+      "sprite": "chef",
+      "folder": "Chef",
+      "dialogue": "I tried to cook while watching Commando. Got so distracted by the one-liners I burned my souffle. Arnold destroys kitchens even through a TV screen.",
+      "dismiss": "Collateral damage"
+    },
+    {
+      "type": "story",
+      "character": "Firefighter",
+      "sprite": "firefighter",
+      "folder": "Firefighter",
+      "dialogue": "EMERGENCY! I need to return this tape before midnight or the late fee doubles! This is a CODE RED situation!",
+      "dismiss": "Stay calm"
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "sprite": "joker",
+      "folder": "Joker",
+      "dialogue": "Why did the VHS tape go to therapy? Because it had too many ISSUES with tracking! Get it? Tracking? Like the picture quality?",
+      "dismiss": "Please stop"
+    }
+  ],
+  "2026-04-08": [
+    {
+      "type": "trivia",
+      "character": "Blonde Man",
+      "sprite": "blonde_man",
+      "folder": "Blonde Man",
+      "dialogue": "Settle a bet -- in Ferris Bueller's Day Off, what kind of car do they take out for the joyride?",
+      "answers": ["Ferrari 250 GT California", "Porsche 911", "Corvette Stingray", "Lamborghini Countach"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Policeman",
+      "sprite": "policeman",
+      "folder": "Policeman",
+      "dialogue": "I'm testing you. In Aliens, what is the name of the planet the Colonial Marines go back to?",
+      "answers": ["LV-426", "LV-223", "Pandora", "Kepler-442b"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Blue Haired Woman",
+      "sprite": "blue_haired_woman",
+      "folder": "Blue Haired Woman",
+      "dialogue": "I love Heathers. What are the first names of the three Heathers in the clique?",
+      "answers": ["Heather, Heather, and Heather", "Heather, Holly, and Helen", "Heather, Hannah, and Heidi", "Heather, Heather, and Veronica"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Viking Woman",
+      "sprite": "viking_woman",
+      "folder": "Viking Woman",
+      "dialogue": "ANSWER ME THIS! In The Empire Strikes Back, who reveals he is Luke's father?",
+      "answers": ["Darth Vader", "Obi-Wan Kenobi", "Yoda", "Emperor Palpatine"],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "I'm lookin' for movies where the whole dang thing happens inside four walls. No going outside, no road trips, just stuck in one spot.",
+      "hintCategory": "Set Entirely in One Building",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Old Man",
+      "sprite": "old_man",
+      "folder": "Old Man",
+      "dialogue": "I remember a group of films where the follow-up was even better than the first one. The second chapters that outshine their predecessors, you know?",
+      "hintCategory": "Sequel is Better Than the Original",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Bride",
+      "sprite": "bride",
+      "folder": "Bride",
+      "dialogue": "I'm looking for movies named after people! Just a single first name as the whole title. Like naming your baby something iconic, you know?",
+      "hintCategory": "Title is a Character's First Name Only",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Blonde Kid Girl",
+      "sprite": "blonde_kid_girl",
+      "folder": "Blonde Kid Girl",
+      "dialogue": "My dad said I could rent TWO movies if I cleaned my room but I just shoved everything under the bed. SHHH don't tell him he's in the car!!",
+      "dismiss": "Secret's safe"
+    },
+    {
+      "type": "story",
+      "character": "Punk Woman",
+      "sprite": "punk_woman",
+      "folder": "Punk Woman",
+      "dialogue": "I once rewound a tape so many times trying to pause on one frame that the machine ate it. The rental place still has my picture on the wall. Not in a good way.",
+      "dismiss": "Legend"
+    },
+    {
+      "type": "story",
+      "character": "Knight Kid",
+      "sprite": "knight_kid",
+      "folder": "Knight Kid",
+      "dialogue": "My mom says I watch TOO MANY movies but she fell asleep during Beetlejuice and I had to watch the WHOLE THING alone and it was AMAZING.",
+      "dismiss": "Brave knight"
+    }
+  ],
+  "2026-04-09": [
+    {
+      "type": "trivia",
+      "character": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "folder": "Goblin Kid",
+      "dialogue": "OOOOH I know this one!! In Beverly Hills Cop, what city does Axel Foley travel FROM to get to Beverly Hills?",
+      "answers": ["Detroit", "Chicago", "New York", "Philadelphia"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Woman",
+      "sprite": "blonde_woman",
+      "folder": "Blonde Woman",
+      "dialogue": "My book club just read a Stephen King novel. In Stand by Me, who wrote the original novella it's based on? Trick question!",
+      "answers": ["Stephen King", "Richard Bachman", "Peter Straub", "Dean Koontz"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Man",
+      "sprite": "punk_men",
+      "folder": "Punk Man",
+      "dialogue": "In Carrie, what triggers the bucket of blood to fall on her at prom?",
+      "answers": ["A rope pulled by her bullies", "A timer mechanism", "A supernatural event", "An accidental trip wire"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Old Man",
+      "sprite": "old_man",
+      "folder": "Old Man",
+      "dialogue": "Now let me think... In Home Alone, what's the name of those two burglars the boy fights off? The, uh, Wet Bandits?",
+      "answers": ["Yes, the Wet Bandits", "The Sticky Bandits", "The Slippery Bandits", "The Muddy Bandits"],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Chef",
+      "sprite": "chef",
+      "folder": "Chef",
+      "dialogue": "I need movies featuring that hilarious fellow, the one who does all those characters and voices. Talks so fast you can barely keep up! Like a blender on high speed.",
+      "hintCategory": "Eddie Murphy Leads",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Ninja",
+      "sprite": "ninja",
+      "folder": "Ninja",
+      "dialogue": "The master storyteller of horror has his fingerprints on these tales. Not as director, but as the one who first put pen to paper. The source material, the origin.",
+      "hintCategory": "Based on a Stephen King Book",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Firefighter",
+      "sprite": "firefighter",
+      "folder": "Firefighter",
+      "dialogue": "URGENT! I need films where somebody shows up and you just KNOW the comedy legend is going to steal every scene, even if he's barely in it. Big guy, super funny, Canadian.",
+      "hintCategory": "John Candy Has a Cameo or Small Role",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Viking Kid Boy",
+      "sprite": "viking_kid_boy",
+      "folder": "Viking Kid Boy",
+      "dialogue": "I tried to do the Footloose dance at my school and KICKED the principal's coffee right off his desk!! He was NOT impressed but everyone else CHEERED!",
+      "dismiss": "Worth it"
+    },
+    {
+      "type": "story",
+      "character": "Businessman",
+      "sprite": "businessman",
+      "folder": "Businessman",
+      "dialogue": "My membership card expired in '84 and they still let me rent because I wear a suit. Confidence is everything in this economy.",
+      "dismiss": "Power move"
+    },
+    {
+      "type": "story",
+      "character": "Bride",
+      "sprite": "bride",
+      "folder": "Bride",
+      "dialogue": "We're picking out our wedding movie to play at the reception. My fiance wants Coming to America. I want Stand by Me. We might not make it to the altar.",
+      "dismiss": "Tough call"
+    }
+  ],
+  "2026-04-10": [
+    {
+      "type": "trivia",
+      "character": "Blue Haired Kid Girl",
+      "sprite": "blue_haired_kid_girl",
+      "folder": "Blue Haired Kid Girl",
+      "dialogue": "My teacher said Jaws was about a SHARK but like what KIND of shark?? Do you know??",
+      "answers": ["Great white shark", "Hammerhead shark", "Tiger shark", "Bull shark"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Knight",
+      "sprite": "knight",
+      "folder": "Knight",
+      "dialogue": "A question of honor! In Raiders of the Lost Ark, what artifact is Indiana Jones searching for?",
+      "answers": ["The Ark of the Covenant", "The Holy Grail", "The Sankara Stones", "The Crystal Skull"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Man",
+      "sprite": "blonde_man",
+      "folder": "Blonde Man",
+      "dialogue": "I was just reading about this -- who both starred in AND directed the movie Reds?",
+      "answers": ["Warren Beatty", "Kevin Costner", "Robert De Niro", "Barbra Streisand"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Woman",
+      "sprite": "punk_woman",
+      "folder": "Punk Woman",
+      "dialogue": "A Clockwork Orange was banned in several countries. Who directed it?",
+      "answers": ["Stanley Kubrick", "Ridley Scott", "David Lynch", "Terry Gilliam"],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "Oh sweetie, I'm looking for films by that wonderful man with the beard and the glasses. Made all those adventure pictures and the one about the dinosaurs.",
+      "hintCategory": "Spielberg Directed",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Viking Woman",
+      "sprite": "viking_woman",
+      "folder": "Viking Woman",
+      "dialogue": "I SEEK FILMS WHERE THE STAR IS ALSO THE ONE CALLING THE SHOTS! The warrior who commands both in front of and behind the battlefield!",
+      "hintCategory": "Actor Also Directed This Film",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Joker",
+      "sprite": "joker",
+      "folder": "Joker",
+      "dialogue": "I need movies where looking at the poster makes you want to go to SPACE. You know, rocket ships, starships, that sort of thing right there on the artwork!",
+      "hintCategory": "The Movie Poster Has a Spaceship",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "Last time I rented Jurassic Park the tape got stuck in my VCR. Had the dinosaur roar on loop for three hours. My cows wouldn't come in from the field.",
+      "dismiss": "Life found a way"
+    },
+    {
+      "type": "story",
+      "character": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "folder": "Goblin Kid",
+      "dialogue": "I told my mom E.T. was a DOCUMENTARY and she believed me for like TEN WHOLE MINUTES and then my brother ruined it!! He ruins EVERYTHING!",
+      "dismiss": "Siblings, man"
+    },
+    {
+      "type": "story",
+      "character": "Policeman",
+      "sprite": "policeman",
+      "folder": "Policeman",
+      "dialogue": "Someone called the station because they thought Cannibal Holocaust was a real documentary. I had to file an actual report. That was my Tuesday.",
+      "dismiss": "Paperwork nightmare"
+    }
+  ],
+  "2026-04-11": [
+    {
+      "type": "trivia",
+      "character": "Blonde Kid Girl",
+      "sprite": "blonde_kid_girl",
+      "folder": "Blonde Kid Girl",
+      "dialogue": "I know this I know this!! In The Little Mermaid, what does Ariel trade to the sea witch to become HUMAN??",
+      "answers": ["Her voice", "Her tail", "Her hair", "Her memory"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Businessman",
+      "sprite": "businessman",
+      "folder": "Businessman",
+      "dialogue": "In Ghostbusters, what is the name of the demigod that possesses Sigourney Weaver's character?",
+      "answers": ["Zuul", "Gozer", "Vinz Clortho", "Slimer"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "Dearie, I love that picture The Magnificent Seven. What foreign film was it a remake of?",
+      "answers": ["Seven Samurai", "Yojimbo", "Rashomon", "The Hidden Fortress"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Chef",
+      "sprite": "chef",
+      "folder": "Chef",
+      "dialogue": "In Grease, John Travolta wears a wig the whole time! But what's the name of his character?",
+      "answers": ["Danny Zuko", "Kenickie", "Doody", "Sonny"],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Knight Kid",
+      "sprite": "knight_kid",
+      "folder": "Knight Kid",
+      "dialogue": "I want the movies with the DRAWINGS that move!! Like with the singing and the princesses and stuff! The ones from the mouse castle company!",
+      "hintCategory": "Animated Disney",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Ninja",
+      "sprite": "ninja",
+      "folder": "Ninja",
+      "dialogue": "I seek films connected by one comedian. A man who is the ghost, the golfer, the soldier, the weatherman. He appears in all of them like a phantom with perfect comedic timing.",
+      "hintCategory": "Bill Murray Comedies",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Blue Haired Woman",
+      "sprite": "blue_haired_woman",
+      "folder": "Blue Haired Woman",
+      "dialogue": "I'm looking for movies where the leading man has a whole different head of hair than usual. Like, the wig IS the performance, you know?",
+      "hintCategory": "The Lead Actor Wears a Wig in Every Scene",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Viking Man",
+      "sprite": "viking_man",
+      "folder": "Viking Man",
+      "dialogue": "I WEPT during Beauty and the Beast! The Beast reminded me of my uncle Bjorn! Large, hairy, terrible table manners, but a HEART OF GOLD!",
+      "dismiss": "Beautiful"
+    },
+    {
+      "type": "story",
+      "character": "Punk Kid Boy",
+      "sprite": "punk_kid_boy",
+      "folder": "Punk Kid Boy",
+      "dialogue": "My older brother taped over my Lion King with some boring football game and I haven't spoken to him in THREE WEEKS. This is WAR.",
+      "dismiss": "Justified"
+    },
+    {
+      "type": "story",
+      "character": "Firefighter",
+      "sprite": "firefighter",
+      "folder": "Firefighter",
+      "dialogue": "Scarface is three hours long. That means I need to check the smoke detectors THREE times during one viewing. Safety never sleeps, people.",
+      "dismiss": "Stay vigilant"
+    }
+  ],
+  "2026-04-12": [
+    {
+      "type": "trivia",
+      "character": "Blonde Woman",
+      "sprite": "blonde_woman",
+      "folder": "Blonde Woman",
+      "dialogue": "In The Burbs, what do Tom Hanks and his neighbors suspect the new family next door of being?",
+      "answers": ["Murderers", "Vampires", "Aliens", "Government spies"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Viking Kid Boy",
+      "sprite": "viking_kid_boy",
+      "folder": "Viking Kid Boy",
+      "dialogue": "TREMORS IS THE BEST MOVIE EVER!! But what do they call the underground monsters??",
+      "answers": ["Graboids", "Sandworms", "Diggers", "Tunnelers"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Old Man",
+      "sprite": "old_man",
+      "folder": "Old Man",
+      "dialogue": "Now let me remember... In Mrs. Doubtfire, Robin Williams disguises himself as an elderly what?",
+      "answers": ["British nanny", "Scottish housekeeper", "Irish governess", "Welsh maid"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Blue Haired Woman",
+      "sprite": "blue_haired_woman",
+      "folder": "Blue Haired Woman",
+      "dialogue": "Wes Craven directed The Serpent and the Rainbow. Where is it set?",
+      "answers": ["Haiti", "Jamaica", "Brazil", "Cuba"],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Joker",
+      "sprite": "joker",
+      "folder": "Joker",
+      "dialogue": "I need movies starring that funny guy! The one who was always goofing around before he got all serious and won Oscars. You know, Splash, The Money Pit, that era!",
+      "hintCategory": "Tom Hanks Before He Got Serious",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Bride",
+      "sprite": "bride",
+      "folder": "Bride",
+      "dialogue": "I need films where the men put on dresses and heels! My fiance thinks its hilarious. I think it takes real COMMITMENT, like a marriage!",
+      "hintCategory": "Lead Actor in Drag for the Role",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "I'm lookin' for movies about critters and creatures that come out of nowhere and wreck everything in a little town. You know, real pest control nightmares.",
+      "hintCategory": "The Monster Attacks a Small Town",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Ninja",
+      "sprite": "ninja",
+      "folder": "Ninja",
+      "dialogue": "I once watched Killer Klowns from Outer Space in total silence. No reaction. My friends thought I was broken. I was simply studying the enemy.",
+      "dismiss": "Respect"
+    },
+    {
+      "type": "story",
+      "character": "Punk Woman",
+      "sprite": "punk_woman",
+      "folder": "Punk Woman",
+      "dialogue": "My roommate recorded our answering machine message over a rented copy of Bachelor Party. The video store was NOT amused. We still owe them twelve bucks.",
+      "dismiss": "Worth every penny"
+    },
+    {
+      "type": "story",
+      "character": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "folder": "Goblin Kid",
+      "dialogue": "I watched The Blob and now I won't eat JELLO. I won't eat GUMMY BEARS. I won't eat anything JIGGLY. My mom is SO mad at me right now!",
+      "dismiss": "Understandable"
+    }
+  ],
+  "2026-04-13": [
+    {
+      "type": "trivia",
+      "character": "Knight",
+      "sprite": "knight",
+      "folder": "Knight",
+      "dialogue": "A test of knowledge! In Demolition Man, what restaurant is the only one to survive the franchise wars of the future?",
+      "answers": ["Taco Bell", "Pizza Hut", "McDonald's", "Burger King"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Man",
+      "sprite": "punk_men",
+      "folder": "Punk Man",
+      "dialogue": "Scream is meta as heck. Who plays the killer's first victim in the opening scene?",
+      "answers": ["Drew Barrymore", "Neve Campbell", "Courteney Cox", "Rose McGowan"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Man",
+      "sprite": "blonde_man",
+      "folder": "Blonde Man",
+      "dialogue": "In Escape from New York, what's the name of Kurt Russell's character?",
+      "answers": ["Snake Plissken", "Jack Burton", "R.J. MacReady", "Dexter Riley"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "Oh my, that Terminator picture. What year does the Terminator travel back to?",
+      "answers": ["1984", "1985", "1991", "1997"],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Viking Woman",
+      "sprite": "viking_woman",
+      "folder": "Viking Woman",
+      "dialogue": "I NEED FILMS WITH THE MIGHTY STALLONE! The Italian Stallion! The man of muscles and mumbled dialogue! Where he PUNCHES and SHOOTS things!",
+      "hintCategory": "Sylvester Stallone Action",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Policeman",
+      "sprite": "policeman",
+      "folder": "Policeman",
+      "dialogue": "I'm looking for horror films where more than one person is doing the killing. You know, a team effort. Partners in crime, so to speak.",
+      "hintCategory": "Slasher With More Than One Killer",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Chef",
+      "sprite": "chef",
+      "folder": "Chef",
+      "dialogue": "I need films where the same man who directed also cooked up the music. Like a chef who also designs the restaurant. A one-man show. Horror films, mostly.",
+      "hintCategory": "Score Composed by John Carpenter",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Blue Haired Kid Girl",
+      "sprite": "blue_haired_kid_girl",
+      "folder": "Blue Haired Kid Girl",
+      "dialogue": "My babysitter let me watch Nightmare on Elm Street and now I sleep with ALL the lights on and my mom got the electricity bill and she is NOT HAPPY!",
+      "dismiss": "Oops"
+    },
+    {
+      "type": "story",
+      "character": "Businessman",
+      "sprite": "businessman",
+      "folder": "Businessman",
+      "dialogue": "I've calculated that my annual late fees at this store exceed my car payment. I'm not proud of this. But I'm not changing either.",
+      "dismiss": "Commitment"
+    },
+    {
+      "type": "story",
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "Watched This Is Spinal Tap on a recommendation from my nephew. I spent twenty minutes trying to turn my TV volume to eleven before my wife told me it was a joke.",
+      "dismiss": "Bless your heart"
+    }
+  ],
+  "2026-04-14": [
+    {
+      "type": "trivia",
+      "character": "Firefighter",
+      "sprite": "firefighter",
+      "folder": "Firefighter",
+      "dialogue": "CRITICAL QUESTION! In Blade Runner, what are the human-like androids called?",
+      "answers": ["Replicants", "Synthetics", "Androids", "Simulants"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Woman",
+      "sprite": "blonde_woman",
+      "folder": "Blonde Woman",
+      "dialogue": "In After Hours, the whole movie takes place during one chaotic night in what neighborhood?",
+      "answers": ["SoHo, New York", "Greenwich Village, New York", "Brooklyn, New York", "Harlem, New York"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Viking Man",
+      "sprite": "viking_man",
+      "folder": "Viking Man",
+      "dialogue": "WARRIOR'S QUIZ! In The Fugitive, Harrison Ford's character is wrongly convicted of murdering whom?",
+      "answers": ["His wife", "His partner", "His brother", "His neighbor"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Ninja",
+      "sprite": "ninja",
+      "folder": "Ninja",
+      "dialogue": "In the film Legend, directed by Ridley Scott, who plays the Lord of Darkness?",
+      "answers": ["Tim Curry", "Tom Cruise", "Robert De Niro", "Gary Oldman"],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Old Man",
+      "sprite": "old_man",
+      "folder": "Old Man",
+      "dialogue": "I remember that fella from the Star Wars pictures and the adventure ones with the hat and the whip. He was in a bunch of exciting films as the leading man.",
+      "hintCategory": "Harrison Ford Adventure",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Bride",
+      "sprite": "bride",
+      "folder": "Bride",
+      "dialogue": "I need films where the entire story wraps up before sunrise the next day. Like a wedding that actually stays on schedule! Everything in twenty-four little hours!",
+      "hintCategory": "Entire Movie Takes Place in 24 Hours",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Joker",
+      "sprite": "joker",
+      "folder": "Joker",
+      "dialogue": "I need films where what people called them during filming was totally different from the final title. You know, the old switcheroo! The name game!",
+      "hintCategory": "Famous Working Title Was Completely Different",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Punk Kid Boy",
+      "sprite": "punk_kid_boy",
+      "folder": "Punk Kid Boy",
+      "dialogue": "I brought my Tindendo to the video store and my mom said PUT THAT AWAY but jokes on her because I beat level 5 while she was picking a movie for FORTY MINUTES!",
+      "dismiss": "Time well spent"
+    },
+    {
+      "type": "story",
+      "character": "Chef",
+      "sprite": "chef",
+      "folder": "Chef",
+      "dialogue": "Do the Right Thing makes me crave pizza every single time. Sal's Famous might be fictional but that oven is the real star of the film.",
+      "dismiss": "Now I'm hungry"
+    },
+    {
+      "type": "story",
+      "character": "Blonde Kid Girl",
+      "sprite": "blonde_kid_girl",
+      "folder": "Blonde Kid Girl",
+      "dialogue": "My friend said Return of the Jedi isn't as good as Empire and I told her she was WRONG and now we're not talking and it's been FOUR DAYS!",
+      "dismiss": "Stand your ground"
+    }
+  ],
+  "2026-04-15": [
+    {
+      "type": "trivia",
+      "character": "Punk Man",
+      "sprite": "punk_men",
+      "folder": "Punk Man",
+      "dialogue": "In Lethal Weapon, who plays Riggs' partner Roger Murtaugh?",
+      "answers": ["Danny Glover", "Carl Weathers", "Samuel L. Jackson", "Wesley Snipes"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Blue Haired Woman",
+      "sprite": "blue_haired_woman",
+      "folder": "Blue Haired Woman",
+      "dialogue": "Goodfellas is based on a true story. What real-life mobster is Ray Liotta playing?",
+      "answers": ["Henry Hill", "Jimmy Burke", "Tommy DeSimone", "Paul Vario"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "folder": "Goblin Kid",
+      "dialogue": "In Jumanji, what comes OUT of the board game when they play?? I need to know because I'm NEVER playing board games again!!",
+      "answers": ["Wild animals and jungle dangers", "Ghosts and skeletons", "Robots and lasers", "Dinosaurs and volcanos"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Old Man",
+      "sprite": "old_man",
+      "folder": "Old Man",
+      "dialogue": "In The Right Stuff, the film follows test pilots who become what?",
+      "answers": ["America's first astronauts", "World War II aces", "Blue Angels pilots", "CIA operatives"],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Knight",
+      "sprite": "knight",
+      "folder": "Knight",
+      "dialogue": "I seek tales where the hero Gibson charges into battle! The warrior from the wasteland, the Scottish rebel, the lawman of lethal repute!",
+      "hintCategory": "Mel Gibson Action",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "I'm after movies where things that really happened got turned into a picture show. Real events, real people, that sort of honest storytelling.",
+      "hintCategory": "Based on a True Story",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Firefighter",
+      "sprite": "firefighter",
+      "folder": "Firefighter",
+      "dialogue": "DISPATCH! I need films where the person behind the camera sneaks themselves into a scene! Like a secret inspection! A covert cameo!",
+      "hintCategory": "Director Makes a Cameo",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Viking Kid Boy",
+      "sprite": "viking_kid_boy",
+      "folder": "Viking Kid Boy",
+      "dialogue": "My dad says Braveheart is historically INACCURATE and I said DAD it has FACE PAINT and SWORDS and that's ALL I NEED!",
+      "dismiss": "FREEDOM"
+    },
+    {
+      "type": "story",
+      "character": "Blonde Man",
+      "sprite": "blonde_man",
+      "folder": "Blonde Man",
+      "dialogue": "I once drove to three different video stores on a Friday night looking for WarGames. My wife waited in the car. We're divorced now. Unrelated. Probably.",
+      "dismiss": "Wanna play a game?"
+    },
+    {
+      "type": "story",
+      "character": "Bride",
+      "sprite": "bride",
+      "folder": "Bride",
+      "dialogue": "We're screening Spaceballs at our wedding reception. My mother-in-law says it's 'inappropriate.' I say may the Schwartz be with us!",
+      "dismiss": "Mazel tov"
+    }
+  ],
+  "2026-04-16": [
+    {
+      "type": "trivia",
+      "character": "Knight Kid",
+      "sprite": "knight_kid",
+      "folder": "Knight Kid",
+      "dialogue": "In Ace Ventura, what ANIMAL is Ace trying to find for the Miami Dolphins?? I bet you don't even KNOW!",
+      "answers": ["A dolphin named Snowflake", "A parrot named Captain", "A dog named Buddy", "A monkey named Spike"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Man",
+      "sprite": "blonde_man",
+      "folder": "Blonde Man",
+      "dialogue": "In Footloose, why is dancing banned in the town?",
+      "answers": ["The town minister pushed for the ban after teens died in a car accident", "The mayor lost a dance contest and holds a grudge", "A fire broke out at a school dance", "The town council thought it was immoral"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "In The Bodyguard, Whitney Houston sings that beautiful song. What's it called, dearie? The big one everyone knows?",
+      "answers": ["I Will Always Love You", "Greatest Love of All", "I Wanna Dance with Somebody", "How Will I Know"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Policeman",
+      "sprite": "policeman",
+      "folder": "Policeman",
+      "dialogue": "In The Blair Witch Project, what state are the filmmakers lost in?",
+      "answers": ["Maryland", "West Virginia", "Pennsylvania", "Massachusetts"],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Viking Woman",
+      "sprite": "viking_woman",
+      "folder": "Viking Woman",
+      "dialogue": "I NEED THE RUBBER-FACED MAN! The one who talks from his rear end, who wears the green mask, who cannot tell a lie! His comedies bring GREAT JOY!",
+      "hintCategory": "Jim Carrey Comedy",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Ninja",
+      "sprite": "ninja",
+      "folder": "Ninja",
+      "dialogue": "Some films have albums that eclipse the story itself. The music becomes the legend. The soundtrack outlives the screen. That is what I seek.",
+      "hintCategory": "Soundtrack Bigger Than the Movie",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Chef",
+      "sprite": "chef",
+      "folder": "Chef",
+      "dialogue": "I need movies set during the holidays! Chestnuts roasting, snow falling, presents under the tree. The season of giving, you know? That festive time of year.",
+      "hintCategory": "Takes Place on or Around Christmas",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Punk Kid Boy",
+      "sprite": "punk_kid_boy",
+      "folder": "Punk Kid Boy",
+      "dialogue": "I watched The Mask and tried to spin around really fast in the living room to see if I'd turn into a TORNADO. I broke the lamp AND the coffee table.",
+      "dismiss": "Smokin'!"
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "sprite": "joker",
+      "folder": "Joker",
+      "dialogue": "Why did the VHS go to the party? Because it heard it was going to be a REEL good time! No? How about -- what do you call a late video return? A FINE romance!",
+      "dismiss": "I'm begging you"
+    },
+    {
+      "type": "story",
+      "character": "Businessman",
+      "sprite": "businessman",
+      "folder": "Businessman",
+      "dialogue": "Dumb and Dumber is actually the most realistic business film ever made. I've worked with both of those guys. They run Fortune 500 companies now.",
+      "dismiss": "So you're telling me there's a chance"
+    }
+  ],
+  "2026-04-17": [
+    {
+      "type": "trivia",
+      "character": "Blue Haired Kid Girl",
+      "sprite": "blue_haired_kid_girl",
+      "folder": "Blue Haired Kid Girl",
+      "dialogue": "In Big Trouble in Little China, what's the NAME of Kurt Russell's character?? My dad says it ALL the time!",
+      "answers": ["Jack Burton", "Snake Plissken", "R.J. MacReady", "Wyatt Earp"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Woman",
+      "sprite": "punk_woman",
+      "folder": "Punk Woman",
+      "dialogue": "In The Lost Boys, what California beach town is the movie set in?",
+      "answers": ["Santa Carla", "Santa Cruz", "Santa Monica", "Santa Barbara"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Old Man",
+      "sprite": "old_man",
+      "folder": "Old Man",
+      "dialogue": "In The Karate Kid, what does Mr. Miyagi have Daniel do as part of his training?",
+      "answers": ["Wax cars and paint fences", "Run up stairs like Rocky", "Break boards with his hands", "Meditate under a waterfall"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Woman",
+      "sprite": "blonde_woman",
+      "folder": "Blonde Woman",
+      "dialogue": "In True Lies, Jamie Lee Curtis discovers her husband is secretly what?",
+      "answers": ["A spy", "A superhero", "A hitman", "A millionaire"],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "I need them pictures with the blood-drinkers, you know? The ones who sleep in coffins and can't handle garlic. Undead folk. Night creatures.",
+      "hintCategory": "Vampire Movie",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Bride",
+      "sprite": "bride",
+      "folder": "Bride",
+      "dialogue": "I need movies with those scenes where someone trains really hard set to awesome music! Push-ups, running, the whole workout montage thing! Like preparing for a wedding, honestly.",
+      "hintCategory": "Famous Training Montage",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "Oh sweetie, I need films by that man who did the space aliens and the big boat that sank. Very dramatic pictures. He likes strong women and big explosions.",
+      "hintCategory": "James Cameron Directed",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Viking Man",
+      "sprite": "viking_man",
+      "folder": "Viking Man",
+      "dialogue": "TOMBSTONE! Doc Holliday is the GREATEST warrior of the Western frontier! 'I'm your huckleberry' -- I say this to EVERYONE I meet now!",
+      "dismiss": "I'm your huckleberry"
+    },
+    {
+      "type": "story",
+      "character": "Firefighter",
+      "sprite": "firefighter",
+      "folder": "Firefighter",
+      "dialogue": "Fright Night is actually a pretty good training video for identifying threats in your neighborhood. I filed it under 'continuing education' with my captain.",
+      "dismiss": "Resourceful"
+    },
+    {
+      "type": "story",
+      "character": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "folder": "Goblin Kid",
+      "dialogue": "My sister watched Interview with the Vampire and now she won't stop HISSING at people and wearing a CAPE to school! The teacher called my mom TWICE!",
+      "dismiss": "It's a phase"
+    }
+  ],
+  "2026-04-18": [
+    {
+      "type": "trivia",
+      "character": "Businessman",
+      "sprite": "businessman",
+      "folder": "Businessman",
+      "dialogue": "In Dead Poets Society, what phrase does Robin Williams' character teach his students to live by?",
+      "answers": ["Carpe diem", "Memento mori", "Tempus fugit", "Veni vidi vici"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Viking Kid Boy",
+      "sprite": "viking_kid_boy",
+      "folder": "Viking Kid Boy",
+      "dialogue": "In Batman, who plays the Joker?? NOT the new ones, the ORIGINAL cool one from 1989!!",
+      "answers": ["Jack Nicholson", "Tim Curry", "Willem Dafoe", "Dennis Hopper"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Man",
+      "sprite": "punk_men",
+      "folder": "Punk Man",
+      "dialogue": "The Princess Bride -- who says the line 'My name is Inigo Montoya, you killed my father, prepare to die'?",
+      "answers": ["Mandy Patinkin", "Cary Elwes", "Robin Wright", "Christopher Guest"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Knight",
+      "sprite": "knight",
+      "folder": "Knight",
+      "dialogue": "A question of cinema lore! In A Nightmare on Elm Street, which now-famous actor made their film debut?",
+      "answers": ["Johnny Depp", "Brad Pitt", "George Clooney", "Leonardo DiCaprio"],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Blue Haired Woman",
+      "sprite": "blue_haired_woman",
+      "folder": "Blue Haired Woman",
+      "dialogue": "I'm looking for movies with that incredible man who does all the voices and impressions. Genie, Peter Pan, the radio DJ in Vietnam. A comedic force of nature.",
+      "hintCategory": "Robin Williams Stars",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Joker",
+      "sprite": "joker",
+      "folder": "Joker",
+      "dialogue": "I need movies based on comics! You know, the ones that started as panels on a page before they hit the big screen. POW! BANG! ZAP!",
+      "hintCategory": "Based on a Comic Book",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Policeman",
+      "sprite": "policeman",
+      "folder": "Policeman",
+      "dialogue": "Looking for films where a brand new face showed up and became a huge star. Like, you watch it now knowing who they become and it's wild. Their very first role on screen.",
+      "hintCategory": "A Huge Star's Film Debut",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Blonde Kid Girl",
+      "sprite": "blonde_kid_girl",
+      "folder": "Blonde Kid Girl",
+      "dialogue": "I told everyone at school that Robin Williams is the genie in Aladdin and nobody believed me and I was SO MAD because I was RIGHT!!",
+      "dismiss": "You were right!"
+    },
+    {
+      "type": "story",
+      "character": "Ninja",
+      "sprite": "ninja",
+      "folder": "Ninja",
+      "dialogue": "When Harry Met Sally taught me that a well-timed emotional outburst in a restaurant can silence any opponent. A weapon I had overlooked.",
+      "dismiss": "I'll have what she's having"
+    },
+    {
+      "type": "story",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "My grandson made me watch Misery and now I'm terrified of nurses. I have a checkup next week. I might cancel. That Kathy Bates is TOO convincing.",
+      "dismiss": "She really is"
+    }
+  ],
+  "2026-04-19": [
+    {
+      "type": "trivia",
+      "character": "Chef",
+      "sprite": "chef",
+      "folder": "Chef",
+      "dialogue": "In Raising Arizona, Nicolas Cage's character steals one of a set of how many babies?",
+      "answers": ["Quintuplets (five)", "Triplets (three)", "Quadruplets (four)", "Twins (two)"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Man",
+      "sprite": "blonde_man",
+      "folder": "Blonde Man",
+      "dialogue": "In Rain Man, Dustin Hoffman's character is a savant who's amazing with what?",
+      "answers": ["Numbers and memory", "Music and piano", "Painting and art", "Languages and speech"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Kid Boy",
+      "sprite": "punk_kid_boy",
+      "folder": "Punk Kid Boy",
+      "dialogue": "They Live is SO COOL!! What does Roddy Piper find that lets him see the aliens??",
+      "answers": ["Special sunglasses", "A magic helmet", "A radio device", "A strange potion"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "Dearie, in Reservoir Dogs, the criminals all use fake names. What are they based on?",
+      "answers": ["Colors", "Animals", "Numbers", "Cities"],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Viking Woman",
+      "sprite": "viking_woman",
+      "folder": "Viking Woman",
+      "dialogue": "I SEEK THE CAGE! THE WILD-EYED ONE! The man who goes from whispering to SCREAMING in every film! Moonstruck! Raising Arizona! That glorious madman!",
+      "hintCategory": "Nicolas Cage Goes Big",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Businessman",
+      "sprite": "businessman",
+      "folder": "Businessman",
+      "dialogue": "I need films where the characters are traveling cross-country. Highway movies, road movies, the open road. Getting from point A to point B is the whole plot.",
+      "hintCategory": "Road Trip Movie",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Firefighter",
+      "sprite": "firefighter",
+      "folder": "Firefighter",
+      "dialogue": "ATTENTION! I need movies where the filmmakers were practically kids themselves! Super young directors, under thirty, calling the shots on their very first big projects!",
+      "hintCategory": "Director Was Under 30",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Bride",
+      "sprite": "bride",
+      "folder": "Bride",
+      "dialogue": "My fiance proposed during Thelma & Louise. Right at the ending. I was crying for COMPLETELY different reasons. The timing was honestly terrible. I still said yes.",
+      "dismiss": "Drive off into the sunset"
+    },
+    {
+      "type": "story",
+      "character": "Knight Kid",
+      "sprite": "knight_kid",
+      "folder": "Knight Kid",
+      "dialogue": "Face/Off is the CRAZIEST movie!! They swap FACES?! I tried to swap faces with my dog using tape and it did NOT work and now he won't look at me!",
+      "dismiss": "Poor dog"
+    },
+    {
+      "type": "story",
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "Pee-wee's Big Adventure taught me more about cross-country travel than any map ever did. That man rode his bike across America. Respect.",
+      "dismiss": "I know you are but what am I"
+    }
+  ],
+  "2026-04-20": [
+    {
+      "type": "trivia",
+      "character": "Ninja",
+      "sprite": "ninja",
+      "folder": "Ninja",
+      "dialogue": "In Alien, what is the name of the commercial spaceship whose crew encounters the xenomorph?",
+      "answers": ["Nostromo", "Sulaco", "Enterprise", "Serenity"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Viking Man",
+      "sprite": "viking_man",
+      "folder": "Viking Man",
+      "dialogue": "TELL ME! In RoboCop, what is the name of the corporation that creates the cyborg police officer?",
+      "answers": ["Omni Consumer Products", "Cyberdyne Systems", "Weyland-Yutani", "Tyrell Corporation"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Woman",
+      "sprite": "punk_woman",
+      "folder": "Punk Woman",
+      "dialogue": "In Beetlejuice, how many times do you have to say his name to summon him?",
+      "answers": ["Three times", "Twice", "Once", "Five times"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Blue Haired Kid Girl",
+      "sprite": "blue_haired_kid_girl",
+      "folder": "Blue Haired Kid Girl",
+      "dialogue": "In Scream, the killer asks trivia questions about SCARY MOVIES!! What movie does the killer ask about in the opening??",
+      "answers": ["Halloween", "Friday the 13th", "A Nightmare on Elm Street", "The Texas Chain Saw Massacre"],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Old Man",
+      "sprite": "old_man",
+      "folder": "Old Man",
+      "dialogue": "I need films with that tall lady, the one who fought the space monsters and the ghosts. Very commanding presence. She's in all these sci-fi pictures.",
+      "hintCategory": "Sigourney Weaver Sci-Fi",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Chef",
+      "sprite": "chef",
+      "folder": "Chef",
+      "dialogue": "I need movies where suddenly everyone breaks into song or dance even though it's NOT a musical! Like if I just started singing in the kitchen mid-service. Spontaneous performance!",
+      "hintCategory": "Musical Number in a Non-Musical",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Knight",
+      "sprite": "knight",
+      "folder": "Knight",
+      "dialogue": "I seek visions of a world yet to come! Tales set in the days ahead, where machines rule or cities gleam with strange lights. The future, good shopkeep!",
+      "hintCategory": "Set in the Future",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "sprite": "joker",
+      "folder": "Joker",
+      "dialogue": "Why did Poltergeist make a terrible roommate? Because it was always CHANNELING something! Also it never paid rent. Just static and screaming.",
+      "dismiss": "They're here... to annoy me"
+    },
+    {
+      "type": "story",
+      "character": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "folder": "Goblin Kid",
+      "dialogue": "I watched Back to the Future Part II and now I REALLY want a hoverboard!! My dad said they don't exist yet and I said WELL THEY SHOULD and he said GO TO BED!",
+      "dismiss": "Valid frustration"
+    },
+    {
+      "type": "story",
+      "character": "Blonde Woman",
+      "sprite": "blonde_woman",
+      "folder": "Blonde Woman",
+      "dialogue": "My boyfriend insists Risky Business is a 'coming of age classic.' I insist it's the reason he dances in his underwear when he thinks I'm not home.",
+      "dismiss": "Sometimes you gotta say..."
+    }
+  ],
+  "2026-04-21": [
+    {
+      "type": "trivia",
+      "character": "Firefighter",
+      "sprite": "firefighter",
+      "folder": "Firefighter",
+      "dialogue": "ATTENTION! In The Shining, what does Jack Nicholson's character type over and over?",
+      "answers": ["All work and no play makes Jack a dull boy", "Here's Johnny", "Come play with us", "Redrum"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Man",
+      "sprite": "blonde_man",
+      "folder": "Blonde Man",
+      "dialogue": "In Highlander, what is the famous tagline about the immortals?",
+      "answers": ["There can be only one", "Live forever or die trying", "Immortality has a price", "The last one standing wins"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "In The Shawshank Redemption, what does Andy Dufresne use to tunnel out of his cell over the years?",
+      "answers": ["A rock hammer", "A spoon", "A screwdriver", "A chisel"],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Knight Kid",
+      "sprite": "knight_kid",
+      "folder": "Knight Kid",
+      "dialogue": "In Coming to America, Eddie Murphy plays a PRINCE! But what country is he the prince of??",
+      "answers": ["Zamunda", "Wakanda", "Genovia", "Latveria"],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Ninja",
+      "sprite": "ninja",
+      "folder": "Ninja",
+      "dialogue": "I seek films connected by one legendary actor. The master of menace and mischief. The Shining grin. The Joker's laugh. He commands every frame.",
+      "hintCategory": "Jack Nicholson Leads",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Viking Woman",
+      "sprite": "viking_woman",
+      "folder": "Viking Woman",
+      "dialogue": "I NEED FILMS THAT BECAME TELEVISION SAGAS! Movies so mighty they spawned entire shows that ran for seasons! The story was too big for just one viewing!",
+      "hintCategory": "Spawned a TV Series",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Policeman",
+      "sprite": "policeman",
+      "folder": "Policeman",
+      "dialogue": "I'm looking for movies that flopped at the box office but became huge on video. Nobody saw them in theaters but everyone rented them. Sleeper hits, you know?",
+      "hintCategory": "Box Office Bomb That Became a VHS Cult Classic",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Punk Kid Boy",
+      "sprite": "punk_kid_boy",
+      "folder": "Punk Kid Boy",
+      "dialogue": "I saw Dead Ringers and I tried to convince everyone at school I have a TWIN BROTHER who goes to a DIFFERENT SCHOOL and nobody bought it because I'm a TERRIBLE liar!",
+      "dismiss": "Nice try"
+    },
+    {
+      "type": "story",
+      "character": "Chef",
+      "sprite": "chef",
+      "folder": "Chef",
+      "dialogue": "Office Space is the most accurate film ever made. I worked in a cubicle before I became a chef. I still flinch when I hear a printer.",
+      "dismiss": "PC Load Letter"
+    },
+    {
+      "type": "story",
+      "character": "Bride",
+      "sprite": "bride",
+      "folder": "Bride",
+      "dialogue": "The Parent Trap is basically my wedding planning right now. Two sides that can't agree on anything but somehow it all works out. Hopefully. Fingers crossed.",
+      "dismiss": "It'll work out"
+    }
+  ]
+}
