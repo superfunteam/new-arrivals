@@ -311,7 +311,7 @@ export function showSplashScreen(options = {}) {
  * @param {Function} onComplete  Called with (skipChecked: boolean) when the user
  *                               clicks "Let's Go" on the last slide.
  */
-export function showOnboarding(onComplete) {
+export function showOnboarding(onComplete, onSlideRender) {
   const overlay = document.getElementById('overlay');
   if (!overlay) return;
 
@@ -321,15 +321,7 @@ export function showOnboarding(onComplete) {
   const slides = [
     {
       title: 'Welcome to the Store',
-      anim: `<div class="onboarding-posters" style="perspective:400px">
-        ${[posterIds.predator, posterIds.totalRecall, posterIds.dieHard, posterIds.ghostbusters].map((id, i) => `
-          <div class="tape-3d" style="animation-delay:${i * 0.3}s">
-            <div class="tape-3d-front"><img src="/posters/${id}_pixel.jpg" alt="" /></div>
-            <div class="tape-3d-back"></div>
-            <div class="tape-3d-spine"></div>
-          </div>
-        `).join('')}
-      </div>`,
+      anim: `<canvas class="onboarding-3d-canvas" id="onboarding-3d" width="280" height="140"></canvas>`,
       body: "You're the new clerk at NEW ARRIVALS VIDEO. Sort 16 tapes into 4 mystery categories to earn your daily wages.",
       btn: 'Next',
     },
@@ -416,6 +408,9 @@ export function showOnboarding(onComplete) {
         demoTape.classList.toggle('demo-selected');
       });
     }
+
+    // Notify caller which slide just rendered
+    if (typeof onSlideRender === 'function') onSlideRender(current);
   }
 
   render();

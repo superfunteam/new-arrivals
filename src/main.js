@@ -121,6 +121,98 @@ function createPlaceholderTexture(title) {
 }
 
 // ---------------------------------------------------------------------------
+// Mini Three.js scene for onboarding slide 0 (cascading twirl showcase)
+// ---------------------------------------------------------------------------
+
+function startOnboarding3DScene(posterIds) {
+  const canvas = document.getElementById('onboarding-3d');
+  if (!canvas) return () => {};
+
+  const W = 280;
+  const H = 140;
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(W, H);
+  renderer.setClearColor(0x000000, 0);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, W / H, 0.1, 20);
+  camera.position.set(0, 0, 5);
+  camera.lookAt(0, 0, 0);
+
+  // Lighting matching the main game
+  scene.add(new THREE.AmbientLight(0xfff5e6, 0.5));
+  const dirLight = new THREE.DirectionalLight(0xfff0d4, 0.8);
+  dirLight.position.set(0, 3, 4);
+  scene.add(dirLight);
+  const neon = new THREE.PointLight(0xFF6B9D, 0.3, 8);
+  neon.position.set(2, 2, 2);
+  scene.add(neon);
+
+  // Create 4 VHS boxes using the real createVHSBox
+  const movieIds = posterIds.slice(0, 4);
+  const boxes = [];
+  const gap = 0.75;
+  const startX = -((movieIds.length - 1) * gap) / 2;
+
+  let loadedCount = 0;
+
+  movieIds.forEach((id, i) => {
+    loadTexture(`/posters/${id}_pixel.jpg`).then(tex => {
+      const movie = { tmdb_id: id, title: '' };
+      const box = createVHSBox(movie, tex);
+      box.position.set(startX + i * gap, 0, 0);
+      box.scale.setScalar(0.85);
+      scene.add(box);
+      boxes[i] = box;
+      loadedCount++;
+    }).catch(() => { loadedCount++; });
+  });
+
+  // Animation loop with cascading twirl
+  let running = true;
+  const clock = new THREE.Clock();
+
+  function animate() {
+    if (!running) return;
+    requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
+
+    // Each box twirls on its own schedule:
+    // Cycle is 6s total. Each box gets a 1.2s twirl window, staggered 0.4s apart.
+    // Remaining time is the pause.
+    for (let i = 0; i < boxes.length; i++) {
+      const box = boxes[i];
+      if (!box) continue;
+
+      const cycleT = (t + 10) % 6; // +10 to avoid start-of-cycle weirdness
+      const boxStart = i * 0.4;
+      const twirlDuration = 1.2;
+
+      if (cycleT >= boxStart && cycleT < boxStart + twirlDuration) {
+        const localT = (cycleT - boxStart) / twirlDuration;
+        const eased = 1 - Math.pow(1 - localT, 3); // easeOutCubic
+        box.rotation.y = eased * Math.PI * 2;
+        box.position.y = Math.sin(localT * Math.PI) * 0.12;
+      } else {
+        box.rotation.y = 0;
+        box.position.y = 0;
+      }
+    }
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // Return cleanup function
+  return () => {
+    running = false;
+    renderer.dispose();
+    scene.clear();
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Radio Station System (module scope so startGameSession can access)
 // ---------------------------------------------------------------------------
 
@@ -254,9 +346,19 @@ async function main() {
     }
 
     if (!isSkipIntro()) {
+      let miniSceneCleanup = null;
+
       showOnboarding((skipChecked) => {
+        if (miniSceneCleanup) { miniSceneCleanup(); miniSceneCleanup = null; }
         setSkipIntro(skipChecked);
         showWelcome();
+      }, (slideIndex) => {
+        // Clean up previous mini scene
+        if (miniSceneCleanup) { miniSceneCleanup(); miniSceneCleanup = null; }
+        // Start 3D tape showcase on slide 0
+        if (slideIndex === 0) {
+          miniSceneCleanup = startOnboarding3DScene(splashPosterIds);
+        }
       });
     } else {
       showWelcome();

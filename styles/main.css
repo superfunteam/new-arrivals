@@ -521,7 +521,14 @@ html, body {
   justify-content: center;
 }
 
-/* 3D VHS tape box for onboarding */
+.onboarding-3d-canvas {
+  display: block;
+  width: 280px;
+  height: 140px;
+  border-radius: 8px;
+}
+
+/* Legacy CSS 3D tape — kept for reference, replaced by Three.js canvas */
 .tape-3d {
   width: 52px;
   height: 78px;
