@@ -1157,3 +1157,15 @@ export function showTrackingFlash() {
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 500);
 }
+
+/**
+ * Show a brief floating message over the game (e.g., "So close, one away!")
+ * @param {string} text
+ */
+export function showGuessMessage(text) {
+  const el = document.createElement('div');
+  el.className = 'guess-message';
+  el.textContent = text;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2000);
+}

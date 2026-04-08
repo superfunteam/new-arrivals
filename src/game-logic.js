@@ -80,9 +80,19 @@ export function checkGuess(game) {
     return { correct: false };
   }
 
+  // Track previous guesses to detect duplicates
+  if (!game.previousGuesses) game.previousGuesses = [];
+  const guessKey = [...game.selectedIds].sort().join(',');
+  if (game.previousGuesses.includes(guessKey)) {
+    game.selectedIds = [];
+    return { correct: false, duplicate: true };
+  }
+  game.previousGuesses.push(guessKey);
+
   const selected = new Set(game.selectedIds);
   const solvedNames = new Set(game.solvedCategories.map((c) => c.name));
 
+  // Check for exact match
   for (const category of game.puzzle.categories) {
     if (solvedNames.has(category.name)) continue;
 
@@ -102,6 +112,18 @@ export function checkGuess(game) {
     }
   }
 
+  // Check for "one away" (3 of 4 match a single category)
+  let oneAway = false;
+  for (const category of game.puzzle.categories) {
+    if (solvedNames.has(category.name)) continue;
+    const categoryIds = new Set(category.movies.map((m) => m.tmdb_id));
+    const overlap = [...selected].filter((id) => categoryIds.has(id)).length;
+    if (overlap === 3) {
+      oneAway = true;
+      break;
+    }
+  }
+
   // Wrong guess
   game.wrongGuesses += 1;
   game.wage = Math.max(0, game.wage - 1);
@@ -110,7 +132,7 @@ export function checkGuess(game) {
     game.completed = true;
     game.won = false;
   }
-  return { correct: false };
+  return { correct: false, oneAway };
 }
 
 /**
@@ -276,6 +298,7 @@ export function serializeGame(game) {
     startTime: game.startTime,
     completed: game.completed,
     won: game.won,
+    previousGuesses: game.previousGuesses || [],
   };
 }
 
@@ -301,5 +324,6 @@ export function restoreGame(saved, puzzle) {
     startTime: saved.startTime,
     completed: saved.completed,
     won: saved.won,
+    previousGuesses: saved.previousGuesses || [],
   };
 }

@@ -70,6 +70,7 @@ import {
   hideLightbox,
   showEndScreen,
   showTrackingFlash,
+  showGuessMessage,
   onMuteClick,
   setMuteIcon,
   onStationClick,
@@ -959,6 +960,17 @@ async function startGameSession(puzzle, mode, puzzlesData) {
     // 2. Check guess
     const result = checkGuess(game);
 
+    // Duplicate guess — no penalty, just a message
+    if (result.duplicate) {
+      showGuessMessage("You already guessed this!");
+      // Deselect all visually
+      const selectedBoxes = allBoxes.filter((b) => b.userData.selected);
+      for (const box of selectedBoxes) { setBoxState(box, 'default'); }
+      interactionHandle.setLocked(false);
+      setShelveButton(false, handleShelveIt, 0);
+      return;
+    }
+
     if (result.correct) {
       // ── CORRECT ──────────────────────────────────────────────────────────
       audio.play('correct');
@@ -1030,7 +1042,10 @@ async function startGameSession(puzzle, mode, puzzlesData) {
       audio.play('wrong');
       audio.play('penalty');
 
-      // Show tracking flash
+      // Show "one away" hint or tracking flash
+      if (result.oneAway) {
+        showGuessMessage("So close, one away!");
+      }
       showTrackingFlash();
 
       // Update wage display
