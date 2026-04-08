@@ -2069,5 +2069,111 @@
       "dialogue": "Why did the hockey player go to the video store? He heard they had great CHECKS! Ha! Get it? Checking? Like in hockey? And also checking out movies?",
       "dismiss": "Penalty box"
     }
+  ],
+  "clark-s-first-puzzle": [
+    {
+      "type": "trivia",
+      "character": "Firefighter",
+      "sprite": "firefighter",
+      "folder": "Firefighter",
+      "dialogue": "Quick question - in Halloween, what's the name of Michael Myers' psychiatrist who's been chasing him around?",
+      "answers": [
+        "Dr. Sam Loomis",
+        "Dr. Benjamin Stone",
+        "Dr. Frank Morgan",
+        "Dr. Richard Kimble"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Man",
+      "sprite": "blonde_man",
+      "folder": "Blonde Man",
+      "dialogue": "Settle a bet with my buddy - Airplane! came out the same year as what other disaster? The Shining or Caddyshack?",
+      "answers": [
+        "Both came out in 1980",
+        "The Shining (1980), but Caddyshack was 1981",
+        "Caddyshack (1980), but The Shining was 1979",
+        "Neither, they both came out in 1979"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Kid Girl",
+      "sprite": "blonde_kid_girl",
+      "folder": "Blonde Kid Girl",
+      "dialogue": "UHHH MY MOM SAID I COULD RENT SPACEBALLS IF I KNEW WHO PLAYED THE PRINCESS??? She's got like, giant hair buns or whatever!",
+      "answers": [
+        "Daphne Zuniga",
+        "Carrie Fisher",
+        "Molly Ringwald",
+        "Joan Cusack"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "My wife wants to know - The Texas Chain Saw Massacre, was that Tobe Hooper or Wes Craven who directed it?",
+      "answers": [
+        "Tobe Hooper",
+        "Wes Craven",
+        "John Carpenter",
+        "George A. Romero"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "type": "hint",
+      "character": "Viking Kid Boy",
+      "sprite": "viking_kid_boy",
+      "folder": "Viking Kid Boy",
+      "dialogue": "MY SISTER KEEPS SCREAMING AND SAYING THERE'S A HOOK GUY AND GHOSTFACE AND I DUNNO WHAT THAT MEANS BUT SHE WANTS SCARY MOVIES FROM LIKE... NOW??? HELP!!!",
+      "hintCategory": "90s slashers"
+    },
+    {
+      "type": "hint",
+      "character": "Punk Man",
+      "sprite": "punk_man",
+      "folder": "Punk Man",
+      "dialogue": "Looking for something that makes fun of other movies, you know? Leslie Nielsen, Mel Brooks type stuff. Recent ones.",
+      "hintCategory": "80s Spoofs"
+    },
+    {
+      "type": "hint",
+      "character": "Punk Woman",
+      "sprite": "punk_woman",
+      "folder": "Punk Woman",
+      "dialogue": "Need something wholesome for my grandmother. Romance, small town, nothing too edgy. Those made-for-TV type movies?",
+      "hintCategory": "Hallmark Channel Movies"
+    },
+    {
+      "type": "story",
+      "character": "Policeman",
+      "sprite": "policeman",
+      "folder": "Policeman",
+      "dialogue": "Off duty tonight, thank God. Last Friday I had to break up a fistfight over the last copy of The Princess Bride. Two grown men rolling on the floor by the popcorn machine.",
+      "dismissLabel": "Inconceivable!"
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "sprite": "joker",
+      "folder": "Joker",
+      "dialogue": "Why did the VHS tape go to therapy? Because it kept getting rewound! Get it? RE-WOUND? I've been working on my material!",
+      "dismissLabel": "Please stop"
+    },
+    {
+      "type": "story",
+      "character": "Old Man",
+      "sprite": "old_man",
+      "folder": "Old Man",
+      "dialogue": "Back in my day, we didn't need all these fancy tapes. We had the radio, and we used our imaginations. Now I can't figure out how to rewind the darn things...",
+      "dismissLabel": "Be kind, rewind"
+    }
   ]
 }

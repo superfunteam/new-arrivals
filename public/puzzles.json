@@ -5658,6 +5658,334 @@
           ]
         }
       ]
+    },
+    {
+      "id": "clark-s-first-puzzle",
+      "title": "Clark's First Puzzle",
+      "categories": [
+        {
+          "name": "90s slashers",
+          "difficulty": 1,
+          "color": "#4CAF50",
+          "movies": [
+            {
+              "title": "Scream",
+              "year": 1996,
+              "tmdb_id": 4232,
+              "summary": "A year after the murder of her mother, a teenage girl is terrorized by a masked killer who targets her and her friends by using scary movies as part of a deadly game.",
+              "genres": [
+                "Crime",
+                "Horror",
+                "Mystery"
+              ],
+              "director": "Wes Craven",
+              "stars": [
+                "David Arquette",
+                "Neve Campbell",
+                "Courteney Cox",
+                "Skeet Ulrich",
+                "Matthew Lillard"
+              ]
+            },
+            {
+              "title": "I Know What You Did Last Summer",
+              "year": 1997,
+              "tmdb_id": 3597,
+              "summary": "After an accident on a winding road, four teens make the fatal mistake of dumping their victim's body into the sea. Exactly one year later, the deadly secret resurfaces as they're stalked by a hook-handed figure.",
+              "genres": [
+                "Horror",
+                "Thriller",
+                "Mystery"
+              ],
+              "director": "Jim Gillespie",
+              "stars": [
+                "Jennifer Love Hewitt",
+                "Freddie Prinze Jr.",
+                "Sarah Michelle Gellar",
+                "Ryan Phillippe",
+                "Bridgette Wilson-Sampras"
+              ]
+            },
+            {
+              "title": "Urban Legend",
+              "year": 1998,
+              "tmdb_id": 9877,
+              "summary": "A college campus is plagued by a vicious serial killer murdering students in ways that correspond to various urban legends.",
+              "genres": [
+                "Horror",
+                "Mystery"
+              ],
+              "director": "Jamie Blanks",
+              "stars": [
+                "Alicia Witt",
+                "Jared Leto",
+                "Rebecca Gayheart",
+                "Michael Rosenbaum",
+                "Loretta Devine"
+              ]
+            },
+            {
+              "title": "Candyman",
+              "year": 1992,
+              "tmdb_id": 9529,
+              "summary": "The Candyman, a murderous soul with a hook for a hand, is accidentally summoned to reality by a skeptic grad student researching the monster's myth.",
+              "genres": [
+                "Drama",
+                "Horror",
+                "Thriller"
+              ],
+              "director": "Bernard Rose",
+              "stars": [
+                "Virginia Madsen",
+                "Tony Todd",
+                "Xander Berkeley",
+                "Kasi Lemmons",
+                "Vanessa Williams"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "70s slashers",
+          "difficulty": 2,
+          "color": "#FFC107",
+          "movies": [
+            {
+              "title": "The Texas Chain Saw Massacre",
+              "year": 1974,
+              "tmdb_id": 30497,
+              "summary": "Five friends head out to rural Texas to visit the grave of a grandfather. On the way, they stumble across what appears to be a deserted house, only to discover something sinister within. Something armed with a chainsaw.",
+              "genres": [
+                "Horror"
+              ],
+              "director": "Tobe Hooper",
+              "stars": [
+                "Marilyn Burns",
+                "Allen Danziger",
+                "Paul A. Partain",
+                "William Vail",
+                "Teri McMinn"
+              ]
+            },
+            {
+              "title": "Halloween",
+              "year": 1978,
+              "tmdb_id": 948,
+              "summary": "Fifteen years after murdering his sister on Halloween Night 1963, Michael Myers escapes from a mental hospital and returns to the small town of Haddonfield, Illinois to kill again.",
+              "genres": [
+                "Horror",
+                "Thriller"
+              ],
+              "director": "John Carpenter",
+              "stars": [
+                "Donald Pleasence",
+                "Jamie Lee Curtis",
+                "Nancy Kyes",
+                "P. J. Soles",
+                "Charles Cyphers"
+              ]
+            },
+            {
+              "title": "Black Christmas",
+              "year": 1974,
+              "tmdb_id": 16938,
+              "summary": "As the residents of the Pi Kappa Sigma sorority house prepare for the festive season, a stranger begins to harass them with a series of obscene phone calls.",
+              "genres": [
+                "Horror",
+                "Mystery",
+                "Crime"
+              ],
+              "director": "Bob Clark",
+              "stars": [
+                "Olivia Hussey",
+                "Keir Dullea",
+                "Margot Kidder",
+                "John Saxon",
+                "Marian Waldman"
+              ]
+            },
+            {
+              "title": "The Hills Have Eyes",
+              "year": 1977,
+              "tmdb_id": 12262,
+              "summary": "Taking an ill-advised detour en-route to California, the Carter family soon run into trouble when their RV breaks down in the middle of the desert. Stranded, they find themselves at the mercy of monstrous cannibals lurking in the surrounding hills.",
+              "genres": [
+                "Horror"
+              ],
+              "director": "Wes Craven",
+              "stars": [
+                "Susan Lanier",
+                "Robert Houston",
+                "Martin Speer",
+                "Dee Wallace",
+                "Russ Grieve"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "80s Spoofs",
+          "difficulty": 3,
+          "color": "#2196F3",
+          "movies": [
+            {
+              "title": "Airplane!",
+              "year": 1980,
+              "tmdb_id": 813,
+              "summary": "An ex-fighter pilot forced to take over the controls of an airliner when the flight crew succumbs to food poisoning.",
+              "genres": [
+                "Comedy"
+              ],
+              "director": "Jim Abrahams",
+              "stars": [
+                "Robert Hays",
+                "Julie Hagerty",
+                "Leslie Nielsen",
+                "Kareem Abdul-Jabbar",
+                "Lloyd Bridges"
+              ]
+            },
+            {
+              "title": "Top Secret!",
+              "year": 1984,
+              "tmdb_id": 8764,
+              "summary": "Popular and dashing American singer Nick Rivers travels to East Germany to perform in a music festival. When he loses his heart to the gorgeous Hillary Flammond, he finds himself caught up in an underground resistance movement. Rivers joins forces with Agent Cedric and Flammond to attempt the rescue of her father, Dr. Paul, from the Germans, who have captured the scientist in hopes of coercing him into building a new naval mine.",
+              "genres": [
+                "Comedy"
+              ],
+              "director": "Jim Abrahams",
+              "stars": [
+                "Val Kilmer",
+                "Lucy Gutteridge",
+                "Peter Cushing",
+                "Jeremy Kemp",
+                "Christopher Villiers"
+              ]
+            },
+            {
+              "title": "Spaceballs",
+              "year": 1987,
+              "tmdb_id": 957,
+              "summary": "When the nefarious Dark Helmet hatches a plan to snatch Princess Vespa and steal her planet's air, space-bum-for-hire Lone Starr and his clueless sidekick fly to the rescue. Along the way, they meet Yogurt, who puts Lone Starr wise to the power of \"The Schwartz.\" Can he master it in time to save the day?",
+              "genres": [
+                "Comedy",
+                "Science Fiction"
+              ],
+              "director": "Mel Brooks",
+              "stars": [
+                "Mel Brooks",
+                "John Candy",
+                "Rick Moranis",
+                "Bill Pullman",
+                "Daphne Zuniga"
+              ]
+            },
+            {
+              "title": "The Naked Gun: From the Files of Police Squad!",
+              "year": 1988,
+              "tmdb_id": 37136,
+              "summary": "When the bumbling Lieutenant Frank Drebin investigates events following the shooting of his partner, he stumbles upon an attempt to assassinate Queen Elizabeth II.",
+              "genres": [
+                "Comedy",
+                "Crime"
+              ],
+              "director": "David Zucker",
+              "stars": [
+                "Leslie Nielsen",
+                "Priscilla Presley",
+                "Ricardo Montalban",
+                "George Kennedy",
+                "O. J. Simpson"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Hallmark Channel Movies",
+          "difficulty": 4,
+          "color": "#9C27B0",
+          "movies": [
+            {
+              "title": "A Christmas Kiss",
+              "year": 2011,
+              "tmdb_id": 81332,
+              "summary": "Wendy Walton is the best designer in Boston... but no one knows it yet. Hoping to kick-start her career, Wendy has left work with the local theatre to take a job as an assistant to Priscilla Hall, the most prestigious designer in the city. Ms. Hall works Wendy around the clock, which is how Wendy finds herself trapped in an elevator late one night with an incredibly handsome stranger. Wendy and the mystery man share an impulsive, romantic, life changing kiss before the doors open and Wendy runs out, leaving him behind. The next day at work, Wendy answers the door to find the handsome gentleman standing in front of her.",
+              "genres": [
+                "TV Movie",
+                "Romance",
+                "Family",
+                "Drama"
+              ],
+              "director": "John Stimpson",
+              "stars": [
+                "Elisabeth Röhm",
+                "Laura Breckenridge",
+                "Brendan Fehr",
+                "Jerrika Hinton",
+                "Laura Spencer"
+              ]
+            },
+            {
+              "title": "The Ultimate Gift",
+              "year": 2007,
+              "tmdb_id": 14624,
+              "summary": "When his wealthy grandfather finally dies, Jason Stevens fully expects to benefit when it comes to the reading of the will. But instead of a sizable inheritance, Jason receives a test, a series of tasks he must complete before he can get any money.",
+              "genres": [
+                "Romance",
+                "Drama",
+                "Family"
+              ],
+              "director": "Michael O. Sajbel",
+              "stars": [
+                "Drew Fuller",
+                "Abigail Breslin",
+                "James Garner",
+                "Bill Cobbs",
+                "Ali Hillis"
+              ]
+            },
+            {
+              "title": "Love Begins",
+              "year": 2011,
+              "tmdb_id": 81450,
+              "summary": "Clark Davis adventurous dreams of seeing the world are put into jeopardy after he and a friend start a fight which damages a local cafe. Through a plea deal with the Sheriff and café owner Millie, Clark works off his sentence as a farmhand for the Barlow sisters, Ellen and Cassie. Older sister Ellen doesnt understand Cassies friendly nature with Clark; she agreed to the Sheriffs offer only because the farm has become too much to maintain alone. Clark is slowing winning Ellen over, but suddenly suffers a traumatic head injury in a fall. After Ellen nurses him back to health, her former fiancé returns to win her back. Will Clark travel on or stay behind where love begins?",
+              "genres": [
+                "Drama",
+                "Romance",
+                "Family",
+                "TV Movie"
+              ],
+              "director": "David S. Cass Sr.",
+              "stars": [
+                "Wes Brown",
+                "Julie Mond",
+                "Abigail Mavity",
+                "Jere Burns",
+                "Nancy McKeon"
+              ]
+            },
+            {
+              "title": "Come Dance with Me",
+              "year": 2012,
+              "tmdb_id": 149218,
+              "summary": "Jack is an executive in a financial brokerage firm trying to impress the firm’s president, Drew Clayton, in hopes of a promotion. However, Jack is dating the fabulously rich and elegant Demi Clayton, who happens to be Drew’s daughter. Although Demi’s mother Clarisse doesn’t necessarily approve of Jack and would prefer her daughter to date a man within their social circle, Jack still plans on proposing. Trying to create the perfect proposal, Jack signs up for dance lessons in preparation for his proposal to Demi at her father’s lavish annual Christmas Dance. But when sparks start to fly between Jack and his dance instructor, Christine, Jack will have to make some important decisions before it is too late.",
+              "genres": [
+                "Family",
+                "Romance",
+                "TV Movie"
+              ],
+              "director": "John Bradshaw",
+              "stars": [
+                "Andrew McCarthy",
+                "Michelle Nolden",
+                "Stephanie Mills",
+                "Kyle Mac",
+                "Mary Long"
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
