@@ -48,11 +48,15 @@ OUTPUT: Valid JSON array only, no commentary.
   { "title": "Movie Title", "year": 1994 }
 ]`;
 
-// Netlify AI Gateway auto-injects ANTHROPIC_API_KEY and ANTHROPIC_BASE_URL
-const anthropic = new Anthropic();
+// Lazy init — Netlify AI Gateway injects env vars at runtime, not module load
+let _anthropic;
+function getClient() {
+  if (!_anthropic) _anthropic = new Anthropic();
+  return _anthropic;
+}
 
 async function callClaude(systemPrompt, userPrompt) {
-  const message = await anthropic.messages.create({
+  const message = await getClient().messages.create({
     model: 'claude-sonnet-4-5-20250929',
     max_tokens: 4096,
     system: systemPrompt,

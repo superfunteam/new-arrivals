@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { apiPost, apiGet } from '../lib/api';
 
-const SPARKLE = '\u2728';
+function SparkleIcon({ size = 20 }) {
+  return (
+    <span className="material-symbols-rounded" style={{ fontSize: size, fontVariationSettings: "'FILL' 1", lineHeight: 1 }}>
+      auto_awesome
+    </span>
+  );
+}
 
 // Look up a movie on TMDB by title+year, return full details
 async function tmdbLookup(title, year) {
@@ -97,7 +103,7 @@ export function FullPuzzleSparkle({ onGenerated, existingTitle }) {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-        <span style={{ fontSize: 16 }}>{SPARKLE}</span>
+        <SparkleIcon size={18} />
         <span style={{ fontSize: 13, fontWeight: 600, color: '#92400e' }}>
           AI Puzzle Generator
         </span>
@@ -146,7 +152,7 @@ export function FullPuzzleSparkle({ onGenerated, existingTitle }) {
             </>
           ) : (
             <>
-              {SPARKLE} Generate Full Puzzle
+              <SparkleIcon size={16} /> Generate Full Puzzle
             </>
           )}
         </button>
@@ -205,17 +211,21 @@ export function CategorySparkle({ categoryName, existingMovies, onMoviesGenerate
       title={categoryName.trim() ? `Generate 4 movies for "${categoryName}"` : 'Enter a category name first'}
       style={{
         border: 'none',
-        background: 'none',
+        background: loading ? '#d1d5db' : '#f59e0b',
+        color: '#fff',
         cursor: loading || !categoryName.trim() ? 'not-allowed' : 'pointer',
-        fontSize: 16,
-        padding: '2px 6px',
-        borderRadius: 4,
-        opacity: loading ? 0.5 : (!categoryName.trim() ? 0.3 : 1),
+        padding: '4px 10px',
+        borderRadius: 6,
+        opacity: !categoryName.trim() ? 0.4 : 1,
         transition: 'opacity 0.2s',
-        lineHeight: 1,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 4,
+        fontSize: 11,
+        fontWeight: 600,
       }}
     >
-      {loading ? <Spinner size={14} /> : SPARKLE}
+      {loading ? <Spinner size={14} /> : <><SparkleIcon size={16} /> AI Fill</>}
     </button>
   );
 }

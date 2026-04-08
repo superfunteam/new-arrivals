@@ -1,8 +1,12 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { verifyToken, authResponse } from './lib/auth.mjs';
 
-// Netlify AI Gateway auto-injects ANTHROPIC_API_KEY and ANTHROPIC_BASE_URL
-const anthropic = new Anthropic();
+// Lazy init — Netlify AI Gateway injects env vars at runtime
+let _anthropic;
+function getClient() {
+  if (!_anthropic) _anthropic = new Anthropic();
+  return _anthropic;
+}
 
 // All 24 available characters with their sprite/folder data and type
 const CHARACTERS = [
@@ -56,7 +60,7 @@ Keep dialogue SHORT (1-3 sentences max). These are quick interruptions.
 OUTPUT: Valid JSON array only, no commentary. Each object must include ALL required fields for its type.`;
 
 async function callClaude(systemPrompt, userPrompt) {
-  const message = await anthropic.messages.create({
+  const message = await getClient().messages.create({
     model: 'claude-sonnet-4-5-20250929',
     max_tokens: 4096,
     system: systemPrompt,
