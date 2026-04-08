@@ -58,6 +58,9 @@ export function createHUD() {
       </div>
     </div>
 
+    <div class="hud-shelve-row">
+      <button class="shelve-btn" id="shelve-btn" disabled>PICK 4</button>
+    </div>
     <div class="hud-bottom">
       <div class="hud-radio" id="hud-radio">
         <div class="radio-tune" id="radio-tune">
@@ -66,7 +69,6 @@ export function createHUD() {
         </div>
         <span class="radio-icon" id="radio-icon">♪</span>
       </div>
-      <button class="shelve-btn" id="shelve-btn" disabled>PICK 4</button>
       <div class="hud-timer" id="hud-timer">0:00</div>
     </div>
   `;

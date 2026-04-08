@@ -44,7 +44,7 @@ export function preloadTextures(urls) {
  * @returns {{ width: number, height: number, depth: number }}
  */
 export function getBoxDimensions() {
-  return { width: 0.55, height: 0.85, depth: 0.23 };
+  return { width: 0.605, height: 0.935, depth: 0.253 };
 }
 
 // ---------------------------------------------------------------------------
