@@ -321,11 +321,14 @@ export function showOnboarding(onComplete) {
   const slides = [
     {
       title: 'Welcome to the Store',
-      anim: `<div class="onboarding-posters">
-        <img class="onboarding-poster" src="/posters/${posterIds.predator}_pixel.jpg" alt="Predator" />
-        <img class="onboarding-poster" src="/posters/${posterIds.totalRecall}_pixel.jpg" alt="Total Recall" />
-        <img class="onboarding-poster" src="/posters/${posterIds.dieHard}_pixel.jpg" alt="Die Hard" />
-        <img class="onboarding-poster" src="/posters/${posterIds.ghostbusters}_pixel.jpg" alt="Ghostbusters" />
+      anim: `<div class="onboarding-posters" style="perspective:400px">
+        ${[posterIds.predator, posterIds.totalRecall, posterIds.dieHard, posterIds.ghostbusters].map((id, i) => `
+          <div class="tape-3d" style="animation-delay:${i * 0.3}s">
+            <div class="tape-3d-front"><img src="/posters/${id}_pixel.jpg" alt="" /></div>
+            <div class="tape-3d-back"></div>
+            <div class="tape-3d-spine"></div>
+          </div>
+        `).join('')}
       </div>`,
       body: "You're the new clerk at NEW ARRIVALS VIDEO. Sort 16 tapes into 4 mystery categories to earn your daily wages.",
       btn: 'Next',
