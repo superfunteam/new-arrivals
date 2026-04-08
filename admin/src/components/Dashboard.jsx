@@ -1,5 +1,6 @@
 import React from 'react';
 import PuzzleTable, { getPuzzleStatus } from './PuzzleTable';
+import CalendarStrip from './CalendarStrip';
 
 function StatCard({ label, value, color }) {
   const colors = {
@@ -16,15 +17,56 @@ function StatCard({ label, value, color }) {
   );
 }
 
-export default function Dashboard({ puzzles }) {
+export default function Dashboard({ puzzles, sha, onPuzzlesChange, onShaChange }) {
   const statuses = puzzles.map((p) => getPuzzleStatus(p.id));
   const total = puzzles.length;
   const floating = statuses.filter((s) => s === 'Floating').length;
   const scheduled = statuses.filter((s) => s === 'Scheduled').length;
   const featured = statuses.filter((s) => s === 'Featured').length;
 
+  async function savePuzzles(updatedPuzzles) {
+    try {
+      const res = await fetch('/api/admin-puzzles', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ puzzles: updatedPuzzles, sha }),
+      });
+      if (!res.ok) throw new Error(`PUT failed: ${res.status}`);
+      const data = await res.json();
+      onPuzzlesChange(updatedPuzzles);
+      if (data.sha) onShaChange(data.sha);
+    } catch (err) {
+      console.error('Failed to save puzzles:', err);
+      alert('Failed to save. Please try again.');
+    }
+  }
+
+  function handleAssign(puzzle, dateString) {
+    const updated = puzzles.map((p) =>
+      p.id === puzzle.id ? { ...p, id: dateString } : p
+    );
+    savePuzzles(updated);
+  }
+
+  function handleUnassign(puzzle) {
+    // Generate slug from title
+    const slug = puzzle.title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
+    const updated = puzzles.map((p) =>
+      p.id === puzzle.id ? { ...p, id: slug } : p
+    );
+    savePuzzles(updated);
+  }
+
   return (
     <div>
+      <CalendarStrip
+        puzzles={puzzles}
+        onAssign={handleAssign}
+        onUnassign={handleUnassign}
+      />
       <div className="grid grid-cols-4 gap-4 mb-8">
         <StatCard label="Total Puzzles" value={total} color="gray" />
         <StatCard label="Floating" value={floating} color="orange" />

@@ -64,7 +64,12 @@ export default function App() {
         {loadError && (
           <p className="text-red-500 text-sm mb-4">{loadError}</p>
         )}
-        <Dashboard puzzles={puzzles} />
+        <Dashboard
+          puzzles={puzzles}
+          sha={sha}
+          onPuzzlesChange={setPuzzles}
+          onShaChange={setSha}
+        />
       </main>
     </div>
   );
