@@ -103,11 +103,10 @@ async function generatePixelated(sourcePath, destPath) {
 }
 
 async function generatePixelatedDetail(sourcePath, destPath) {
-  // Detail/lightbox version: 36x54 — recognizable shapes but chunky enough
-  // that uncover is worthwhile. ~20% harder to ID than 48x72.
+  // Detail/lightbox version: actual 36x54 pixels — no pre-upscale.
+  // Browser's image-rendering: pixelated does the upscaling with crisp blocks.
   await sharp(sourcePath)
     .resize(36, 54, { kernel: sharp.kernel.nearest })
-    .resize(320, 480, { kernel: sharp.kernel.nearest })
     .png()
     .toFile(destPath);
 }
