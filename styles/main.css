@@ -299,6 +299,24 @@ html, body {
   max-width: 280px;
   width: 80vw;
   height: auto;
+  animation: logo-breathe 3s ease-in-out infinite;
+  /* Fixed dimensions container avoids layout shift during scale */
+  will-change: transform;
+}
+
+@keyframes logo-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+.splash-tagline {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: center;
+  line-height: 1.6;
+  max-width: 280px;
+  margin-bottom: 4px;
 }
 
 .splash-btn {
