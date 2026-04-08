@@ -1,5 +1,5 @@
 [build]
-  command = "npx vite build"
+  command = "node scripts/fetch-posters.js && npx vite build"
   publish = "dist"
 
 [build.environment]

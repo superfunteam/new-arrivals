@@ -8,12 +8,10 @@ const ROOT = path.resolve(__dirname, '..');
 const PUZZLES_PATH = path.join(ROOT, 'public', 'puzzles.json');
 const POSTERS_DIR = path.join(ROOT, 'public', 'posters');
 
-// Load .env manually (no dotenv dependency)
+// Load .env if it exists (local dev). On Netlify, env vars come from the dashboard.
 function loadEnv() {
   const envPath = path.join(ROOT, '.env');
-  if (!fs.existsSync(envPath)) {
-    throw new Error('.env file not found at ' + envPath);
-  }
+  if (!fs.existsSync(envPath)) return;
   const lines = fs.readFileSync(envPath, 'utf8').split('\n');
   for (const line of lines) {
     const trimmed = line.trim();
@@ -22,7 +20,7 @@ function loadEnv() {
     if (eqIdx === -1) continue;
     const key = trimmed.slice(0, eqIdx).trim();
     const value = trimmed.slice(eqIdx + 1).trim();
-    process.env[key] = value;
+    if (!process.env[key]) process.env[key] = value; // don't override existing env vars
   }
 }
 
@@ -30,7 +28,8 @@ loadEnv();
 
 const BEARER_TOKEN = process.env.TMDB_READ_ACCESS_TOKEN;
 if (!BEARER_TOKEN) {
-  throw new Error('TMDB_READ_ACCESS_TOKEN not found in .env');
+  console.warn('TMDB_READ_ACCESS_TOKEN not set — skipping poster fetch (existing posters will be used)');
+  process.exit(0);
 }
 
 const TMDB_BASE = 'https://api.themoviedb.org/3';
