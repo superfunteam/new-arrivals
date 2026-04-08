@@ -231,13 +231,13 @@ export default function App() {
           </SidebarFooter>
           <SidebarRail />
         </Sidebar>
-        <SidebarInset>
+        <SidebarInset className="min-w-0 overflow-hidden">
           <header className="flex h-12 shrink-0 items-center gap-2 border-b px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 !h-4" />
             <AppBreadcrumb view={view} editingPuzzle={editingPuzzle} />
           </header>
-          <main className="flex-1 overflow-auto p-4 md:p-6">
+          <main className="flex-1 min-w-0 overflow-x-hidden overflow-y-auto p-4 md:p-6">
             {loadError && (
               <div className="mb-4 rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3">
                 <p className="text-sm text-destructive">{loadError}</p>
