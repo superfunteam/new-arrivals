@@ -103,9 +103,9 @@ async function generatePixelated(sourcePath, destPath) {
 }
 
 async function generatePixelatedDetail(sourcePath, destPath) {
-  // Detail/lightbox version: 4x6 mosaic — even chunkier, makes uncover worthwhile
+  // Detail/lightbox version: 2x3 mosaic — just big color blocks, uncover is essential
   await sharp(sourcePath)
-    .resize(4, 6, { kernel: sharp.kernel.nearest })
+    .resize(2, 3, { kernel: sharp.kernel.nearest })
     .resize(320, 480, { kernel: sharp.kernel.nearest })
     .jpeg({ quality: 80 })
     .toFile(destPath);
