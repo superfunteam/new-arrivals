@@ -542,7 +542,8 @@ async function startGameSession(puzzle, mode, puzzlesData) {
   function setupLightboxSwipe(getCurrentBox, setCurrentBox) {
     const el = renderer.domElement;
     let startX = 0, deltaX = 0, swiping = false;
-    const inspectPos = new THREE.Vector3(0, camera.position.y, camera.position.z - 2);
+    // Must match the y offset in animateInspect (+0.25)
+    const inspectPos = new THREE.Vector3(0, camera.position.y + 0.25, camera.position.z - 2);
 
     function onStart(e) {
       if (e.touches && e.touches.length === 1) {
@@ -600,23 +601,19 @@ async function startGameSession(puzzle, mode, puzzlesData) {
     if (!newBox) return;
 
     const currentBox = getCurrentBox();
-    const inspectPos = new THREE.Vector3(0, camera.position.y, camera.position.z - 2);
-    const offscreenX = direction === 'left' ? -5 : 5;
-    const enterX = direction === 'left' ? 5 : -5;
 
-    // Slide current box off-screen
-    animateSlideOut(currentBox, offscreenX, () => {
-      // Return old box to shelf instantly
-      currentBox.position.copy(currentBox.userData.originalPosition);
-      currentBox.rotation.set(0, 0, 0);
+    // Twirl current box back to its shelf position
+    const returnPos = currentBox.userData.originalPosition.clone();
+    animateReturnToShelf(currentBox, returnPos, () => {
       currentBox.scale.setScalar(1);
     });
 
     // Set new box as current
     setCurrentBox(newBox);
 
-    // Slide new box in from the opposite side
-    animateSlideIn(newBox, enterX, inspectPos, () => {
+    // Twirl new box up to inspect position (same animateInspect used for initial long-press)
+    newBox.scale.setScalar(1);
+    animateInspect(newBox, camera, () => {
       // Update lightbox text for the new movie
       hideLightbox();
       openLightboxForBox(newBox, getCurrentBox, setCurrentBox);
