@@ -17,6 +17,7 @@ import {
 } from './vhs-box.js';
 import {
   updateAnimations,
+  addAnimation,
   animateEntrance,
   animateLockIn,
   animateShake,
@@ -25,6 +26,8 @@ import {
   animateGrayOut,
   animateInspect,
   animateReturnToShelf,
+  animateSlideOut,
+  animateSlideIn,
 } from './animations.js';
 import { setupInteraction } from './interaction.js';
 import {
@@ -448,6 +451,195 @@ async function startGameSession(puzzle, mode, puzzlesData) {
   // onLongPress
   // =========================================================================
 
+  // =========================================================================
+  // Lightbox canvas-swipe state
+  // =========================================================================
+
+  let lightboxSwipeCleanup = null;
+
+  function setupLightboxSwipe(getCurrentBox, setCurrentBox) {
+    const el = renderer.domElement;
+    let startX = 0, deltaX = 0, swiping = false;
+    const inspectPos = new THREE.Vector3(0, camera.position.y, camera.position.z - 2);
+
+    function onStart(e) {
+      if (e.touches && e.touches.length === 1) {
+        startX = e.touches[0].clientX;
+        deltaX = 0;
+        swiping = true;
+      }
+    }
+    function onMove(e) {
+      if (!swiping || !e.touches) return;
+      deltaX = e.touches[0].clientX - startX;
+      // Live feedback: shift the 3D box horizontally
+      const box = getCurrentBox();
+      if (box) {
+        box.position.x = inspectPos.x + deltaX * 0.01;
+      }
+    }
+    function onEnd() {
+      if (!swiping) return;
+      swiping = false;
+      const box = getCurrentBox();
+      const threshold = 80;
+      if (Math.abs(deltaX) > threshold) {
+        const direction = deltaX > 0 ? -1 : 1; // swipe right = prev, swipe left = next
+        const allTapes = unsolvedBoxes.map(b => b.userData.movie);
+        const currentIndex = allTapes.findIndex(m => m.tmdb_id === box.userData.movie.tmdb_id);
+        const newIndex = currentIndex + direction;
+        if (newIndex >= 0 && newIndex < allTapes.length) {
+          navigateToTape(newIndex, deltaX > 0 ? 'right' : 'left', getCurrentBox, setCurrentBox);
+          return;
+        }
+      }
+      // Snap back to inspect center
+      if (box) {
+        box.position.x = inspectPos.x;
+      }
+    }
+
+    el.addEventListener('touchstart', onStart, { passive: true });
+    el.addEventListener('touchmove', onMove, { passive: true });
+    el.addEventListener('touchend', onEnd, { passive: true });
+
+    lightboxSwipeCleanup = () => {
+      el.removeEventListener('touchstart', onStart);
+      el.removeEventListener('touchmove', onMove);
+      el.removeEventListener('touchend', onEnd);
+      lightboxSwipeCleanup = null;
+    };
+  }
+
+  function navigateToTape(newIndex, direction, getCurrentBox, setCurrentBox) {
+    const allTapes = unsolvedBoxes.map(b => b.userData.movie);
+    const newMovie = allTapes[newIndex];
+    const newBox = unsolvedBoxes.find(b => b.userData.movie.tmdb_id === newMovie.tmdb_id);
+    if (!newBox) return;
+
+    const currentBox = getCurrentBox();
+    const inspectPos = new THREE.Vector3(0, camera.position.y, camera.position.z - 2);
+    const offscreenX = direction === 'left' ? -5 : 5;
+    const enterX = direction === 'left' ? 5 : -5;
+
+    // Slide current box off-screen
+    animateSlideOut(currentBox, offscreenX, () => {
+      // Return old box to shelf instantly
+      currentBox.position.copy(currentBox.userData.originalPosition);
+      currentBox.rotation.set(0, 0, 0);
+      currentBox.scale.setScalar(1);
+    });
+
+    // Set new box as current
+    setCurrentBox(newBox);
+
+    // Slide new box in from the opposite side
+    animateSlideIn(newBox, enterX, inspectPos, () => {
+      // Update lightbox text for the new movie
+      hideLightbox();
+      openLightboxForBox(newBox, getCurrentBox, setCurrentBox);
+    });
+  }
+
+  function openLightboxForBox(box, getCurrentBox, setCurrentBox) {
+    const movie = box.userData.movie;
+    const revealedForMovie = game.revealedHints[movie.tmdb_id] || [];
+
+    showLightbox(movie, {
+      uncovered: game.uncoveredIds.includes(movie.tmdb_id),
+      hintsLeft: game.wage,
+      wage: game.wage,
+      genres: movie.genres || [],
+      director: movie.director || '',
+      stars: movie.stars || [],
+      year: movie.year || 0,
+      summary: movie.summary || '',
+      revealedFields: revealedForMovie,
+      onReturn: () => {
+        audio.play('returnToShelf');
+        hideLightbox();
+
+        // Clean up canvas swipe listeners
+        if (lightboxSwipeCleanup) lightboxSwipeCleanup();
+
+        // Animate the currently viewed box back to its shelf position
+        const currentBox = getCurrentBox();
+        const returnPos = currentBox.userData.originalPosition.clone();
+        animateReturnToShelf(currentBox, returnPos, () => {
+          // Unlock interaction once the box is back
+          if (interactionHandle) {
+            interactionHandle.setLocked(false);
+          }
+        });
+      },
+      onUncover: (tmdbId) => {
+        const result = useHint(game, tmdbId);
+        if (!result.success) return;
+
+        audio.play('uncover');
+        audio.play('penalty');
+
+        // Update HUD
+        updateWage(game.wage, true);
+
+        // Swap 3D texture on the actual box in real-time
+        const targetBox = allBoxes.find((b) => b.userData.movie.tmdb_id === tmdbId);
+        if (targetBox) {
+          loadTexture(`/posters/${tmdbId}.jpg`)
+            .then((fullTex) => swapToFullTexture(targetBox, fullTex))
+            .catch(() => {
+              // Keep pixelated if full fails
+            });
+        }
+
+        // Save state (daily only)
+        if (isDaily) {
+          saveGameState(serializeGame(game));
+        }
+
+        // Check if game over (wage hit 0)
+        if (game.completed) {
+          hideLightbox();
+          if (lightboxSwipeCleanup) lightboxSwipeCleanup();
+          handleGameOver();
+        }
+      },
+      onRevealHint: (fieldName) => {
+        const currentBox = getCurrentBox();
+        const movie = currentBox.userData.movie;
+        const result = revealHint(game, movie.tmdb_id, fieldName);
+        if (!result.success) return;
+
+        audio.play('penalty');
+
+        // Update HUD
+        updateWage(game.wage, true);
+
+        // Animate the reveal in-place
+        if (fieldName === 'details') {
+          revealDetailsInPlace(movie.director, movie.stars, movie.year);
+        } else if (fieldName === 'summary') {
+          revealSummaryInPlace(movie.summary || '');
+        } else {
+          // Fallback for individual fields (legacy)
+          const valueMap = { director: movie.director, stars: movie.stars, year: movie.year };
+          revealHintInPlace(fieldName, valueMap[fieldName]);
+        }
+
+        // Save state (daily only)
+        if (isDaily) {
+          saveGameState(serializeGame(game));
+        }
+
+        if (game.completed) {
+          hideLightbox();
+          if (lightboxSwipeCleanup) lightboxSwipeCleanup();
+          handleGameOver();
+        }
+      },
+    });
+  }
+
   function handleLongPress(box) {
     // Init audio + start radio on first interaction
     if (!audioInitialized) {
@@ -462,129 +654,20 @@ async function startGameSession(puzzle, mode, puzzlesData) {
       interactionHandle.setLocked(true);
     }
 
-    // Track the currently inspected box so swipe navigation can update it
+    // Track the currently inspected box via getter/setter closures
     let currentBox = box;
+    const getCurrentBox = () => currentBox;
+    const setCurrentBox = (b) => { currentBox = b; };
+
+    // Reset scale to 1 (entrance animation may have scaled boxes)
+    box.scale.setScalar(1);
 
     // Animate the box toward the camera with a 3D twirl
     animateInspect(box, camera, () => {
-      // Animation complete — now show the lightbox
-      openLightboxForCurrentBox();
+      // Animation complete — set up canvas swipe and show lightbox
+      setupLightboxSwipe(getCurrentBox, setCurrentBox);
+      openLightboxForBox(currentBox, getCurrentBox, setCurrentBox);
     });
-
-    function openLightboxForCurrentBox() {
-      const movie = currentBox.userData.movie;
-      const revealedForMovie = game.revealedHints[movie.tmdb_id] || [];
-
-      // Build the list of unsolved tapes and find the current index
-      const allTapes = unsolvedBoxes.map((b) => b.userData.movie);
-      const currentIndex = allTapes.findIndex((m) => m.tmdb_id === movie.tmdb_id);
-
-      showLightbox(movie, {
-        uncovered: game.uncoveredIds.includes(movie.tmdb_id),
-        hintsLeft: game.wage,
-        wage: game.wage,
-        genres: movie.genres || [],
-        director: movie.director || '',
-        stars: movie.stars || [],
-        year: movie.year || 0,
-        summary: movie.summary || '',
-        revealedFields: revealedForMovie,
-        allTapes,
-        currentIndex: currentIndex >= 0 ? currentIndex : 0,
-        onNavigate: (newIndex) => {
-          // Return current 3D box to its shelf position instantly (no animation)
-          currentBox.position.copy(currentBox.userData.originalPosition);
-
-          // Switch to the new tape's box
-          const newMovie = allTapes[newIndex];
-          const newBox = unsolvedBoxes.find((b) => b.userData.movie.tmdb_id === newMovie.tmdb_id);
-          if (!newBox) return;
-
-          currentBox = newBox;
-
-          // Move new box to inspect position instantly (just hide it behind lightbox)
-          animateInspect(newBox, camera, () => {});
-
-          // Rebuild lightbox for the new tape
-          openLightboxForCurrentBox();
-        },
-        onReturn: () => {
-          audio.play('returnToShelf');
-          hideLightbox();
-
-          // Animate the currently viewed box back to its shelf position
-          const returnPos = currentBox.userData.originalPosition.clone();
-          animateReturnToShelf(currentBox, returnPos, () => {
-            // Unlock interaction once the box is back
-            if (interactionHandle) {
-              interactionHandle.setLocked(false);
-            }
-          });
-        },
-        onUncover: (tmdbId) => {
-          const result = useHint(game, tmdbId);
-          if (!result.success) return;
-
-          audio.play('uncover');
-          audio.play('penalty');
-
-          // Update HUD
-          updateWage(game.wage, true);
-
-          // Swap 3D texture on the actual box
-          const targetBox = allBoxes.find((b) => b.userData.movie.tmdb_id === tmdbId);
-          if (targetBox) {
-            loadTexture(`/posters/${tmdbId}.jpg`)
-              .then((fullTex) => swapToFullTexture(targetBox, fullTex))
-              .catch(() => {
-                // Keep pixelated if full fails
-              });
-          }
-
-          // Save state (daily only)
-          if (isDaily) {
-            saveGameState(serializeGame(game));
-          }
-
-          // Check if game over (wage hit 0)
-          if (game.completed) {
-            hideLightbox();
-            handleGameOver();
-          }
-        },
-        onRevealHint: (fieldName) => {
-          const movie = currentBox.userData.movie;
-          const result = revealHint(game, movie.tmdb_id, fieldName);
-          if (!result.success) return;
-
-          audio.play('penalty');
-
-          // Update HUD
-          updateWage(game.wage, true);
-
-          // Animate the reveal in-place
-          if (fieldName === 'details') {
-            revealDetailsInPlace(movie.director, movie.stars, movie.year);
-          } else if (fieldName === 'summary') {
-            revealSummaryInPlace(movie.summary || '');
-          } else {
-            // Fallback for individual fields (legacy)
-            const valueMap = { director: movie.director, stars: movie.stars, year: movie.year };
-            revealHintInPlace(fieldName, valueMap[fieldName]);
-          }
-
-          // Save state (daily only)
-          if (isDaily) {
-            saveGameState(serializeGame(game));
-          }
-
-          if (game.completed) {
-            hideLightbox();
-            handleGameOver();
-          }
-        },
-      });
-    }
   }
 
   // =========================================================================

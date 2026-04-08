@@ -522,24 +522,17 @@ export function showLightbox(movie, options = {}) {
     summary = '',
     revealedFields = [],
     onRevealHint,
-    allTapes = [],
-    currentIndex = 0,
-    onNavigate,
   } = options;
   const overlay = document.getElementById('overlay');
   if (!overlay) return;
 
   const isUncoverDisabled = uncovered || wage <= 0;
-  const posterSrc = uncovered
-    ? `/posters/${movie.tmdb_id}.jpg`
-    : `/posters/${movie.tmdb_id}_pixel_detail.png`;
-  const posterClass = uncovered ? 'lightbox-poster uncovered' : 'lightbox-poster';
 
-  // Genre sticker (free hint)
+  // Genre displayed inline with title
   const primaryGenre = genres.length > 0 ? genres[0] : '';
   const genreColor = GENRE_COLORS[primaryGenre] || '#666';
-  const genreStickerHtml = primaryGenre
-    ? `<div class="genre-sticker" style="background:${genreColor}">${primaryGenre.toUpperCase()}</div>`
+  const genreInlineHtml = primaryGenre
+    ? ` <span class="lightbox-genre" style="color:${genreColor}">&bull; ${primaryGenre.toUpperCase()}</span>`
     : '';
 
   // Details section (director, stars, year — bundled as one $1 reveal)
@@ -591,27 +584,21 @@ export function showLightbox(movie, options = {}) {
     </div>
   `;
 
+  // Uncover button (swaps the 3D box texture in real-time)
+  const uncoverBtnHtml = uncovered
+    ? ''
+    : `<button class="lightbox-btn uncover" id="lightbox-uncover"${isUncoverDisabled ? ' disabled' : ''}>Uncover Poster — $1</button>`;
+
   overlay.innerHTML = `
     <div class="lightbox" id="lightbox-inner">
       <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
       <div class="lightbox-content" id="lightbox-content">
-        <div class="lightbox-poster-wrap">
-          <img
-            class="${posterClass}"
-            id="lightbox-poster"
-            src="${posterSrc}"
-            alt="${movie.title}"
-          />
-          ${genreStickerHtml}
-        </div>
-        <div class="lightbox-title">${movie.title}</div>
+        <div class="lightbox-title">${movie.title}${genreInlineHtml}</div>
         ${detailsHtml}
         ${summaryHtml}
         <div class="lightbox-buttons">
+          ${uncoverBtnHtml}
           <button class="lightbox-btn return" id="lightbox-return">Return to Shelf</button>
-          <button class="lightbox-btn uncover" id="lightbox-uncover"${isUncoverDisabled ? ' disabled' : ''}>
-            Uncover — $1
-          </button>
         </div>
       </div>
     </div>
@@ -635,20 +622,13 @@ export function showLightbox(movie, options = {}) {
   });
 
   const uncoverBtn = document.getElementById('lightbox-uncover');
-  uncoverBtn.addEventListener('click', () => {
-    if (uncoverBtn.disabled) return;
-
-    // Swap to full-res poster
-    const poster = document.getElementById('lightbox-poster');
-    if (poster) {
-      poster.src = `/posters/${movie.tmdb_id}.jpg`;
-      poster.className = 'lightbox-poster uncovered';
-    }
-
-    uncoverBtn.disabled = true;
-
-    if (typeof onUncover === 'function') onUncover(movie.tmdb_id);
-  });
+  if (uncoverBtn) {
+    uncoverBtn.addEventListener('click', () => {
+      if (uncoverBtn.disabled) return;
+      uncoverBtn.disabled = true;
+      if (typeof onUncover === 'function') onUncover(movie.tmdb_id);
+    });
+  }
 
   // Hint reveal buttons (details and summary)
   overlay.querySelectorAll('.hint-reveal-btn').forEach((btn) => {
@@ -658,59 +638,6 @@ export function showLightbox(movie, options = {}) {
       if (typeof onRevealHint === 'function') onRevealHint(fieldName);
     });
   });
-
-  // Swipe navigation between unsolved tapes
-  if (allTapes.length > 1 && typeof onNavigate === 'function') {
-    const lightboxEl = document.getElementById('lightbox-inner');
-    const contentEl = document.getElementById('lightbox-content');
-    if (lightboxEl && contentEl) {
-      let touchStartX = 0;
-      let touchDeltaX = 0;
-      let isSwiping = false;
-
-      lightboxEl.addEventListener('touchstart', (e) => {
-        if (e.touches.length === 1) {
-          touchStartX = e.touches[0].clientX;
-          touchDeltaX = 0;
-          isSwiping = true;
-          // Remove any leftover transition so drag feels immediate
-          contentEl.style.transition = 'none';
-        }
-      });
-
-      lightboxEl.addEventListener('touchmove', (e) => {
-        if (!isSwiping) return;
-        touchDeltaX = e.touches[0].clientX - touchStartX;
-        contentEl.style.transform = `translateX(${touchDeltaX}px)`;
-        contentEl.style.opacity = Math.max(0.3, 1 - Math.abs(touchDeltaX) / 300);
-      });
-
-      lightboxEl.addEventListener('touchend', () => {
-        if (!isSwiping) return;
-        isSwiping = false;
-
-        const threshold = 80;
-        if (Math.abs(touchDeltaX) > threshold) {
-          const direction = touchDeltaX > 0 ? -1 : 1; // swipe left = next, swipe right = prev
-          const newIndex = currentIndex + direction;
-          if (newIndex >= 0 && newIndex < allTapes.length) {
-            // Slide out animation
-            contentEl.style.transition = 'transform 0.25s ease-out, opacity 0.25s';
-            contentEl.style.transform = `translateX(${touchDeltaX > 0 ? '100%' : '-100%'})`;
-            contentEl.style.opacity = '0';
-            setTimeout(() => {
-              onNavigate(newIndex);
-            }, 250);
-            return;
-          }
-        }
-        // Snap back
-        contentEl.style.transition = 'transform 0.2s ease-out, opacity 0.2s';
-        contentEl.style.transform = 'translateX(0)';
-        contentEl.style.opacity = '1';
-      });
-    }
-  }
 }
 
 /**

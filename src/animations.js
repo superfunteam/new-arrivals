@@ -72,8 +72,8 @@ export function updateAnimations(deltaTime) {
   }
 }
 
-/** Internal helper — push a new animation onto the queue. */
-function addAnimation(duration, update, onComplete) {
+/** Push a new animation onto the queue. */
+export function addAnimation(duration, update, onComplete) {
   activeAnimations.push({ elapsed: 0, duration, update, onComplete: onComplete || null });
 }
 
@@ -501,6 +501,57 @@ export function animateReturnToShelf(box, originalPos, onComplete) {
     () => {
       box.position.copy(originalPos);
       box.rotation.set(0, 0, 0);
+      if (typeof onComplete === 'function') onComplete();
+    }
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Slide-out / slide-in animations (lightbox swipe navigation)
+// ---------------------------------------------------------------------------
+
+/**
+ * Slide a box off-screen horizontally.
+ * @param {THREE.Group}  box
+ * @param {number}       targetX   X position to slide to (e.g. -5 or +5)
+ * @param {() => void}   [onComplete]
+ */
+export function animateSlideOut(box, targetX, onComplete) {
+  const startX = box.position.x;
+
+  addAnimation(
+    0.25,
+    (t) => {
+      const easedT = easeOutCubic(t);
+      box.position.x = startX + (targetX - startX) * easedT;
+    },
+    () => {
+      box.position.x = targetX;
+      if (typeof onComplete === 'function') onComplete();
+    }
+  );
+}
+
+/**
+ * Slide a box in from off-screen to a target position.
+ * @param {THREE.Group}   box
+ * @param {number}        fromX      Starting X (off-screen, e.g. +5 or -5)
+ * @param {THREE.Vector3} targetPos  Final position (inspect position)
+ * @param {() => void}    [onComplete]
+ */
+export function animateSlideIn(box, fromX, targetPos, onComplete) {
+  box.position.set(fromX, targetPos.y, targetPos.z);
+  box.rotation.set(0, 0, 0);
+  box.scale.setScalar(1);
+
+  addAnimation(
+    0.25,
+    (t) => {
+      const easedT = easeOutCubic(t);
+      box.position.x = fromX + (targetPos.x - fromX) * easedT;
+    },
+    () => {
+      box.position.copy(targetPos);
       if (typeof onComplete === 'function') onComplete();
     }
   );

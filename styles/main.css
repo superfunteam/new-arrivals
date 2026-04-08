@@ -440,11 +440,11 @@ html, body {
 .lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.9);
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.95) 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   z-index: 50;
   opacity: 0;
   transition: opacity 0.3s;
@@ -479,17 +479,17 @@ html, body {
 }
 
 .lightbox-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  width: 100%;
-  will-change: transform, opacity;
-}
-
-.lightbox-poster-wrap {
-  position: relative;
-  display: inline-block;
+  padding: 16px 20px;
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+  max-height: 50vh;
+  overflow-y: auto;
 }
 
 .lightbox-title {
@@ -497,45 +497,15 @@ html, body {
   font-size: 12px;
   color: #fff;
   text-align: center;
-  margin-top: 20px;
   max-width: 300px;
+  margin-bottom: 4px;
 }
 
-.lightbox-poster {
-  width: 200px;
-  height: 300px;
-  object-fit: cover;
-  border: 3px solid var(--shelf-wood);
-  image-rendering: pixelated;
-  display: block;
-}
-
-.lightbox-poster.uncovered {
-  image-rendering: auto;
-}
-
-/* === Genre Sticker === */
-.genre-sticker {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
+.lightbox-genre {
   font-family: var(--font-display);
-  font-size: 6px;
+  font-size: 9px;
   font-weight: 700;
-  text-transform: uppercase;
-  text-align: center;
-  line-height: 1.2;
-  padding: 4px;
-  box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.5);
-  transform: rotate(8deg);
-  pointer-events: none;
+  letter-spacing: 1px;
 }
 
 /* === Lightbox Hint Rows === */
