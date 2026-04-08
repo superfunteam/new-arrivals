@@ -31,11 +31,17 @@ export default async (req, context) => {
   try {
     if (id) {
       // Movie details + credits
+      console.log(`[admin-tmdb] Fetching TMDB details for id=${id}`);
       const res = await fetch(
         `${TMDB_BASE}/movie/${id}?append_to_response=credits`,
         { headers: tmdbHeaders() }
       );
-      if (!res.ok) return Response.json({ error: 'TMDB error' }, { status: res.status });
+      console.log(`[admin-tmdb] TMDB detail response: ${res.status}`);
+      if (!res.ok) {
+        const errBody = await res.text();
+        console.log(`[admin-tmdb] TMDB error: ${errBody.slice(0, 200)}`);
+        return Response.json({ error: 'TMDB error', tmdbStatus: res.status }, { status: 502 });
+      }
 
       const m = await res.json();
       const director = m.credits?.crew?.find((c) => c.job === 'Director')?.name || null;
@@ -58,10 +64,17 @@ export default async (req, context) => {
       const params = new URLSearchParams({ query });
       if (year) params.set('year', year);
 
+      console.log(`[admin-tmdb] Searching TMDB: query=${query}, year=${year}`);
+      console.log(`[admin-tmdb] TMDB token present: ${!!process.env.TMDB_READ_ACCESS_TOKEN}`);
       const res = await fetch(`${TMDB_BASE}/search/movie?${params}`, {
         headers: tmdbHeaders(),
       });
-      if (!res.ok) return Response.json({ error: 'TMDB error' }, { status: res.status });
+      console.log(`[admin-tmdb] TMDB response status: ${res.status}`);
+      if (!res.ok) {
+        const errBody = await res.text();
+        console.log(`[admin-tmdb] TMDB error body: ${errBody.slice(0, 200)}`);
+        return Response.json({ error: 'TMDB error', tmdbStatus: res.status, detail: errBody.slice(0, 200) }, { status: 502 });
+      }
 
       const data = await res.json();
       const results = (data.results || []).slice(0, 10).map((m) => ({
