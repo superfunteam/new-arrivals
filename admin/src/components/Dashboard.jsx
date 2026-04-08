@@ -114,36 +114,40 @@ function TimelineStrip({ puzzles }) {
   }
 
   return (
-    <div>
-      <div className="flex items-center gap-2 mb-2">
-        <CalendarDays className="size-4 text-muted-foreground" />
-        <span className="text-sm font-medium text-muted-foreground">Upcoming 2 Weeks</span>
-      </div>
-      <ScrollArea className="w-full">
-        <div className="flex gap-2 pb-2">
-          {days.map((day, i) => {
-            const isToday = i === 0;
-            return (
-              <div
-                key={day.dateStr}
-                className={`flex-shrink-0 w-[90px] rounded-md border p-2 text-center text-xs ${
-                  isToday ? 'ring-2 ring-primary ring-offset-1 bg-primary/5' : ''
-                } ${day.puzzle ? 'bg-primary/5 border-primary/30' : 'border-dashed border-muted-foreground/20'}`}
-              >
-                <div className="text-muted-foreground">{day.dayName}</div>
-                <div className={`text-lg font-bold ${isToday ? 'text-primary' : ''}`}>{day.dayNum}</div>
-                {day.puzzle ? (
-                  <div className="text-[10px] font-medium truncate mt-0.5">{day.puzzle.title}</div>
-                ) : (
-                  <div className="text-[10px] text-muted-foreground/50 mt-0.5">—</div>
-                )}
-              </div>
-            );
-          })}
+    <Card>
+      <CardHeader className="pb-3">
+        <div className="flex items-center gap-2">
+          <CalendarDays className="size-4 text-muted-foreground" />
+          <CardTitle className="text-sm font-medium">Upcoming 2 Weeks</CardTitle>
         </div>
-        <ScrollBar orientation="horizontal" />
-      </ScrollArea>
-    </div>
+      </CardHeader>
+      <CardContent className="pb-4">
+        <ScrollArea className="w-full">
+          <div className="flex gap-2 pb-2">
+            {days.map((day, i) => {
+              const isToday = i === 0;
+              return (
+                <div
+                  key={day.dateStr}
+                  className={`flex-shrink-0 w-[90px] border p-2 text-center text-xs ${
+                    isToday ? 'ring-2 ring-primary ring-offset-1' : ''
+                  } ${day.puzzle ? 'bg-muted/50' : 'border-dashed'}`}
+                >
+                  <div className="text-muted-foreground">{day.dayName}</div>
+                  <div className={`text-lg font-bold ${isToday ? 'text-primary' : ''}`}>{day.dayNum}</div>
+                  {day.puzzle ? (
+                    <div className="text-[10px] font-medium truncate mt-0.5">{day.puzzle.title}</div>
+                  ) : (
+                    <div className="text-[10px] text-muted-foreground/40 mt-0.5">—</div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -172,6 +176,9 @@ export default function Dashboard({ puzzles, sha, onPuzzlesChange, onShaChange, 
         </Button>
       </div>
 
+      {/* Timeline Strip */}
+      <TimelineStrip puzzles={puzzles} />
+
       {/* Stats Grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {STAT_CONFIG.map((stat) => (
@@ -184,9 +191,6 @@ export default function Dashboard({ puzzles, sha, onPuzzlesChange, onShaChange, 
           />
         ))}
       </div>
-
-      {/* Timeline Strip */}
-      <TimelineStrip puzzles={puzzles} />
 
       {/* Table */}
       <PuzzleTable puzzles={puzzles} onNewPuzzle={onNewPuzzle} onEditPuzzle={onEditPuzzle} />
