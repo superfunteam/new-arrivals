@@ -338,7 +338,7 @@ export function showOnboarding(onComplete, onSlideRender) {
   const slides = [
     {
       title: 'Welcome to the Store',
-      anim: `<canvas class="onboarding-3d-canvas" id="onboarding-3d" width="280" height="140"></canvas>`,
+      anim: `<canvas class="onboarding-3d-canvas" id="onboarding-3d" width="320" height="180"></canvas>`,
       body: "You're the new clerk at NEW ARRIVALS VIDEO. Sort 16 tapes into 4 mystery categories to earn your daily wages.",
       btn: 'Next',
     },

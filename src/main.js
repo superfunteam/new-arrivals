@@ -128,8 +128,8 @@ function startOnboarding3DScene(posterIds) {
   const canvas = document.getElementById('onboarding-3d');
   if (!canvas) return () => {};
 
-  const W = 280;
-  const H = 140;
+  const W = 320;
+  const H = 180;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(W, H);
@@ -137,7 +137,7 @@ function startOnboarding3DScene(posterIds) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(35, W / H, 0.1, 20);
-  camera.position.set(0, 0, 5);
+  camera.position.set(0, 0, 3);
   camera.lookAt(0, 0, 0);
 
   // Lighting matching the main game
@@ -162,7 +162,7 @@ function startOnboarding3DScene(posterIds) {
       const movie = { tmdb_id: id, title: '' };
       const box = createVHSBox(movie, tex);
       box.position.set(startX + i * gap, 0, 0);
-      box.scale.setScalar(0.85);
+      box.scale.setScalar(1);
       scene.add(box);
       boxes[i] = box;
       loadedCount++;
