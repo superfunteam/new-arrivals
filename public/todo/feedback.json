@@ -116,7 +116,7 @@
     {
       "id": 9,
       "title": "Add external movie links (IMDb, Letterboxd, streaming)",
-      "done": false,
+      "done": true,
       "actions": [
         "In the tape inspect view, add links to IMDb/Letterboxd/Rotten Tomatoes",
         "Could show 'Where to Watch' streaming info",

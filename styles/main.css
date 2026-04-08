@@ -1014,6 +1014,28 @@ html, body {
   margin-top: 20px;
 }
 
+.lightbox-links {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 12px;
+  padding-top: 8px;
+}
+
+.lightbox-link {
+  opacity: 0.4;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  padding: 6px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lightbox-link:active,
+.lightbox-link:hover {
+  opacity: 0.8;
+}
+
 .lightbox-btn {
   font-family: var(--font-display);
   font-size: 9px;

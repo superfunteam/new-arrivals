@@ -795,6 +795,17 @@ export function showLightbox(movie, options = {}) {
           ${uncoverBtnHtml}
           <button class="lightbox-btn return" id="lightbox-return">Return to Shelf</button>
         </div>
+        <div class="lightbox-links">
+          <a href="https://letterboxd.com/tmdb/${movie.tmdb_id}" target="_blank" rel="noopener" class="lightbox-link" title="Letterboxd">
+            <svg width="20" height="20" viewBox="0 0 378 140" fill="none"><path d="M189 140C227.7 140 259 108.7 259 70S227.7 0 189 0 119 31.3 119 70s31.4 70 70 70Z" fill="#00E054"/><path d="M308 140c38.7 0 70-31.3 70-70S346.6 0 308 0s-70 31.3-70 70 31.3 70 70 70Z" fill="#40BCF4"/><path d="M70 140c38.7 0 70-31.3 70-70S108.8 0 70 0 0 31.3 0 70s31.4 70 70 70Z" fill="#FF8000"/></svg>
+          </a>
+          <a href="https://www.imdb.com/find/?q=${encodeURIComponent(movie.title + ' ' + (movie.year || ''))}" target="_blank" rel="noopener" class="lightbox-link" title="IMDb">
+            <svg width="24" height="12" viewBox="0 0 284 142" fill="none"><path d="M18 0h248c10 0 18 8 18 18v106c0 10-8 18-18 18H18C8 142 0 134 0 124V18C0 8 8 0 18 0Z" fill="#F5C518"/><path d="M35 111h22V31H35v80Z" fill="#000"/><path d="M105 31l-5 37-3-20c-1-6-2-12-2-17H67v80h19V58l8 53h13l8-54v54h19V31h-29Z" fill="#000"/><path d="M142 111V31h35c8 0 14 6 14 14v52c0 8-6 14-14 14h-35Zm26-65c-1-1-3-1-5-1v52c3 0 5-1 6-2s1-4 1-10V55c0-4 0-6-1-7 0-1-1-2-1-2Z" fill="#000"/></svg>
+          </a>
+          <a href="https://www.rottentomatoes.com/search?search=${encodeURIComponent(movie.title)}" target="_blank" rel="noopener" class="lightbox-link" title="Rotten Tomatoes">
+            <svg width="16" height="16" viewBox="0 0 162 162" fill="none"><path d="M39 0L29 9l14 12C25 14 10 30 9 36c9-2 15-3 23-2C-16 65-2 123 22 143c39 31 93 21 121-9 41-44 12-130-70-115 1-8 4-10 9-11-6-10-25-5-31 9L39 0Z" fill="#F93208"/></svg>
+          </a>
+        </div>
       </div>
     </div>
   `;
