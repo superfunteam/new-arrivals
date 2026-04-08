@@ -633,8 +633,11 @@ async function startGameSession(puzzle, mode, puzzlesData) {
       // Start interrupt system for restored games
       startInterruptSystem();
     } else {
-      // Fresh game — zoom into shelf, then play entrance animation
+      // Fresh game — hide tapes during shelf zoom, then fly them in
+      for (const box of allBoxes) box.visible = false;
+
       animateShelfZoomIn(camera, () => {
+        for (const box of allBoxes) box.visible = true;
         animateEntrance(unsolvedBoxes, () => {
           // Start timer when tapes land
           startTimer(game);
