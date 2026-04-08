@@ -524,16 +524,16 @@ html, body {
 /* Genre sticker (floating circle above the info panel) */
 .lightbox-sticker {
   position: absolute;
-  bottom: calc(45vh + 8px);
-  right: 24px;
-  width: 52px;
-  height: 52px;
+  bottom: calc(45vh + 12px);
+  right: 20px;
+  width: 68px;
+  height: 68px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-display);
-  font-size: 6px;
+  font-size: 7px;
   color: #fff;
   text-transform: uppercase;
   letter-spacing: 0.5px;

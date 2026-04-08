@@ -450,8 +450,8 @@ export function animateInspect(box, camera, onComplete) {
   const startRotX = box.rotation.x;
   const startRotY = box.rotation.y;
 
-  // Position higher in frame (y + 0.8) so tape sits above the bottom info panel
-  const targetPos = new THREE.Vector3(0, camera.position.y + 0.8, camera.position.z - 2);
+  // Slightly above center so tape sits above the bottom info panel
+  const targetPos = new THREE.Vector3(0, camera.position.y + 0.25, camera.position.z - 2);
 
   addAnimation(
     0.8,

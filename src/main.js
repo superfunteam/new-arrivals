@@ -154,6 +154,19 @@ async function main() {
   const completedDailyIds = getCompletedDailyIds();
 
   // ── 6. Show onboarding (if not skipped) then welcome screen ───────────────
+  // Pre-create the radio element so it can start on the first user gesture
+  const earlyRadio = new Audio('/audio/kpez.mp3');
+  earlyRadio.loop = true;
+  earlyRadio.volume = 0.65;
+  let radioStarted = false;
+
+  function ensureRadioStarted() {
+    if (radioStarted) return;
+    radioStarted = true;
+    audio.init();
+    earlyRadio.play().catch(() => {});
+  }
+
   function showWelcome() {
     showWelcomeScreen({
       dailyPuzzle,
@@ -162,19 +175,23 @@ async function main() {
       pastPuzzles,
       completedDailyIds,
       onStartDaily: () => {
-        startGameSession(dailyPuzzle, 'daily', puzzlesData);
+        ensureRadioStarted();
+        startGameSession(dailyPuzzle, 'daily', puzzlesData, earlyRadio);
       },
       onStartPractice: (index) => {
-        startGameSession(practicePuzzles[index], 'practice', puzzlesData);
+        ensureRadioStarted();
+        startGameSession(practicePuzzles[index], 'practice', puzzlesData, earlyRadio);
       },
       onStartPast: (puzzle) => {
-        startGameSession(puzzle, 'practice', puzzlesData);
+        ensureRadioStarted();
+        startGameSession(puzzle, 'practice', puzzlesData, earlyRadio);
       },
     });
   }
 
   if (!isSkipIntro()) {
     showOnboarding((skipChecked) => {
+      ensureRadioStarted();
       setSkipIntro(skipChecked);
       showWelcome();
     });
@@ -187,7 +204,7 @@ async function main() {
 // startGameSession — Full Game Flow (extracted from original main)
 // ---------------------------------------------------------------------------
 
-async function startGameSession(puzzle, mode, puzzlesData) {
+async function startGameSession(puzzle, mode, puzzlesData, existingRadio) {
   const isDaily = mode === 'daily';
 
   // ── 1. Check localStorage for saved state (daily only) ────────────────────
@@ -206,9 +223,9 @@ async function startGameSession(puzzle, mode, puzzlesData) {
   createHUD();
 
   // ── 4. Setup radio audio + mute toggle ──────────────────────────────────────
-  const radioEl = new Audio('/audio/kpez.mp3');
-  radioEl.loop = true;
-  radioEl.volume = 0.65;
+  // Reuse the radio element started from the welcome screen
+  const radioEl = existingRadio || new Audio('/audio/kpez.mp3');
+  if (!existingRadio) { radioEl.loop = true; radioEl.volume = 0.65; }
 
   let _isMuted = audio.isMuted();
   setMuteIcon(_isMuted);
@@ -417,12 +434,8 @@ async function startGameSession(puzzle, mode, puzzlesData) {
       }, 1000);
     }
 
-    // 2. Init audio + start radio on first interaction
-    if (!audioInitialized) {
-      audio.init();
-      radioEl.play().catch(() => {});
-      audioInitialized = true;
-    }
+    // 2. Ensure audio is initialized (fallback if welcome screen didn't start it)
+    if (!audioInitialized) { audio.init(); audioInitialized = true; }
 
     // 3. Toggle selection
     const { action } = toggleSelection(game, box.userData.movie.tmdb_id);
@@ -641,12 +654,8 @@ async function startGameSession(puzzle, mode, puzzlesData) {
   }
 
   function handleLongPress(box) {
-    // Init audio + start radio on first interaction
-    if (!audioInitialized) {
-      audio.init();
-      radioEl.play().catch(() => {});
-      audioInitialized = true;
-    }
+    // Ensure audio is initialized (fallback)
+    if (!audioInitialized) { audio.init(); audioInitialized = true; }
     audio.play('tapInspect');
 
     // Lock interaction during the inspect animation
