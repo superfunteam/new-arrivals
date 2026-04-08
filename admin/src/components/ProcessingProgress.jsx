@@ -1,5 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { apiPost } from '../lib/api';
+import { apiPost } from '@/lib/api';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
+import { Progress } from '@/components/ui/progress';
+import { Button } from '@/components/ui/button';
+import { Check, X, Loader2, Circle } from 'lucide-react';
 
 const STEPS = [
   { key: 'enrich', label: 'Enriching movie data from TMDB...' },
@@ -10,66 +20,30 @@ const STEPS = [
 function StepIcon({ status }) {
   if (status === 'complete') {
     return (
-      <span style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: 22,
-        height: 22,
-        borderRadius: '50%',
-        background: '#22c55e',
-        color: '#fff',
-        fontSize: 13,
-        fontWeight: 700,
-        flexShrink: 0,
-      }}>
-        &#10003;
-      </span>
+      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 flex-shrink-0">
+        <Check className="h-3.5 w-3.5 text-white" />
+      </div>
     );
   }
   if (status === 'active') {
     return (
-      <span style={{
-        display: 'inline-block',
-        width: 22,
-        height: 22,
-        borderRadius: '50%',
-        border: '2px solid #e5e7eb',
-        borderTopColor: '#3b82f6',
-        animation: 'spin 0.6s linear infinite',
-        flexShrink: 0,
-      }} />
+      <div className="flex h-6 w-6 items-center justify-center flex-shrink-0">
+        <Loader2 className="h-5 w-5 text-primary animate-spin" />
+      </div>
     );
   }
   if (status === 'error') {
     return (
-      <span style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: 22,
-        height: 22,
-        borderRadius: '50%',
-        background: '#ef4444',
-        color: '#fff',
-        fontSize: 13,
-        fontWeight: 700,
-        flexShrink: 0,
-      }}>
-        !
-      </span>
+      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-destructive flex-shrink-0">
+        <X className="h-3.5 w-3.5 text-white" />
+      </div>
     );
   }
   // pending
   return (
-    <span style={{
-      display: 'inline-block',
-      width: 22,
-      height: 22,
-      borderRadius: '50%',
-      border: '2px solid #e5e7eb',
-      flexShrink: 0,
-    }} />
+    <div className="flex h-6 w-6 items-center justify-center flex-shrink-0">
+      <Circle className="h-5 w-5 text-muted-foreground/30" />
+    </div>
   );
 }
 
@@ -115,7 +89,6 @@ export default function ProcessingProgress({ puzzle, onComplete, onClose }) {
       } catch (err) {
         console.error('Processing pipeline failed:', err);
         setError(err.message || 'Processing failed');
-        // Mark current active step as error
         setStepStates((prev) =>
           prev.map((s) => (s === 'active' ? 'error' : s))
         );
@@ -129,56 +102,43 @@ export default function ProcessingProgress({ puzzle, onComplete, onClose }) {
   const isDone = stepStates.every((s) => s === 'complete');
   const hasError = stepStates.some((s) => s === 'error');
 
-  return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        background: 'rgba(0,0,0,0.5)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1000,
-      }}
-    >
-      <div
-        style={{
-          background: '#fff',
-          borderRadius: 12,
-          padding: 32,
-          maxWidth: 480,
-          width: '90%',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
-        }}
-      >
-        <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 4, color: '#111' }}>
-          {isDone ? 'Published!' : hasError ? 'Processing Failed' : 'Processing & Publishing'}
-        </h2>
-        <p style={{ fontSize: 13, color: '#6b7280', marginBottom: 24 }}>
-          {isDone
-            ? 'Your puzzle has been committed to GitHub. A deploy will start automatically.'
-            : hasError
-              ? 'An error occurred during processing.'
-              : 'Please wait while we prepare and publish your puzzle...'}
-        </p>
+  const completedCount = stepStates.filter((s) => s === 'complete').length;
+  const progressValue = (completedCount / STEPS.length) * 100;
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+  return (
+    <Dialog open onOpenChange={(open) => { if (!open && !isRunning) onClose(); }}>
+      <DialogContent className="max-w-md" onPointerDownOutside={(e) => { if (isRunning) e.preventDefault(); }}>
+        <DialogHeader>
+          <DialogTitle>
+            {isDone ? 'Published!' : hasError ? 'Processing Failed' : 'Processing & Publishing'}
+          </DialogTitle>
+          <DialogDescription>
+            {isDone
+              ? 'Your puzzle has been committed to GitHub. A deploy will start automatically.'
+              : hasError
+                ? 'An error occurred during processing.'
+                : 'Please wait while we prepare and publish your puzzle...'}
+          </DialogDescription>
+        </DialogHeader>
+
+        {/* Progress bar */}
+        <Progress value={progressValue} className="mb-2" />
+
+        {/* Step list */}
+        <div className="flex flex-col gap-4 py-2">
           {STEPS.map((step, i) => (
-            <div
-              key={step.key}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 12,
-              }}
-            >
+            <div key={step.key} className="flex items-center gap-3">
               <StepIcon status={stepStates[i]} />
               <span
-                style={{
-                  fontSize: 14,
-                  color: stepStates[i] === 'pending' ? '#9ca3af' : '#374151',
-                  fontWeight: stepStates[i] === 'active' ? 500 : 400,
-                }}
+                className={`text-sm ${
+                  stepStates[i] === 'pending'
+                    ? 'text-muted-foreground'
+                    : stepStates[i] === 'active'
+                      ? 'text-foreground font-medium'
+                      : stepStates[i] === 'error'
+                        ? 'text-destructive'
+                        : 'text-foreground'
+                }`}
               >
                 {step.label}
               </span>
@@ -186,59 +146,36 @@ export default function ProcessingProgress({ puzzle, onComplete, onClose }) {
           ))}
         </div>
 
+        {/* Error banner */}
         {error && (
-          <div
-            style={{
-              marginTop: 16,
-              padding: '10px 14px',
-              background: '#fef2f2',
-              border: '1px solid #fecaca',
-              borderRadius: 6,
-              fontSize: 12,
-              color: '#991b1b',
-              wordBreak: 'break-word',
-            }}
-          >
-            {error}
+          <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3">
+            <p className="text-sm text-destructive break-words">{error}</p>
           </div>
         )}
 
+        {/* Success banner */}
         {result && result.ok && (
-          <div
-            style={{
-              marginTop: 16,
-              padding: '10px 14px',
-              background: '#f0fdf4',
-              border: '1px solid #bbf7d0',
-              borderRadius: 6,
-              fontSize: 12,
-              color: '#166534',
-            }}
-          >
-            Commit: <code>{result.commitSha?.slice(0, 7)}</code> &mdash; {result.filesCommitted} files committed
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3">
+            <p className="text-sm text-emerald-800">
+              Commit: <code className="font-mono text-xs bg-emerald-100 px-1 py-0.5 rounded">
+                {result.commitSha?.slice(0, 7)}
+              </code>
+              {' '}&mdash; {result.filesCommitted} files committed
+            </p>
           </div>
         )}
 
-        <div style={{ marginTop: 24, display: 'flex', justifyContent: 'flex-end' }}>
-          <button
-            type="button"
+        {/* Actions */}
+        <div className="flex justify-end pt-2">
+          <Button
             onClick={onClose}
             disabled={isRunning}
-            style={{
-              padding: '10px 20px',
-              border: 'none',
-              borderRadius: 6,
-              background: isRunning ? '#e5e7eb' : '#111',
-              color: isRunning ? '#9ca3af' : '#fff',
-              fontSize: 14,
-              fontWeight: 500,
-              cursor: isRunning ? 'not-allowed' : 'pointer',
-            }}
+            variant={isDone ? 'default' : hasError ? 'outline' : 'secondary'}
           >
             {isDone ? 'Done' : hasError ? 'Close' : 'Processing...'}
-          </button>
+          </Button>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

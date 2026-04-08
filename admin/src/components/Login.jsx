@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Loader2, Lock } from 'lucide-react';
 
 export default function Login({ onLogin }) {
   const [password, setPassword] = useState('');
@@ -29,27 +33,49 @@ export default function Login({ onLogin }) {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-sm border w-full max-w-sm">
-        <h1 className="text-2xl font-semibold mb-1">The Backroom</h1>
-        <p className="text-gray-500 text-sm mb-6">New Arrivals puzzle admin</p>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Enter password"
-          className="w-full px-3 py-2 border rounded-md text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-black"
-          autoFocus
-        />
-        {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
-        <button
-          type="submit"
-          disabled={loading || !password}
-          className="w-full bg-black text-white py-2 rounded-md text-sm font-medium disabled:opacity-50"
-        >
-          {loading ? 'Checking...' : 'Enter Backroom'}
-        </button>
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-gray-100">
+      <Card className="w-full max-w-sm mx-4 shadow-lg border-border/60">
+        <CardHeader className="text-center pb-2">
+          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary/5">
+            <Lock className="h-5 w-5 text-primary" />
+          </div>
+          <CardTitle className="text-2xl">New Arrivals</CardTitle>
+          <CardDescription className="text-muted-foreground">
+            Backroom puzzle admin
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter password"
+                autoFocus
+                className="h-10"
+              />
+            </div>
+            {error && (
+              <p className="text-sm text-destructive font-medium">{error}</p>
+            )}
+            <Button
+              type="submit"
+              disabled={loading || !password}
+              className="w-full h-10"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Checking...
+                </>
+              ) : (
+                'Enter Backroom'
+              )}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }

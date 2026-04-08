@@ -1,14 +1,26 @@
 import React, { useState } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import MovieSearch from './MovieSearch';
 import { FullPuzzleSparkle, CategorySparkle } from './AiGeneratePanel';
 import ProcessingProgress from './ProcessingProgress';
 
 const DIFFICULTIES = [
-  { value: 1, label: 'Easy', color: '#4CAF50' },
-  { value: 2, label: 'Medium', color: '#FFC107' },
-  { value: 3, label: 'Hard', color: '#2196F3' },
-  { value: 4, label: 'Devious', color: '#9C27B0' },
+  { value: 1, label: 'Easy', tw: 'border-l-emerald-500', dot: 'bg-emerald-500' },
+  { value: 2, label: 'Medium', tw: 'border-l-amber-500', dot: 'bg-amber-500' },
+  { value: 3, label: 'Hard', tw: 'border-l-blue-500', dot: 'bg-blue-500' },
+  { value: 4, label: 'Devious', tw: 'border-l-purple-500', dot: 'bg-purple-500' },
 ];
+
+const DIFFICULTY_COLORS = {
+  1: '#4CAF50',
+  2: '#FFC107',
+  3: '#2196F3',
+  4: '#9C27B0',
+};
 
 function emptyCategory(index) {
   return {
@@ -99,7 +111,7 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel }) {
       categories: categories.map((cat) => ({
         name: cat.name.trim(),
         difficulty: cat.difficulty,
-        color: DIFFICULTIES.find((d) => d.value === cat.difficulty)?.color || '#4CAF50',
+        color: DIFFICULTY_COLORS[cat.difficulty] || '#4CAF50',
         items: cat.items.map((item) => ({
           tmdb_id: item.tmdb_id,
           title: item.title,
@@ -116,7 +128,6 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel }) {
     setProcessing(puzzleData);
   }
 
-  // Handle AI-generated full puzzle
   function handleAiGenerated(aiData) {
     if (aiData.title) setTitle(aiData.title);
     if (aiData.categories) {
@@ -130,7 +141,6 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel }) {
     }
   }
 
-  // Handle AI-generated category movies
   function handleCategoryMoviesGenerated(catIdx, movies) {
     setCategories((prev) =>
       prev.map((cat, i) => {
@@ -146,7 +156,6 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel }) {
     );
   }
 
-  // Collect all currently selected movie titles (for AI dedup)
   function getAllSelectedMovies() {
     return categories.flatMap((cat) =>
       cat.items.filter((m) => m && m.title).map((m) => m.title)
@@ -154,199 +163,159 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel }) {
   }
 
   function handleProcessComplete(result) {
-    // Processing done -- onSave will navigate back to dashboard
+    // Processing done
   }
 
   function handleProcessClose() {
     if (processing) {
-      // If it completed successfully, go back to dashboard
       onSave(processing);
     }
     setProcessing(false);
   }
 
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto' }}>
+    <div className="max-w-3xl mx-auto pb-24">
+      {/* Page Header */}
+      <div className="mb-6">
+        <button
+          onClick={onCancel}
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-3"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Dashboard
+        </button>
+        <h1 className="text-2xl font-semibold text-foreground">
+          {puzzle ? `Edit: ${puzzle.title}` : 'New Puzzle'}
+        </h1>
+      </div>
+
       {/* AI Full Puzzle Generator */}
       <FullPuzzleSparkle
         onGenerated={handleAiGenerated}
         existingTitle={title}
       />
 
-      <div style={{ marginBottom: 24 }}>
-        <label
-          style={{ display: 'block', fontSize: 13, fontWeight: 500, marginBottom: 6, color: '#374151' }}
-        >
+      {/* Title Input */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-foreground mb-2">
           Puzzle Title
         </label>
-        <input
+        <Input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="e.g. Scary Halloween"
-          style={{
-            width: '100%',
-            padding: '10px 12px',
-            border: `1px solid ${submitted && errors.title ? '#ef4444' : '#e2e8f0'}`,
-            borderRadius: 6,
-            fontSize: 15,
-            fontWeight: 500,
-            outline: 'none',
-            boxSizing: 'border-box',
-          }}
+          className={`h-11 text-base font-medium ${submitted && errors.title ? 'border-destructive focus-visible:ring-destructive' : ''}`}
         />
         {submitted && errors.title && (
-          <p style={{ color: '#ef4444', fontSize: 12, marginTop: 4 }}>{errors.title}</p>
+          <p className="text-xs text-destructive mt-1.5">{errors.title}</p>
         )}
       </div>
 
-      {categories.map((cat, ci) => {
-        const diff = DIFFICULTIES.find((d) => d.value === cat.difficulty) || DIFFICULTIES[ci];
-        return (
-          <div
-            key={ci}
-            style={{
-              border: '1px solid #e2e8f0',
-              borderRadius: 8,
-              padding: 20,
-              marginBottom: 16,
-              borderLeft: `4px solid ${diff.color}`,
-              background: '#fff',
-            }}
+      {/* Category Cards */}
+      <div className="space-y-4">
+        {categories.map((cat, ci) => {
+          const diff = DIFFICULTIES.find((d) => d.value === cat.difficulty) || DIFFICULTIES[ci];
+          return (
+            <Card key={ci} className={`border-l-4 ${diff.tw} overflow-hidden`}>
+              <CardContent className="p-5">
+                {/* Category Header */}
+                <div className="flex gap-3 mb-4 items-start">
+                  <div className="flex-1 space-y-1.5">
+                    <label className="block text-xs font-medium text-muted-foreground">
+                      Category Name
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        type="text"
+                        value={cat.name}
+                        onChange={(e) => updateCategory(ci, 'name', e.target.value)}
+                        placeholder="e.g. Horror Classics"
+                        className={`h-9 ${submitted && errors[`cat_${ci}_name`] ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+                      />
+                      <CategorySparkle
+                        categoryName={cat.name}
+                        existingMovies={getAllSelectedMovies().map((t) => ({ title: t }))}
+                        onMoviesGenerated={(movies) => handleCategoryMoviesGenerated(ci, movies)}
+                      />
+                    </div>
+                    {submitted && errors[`cat_${ci}_name`] && (
+                      <p className="text-xs text-destructive">{errors[`cat_${ci}_name`]}</p>
+                    )}
+                  </div>
+                  <div className="w-40 space-y-1.5">
+                    <label className="block text-xs font-medium text-muted-foreground">
+                      Difficulty
+                    </label>
+                    <select
+                      value={cat.difficulty}
+                      onChange={(e) =>
+                        updateCategory(ci, 'difficulty', parseInt(e.target.value, 10))
+                      }
+                      className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring cursor-pointer"
+                    >
+                      {DIFFICULTIES.map((d) => (
+                        <option key={d.value} value={d.value}>
+                          {d.label}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="flex gap-1 mt-1">
+                      {DIFFICULTIES.map((d) => (
+                        <span
+                          key={d.value}
+                          className={`h-2 w-2 rounded-full transition-colors ${
+                            d.value === cat.difficulty ? d.dot : 'bg-muted'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Movie Grid - 2x2 */}
+                <div className="grid grid-cols-2 gap-3">
+                  {cat.items.map((movie, mi) => (
+                    <div key={mi} className="space-y-1">
+                      <label className="block text-xs text-muted-foreground/70">
+                        Movie {mi + 1}
+                      </label>
+                      <MovieSearch
+                        value={movie}
+                        onChange={(m) => updateMovie(ci, mi, m)}
+                      />
+                      {submitted && errors[`cat_${ci}_movie_${mi}`] && (
+                        <Badge variant="destructive" className="text-[10px] px-1.5 py-0">
+                          Required
+                        </Badge>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+
+      {/* Sticky bottom bar */}
+      <div className="fixed bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur-sm z-40">
+        <div className="max-w-3xl mx-auto flex items-center justify-end gap-3 px-6 py-4">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onCancel}
           >
-            <div style={{ display: 'flex', gap: 12, marginBottom: 16, alignItems: 'flex-start' }}>
-              <div style={{ flex: 1 }}>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 500, marginBottom: 4, color: '#6b7280' }}>
-                  Category Name
-                </label>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <input
-                    type="text"
-                    value={cat.name}
-                    onChange={(e) => updateCategory(ci, 'name', e.target.value)}
-                    placeholder="e.g. Horror Classics"
-                    style={{
-                      width: '100%',
-                      padding: '7px 10px',
-                      border: `1px solid ${submitted && errors[`cat_${ci}_name`] ? '#ef4444' : '#e2e8f0'}`,
-                      borderRadius: 6,
-                      fontSize: 13,
-                      outline: 'none',
-                      boxSizing: 'border-box',
-                    }}
-                  />
-                  <CategorySparkle
-                    categoryName={cat.name}
-                    existingMovies={getAllSelectedMovies().map((t) => ({ title: t }))}
-                    onMoviesGenerated={(movies) => handleCategoryMoviesGenerated(ci, movies)}
-                  />
-                </div>
-                {submitted && errors[`cat_${ci}_name`] && (
-                  <p style={{ color: '#ef4444', fontSize: 11, marginTop: 2 }}>
-                    {errors[`cat_${ci}_name`]}
-                  </p>
-                )}
-              </div>
-              <div style={{ width: 160 }}>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 500, marginBottom: 4, color: '#6b7280' }}>
-                  Difficulty
-                </label>
-                <select
-                  value={cat.difficulty}
-                  onChange={(e) =>
-                    updateCategory(ci, 'difficulty', parseInt(e.target.value, 10))
-                  }
-                  style={{
-                    width: '100%',
-                    padding: '7px 10px',
-                    border: '1px solid #e2e8f0',
-                    borderRadius: 6,
-                    fontSize: 13,
-                    outline: 'none',
-                    background: '#fff',
-                    cursor: 'pointer',
-                    boxSizing: 'border-box',
-                  }}
-                >
-                  {DIFFICULTIES.map((d) => (
-                    <option key={d.value} value={d.value}>
-                      {d.label}
-                    </option>
-                  ))}
-                </select>
-                <div style={{ display: 'flex', gap: 3, marginTop: 4 }}>
-                  {DIFFICULTIES.map((d) => (
-                    <span
-                      key={d.value}
-                      style={{
-                        width: 8,
-                        height: 8,
-                        borderRadius: '50%',
-                        background: d.value === cat.difficulty ? d.color : '#e2e8f0',
-                        display: 'inline-block',
-                      }}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              {cat.items.map((movie, mi) => (
-                <div key={mi}>
-                  <label style={{ display: 'block', fontSize: 11, color: '#94a3b8', marginBottom: 2 }}>
-                    Movie {mi + 1}
-                  </label>
-                  <MovieSearch
-                    value={movie}
-                    onChange={(m) => updateMovie(ci, mi, m)}
-                  />
-                  {submitted && errors[`cat_${ci}_movie_${mi}`] && (
-                    <p style={{ color: '#ef4444', fontSize: 11, marginTop: 2 }}>
-                      {errors[`cat_${ci}_movie_${mi}`]}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-      })}
-
-      <div style={{ display: 'flex', gap: 12, marginTop: 24, justifyContent: 'flex-end' }}>
-        <button
-          type="button"
-          onClick={onCancel}
-          style={{
-            padding: '10px 20px',
-            border: '1px solid #e2e8f0',
-            borderRadius: 6,
-            background: '#fff',
-            fontSize: 14,
-            fontWeight: 500,
-            cursor: 'pointer',
-            color: '#374151',
-          }}
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
-          onClick={handleSave}
-          disabled={submitted && !isValid()}
-          style={{
-            padding: '10px 20px',
-            border: 'none',
-            borderRadius: 6,
-            background: isValid() ? '#111' : '#d1d5db',
-            color: '#fff',
-            fontSize: 14,
-            fontWeight: 500,
-            cursor: isValid() ? 'pointer' : 'not-allowed',
-          }}
-        >
-          Process & Publish
-        </button>
+            Cancel
+          </Button>
+          <Button
+            type="button"
+            onClick={handleSave}
+            disabled={submitted && !isValid()}
+          >
+            Process & Publish
+          </Button>
+        </div>
       </div>
 
       {/* Processing dialog */}

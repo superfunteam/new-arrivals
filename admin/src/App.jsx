@@ -92,13 +92,12 @@ export default function App() {
     <div className="min-h-screen bg-white">
       <header className="border-b px-6 py-4 flex items-center justify-between">
         <h1
-          className="text-xl font-semibold"
-          style={{ cursor: view !== 'dashboard' ? 'pointer' : 'default' }}
+          className={`text-xl font-semibold ${view !== 'dashboard' ? 'cursor-pointer hover:text-foreground/80 transition-colors' : ''}`}
           onClick={() => { if (view !== 'dashboard') handleEditorCancel(); }}
         >
           New Arrivals — Backroom
         </h1>
-        <span className="text-sm text-gray-400">
+        <span className="text-sm text-muted-foreground">
           {view === 'editor' ? (editingPuzzle ? 'Edit Puzzle' : 'New Puzzle') : 'Puzzle Admin'}
         </span>
       </header>

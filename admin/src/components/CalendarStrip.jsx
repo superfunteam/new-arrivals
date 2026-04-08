@@ -1,4 +1,13 @@
 import React, { useState, useRef } from 'react';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
+import { Calendar, Plus } from 'lucide-react';
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -24,22 +33,20 @@ const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export default function CalendarStrip({ puzzles, onAssign, onUnassign }) {
-  const [pickerDate, setPickerDate] = useState(null); // date string for assign popover
-  const [unassignPuzzle, setUnassignPuzzle] = useState(null); // puzzle to confirm unassign
+  const [pickerDate, setPickerDate] = useState(null);
+  const [unassignPuzzle, setUnassignPuzzle] = useState(null);
   const scrollRef = useRef(null);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const todayStr = toDateString(today);
 
-  // Build array of next 30 days
   const days = Array.from({ length: 30 }, (_, i) => {
     const d = new Date(today);
     d.setDate(today.getDate() + i);
     return d;
   });
 
-  // Map date strings to puzzles
   const scheduledByDate = {};
   for (const p of puzzles) {
     if (DATE_RE.test(p.id)) {
@@ -62,16 +69,18 @@ export default function CalendarStrip({ puzzles, onAssign, onUnassign }) {
   }
 
   return (
-    <div className="mb-8">
-      <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
-        Editorial Calendar — Next 30 Days
-      </h2>
+    <div>
+      <div className="flex items-center gap-2 mb-3">
+        <Calendar className="h-4 w-4 text-muted-foreground" />
+        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+          Editorial Calendar
+        </h3>
+      </div>
 
       {/* Scrollable strip */}
       <div
         ref={scrollRef}
-        className="flex overflow-x-auto gap-2 pb-2"
-        style={{ scrollbarWidth: 'thin' }}
+        className="flex overflow-x-auto gap-2 pb-3 snap-x snap-mandatory scrollbar-thin"
       >
         {days.map((d) => {
           const dateStr = toDateString(d);
@@ -82,29 +91,30 @@ export default function CalendarStrip({ puzzles, onAssign, onUnassign }) {
             <div
               key={dateStr}
               className={[
-                'min-w-[80px] p-2 rounded-lg border text-center text-xs flex-shrink-0 flex flex-col gap-1',
+                'min-w-[80px] p-2 rounded-lg border text-center text-xs flex-shrink-0 flex flex-col gap-1 snap-start transition-all duration-200',
                 scheduled
-                  ? 'bg-blue-50 border-blue-200'
-                  : 'border-dashed border-gray-300',
-                isToday ? 'ring-2 ring-black' : '',
+                  ? 'bg-primary text-primary-foreground border-primary'
+                  : 'border-dashed border-border hover:border-primary/30 hover:bg-muted/30',
+                isToday ? 'ring-2 ring-primary ring-offset-2' : '',
               ]
                 .filter(Boolean)
                 .join(' ')}
             >
-              <span className="font-medium text-gray-500">
+              <span className={scheduled ? 'font-medium text-primary-foreground/70' : 'font-medium text-muted-foreground'}>
                 {DAY_NAMES[d.getDay()]}
               </span>
-              <span className="text-lg font-semibold leading-none text-gray-800">
+              <span className={`text-lg font-semibold leading-none ${scheduled ? 'text-primary-foreground' : 'text-foreground'}`}>
                 {d.getDate()}
               </span>
-              <span className="text-gray-400">{MONTH_NAMES[d.getMonth()]}</span>
+              <span className={scheduled ? 'text-primary-foreground/60' : 'text-muted-foreground/70'}>
+                {MONTH_NAMES[d.getMonth()]}
+              </span>
 
               {scheduled ? (
                 <button
                   onClick={() => setUnassignPuzzle(scheduled)}
                   title={`Unassign "${scheduled.title}"`}
-                  className="mt-1 text-blue-700 font-medium leading-tight hover:text-blue-900 transition-colors line-clamp-2 break-words"
-                  style={{ fontSize: '0.65rem' }}
+                  className="mt-1 text-primary-foreground/90 font-medium leading-tight hover:text-primary-foreground transition-colors line-clamp-2 break-words text-[0.65rem]"
                 >
                   {scheduled.title}
                 </button>
@@ -112,14 +122,14 @@ export default function CalendarStrip({ puzzles, onAssign, onUnassign }) {
                 <button
                   onClick={() => setPickerDate(dateStr)}
                   disabled={floatingPuzzles.length === 0}
-                  className="mt-1 text-gray-400 hover:text-black disabled:opacity-30 transition-colors text-base leading-none"
+                  className="mt-1 text-muted-foreground/50 hover:text-primary disabled:opacity-30 transition-colors"
                   title={
                     floatingPuzzles.length === 0
                       ? 'No floating puzzles available'
                       : `Assign puzzle to ${dateStr}`
                   }
                 >
-                  +
+                  <Plus className="h-4 w-4 mx-auto" />
                 </button>
               )}
             </div>
@@ -127,83 +137,62 @@ export default function CalendarStrip({ puzzles, onAssign, onUnassign }) {
         })}
       </div>
 
-      {/* Assign modal */}
-      {pickerDate && (
-        <Modal onClose={() => setPickerDate(null)}>
-          <h3 className="text-base font-semibold mb-1">Assign puzzle to {pickerDate}</h3>
-          <p className="text-sm text-gray-500 mb-4">
-            Choose a floating puzzle to schedule on this date.
-          </p>
+      {/* Assign Dialog */}
+      <Dialog open={!!pickerDate} onOpenChange={(open) => { if (!open) setPickerDate(null); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Assign puzzle to {pickerDate}</DialogTitle>
+            <DialogDescription>
+              Choose a floating puzzle to schedule on this date.
+            </DialogDescription>
+          </DialogHeader>
           {floatingPuzzles.length === 0 ? (
-            <p className="text-sm text-gray-400">No floating puzzles available.</p>
+            <p className="text-sm text-muted-foreground py-4 text-center">No floating puzzles available.</p>
           ) : (
-            <ul className="divide-y border rounded-lg overflow-hidden">
+            <ul className="divide-y rounded-lg border overflow-hidden">
               {floatingPuzzles.map((p) => (
                 <li key={p.id}>
                   <button
                     onClick={() => handleAssign(p)}
-                    className="w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors"
+                    className="w-full text-left px-4 py-3 hover:bg-accent transition-colors"
                   >
-                    <span className="text-sm font-medium">{p.title}</span>
-                    <span className="block text-xs text-gray-400 font-mono mt-0.5">{p.id}</span>
+                    <span className="text-sm font-medium text-foreground">{p.title}</span>
+                    <span className="block text-xs text-muted-foreground font-mono mt-0.5">{p.id}</span>
                   </button>
                 </li>
               ))}
             </ul>
           )}
-          <button
-            onClick={() => setPickerDate(null)}
-            className="mt-4 w-full border rounded-md py-2 text-sm text-gray-500 hover:bg-gray-50 transition-colors"
-          >
-            Cancel
-          </button>
-        </Modal>
-      )}
+        </DialogContent>
+      </Dialog>
 
-      {/* Unassign confirm modal */}
-      {unassignPuzzle && (
-        <Modal onClose={() => setUnassignPuzzle(null)}>
-          <h3 className="text-base font-semibold mb-1">Unassign puzzle?</h3>
-          <p className="text-sm text-gray-600 mb-1">
-            <strong>{unassignPuzzle.title}</strong>
-          </p>
-          <p className="text-sm text-gray-500 mb-6">
-            This will move the puzzle back to floating (unscheduled).
-          </p>
-          <div className="flex gap-2">
-            <button
+      {/* Unassign confirm Dialog */}
+      <Dialog open={!!unassignPuzzle} onOpenChange={(open) => { if (!open) setUnassignPuzzle(null); }}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Unassign puzzle?</DialogTitle>
+            <DialogDescription>
+              This will move <span className="font-semibold text-foreground">{unassignPuzzle?.title}</span> back
+              to floating (unscheduled).
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex gap-3 pt-2">
+            <Button
               onClick={handleUnassignConfirm}
-              className="flex-1 bg-black text-white py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors"
+              className="flex-1"
             >
               Unassign
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="outline"
               onClick={() => setUnassignPuzzle(null)}
-              className="flex-1 border rounded-md py-2 text-sm text-gray-500 hover:bg-gray-50 transition-colors"
+              className="flex-1"
             >
               Cancel
-            </button>
+            </Button>
           </div>
-        </Modal>
-      )}
-    </div>
-  );
-}
-
-function Modal({ children, onClose }) {
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
-    >
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/30" />
-      {/* Panel */}
-      <div className="relative bg-white rounded-xl shadow-xl border p-6 w-full max-w-sm mx-4 z-10">
-        {children}
-      </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
