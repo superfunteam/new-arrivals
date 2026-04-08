@@ -106,11 +106,16 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
     }
   }
 
-  // ── Pinch-to-zoom (touch events, separate from pointer events) ──
+  // ── Pinch-to-zoom toward pinch center (touch events) ──
   let isPinching = false;
   let initialPinchDistance = 0;
   let initialFov = 50;
   let snapBackRaf = null;
+  const defaultCamPos = { x: 0, y: 0.5, z: 9 };
+  let initialCamX = 0;
+  let initialCamY = 0;
+  let pinchTargetX = 0;
+  let pinchTargetY = 0;
 
   function getTouchDistance(touches) {
     const dx = touches[0].clientX - touches[1].clientX;
@@ -118,19 +123,41 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
     return Math.sqrt(dx * dx + dy * dy);
   }
 
+  function getTouchCenter(touches) {
+    return {
+      x: (touches[0].clientX + touches[1].clientX) / 2,
+      y: (touches[0].clientY + touches[1].clientY) / 2,
+    };
+  }
+
+  // Convert screen coords to a camera offset direction
+  function screenToWorldOffset(clientX, clientY) {
+    const rect = renderer.domElement.getBoundingClientRect();
+    // Normalized -1..1
+    const nx = ((clientX - rect.left) / rect.width) * 2 - 1;
+    const ny = -(((clientY - rect.top) / rect.height) * 2 - 1);
+    // Scale to world units (approximate based on FOV and distance)
+    const halfH = Math.tan((camera.fov * Math.PI / 180) / 2) * camera.position.z;
+    const halfW = halfH * camera.aspect;
+    return { x: nx * halfW, y: ny * halfH };
+  }
+
   function animateSnapBack() {
     if (snapBackRaf) cancelAnimationFrame(snapBackRaf);
     const startFov = camera.fov;
+    const startX = camera.position.x;
+    const startY = camera.position.y;
     const targetFov = 50;
     const startTime = performance.now();
-    const duration = 300; // ms
+    const duration = 300;
 
     function step(now) {
       const elapsed = now - startTime;
       const t = Math.min(elapsed / duration, 1);
-      // ease-out cubic
       const eased = 1 - Math.pow(1 - t, 3);
       camera.fov = startFov + (targetFov - startFov) * eased;
+      camera.position.x = startX + (defaultCamPos.x - startX) * eased;
+      camera.position.y = startY + (defaultCamPos.y - startY) * eased;
       camera.updateProjectionMatrix();
       if (t < 1) {
         snapBackRaf = requestAnimationFrame(step);
@@ -146,6 +173,13 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
       isPinching = true;
       initialPinchDistance = getTouchDistance(e.touches);
       initialFov = camera.fov;
+      initialCamX = camera.position.x;
+      initialCamY = camera.position.y;
+      // Calculate where the user is pinching in world space
+      const center = getTouchCenter(e.touches);
+      const offset = screenToWorldOffset(center.x, center.y);
+      pinchTargetX = offset.x;
+      pinchTargetY = offset.y;
       // Cancel any tap/long-press in progress
       pointerDown = false;
       if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null; }
@@ -158,9 +192,14 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
       const currentDist = getTouchDistance(e.touches);
       const scale = currentDist / initialPinchDistance;
 
-      // Zoom: reduce FOV (min 20, max 50)
+      // Zoom: reduce FOV
       camera.fov = Math.max(20, Math.min(50, initialFov / scale));
       camera.updateProjectionMatrix();
+
+      // Pan toward pinch center proportionally to zoom level
+      const zoomFactor = 1 - (camera.fov / 50); // 0 at no zoom, ~0.6 at max zoom
+      camera.position.x = initialCamX + pinchTargetX * zoomFactor * 0.5;
+      camera.position.y = initialCamY + pinchTargetY * zoomFactor * 0.5;
     }
   }
 
