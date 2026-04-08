@@ -1114,6 +1114,7 @@ export function showEndScreen(result = {}) {
       ${scoreCardHtml}
       <div class="end-stars">${starsHtml}</div>
       ${bottomHtml}
+      <div class="end-section-title">ANSWER KEY</div>
       <div class="category-recap">${categoryRowsHtml}</div>
     </div>
   `;
