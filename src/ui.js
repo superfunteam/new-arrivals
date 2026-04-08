@@ -1082,9 +1082,9 @@ export function showEndScreen(result = {}) {
   let bottomHtml = '';
   if (mode === 'practice') {
     bottomHtml = `
-      <div class="end-practice-buttons">
-        <button class="end-practice-btn menu" id="end-back-menu">BACK TO MENU</button>
-        <button class="end-practice-btn replay" id="end-play-again">PLAY AGAIN</button>
+      <div class="end-buttons">
+        <button class="return-store-btn" id="end-back-menu">BACK TO MENU</button>
+        <button class="share-btn" id="end-play-again">PLAY AGAIN</button>
       </div>
     `;
   } else {
@@ -1094,18 +1094,27 @@ export function showEndScreen(result = {}) {
     const minsLeft = Math.floor((msLeft % 3600000) / 60000);
     const countdownText = `Next shift in ${hoursLeft}h ${minsLeft}m`;
     bottomHtml = `
-      <button class="share-btn" id="end-share-btn">Share Result</button>
+      <div class="end-buttons">
+        <button class="return-store-btn" id="end-return-btn">Return to Store</button>
+        <button class="share-btn" id="end-share-btn">Share</button>
+      </div>
       <div class="countdown" id="end-countdown">${countdownText}</div>
-      <button class="return-store-btn" id="end-return-btn">Return to Store</button>
     `;
   }
+
+  // Star rating based on final wage
+  const stars = finalWage >= 25 ? 3 : finalWage > 15 ? 2 : 1;
+  const starsHtml = Array.from({ length: 3 }, (_, i) =>
+    `<span class="end-star ${i < stars ? 'earned' : 'empty'}" style="animation-delay:${i * 0.2}s">★</span>`
+  ).join('');
 
   overlay.innerHTML = `
     <div class="end-screen">
       <div class="end-title">${title}</div>
       ${scoreCardHtml}
-      <div class="category-recap">${categoryRowsHtml}</div>
+      <div class="end-stars">${starsHtml}</div>
       ${bottomHtml}
+      <div class="category-recap">${categoryRowsHtml}</div>
     </div>
   `;
 
