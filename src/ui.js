@@ -1096,6 +1096,7 @@ export function showEndScreen(result = {}) {
     bottomHtml = `
       <button class="share-btn" id="end-share-btn">Share Result</button>
       <div class="countdown" id="end-countdown">${countdownText}</div>
+      <button class="return-store-btn" id="end-return-btn">Return to Store</button>
     `;
   }
 
@@ -1128,6 +1129,13 @@ export function showEndScreen(result = {}) {
     if (shareBtn) {
       shareBtn.addEventListener('click', () => {
         if (typeof onShare === 'function') onShare();
+      });
+    }
+
+    const returnBtn = document.getElementById('end-return-btn');
+    if (returnBtn) {
+      returnBtn.addEventListener('click', () => {
+        location.reload();
       });
     }
 
