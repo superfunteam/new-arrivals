@@ -456,7 +456,7 @@ async function startGameSession(puzzle, mode, puzzlesData) {
       }
       setupGameInteraction();
       // Re-enable shelve button if 4 are selected
-      setShelveButton(game.selectedIds.length === 4, handleShelveIt);
+      setShelveButton(game.selectedIds.length === 4, handleShelveIt, game.selectedIds.length);
     } else {
       // Fresh game — play entrance animation, then enable interaction
       animateEntrance(unsolvedBoxes, () => {
@@ -481,7 +481,7 @@ async function startGameSession(puzzle, mode, puzzlesData) {
     );
 
     // Set up the SHELVE IT button
-    setShelveButton(false, handleShelveIt);
+    setShelveButton(false, handleShelveIt, 0);
 
     // Set up help button — reloads to show onboarding + welcome screen
     onHelpClick(() => {
@@ -520,8 +520,8 @@ async function startGameSession(puzzle, mode, puzzlesData) {
     }
     // action === 'full' means 4 already selected, do nothing
 
-    // 6. Update shelve button (active when 4 selected)
-    setShelveButton(game.selectedIds.length === 4, handleShelveIt);
+    // 6. Update shelve button (active when 4 selected, show "Pick N" otherwise)
+    setShelveButton(game.selectedIds.length === 4, handleShelveIt, game.selectedIds.length);
 
     // 7. Save state (daily only)
     if (isDaily) {
@@ -818,7 +818,7 @@ async function startGameSession(puzzle, mode, puzzlesData) {
           interactionHandle.setLocked(false);
 
           // Clear button state
-          setShelveButton(false, handleShelveIt);
+          setShelveButton(false, handleShelveIt, 0);
 
           // Save state (daily only)
           if (isDaily) {
@@ -857,7 +857,7 @@ async function startGameSession(puzzle, mode, puzzlesData) {
         interactionHandle.setLocked(false);
 
         // Clear button state
-        setShelveButton(false, handleShelveIt);
+        setShelveButton(false, handleShelveIt, 0);
 
         // Save state (daily only)
         if (isDaily) {

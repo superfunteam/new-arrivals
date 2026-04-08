@@ -63,7 +63,7 @@ export function createHUD() {
         </div>
         <span class="radio-icon" id="radio-icon">♪</span>
       </div>
-      <button class="shelve-btn" id="shelve-btn" disabled>SHELVE IT</button>
+      <button class="shelve-btn" id="shelve-btn" disabled>PICK 4</button>
       <div class="hud-bottom-right">
         <div class="hud-timer" id="hud-timer">0:00</div>
         <button class="help-btn" id="help-btn" aria-label="Help">?</button>
@@ -118,14 +118,23 @@ export function updateHints(remaining) {
 }
 
 /**
- * Enable or disable the SHELVE IT button and set its click handler.
+ * Enable or disable the SHELVE IT button, set label, and set click handler.
  * @param {boolean} active
  * @param {Function|null} [onClick]
+ * @param {number} [selectedCount]  Number of currently selected tapes (0-4)
  */
-export function setShelveButton(active, onClick = null) {
+export function setShelveButton(active, onClick = null, selectedCount = 0) {
   if (!_shelveBtn) return;
 
   _shelveBtn.disabled = !active;
+
+  // Dynamic label: "Pick N" when < 4 selected, "SHELVE IT" when ready
+  if (active) {
+    _shelveBtn.textContent = 'SHELVE IT';
+  } else {
+    const remaining = 4 - selectedCount;
+    _shelveBtn.textContent = remaining > 0 ? `PICK ${remaining}` : 'SHELVE IT';
+  }
 
   // Remove previous handler
   if (_shelveHandler) {
