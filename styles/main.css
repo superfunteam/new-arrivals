@@ -841,7 +841,8 @@ html, body {
 
 /* Hide HUD corners when lightbox is open */
 .hud-inspect-mode .hud-top,
-.hud-inspect-mode .hud-bottom {
+.hud-inspect-mode .hud-bottom,
+.hud-inspect-mode .solved-row-label {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s;
@@ -1163,13 +1164,17 @@ html, body {
   text-transform: uppercase;
   text-align: center;
   color: #fff;
-  padding: 6px 24px;
+  padding: 6px 16px;
   border-radius: 4px;
   pointer-events: none;
   letter-spacing: 2px;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
-  white-space: nowrap;
+  white-space: normal;
+  max-width: 90vw;
+  line-height: 1.4;
+  word-break: break-word;
+  z-index: 5;
   opacity: 0;
   animation: labelReveal 0.6s ease-out forwards;
 }
