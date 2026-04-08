@@ -17,10 +17,10 @@ import { FullPuzzleSparkle, CategorySparkle } from './AiGeneratePanel';
 import ProcessingProgress from './ProcessingProgress';
 
 const DIFFICULTIES = [
-  { value: 1, label: 'Easy', tw: 'border-l-emerald-500', dot: 'bg-emerald-500', text: 'text-emerald-700' },
-  { value: 2, label: 'Medium', tw: 'border-l-amber-500', dot: 'bg-amber-500', text: 'text-amber-700' },
-  { value: 3, label: 'Hard', tw: 'border-l-blue-500', dot: 'bg-blue-500', text: 'text-blue-700' },
-  { value: 4, label: 'Devious', tw: 'border-l-purple-500', dot: 'bg-purple-500', text: 'text-purple-700' },
+  { value: 1, label: 'Easy', dot: 'bg-emerald-500', text: 'text-emerald-700', bg: 'bg-emerald-50' },
+  { value: 2, label: 'Medium', dot: 'bg-amber-500', text: 'text-amber-700', bg: 'bg-amber-50' },
+  { value: 3, label: 'Hard', dot: 'bg-blue-500', text: 'text-blue-700', bg: 'bg-blue-50' },
+  { value: 4, label: 'Devious', dot: 'bg-purple-500', text: 'text-purple-700', bg: 'bg-purple-50' },
 ];
 
 const DIFFICULTY_COLORS = {
@@ -232,7 +232,7 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel }) {
         {categories.map((cat, ci) => {
           const diff = DIFFICULTIES.find((d) => d.value === cat.difficulty) || DIFFICULTIES[ci];
           return (
-            <Card key={ci} className={`border-l-4 ${diff.tw}`}>
+            <Card key={ci} className={diff.bg}>
               <CardHeader className="pb-2">
                 <div className="flex items-center gap-2">
                   <div className={`size-2 rounded-full ${diff.dot}`} />

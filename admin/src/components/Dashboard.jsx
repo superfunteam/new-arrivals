@@ -2,7 +2,8 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Plus, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { Plus, TrendingUp, TrendingDown, Minus, CalendarDays } from 'lucide-react';
 import PuzzleTable, { getPuzzleStatus } from './PuzzleTable';
 
 const STAT_CONFIG = [
@@ -100,6 +101,52 @@ export function DashboardSkeleton() {
   );
 }
 
+function TimelineStrip({ puzzles }) {
+  const today = new Date();
+  const days = [];
+  for (let i = 0; i < 14; i++) {
+    const d = new Date(today);
+    d.setDate(d.getDate() + i);
+    const dateStr = d.toISOString().slice(0, 10);
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const puzzle = puzzles.find(p => p.id === dateStr);
+    days.push({ date: d, dateStr, dayName: dayNames[d.getDay()], dayNum: d.getDate(), puzzle });
+  }
+
+  return (
+    <div>
+      <div className="flex items-center gap-2 mb-2">
+        <CalendarDays className="size-4 text-muted-foreground" />
+        <span className="text-sm font-medium text-muted-foreground">Upcoming 2 Weeks</span>
+      </div>
+      <ScrollArea className="w-full">
+        <div className="flex gap-2 pb-2">
+          {days.map((day, i) => {
+            const isToday = i === 0;
+            return (
+              <div
+                key={day.dateStr}
+                className={`flex-shrink-0 w-[90px] rounded-md border p-2 text-center text-xs ${
+                  isToday ? 'ring-2 ring-primary ring-offset-1 bg-primary/5' : ''
+                } ${day.puzzle ? 'bg-primary/5 border-primary/30' : 'border-dashed border-muted-foreground/20'}`}
+              >
+                <div className="text-muted-foreground">{day.dayName}</div>
+                <div className={`text-lg font-bold ${isToday ? 'text-primary' : ''}`}>{day.dayNum}</div>
+                {day.puzzle ? (
+                  <div className="text-[10px] font-medium truncate mt-0.5">{day.puzzle.title}</div>
+                ) : (
+                  <div className="text-[10px] text-muted-foreground/50 mt-0.5">—</div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
+    </div>
+  );
+}
+
 export default function Dashboard({ puzzles, sha, onPuzzlesChange, onShaChange, onNewPuzzle, onEditPuzzle }) {
   const statuses = puzzles.map((p) => getPuzzleStatus(p.id));
   const total = puzzles.length;
@@ -137,6 +184,9 @@ export default function Dashboard({ puzzles, sha, onPuzzlesChange, onShaChange, 
           />
         ))}
       </div>
+
+      {/* Timeline Strip */}
+      <TimelineStrip puzzles={puzzles} />
 
       {/* Table */}
       <PuzzleTable puzzles={puzzles} onNewPuzzle={onNewPuzzle} onEditPuzzle={onEditPuzzle} />
