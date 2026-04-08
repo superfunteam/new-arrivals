@@ -121,31 +121,28 @@ function TimelineStrip({ puzzles }) {
           <CardTitle className="text-sm font-medium">Upcoming 2 Weeks</CardTitle>
         </div>
       </CardHeader>
-      <CardContent className="pb-4">
-        <ScrollArea className="w-full">
-          <div className="flex gap-2 pb-2">
-            {days.map((day, i) => {
-              const isToday = i === 0;
-              return (
-                <div
-                  key={day.dateStr}
-                  className={`flex-shrink-0 w-[90px] border p-2 text-center text-xs ${
-                    isToday ? 'ring-2 ring-primary ring-offset-1' : ''
-                  } ${day.puzzle ? 'bg-muted/50' : 'border-dashed'}`}
-                >
-                  <div className="text-muted-foreground">{day.dayName}</div>
-                  <div className={`text-lg font-bold ${isToday ? 'text-primary' : ''}`}>{day.dayNum}</div>
-                  {day.puzzle ? (
-                    <div className="text-[10px] font-medium truncate mt-0.5">{day.puzzle.title}</div>
-                  ) : (
-                    <div className="text-[10px] text-muted-foreground/40 mt-0.5">—</div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+      <CardContent className="pb-4 overflow-x-auto">
+        <div className="flex gap-2">
+          {days.map((day, i) => {
+            const isToday = i === 0;
+            return (
+              <div
+                key={day.dateStr}
+                className={`flex-shrink-0 w-[90px] rounded-lg border p-2 text-center text-xs ${
+                  isToday ? 'ring-2 ring-primary ring-offset-1' : ''
+                } ${day.puzzle ? '' : 'border-dashed'}`}
+              >
+                <div className="text-muted-foreground">{day.dayName}</div>
+                <div className={`text-lg font-bold ${isToday ? 'text-primary' : ''}`}>{day.dayNum}</div>
+                {day.puzzle ? (
+                  <div className="text-[10px] font-medium truncate mt-0.5">{day.puzzle.title}</div>
+                ) : (
+                  <div className="text-[10px] text-muted-foreground/40 mt-0.5">—</div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </CardContent>
     </Card>
   );
