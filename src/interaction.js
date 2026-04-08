@@ -106,14 +106,23 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
     }
   }
 
-  // ── Pinch-to-zoom + pan (touch events) ──
+  // ── Pinch-to-zoom (map-native: world point under pinch stays fixed) ──
   let isPinching = false;
   let initialPinchDistance = 0;
-  let initialFov = 50;
   let snapBackRaf = null;
   const defaultCamPos = { x: 0, y: 0.5, z: 9 };
-  let prevCenterX = 0;
-  let prevCenterY = 0;
+  const defaultFov = 50;
+
+  // The world-space point that was under the pinch center at start
+  let anchorWorldX = 0;
+  let anchorWorldY = 0;
+  // The normalized screen position of the pinch center
+  let anchorScreenNx = 0;
+  let anchorScreenNy = 0;
+  // Camera state at pinch start
+  let startCamX = 0;
+  let startCamY = 0;
+  let startFov = 50;
 
   function getTouchDistance(touches) {
     const dx = touches[0].clientX - touches[1].clientX;
@@ -128,56 +137,41 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
     };
   }
 
-  // Convert screen pixel delta to world units at current zoom
-  function screenDeltaToWorld(dx, dy) {
+  // Convert screen position to world point at a given FOV and camera position
+  function screenToWorld(clientX, clientY, fov, camX, camY) {
     const rect = renderer.domElement.getBoundingClientRect();
-    const fovRad = (camera.fov * Math.PI) / 180;
-    const worldH = 2 * Math.tan(fovRad / 2) * camera.position.z;
-    const worldW = worldH * camera.aspect;
+    const nx = ((clientX - rect.left) / rect.width) * 2 - 1;
+    const ny = -(((clientY - rect.top) / rect.height) * 2 - 1);
+    const fovRad = (fov * Math.PI) / 180;
+    const halfH = Math.tan(fovRad / 2) * camera.position.z;
+    const halfW = halfH * camera.aspect;
     return {
-      x: (dx / rect.width) * worldW,
-      y: -(dy / rect.height) * worldH,
+      x: camX + nx * halfW,
+      y: camY + ny * halfH,
     };
-  }
-
-  // On start: snap camera toward pinch center immediately
-  function panTowardPinchCenter(touches) {
-    const rect = renderer.domElement.getBoundingClientRect();
-    const center = getTouchCenter(touches);
-    // Normalized offset from screen center (-1..1)
-    const nx = ((center.x - rect.left) / rect.width) * 2 - 1;
-    const ny = -(((center.y - rect.top) / rect.height) * 2 - 1);
-    // World space visible area at default FOV
-    const fovRad = (50 * Math.PI) / 180;
-    const worldH = 2 * Math.tan(fovRad / 2) * defaultCamPos.z;
-    const worldW = worldH * camera.aspect;
-    // Move camera toward that point (scaled by zoom level)
-    const zoomFactor = 1 - camera.fov / 50;
-    camera.position.x = defaultCamPos.x + nx * worldW * 0.5 * zoomFactor;
-    camera.position.y = defaultCamPos.y + ny * worldH * 0.5 * zoomFactor;
   }
 
   function animateSnapBack() {
     if (snapBackRaf) cancelAnimationFrame(snapBackRaf);
-    const startFov = camera.fov;
-    const startX = camera.position.x;
-    const startY = camera.position.y;
-    const targetFov = 50;
+    const sf = camera.fov, sx = camera.position.x, sy = camera.position.y;
     const startTime = performance.now();
-    const duration = 300;
+
+    // Hide labels during snap-back too
+    const hud = document.getElementById('hud');
 
     function step(now) {
-      const elapsed = now - startTime;
-      const t = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - t, 3);
-      camera.fov = startFov + (targetFov - startFov) * eased;
-      camera.position.x = startX + (defaultCamPos.x - startX) * eased;
-      camera.position.y = startY + (defaultCamPos.y - startY) * eased;
+      const t = Math.min((now - startTime) / 300, 1);
+      const e = 1 - Math.pow(1 - t, 3);
+      camera.fov = sf + (defaultFov - sf) * e;
+      camera.position.x = sx + (defaultCamPos.x - sx) * e;
+      camera.position.y = sy + (defaultCamPos.y - sy) * e;
       camera.updateProjectionMatrix();
       if (t < 1) {
         snapBackRaf = requestAnimationFrame(step);
       } else {
         snapBackRaf = null;
+        // Show labels again
+        if (hud) hud.classList.remove('hud-pinch-mode');
       }
     }
     snapBackRaf = requestAnimationFrame(step);
@@ -187,10 +181,23 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
     if (e.touches.length === 2) {
       isPinching = true;
       initialPinchDistance = getTouchDistance(e.touches);
-      initialFov = camera.fov;
+      startFov = camera.fov;
+      startCamX = camera.position.x;
+      startCamY = camera.position.y;
+
+      // Calculate the world point under the pinch center
       const center = getTouchCenter(e.touches);
-      prevCenterX = center.x;
-      prevCenterY = center.y;
+      const rect = renderer.domElement.getBoundingClientRect();
+      anchorScreenNx = ((center.x - rect.left) / rect.width) * 2 - 1;
+      anchorScreenNy = -(((center.y - rect.top) / rect.height) * 2 - 1);
+      const wp = screenToWorld(center.x, center.y, startFov, startCamX, startCamY);
+      anchorWorldX = wp.x;
+      anchorWorldY = wp.y;
+
+      // Hide solved row labels during pinch
+      const hud = document.getElementById('hud');
+      if (hud) hud.classList.add('hud-pinch-mode');
+
       // Cancel any tap/long-press in progress
       pointerDown = false;
       if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null; }
@@ -200,30 +207,33 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
   function onPinchTouchMove(e) {
     if (isPinching && e.touches.length === 2) {
       e.preventDefault();
+
+      // Calculate new FOV from pinch scale
       const currentDist = getTouchDistance(e.touches);
       const scale = currentDist / initialPinchDistance;
-
-      // Zoom: reduce FOV
-      camera.fov = Math.max(20, Math.min(50, initialFov / scale));
+      const newFov = Math.max(20, Math.min(defaultFov, startFov / scale));
+      camera.fov = newFov;
       camera.updateProjectionMatrix();
 
-      // Pan: track pinch center movement (drag while pinching)
+      // Map-native zoom: move camera so the anchor world point
+      // stays under the same screen position
+      const fovRad = (newFov * Math.PI) / 180;
+      const halfH = Math.tan(fovRad / 2) * camera.position.z;
+      const halfW = halfH * camera.aspect;
+
+      // Track pinch center movement for panning
       const center = getTouchCenter(e.touches);
-      const dx = center.x - prevCenterX;
-      const dy = center.y - prevCenterY;
-      prevCenterX = center.x;
-      prevCenterY = center.y;
+      const rect = renderer.domElement.getBoundingClientRect();
+      const currentNx = ((center.x - rect.left) / rect.width) * 2 - 1;
+      const currentNy = -(((center.y - rect.top) / rect.height) * 2 - 1);
 
-      const worldDelta = screenDeltaToWorld(dx, dy);
-      camera.position.x += worldDelta.x;
-      camera.position.y += worldDelta.y;
+      // Camera position that keeps anchor world point under current screen position
+      camera.position.x = anchorWorldX - currentNx * halfW;
+      camera.position.y = anchorWorldY - currentNy * halfH;
 
-      // Also pull toward the pinch center for initial zoom-in
-      panTowardPinchCenter(e.touches);
-
-      // Clamp camera within reasonable bounds
-      camera.position.x = Math.max(-3, Math.min(3, camera.position.x));
-      camera.position.y = Math.max(-3, Math.min(4, camera.position.y));
+      // Clamp
+      camera.position.x = Math.max(-4, Math.min(4, camera.position.x));
+      camera.position.y = Math.max(-4, Math.min(5, camera.position.y));
     }
   }
 

@@ -3,7 +3,7 @@
     {
       "id": 1,
       "title": "Improve mobile readability and shelf layout",
-      "done": false,
+      "done": true,
       "actions": [
         "Reduce shelf/plank gap sizes to show more tapes on screen",
         "Reduce dead space above and below the shelf",
