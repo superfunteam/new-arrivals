@@ -572,6 +572,9 @@ async function startGameSession(puzzle, mode, puzzlesData) {
         const currentIndex = allTapes.findIndex(m => m.tmdb_id === box.userData.movie.tmdb_id);
         const newIndex = currentIndex + direction;
         if (newIndex >= 0 && newIndex < allTapes.length) {
+          // Fade sticker out immediately
+          const sticker = document.querySelector('.lightbox-sticker');
+          if (sticker) sticker.classList.add('sticker-out');
           navigateToTape(newIndex, deltaX > 0 ? 'right' : 'left', getCurrentBox, setCurrentBox);
           return;
         }
@@ -635,8 +638,11 @@ async function startGameSession(puzzle, mode, puzzlesData) {
       summary: movie.summary || '',
       revealedFields: revealedForMovie,
       onReturn: () => {
+        // Fade sticker out immediately before hiding lightbox
+        const sticker = document.querySelector('.lightbox-sticker');
+        if (sticker) sticker.classList.add('sticker-out');
         audio.play('returnToShelf');
-        hideLightbox();
+        setTimeout(() => hideLightbox(), 150);
 
         // Clean up canvas swipe listeners
         if (lightboxSwipeCleanup) lightboxSwipeCleanup();

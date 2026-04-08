@@ -496,8 +496,8 @@ export function animateReturnToShelf(box, originalPos, onComplete) {
       box.position.y = startPos.y + (originalPos.y - startPos.y) * easedT;
       box.position.z = startPos.z + (originalPos.z - startPos.z) * easedT;
 
-      // Half twirl on Y (PI)
-      box.rotation.y = startRotY + Math.PI * easedT;
+      // Full twirl on Y (2*PI) so it lands front-facing, no snap
+      box.rotation.y = startRotY + Math.PI * 2 * easedT;
     },
     () => {
       box.position.copy(originalPos);

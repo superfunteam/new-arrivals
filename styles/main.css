@@ -680,7 +680,7 @@ html, body {
 .lightbox-sticker {
   position: absolute;
   bottom: calc(45vh + 20px);
-  right: 40%;
+  right: 24px;
   width: 68px;
   height: 68px;
   border-radius: 50%;
@@ -698,10 +698,18 @@ html, body {
   box-shadow: 0 2px 12px rgba(0,0,0,0.6);
   pointer-events: none;
   padding: 6px;
-  /* Fade/slide animation */
+  /* Fade/slide in */
   animation: sticker-in 0.4s ease-out both;
   animation-delay: 0.5s;
   opacity: 0;
+  /* Enable fast fade-out via class */
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.lightbox-sticker.sticker-out {
+  opacity: 0 !important;
+  transform: rotate(-12deg) translateY(10px) !important;
+  animation: none;
 }
 
 @keyframes sticker-in {
