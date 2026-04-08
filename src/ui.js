@@ -334,7 +334,7 @@ export function showOnboarding(onComplete) {
       title: 'How to Sort',
       anim: `<div class="onboarding-poster-price">
         <img class="demo-tape" id="demo-tape" src="/posters/${posterIds.dieHard}_pixel.jpg" alt="Die Hard" />
-        <div class="onboarding-price-tag" style="background:var(--neon-blue);color:#fff">TAP TO SELECT</div>
+        <div class="onboarding-price-tag" style="background:var(--neon-blue);color:#fff;right:-28px">TAP TO SELECT</div>
       </div>`,
       body: 'Tap a tape to select it. Pick 4 you think belong together, then hit SHELVE IT. Long-press any tape to view its details up close.',
       btn: 'Next',
