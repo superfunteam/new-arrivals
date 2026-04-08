@@ -59,7 +59,7 @@ export function createHUD() {
     </div>
 
     <div class="hud-shelve-row">
-      <button class="shelve-btn" id="shelve-btn" disabled>PICK 4</button>
+      <button class="shelve-btn" id="shelve-btn" disabled>PICK 4 MOVIES</button>
     </div>
     <div class="hud-bottom">
       <div class="hud-radio" id="hud-radio">
@@ -130,12 +130,20 @@ export function setShelveButton(active, onClick = null, selectedCount = 0) {
 
   _shelveBtn.disabled = !active;
 
-  // Dynamic label: "Pick N" when < 4 selected, "SHELVE IT" when ready
+  // Dynamic label
   if (active) {
     _shelveBtn.textContent = 'SHELVE IT';
   } else {
     const remaining = 4 - selectedCount;
-    _shelveBtn.textContent = remaining > 0 ? `PICK ${remaining}` : 'SHELVE IT';
+    if (remaining === 4) {
+      _shelveBtn.textContent = 'PICK 4 MOVIES';
+    } else if (remaining === 1) {
+      _shelveBtn.textContent = 'PICK 1 MORE';
+    } else if (remaining > 0) {
+      _shelveBtn.textContent = `PICK ${remaining} MORE`;
+    } else {
+      _shelveBtn.textContent = 'SHELVE IT';
+    }
   }
 
   // Remove previous handler
