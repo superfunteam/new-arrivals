@@ -1,6 +1,7 @@
 // New Arrivals — State Management (localStorage persistence)
 
 const KEY_ONBOARDED = 'newArrivals_onboarded';
+const KEY_SKIP_INTRO = 'newArrivals_skipIntro';
 const KEY_TODAY = 'newArrivals_today';
 const KEY_STATE = 'newArrivals_state';
 const KEY_STATS = 'newArrivals_stats';
@@ -145,6 +146,30 @@ export function isOnboarded() {
 export function setOnboarded() {
   try {
     localStorage.setItem(KEY_ONBOARDED, 'true');
+  } catch (_) {
+    // Ignore storage errors
+  }
+}
+
+/**
+ * Returns true if the user has opted to skip the intro onboarding.
+ * @returns {boolean}
+ */
+export function isSkipIntro() {
+  try {
+    return localStorage.getItem(KEY_SKIP_INTRO) === 'true';
+  } catch (_) {
+    return false;
+  }
+}
+
+/**
+ * Set whether to skip the intro onboarding on future loads.
+ * @param {boolean} value
+ */
+export function setSkipIntro(value) {
+  try {
+    localStorage.setItem(KEY_SKIP_INTRO, value ? 'true' : 'false');
   } catch (_) {
     // Ignore storage errors
   }

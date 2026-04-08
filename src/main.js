@@ -46,8 +46,8 @@ import {
   saveGameState,
   loadGameState,
   updateStats,
-  isOnboarded,
-  setOnboarded,
+  isSkipIntro,
+  setSkipIntro,
   getPastPuzzles,
   getCompletedDailyIds,
   markDailyCompleted,
@@ -56,7 +56,6 @@ import {
   createHUD,
   updateWage,
   updateTimer,
-  updateHints,
   setShelveButton,
   showOnboarding,
   showWelcomeScreen,
@@ -71,6 +70,7 @@ import {
   revealHintInPlace,
   revealDetailsInPlace,
   revealSummaryInPlace,
+  updateRadioViz,
 } from './ui.js';
 import { audio } from './audio.js';
 import { triggerShare } from './share.js';
@@ -150,23 +150,34 @@ async function main() {
   const pastPuzzles = getPastPuzzles(puzzlesData);
   const completedDailyIds = getCompletedDailyIds();
 
-  // ── 6. Show welcome screen ───────────────────────────────────────────────
-  showWelcomeScreen({
-    dailyPuzzle,
-    dailyState,
-    practicePuzzles,
-    pastPuzzles,
-    completedDailyIds,
-    onStartDaily: () => {
-      startGameSession(dailyPuzzle, 'daily', puzzlesData);
-    },
-    onStartPractice: (index) => {
-      startGameSession(practicePuzzles[index], 'practice', puzzlesData);
-    },
-    onStartPast: (puzzle) => {
-      startGameSession(puzzle, 'practice', puzzlesData);
-    },
-  });
+  // ── 6. Show onboarding (if not skipped) then welcome screen ───────────────
+  function showWelcome() {
+    showWelcomeScreen({
+      dailyPuzzle,
+      dailyState,
+      practicePuzzles,
+      pastPuzzles,
+      completedDailyIds,
+      onStartDaily: () => {
+        startGameSession(dailyPuzzle, 'daily', puzzlesData);
+      },
+      onStartPractice: (index) => {
+        startGameSession(practicePuzzles[index], 'practice', puzzlesData);
+      },
+      onStartPast: (puzzle) => {
+        startGameSession(puzzle, 'practice', puzzlesData);
+      },
+    });
+  }
+
+  if (!isSkipIntro()) {
+    showOnboarding((skipChecked) => {
+      setSkipIntro(skipChecked);
+      showWelcome();
+    });
+  } else {
+    showWelcome();
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -191,11 +202,13 @@ async function startGameSession(puzzle, mode, puzzlesData) {
   // ── 3. Create HUD ─────────────────────────────────────────────────────────
   createHUD();
 
-  // ── 4. Setup mute button ──────────────────────────────────────────────────
+  // ── 4. Setup mute button (radio widget) ────────────────────────────────────
+  let _isMuted = audio.isMuted();
+  setMuteIcon(_isMuted);
   onMuteClick(() => {
-    const nowMuted = !audio.isMuted();
-    audio.setMuted(nowMuted);
-    setMuteIcon(nowMuted);
+    _isMuted = !_isMuted;
+    audio.setMuted(_isMuted);
+    setMuteIcon(_isMuted);
   });
 
   // ── 5. Create or restore game state ───────────────────────────────────────
@@ -208,7 +221,6 @@ async function startGameSession(puzzle, mode, puzzlesData) {
 
   // Update HUD to match restored state
   updateWage(game.wage);
-  updateHints(game.wage);
   if (game.startTime) {
     updateTimer(getElapsedTime(game.startTime));
   }
@@ -330,17 +342,8 @@ async function startGameSession(puzzle, mode, puzzlesData) {
     return;
   }
 
-  // ── 11. If first visit: show onboarding (daily only) ──────────────────────
-  if (isDaily && !isOnboarded()) {
-    // Start render loop immediately so shelf is visible behind onboarding
-    startRenderLoop();
-    showOnboarding(() => {
-      setOnboarded();
-      startGamePlay();
-    });
-  } else {
-    startGamePlay();
-  }
+  // ── 11. Start game play ────────────────────────────────────────────────────
+  startGamePlay();
 
   function startGamePlay() {
     // Start render loop (if not already started by onboarding path)
@@ -386,11 +389,9 @@ async function startGameSession(puzzle, mode, puzzlesData) {
     // Set up the SHELVE IT button
     setShelveButton(false, handleShelveIt);
 
-    // Set up help button
+    // Set up help button — reloads to show onboarding + welcome screen
     onHelpClick(() => {
-      showOnboarding(() => {
-        // Just close it, no onboarded tracking needed
-      });
+      location.reload();
     });
   }
 
@@ -497,7 +498,6 @@ async function startGameSession(puzzle, mode, puzzlesData) {
 
           // Update HUD
           updateWage(game.wage, true);
-          updateHints(game.wage);
 
           // Swap 3D texture on the actual box
           const targetBox = allBoxes.find((b) => b.userData.movie.tmdb_id === tmdbId);
@@ -528,7 +528,6 @@ async function startGameSession(puzzle, mode, puzzlesData) {
 
           // Update HUD
           updateWage(game.wage, true);
-          updateHints(game.wage);
 
           // Animate the reveal in-place
           if (fieldName === 'details') {
@@ -645,7 +644,6 @@ async function startGameSession(puzzle, mode, puzzlesData) {
 
       // Update wage display
       updateWage(game.wage, true);
-      updateHints(game.wage);
 
       // Find selected boxes (they were just cleared by checkGuess, but we
       // can identify them as boxes still in 'selected' state visually)
@@ -792,6 +790,9 @@ async function startGameSession(puzzle, mode, puzzlesData) {
       for (const box of unsolvedBoxes) {
         applyIdleWobble(box, time);
       }
+
+      // Update radio spectrograph visualization
+      updateRadioViz(time, _isMuted);
 
       renderer.render(scene, camera);
     }

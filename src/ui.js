@@ -3,11 +3,12 @@
 // ─── DOM refs (populated by createHUD) ─────────────────────────────────────
 let _wage = null;
 let _timer = null;
-let _hintCount = null;
 let _shelveBtn = null;
 let _shelveHandler = null;
-let _muteBtn = null;
 let _helpBtn = null;
+let _radioVizCanvas = null;
+let _radioIcon = null;
+let _radioWidget = null;
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -54,24 +55,27 @@ export function createHUD() {
       <div class="hud-wage" id="hud-wage">$25.00</div>
     </div>
 
-    <button class="mute-btn" id="mute-btn" aria-label="Toggle mute">♪</button>
-    <button class="help-btn" id="help-btn" aria-label="Help">?</button>
-
     <div class="hud-bottom">
-      <div class="hud-hints">
-        $<span class="hint-count" id="hud-hint-count">25</span> hints left
+      <div class="hud-radio" id="hud-radio">
+        <span class="radio-station">98.5 KPEZ</span>
+        <canvas class="radio-viz" id="radio-viz" width="32" height="12"></canvas>
+        <span class="radio-icon" id="radio-icon">♪</span>
       </div>
       <button class="shelve-btn" id="shelve-btn" disabled>SHELVE IT</button>
-      <div class="hud-timer" id="hud-timer">0:00</div>
+      <div class="hud-bottom-right">
+        <div class="hud-timer" id="hud-timer">0:00</div>
+        <button class="help-btn" id="help-btn" aria-label="Help">?</button>
+      </div>
     </div>
   `;
 
   _wage = document.getElementById('hud-wage');
   _timer = document.getElementById('hud-timer');
-  _hintCount = document.getElementById('hud-hint-count');
   _shelveBtn = document.getElementById('shelve-btn');
-  _muteBtn = document.getElementById('mute-btn');
   _helpBtn = document.getElementById('help-btn');
+  _radioVizCanvas = document.getElementById('radio-viz');
+  _radioIcon = document.getElementById('radio-icon');
+  _radioWidget = document.getElementById('hud-radio');
 }
 
 // ─── HUD Updaters ────────────────────────────────────────────────────────────
@@ -104,11 +108,11 @@ export function updateTimer(timeStr) {
 }
 
 /**
- * Updates the hints-remaining count.
+ * Updates the hints-remaining count (no-op, hints display removed).
  * @param {number} remaining
  */
 export function updateHints(remaining) {
-  if (_hintCount) _hintCount.textContent = String(remaining);
+  // No-op: hints counter removed in favor of radio widget
 }
 
 /**
@@ -133,23 +137,67 @@ export function setShelveButton(active, onClick = null) {
   }
 }
 
-// ─── Mute & Help ─────────────────────────────────────────────────────────────
+// ─── Radio Widget (mute toggle) ─────────────────────────────────────────────
 
 /**
- * Add a click listener to the mute button.
+ * Add a click listener to the radio icon (mute toggle).
  * @param {Function} callback
  */
 export function onMuteClick(callback) {
-  if (_muteBtn) _muteBtn.addEventListener('click', callback);
+  if (_radioIcon) _radioIcon.addEventListener('click', callback);
 }
 
 /**
- * Toggle mute button opacity to indicate mute state.
+ * Toggle mute visual state on the radio widget.
+ * When muted: spectrograph freezes, icon dims, station text dims.
  * @param {boolean} muted
  */
 export function setMuteIcon(muted) {
-  if (_muteBtn) _muteBtn.style.opacity = muted ? '0.3' : '1';
+  if (_radioWidget) {
+    if (muted) {
+      _radioWidget.classList.add('muted');
+    } else {
+      _radioWidget.classList.remove('muted');
+    }
+  }
 }
+
+/**
+ * Draw the spectrograph bars on the radio viz canvas.
+ * Call this each frame from the render loop.
+ * @param {number} time  Elapsed time in seconds (from THREE.Clock)
+ * @param {boolean} muted  Whether audio is currently muted
+ */
+export function updateRadioViz(time, muted) {
+  if (!_radioVizCanvas) return;
+  const ctx = _radioVizCanvas.getContext('2d');
+  if (!ctx) return;
+
+  const w = _radioVizCanvas.width;
+  const h = _radioVizCanvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const barCount = 5;
+  const barWidth = 3;
+  const gap = (w - barCount * barWidth) / (barCount + 1);
+
+  for (let i = 0; i < barCount; i++) {
+    const x = gap + i * (barWidth + gap);
+    let barHeight;
+    if (muted) {
+      barHeight = 2;
+    } else {
+      const freq = 1.5 + i * 0.7;
+      const phase = i * 1.3;
+      barHeight = 3 + Math.abs(Math.sin(time * freq + phase)) * (h - 3);
+    }
+    const y = h - barHeight;
+    ctx.fillStyle = muted ? 'rgba(255,255,255,0.15)' : 'rgba(0,212,255,0.8)';
+    ctx.fillRect(x, y, barWidth, barHeight);
+  }
+}
+
+// ─── Help Button ────────────────────────────────────────────────────────────
 
 /**
  * Add a click listener to the help button.
@@ -163,7 +211,8 @@ export function onHelpClick(callback) {
 
 /**
  * Shows a 3-slide onboarding carousel inside #overlay.
- * @param {Function} onComplete  Called when the user clicks "Start My Shift"
+ * @param {Function} onComplete  Called with (skipChecked: boolean) when the user
+ *                               clicks "Let's Go" on the last slide.
  */
 export function showOnboarding(onComplete) {
   const overlay = document.getElementById('overlay');
@@ -200,13 +249,15 @@ export function showOnboarding(onComplete) {
         <div class="onboarding-price-tag">$1</div>
       </div>`,
       body: 'You start with $25. Wrong guesses cost $1. Hints cost $1. Take too long and the clock eats your paycheck. Can you keep the store profitable?',
-      btn: 'Start My Shift',
+      btn: "Let's Go",
     },
   ];
 
   let current = 0;
 
   function render() {
+    const isLastSlide = current === slides.length - 1;
+
     const dotsHtml = slides
       .map(
         (_, i) =>
@@ -225,10 +276,17 @@ export function showOnboarding(onComplete) {
       )
       .join('');
 
+    const skipCheckboxHtml = isLastSlide
+      ? `<label class="skip-checkbox">
+          <input type="checkbox" id="skip-intro-check"> Skip this next time
+        </label>`
+      : '';
+
     overlay.innerHTML = `
       <div class="onboarding">
         ${slidesHtml}
         <div class="onboarding-dots">${dotsHtml}</div>
+        ${skipCheckboxHtml}
         <button class="onboarding-btn" id="onboarding-next">${slides[current].btn}</button>
       </div>
     `;
@@ -240,9 +298,11 @@ export function showOnboarding(onComplete) {
         current++;
         render();
       } else {
+        const skipCheck = document.getElementById('skip-intro-check');
+        const skipChecked = skipCheck ? skipCheck.checked : false;
         overlay.innerHTML = '';
         overlay.classList.remove('active');
-        if (typeof onComplete === 'function') onComplete();
+        if (typeof onComplete === 'function') onComplete(skipChecked);
       }
     });
 

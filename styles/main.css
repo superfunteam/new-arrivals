@@ -131,15 +131,49 @@ html, body {
   padding-bottom: max(12px, env(safe-area-inset-bottom));
 }
 
-.hud-hints {
-  font-family: var(--font-body);
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
+/* === Radio Widget (bottom-left) === */
+.hud-radio {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
 }
 
-.hud-hints .hint-count {
-  font-size: 18px;
+.radio-station {
+  font-family: var(--font-body);
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.5px;
+  transition: opacity 0.3s;
+}
+
+.radio-viz {
+  display: block;
+  width: 32px;
+  height: 12px;
+}
+
+.radio-icon {
+  font-size: 14px;
   color: var(--neon-blue);
+  cursor: pointer;
+  transition: opacity 0.3s;
+  line-height: 1;
+}
+
+.hud-radio.muted .radio-station {
+  opacity: 0.3;
+}
+
+.hud-radio.muted .radio-icon {
+  opacity: 0.3;
+}
+
+/* === HUD Bottom Right (timer + help) === */
+.hud-bottom-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .hud-timer {
@@ -173,21 +207,6 @@ html, body {
   transform: scale(0.95);
 }
 
-/* === Mute Button === */
-.mute-btn {
-  position: absolute;
-  top: 12px;
-  right: 90px;
-  background: none;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 16px;
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  border-radius: 4px;
-  z-index: 10;
-}
 
 /* === Onboarding Modal === */
 .onboarding {
@@ -255,6 +274,24 @@ html, body {
   border: none;
   cursor: pointer;
   text-transform: uppercase;
+}
+
+.skip-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+
+.skip-checkbox input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--neon-pink);
+  cursor: pointer;
 }
 
 .onboarding-anim {
@@ -752,22 +789,21 @@ html, body {
   100% { opacity: 0; transform: translateY(0); }
 }
 
-/* === Help Button === */
+/* === Help Button (inline in bottom-right) === */
 .help-btn {
-  position: absolute;
-  top: 12px;
-  left: auto;
-  right: 56px;
   background: none;
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 0.5);
   font-family: var(--font-display);
   font-size: 12px;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   cursor: pointer;
   border-radius: 4px;
-  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 /* === Solved Row Label (NYT Connections-style band) === */
