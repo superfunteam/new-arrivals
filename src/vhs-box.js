@@ -17,6 +17,10 @@ export function loadTexture(url) {
     textureLoader.load(
       url,
       (texture) => {
+        // Nearest-neighbor filtering for crisp pixel blocks on upscale
+        texture.magFilter = THREE.NearestFilter;
+        texture.minFilter = THREE.NearestFilter;
+        texture.generateMipmaps = false;
         textureCache.set(url, texture);
         resolve(texture);
       },

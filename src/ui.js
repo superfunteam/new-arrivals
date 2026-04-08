@@ -455,7 +455,7 @@ export function showWelcomeScreen(options = {}) {
   function scorePill(puzzleId) {
     const score = gameScores[puzzleId];
     if (!score) return '';
-    const starsStr = '\u2605'.repeat(score.stars) + '\u2606'.repeat(3 - score.stars);
+    const starsStr = '\u2605'.repeat(score.stars);
     return `<span class="score-pill">${starsStr} $${score.wage}</span>`;
   }
 
