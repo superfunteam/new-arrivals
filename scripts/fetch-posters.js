@@ -103,10 +103,10 @@ async function generatePixelated(sourcePath, destPath) {
 }
 
 async function generatePixelatedDetail(sourcePath, destPath) {
-  // Detail/lightbox version: 48x72 — nearly readable but still mosaic.
-  // Upscaled to 320x480 with nearest-neighbor so blocks stay crisp.
+  // Detail/lightbox version: 36x54 — recognizable shapes but chunky enough
+  // that uncover is worthwhile. ~20% harder to ID than 48x72.
   await sharp(sourcePath)
-    .resize(48, 72, { kernel: sharp.kernel.nearest })
+    .resize(36, 54, { kernel: sharp.kernel.nearest })
     .resize(320, 480, { kernel: sharp.kernel.nearest })
     .png()
     .toFile(destPath);
