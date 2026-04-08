@@ -2,9 +2,16 @@ import { verifyToken } from './lib/auth.mjs';
 
 const TMDB_BASE = 'https://api.themoviedb.org/3';
 
+function getEnv(name) {
+  // Try all known ways to access env vars in Netlify Functions
+  if (typeof Netlify !== 'undefined' && Netlify.env) return Netlify.env.get(name);
+  if (typeof process !== 'undefined' && process.env) return process.env[name];
+  return undefined;
+}
+
 function tmdbHeaders() {
   return {
-    Authorization: `Bearer ${Netlify.env.get("TMDB_READ_ACCESS_TOKEN")}`,
+    Authorization: `Bearer ${getEnv("TMDB_READ_ACCESS_TOKEN")}`,
     Accept: 'application/json',
   };
 }
@@ -12,6 +19,17 @@ function tmdbHeaders() {
 // Netlify Functions v2
 export default async (req, context) => {
   console.log(`[admin-tmdb] ${req.method} ${req.url}`);
+  console.log(`[admin-tmdb] ENV DEBUG: Netlify global exists: ${typeof Netlify !== 'undefined'}`);
+  console.log(`[admin-tmdb] ENV DEBUG: process.env exists: ${typeof process !== 'undefined' && !!process.env}`);
+  console.log(`[admin-tmdb] ENV DEBUG: TMDB token via getEnv: ${!!getEnv("TMDB_READ_ACCESS_TOKEN")}`);
+  if (typeof Netlify !== 'undefined' && Netlify.env) {
+    console.log(`[admin-tmdb] ENV DEBUG: Netlify.env.get result: ${!!Netlify.env.get("TMDB_READ_ACCESS_TOKEN")}`);
+  }
+  if (typeof process !== 'undefined' && process.env) {
+    console.log(`[admin-tmdb] ENV DEBUG: process.env result: ${!!process.env.TMDB_READ_ACCESS_TOKEN}`);
+    console.log(`[admin-tmdb] ENV DEBUG: env var keys count: ${Object.keys(process.env).length}`);
+    console.log(`[admin-tmdb] ENV DEBUG: sample keys: ${Object.keys(process.env).slice(0, 5).join(', ')}`);
+  }
   const cookie = req.headers.get('cookie');
   const authed = await verifyToken(cookie);
   console.log(`[admin-tmdb] Auth: cookie=${!!cookie}, verified=${authed}`);
