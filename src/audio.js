@@ -126,16 +126,9 @@ const sounds = {
   },
 
   gameWin() {
-    const chord = ['C4', 'E4', 'G4', 'C5'];
-    const synths = chord.map(note => {
-      const s = synth({
-        oscillator: { type: 'sine' },
-        envelope: { attack: 0.3, decay: 1.0, sustain: 0.3, release: 0.8 },
-      });
-      s.triggerAttackRelease(note, '2n');
-      return s;
-    });
-    setTimeout(() => synths.forEach(s => s.dispose()), 4000);
+    const win = new Audio('/audio/win.mp3');
+    win.volume = 0.7;
+    win.play().catch(() => {});
   },
 
   gameLoss() {
