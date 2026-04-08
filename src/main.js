@@ -725,8 +725,9 @@ async function startGameSession(puzzle, mode, puzzlesData) {
         const direction = deltaX > 0 ? -1 : 1; // swipe right = prev, swipe left = next
         const allTapes = unsolvedBoxes.map(b => b.userData.movie);
         const currentIndex = allTapes.findIndex(m => m.tmdb_id === box.userData.movie.tmdb_id);
-        const newIndex = currentIndex + direction;
-        if (newIndex >= 0 && newIndex < allTapes.length) {
+        // Loop: wrap around at both ends
+        const newIndex = (currentIndex + direction + allTapes.length) % allTapes.length;
+        if (allTapes.length > 1) {
           // Fade sticker out immediately
           const sticker = document.querySelector('.lightbox-sticker');
           if (sticker) sticker.classList.add('sticker-out');
@@ -913,6 +914,10 @@ async function startGameSession(puzzle, mode, puzzlesData) {
     // Ensure audio is initialized (fallback)
     if (!audioInitialized) { audio.init(); audioInitialized = true; }
     audio.play('tapInspect');
+
+    // Hide row labels IMMEDIATELY (before animation starts)
+    const hud = document.getElementById('hud');
+    if (hud) hud.classList.add('hud-inspect-mode');
 
     // Pause interrupts while lightbox is open
     pauseInterrupts();

@@ -368,6 +368,7 @@ function playCorrectSound() {
 
 function showHintActions(interrupt, actionsEl) {
   actionsEl.innerHTML = '';
+  actionsEl.classList.add('hint-actions');
 
   const cost = interrupt.cost || 3;
 
@@ -417,6 +418,7 @@ function showHintActions(interrupt, actionsEl) {
 
 function showStoryActions(interrupt, actionsEl) {
   actionsEl.innerHTML = '';
+  actionsEl.classList.add('hint-actions');
 
   const btn = document.createElement('button');
   btn.className = 'interrupt-btn secondary';
