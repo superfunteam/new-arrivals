@@ -68,6 +68,8 @@ import {
   showTrackingFlash,
   onMuteClick,
   setMuteIcon,
+  onStationClick,
+  setStationName,
   onHelpClick,
   addSolvedRowLabel,
   revealHintInPlace,
@@ -115,6 +117,51 @@ function createPlaceholderTexture(title) {
 }
 
 // ---------------------------------------------------------------------------
+// Radio Station System (module scope so startGameSession can access)
+// ---------------------------------------------------------------------------
+
+const STATIONS = [
+  { name: '98.5 KPEZ', file: '/audio/kpez.mp3' },
+  { name: '101.7 HOT-Z', file: '/audio/HOT-Z.mp3' },
+  { name: '94.3 WOLF', file: '/audio/WOLF.mp3' },
+  { name: '107.9 CHIL', file: '/audio/CHIL.mp3' },
+];
+const staticAudio = new Audio('/audio/static.mp3');
+staticAudio.volume = 0.65;
+staticAudio.load();
+
+let currentStationIdx = Math.floor(Math.random() * STATIONS.length);
+const radioEl = new Audio(STATIONS[currentStationIdx].file);
+radioEl.loop = true;
+radioEl.volume = 0.65;
+let radioStarted = false;
+let changingStation = false;
+
+function ensureRadioStarted() {
+  if (radioStarted) return;
+  radioStarted = true;
+  audio.init();
+  radioEl.play().catch(() => {});
+}
+
+function changeStation() {
+  if (changingStation || !radioStarted) return;
+  changingStation = true;
+  radioEl.pause();
+  staticAudio.currentTime = 0;
+  staticAudio.play().catch(() => {});
+  currentStationIdx = (currentStationIdx + 1) % STATIONS.length;
+  setStationName(STATIONS[currentStationIdx].name);
+  radioEl.src = STATIONS[currentStationIdx].file;
+  radioEl.load();
+  setTimeout(() => {
+    staticAudio.pause();
+    radioEl.play().catch(() => {});
+    changingStation = false;
+  }, 1000);
+}
+
+// ---------------------------------------------------------------------------
 // Main — Welcome Screen Entry Point
 // ---------------------------------------------------------------------------
 
@@ -153,20 +200,7 @@ async function main() {
   const pastPuzzles = getPastPuzzles(puzzlesData);
   const completedDailyIds = getCompletedDailyIds();
 
-  // ── 6. Show onboarding (if not skipped) then welcome screen ───────────────
-  // Pre-create the radio element so it can start on the first user gesture
-  const earlyRadio = new Audio('/audio/kpez.mp3');
-  earlyRadio.loop = true;
-  earlyRadio.volume = 0.65;
-  let radioStarted = false;
-
-  function ensureRadioStarted() {
-    if (radioStarted) return;
-    radioStarted = true;
-    audio.init();
-    earlyRadio.play().catch(() => {});
-  }
-
+  // ── 6. Show onboarding / welcome ────────────────────────────────────────────
   function showWelcome() {
     showWelcomeScreen({
       dailyPuzzle,
@@ -176,15 +210,15 @@ async function main() {
       completedDailyIds,
       onStartDaily: () => {
         ensureRadioStarted();
-        startGameSession(dailyPuzzle, 'daily', puzzlesData, earlyRadio);
+        startGameSession(dailyPuzzle, 'daily', puzzlesData);
       },
       onStartPractice: (index) => {
         ensureRadioStarted();
-        startGameSession(practicePuzzles[index], 'practice', puzzlesData, earlyRadio);
+        startGameSession(practicePuzzles[index], 'practice', puzzlesData);
       },
       onStartPast: (puzzle) => {
         ensureRadioStarted();
-        startGameSession(puzzle, 'practice', puzzlesData, earlyRadio);
+        startGameSession(puzzle, 'practice', puzzlesData);
       },
     });
   }
@@ -204,7 +238,7 @@ async function main() {
 // startGameSession — Full Game Flow (extracted from original main)
 // ---------------------------------------------------------------------------
 
-async function startGameSession(puzzle, mode, puzzlesData, existingRadio) {
+async function startGameSession(puzzle, mode, puzzlesData) {
   const isDaily = mode === 'daily';
 
   // ── 1. Check localStorage for saved state (daily only) ────────────────────
@@ -221,19 +255,23 @@ async function startGameSession(puzzle, mode, puzzlesData, existingRadio) {
 
   // ── 3. Create HUD ─────────────────────────────────────────────────────────
   createHUD();
+  setStationName(STATIONS[currentStationIdx].name);
 
-  // ── 4. Setup radio audio + mute toggle ──────────────────────────────────────
-  // Reuse the radio element started from the welcome screen
-  const radioEl = existingRadio || new Audio('/audio/kpez.mp3');
-  if (!existingRadio) { radioEl.loop = true; radioEl.volume = 0.65; }
-
+  // ── 4. Setup radio + mute + station switching ──────────────────────────────
   let _isMuted = audio.isMuted();
   setMuteIcon(_isMuted);
+
+  // Mute icon toggles audio
   onMuteClick(() => {
     _isMuted = !_isMuted;
     audio.setMuted(_isMuted);
     radioEl.muted = _isMuted;
     setMuteIcon(_isMuted);
+  });
+
+  // Station name / spectrograph taps change station
+  onStationClick(() => {
+    changeStation();
   });
 
   // ── 5. Create or restore game state ───────────────────────────────────────

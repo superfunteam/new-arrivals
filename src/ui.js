@@ -57,8 +57,10 @@ export function createHUD() {
 
     <div class="hud-bottom">
       <div class="hud-radio" id="hud-radio">
-        <span class="radio-station">98.5 KPEZ</span>
-        <canvas class="radio-viz" id="radio-viz" width="32" height="12"></canvas>
+        <div class="radio-tune" id="radio-tune">
+          <span class="radio-station" id="radio-station">──.─ ────</span>
+          <canvas class="radio-viz" id="radio-viz" width="32" height="12"></canvas>
+        </div>
         <span class="radio-icon" id="radio-icon">♪</span>
       </div>
       <button class="shelve-btn" id="shelve-btn" disabled>SHELVE IT</button>
@@ -137,7 +139,7 @@ export function setShelveButton(active, onClick = null) {
   }
 }
 
-// ─── Radio Widget (mute toggle) ─────────────────────────────────────────────
+// ─── Radio Widget ───────────────────────────────────────────────────────────
 
 /**
  * Add a click listener to the radio icon (mute toggle).
@@ -145,6 +147,24 @@ export function setShelveButton(active, onClick = null) {
  */
 export function onMuteClick(callback) {
   if (_radioIcon) _radioIcon.addEventListener('click', callback);
+}
+
+/**
+ * Add a click listener to the station name / spectrograph (change station).
+ * @param {Function} callback
+ */
+export function onStationClick(callback) {
+  const el = document.getElementById('radio-tune');
+  if (el) el.addEventListener('click', callback);
+}
+
+/**
+ * Update the station name display.
+ * @param {string} name
+ */
+export function setStationName(name) {
+  const el = document.getElementById('radio-station');
+  if (el) el.textContent = name;
 }
 
 /**

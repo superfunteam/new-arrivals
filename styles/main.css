@@ -140,8 +140,17 @@ html, body {
 .hud-radio {
   display: flex;
   align-items: center;
+  gap: 2px;
+}
+
+.radio-tune {
+  display: flex;
+  align-items: center;
   gap: 5px;
   cursor: pointer;
+  padding: 10px 8px;
+  margin: -10px -8px;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .radio-station {
@@ -159,11 +168,14 @@ html, body {
 }
 
 .radio-icon {
-  font-size: 14px;
+  font-size: 18px;
   color: var(--neon-blue);
   cursor: pointer;
   transition: opacity 0.3s;
   line-height: 1;
+  padding: 10px;
+  margin: -10px;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .hud-radio.muted .radio-station {
@@ -172,6 +184,7 @@ html, body {
 
 .hud-radio.muted .radio-icon {
   opacity: 0.3;
+  color: rgba(255, 255, 255, 0.4);
 }
 
 /* === HUD Bottom Right (timer + help) === */
@@ -191,7 +204,8 @@ html, body {
 .shelve-btn {
   font-family: var(--font-display);
   font-size: 12px;
-  padding: 14px 28px;
+  padding: 16px 32px;
+  min-height: 48px;
   background: var(--neon-pink);
   color: #fff;
   border: none;
@@ -844,14 +858,15 @@ html, body {
   color: rgba(255, 255, 255, 0.5);
   font-family: var(--font-display);
   font-size: 12px;
-  width: 28px;
-  height: 28px;
+  width: 44px;
+  height: 44px;
   cursor: pointer;
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* === Solved Row Label (NYT Connections-style band) === */
