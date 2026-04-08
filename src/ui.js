@@ -455,8 +455,10 @@ export function showWelcomeScreen(options = {}) {
   function scorePill(puzzleId) {
     const score = gameScores[puzzleId];
     if (!score) return '';
-    const starsStr = '\u2605'.repeat(score.stars);
-    return `<span class="score-pill">${starsStr} $${score.wage}</span>`;
+    const stars = Array.from({ length: score.stars }, () =>
+      '<span class="material-symbols-rounded score-star">star</span>'
+    ).join('');
+    return `<span class="score-pill">${stars} $${score.wage}</span>`;
   }
 
   // Daily button label and class

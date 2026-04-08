@@ -1223,10 +1223,19 @@ html, body {
   background: var(--wage-green);
   border: none;
   border-radius: 10px;
-  padding: 3px 8px;
+  padding: 2px 8px 2px 4px;
   font-weight: 700;
   letter-spacing: 0.5px;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.score-star {
+  font-size: 16px;
+  font-variation-settings: 'FILL' 1;
+  line-height: 1;
   z-index: 1;
 }
 
