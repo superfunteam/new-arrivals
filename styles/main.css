@@ -679,25 +679,34 @@ html, body {
 /* Genre sticker (floating circle above the info panel) */
 .lightbox-sticker {
   position: absolute;
-  bottom: calc(45vh + 12px);
-  right: 20px;
+  bottom: calc(45vh + 20px);
+  right: 40%;
   width: 68px;
   height: 68px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-display);
-  font-size: 7px;
+  font-family: 'Caprasimo', cursive;
+  font-size: 10px;
   color: #fff;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   text-align: center;
-  line-height: 1.2;
+  line-height: 1.1;
   transform: rotate(-12deg);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.6);
   pointer-events: none;
-  padding: 4px;
+  padding: 6px;
+  /* Fade/slide animation */
+  animation: sticker-in 0.4s ease-out both;
+  animation-delay: 0.5s;
+  opacity: 0;
+}
+
+@keyframes sticker-in {
+  0% { opacity: 0; transform: rotate(-12deg) translateY(12px); }
+  100% { opacity: 1; transform: rotate(-12deg) translateY(0); }
 }
 
 /* Hide HUD corners when lightbox is open */
