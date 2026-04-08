@@ -110,7 +110,8 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
   let isPinching = false;
   let initialPinchDistance = 0;
   let snapBackRaf = null;
-  const defaultCamPos = { x: 0, y: 0.5, z: 9 };
+  // Capture actual camera position (may vary by viewport due to auto-fit)
+  const defaultCamPos = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
   const defaultFov = 50;
 
   // The world-space point that was under the pinch center at start

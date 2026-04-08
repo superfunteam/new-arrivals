@@ -19,7 +19,21 @@ export function createScene(canvas) {
 
   const aspect = window.innerWidth / window.innerHeight;
   const camera = new THREE.PerspectiveCamera(50, aspect, 0.1, 50);
-  camera.position.set(0, 0.5, 9);
+
+  // Auto-fit: adjust camera Z so the shelf fills the viewport
+  // Shelf is 4.2 wide, ~6.0 tall (with padding). We want ~10% margin.
+  const shelfVisibleW = 4.8; // shelf width + a little margin
+  const shelfVisibleH = 6.5; // shelf height + margin for HUD
+  const fovRad = (camera.fov * Math.PI) / 180;
+
+  // Distance needed to fit height
+  const distForHeight = (shelfVisibleH / 2) / Math.tan(fovRad / 2);
+  // Distance needed to fit width
+  const distForWidth = (shelfVisibleW / 2) / (Math.tan(fovRad / 2) * aspect);
+  // Use the larger (further) distance so nothing clips
+  const camZ = Math.max(distForHeight, distForWidth);
+
+  camera.position.set(0, 0.5, camZ);
   camera.lookAt(0, 0, 0);
 
   // Ambient light
@@ -134,6 +148,15 @@ export function resizeScene(camera, renderer) {
   const width = window.innerWidth;
   const height = window.innerHeight;
   camera.aspect = width / height;
+
+  // Re-fit shelf to new viewport
+  const shelfVisibleW = 4.8;
+  const shelfVisibleH = 6.5;
+  const fovRad = (camera.fov * Math.PI) / 180;
+  const distForHeight = (shelfVisibleH / 2) / Math.tan(fovRad / 2);
+  const distForWidth = (shelfVisibleW / 2) / (Math.tan(fovRad / 2) * camera.aspect);
+  camera.position.z = Math.max(distForHeight, distForWidth);
+
   camera.updateProjectionMatrix();
   renderer.setSize(width, height);
 }
