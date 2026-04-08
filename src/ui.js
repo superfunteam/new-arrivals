@@ -252,6 +252,9 @@ export function onHelpClick(callback) {
 // Cache marquee HTML so onboarding and welcome screens can reuse it
 let _marqueeHtml = '';
 
+const STICKER_GENRES = ['ACTION', 'HORROR', 'COMEDY', 'DRAMA', 'SCI-FI', 'THRILLER', 'ADVENTURE', 'FANTASY', 'ROMANCE', 'CRIME', 'MYSTERY', 'FAMILY'];
+const STICKER_COLORS = ['#FF4500', '#8B0000', '#DAA520', '#4169E1', '#7B68EE', '#2F4F4F', '#228B22', '#9932CC', '#C71585', '#696969', '#483D8B', '#32CD32'];
+
 function buildMarqueeHtml(posterIds) {
   const numRows = 5;
   const perRow = Math.max(8, Math.floor(posterIds.length / numRows));
@@ -260,7 +263,21 @@ function buildMarqueeHtml(posterIds) {
     const start = r * perRow;
     const rowIds = posterIds.slice(start, start + perRow);
     const html = [...rowIds, ...rowIds]
-      .map(id => `<img class="marquee-poster" src="/posters/${id}_pixel.jpg" alt="" />`)
+      .map(id => {
+        // Seeded random from poster id for consistent positioning
+        const seed = id * 2654435761 >>> 0;
+        const genreIdx = seed % STICKER_GENRES.length;
+        const genre = STICKER_GENRES[genreIdx];
+        const color = STICKER_COLORS[genreIdx];
+        const rot = ((seed >> 8) % 15) - 7; // -7 to +7 degrees
+        const top = 2 + ((seed >> 4) % 40); // 2-42% from top
+        const left = ((seed >> 12) % 2) === 0 ? '-6px' : 'auto';
+        const right = left === 'auto' ? '-6px' : 'auto';
+        return `<div class="marquee-poster-wrap">
+          <img class="marquee-poster" src="/posters/${id}_pixel.jpg" alt="" />
+          <span class="marquee-sticker" style="background:${color};transform:rotate(${rot}deg);top:${top}%;left:${left};right:${right}">${genre}</span>
+        </div>`;
+      })
       .join('');
     rows.push(html);
   }

@@ -288,6 +288,13 @@ html, body {
   100% { transform: translateX(0); }
 }
 
+.marquee-poster-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 100px;
+  height: 150px;
+}
+
 .marquee-poster {
   width: 100px;
   height: 150px;
@@ -295,6 +302,19 @@ html, body {
   flex-shrink: 0;
   image-rendering: pixelated;
   border-radius: 2px;
+}
+
+.marquee-sticker {
+  position: absolute;
+  font-family: 'Caprasimo', cursive;
+  font-size: 7px;
+  color: #fff;
+  padding: 3px 6px;
+  border-radius: 8px;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  line-height: 1;
 }
 
 .splash-content {
