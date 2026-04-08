@@ -197,14 +197,15 @@ html, body {
 }
 
 .radio-icon {
-  font-size: 18px;
+  font-size: 22px;
   color: var(--neon-blue);
   cursor: pointer;
-  transition: opacity 0.3s;
+  transition: color 0.3s;
   line-height: 1;
   padding: 10px;
   margin: -10px;
   -webkit-tap-highlight-color: transparent;
+  font-variation-settings: 'FILL' 1;
 }
 
 .hud-radio.muted .radio-station {
@@ -212,8 +213,8 @@ html, body {
 }
 
 .hud-radio.muted .radio-icon {
-  opacity: 0.3;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--penalty-red);
+  opacity: 1;
 }
 
 /* === HUD Bottom Right (timer + help) === */

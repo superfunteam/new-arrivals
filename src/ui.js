@@ -67,7 +67,7 @@ export function createHUD() {
           <span class="radio-station" id="radio-station">──.─ ────</span>
           <canvas class="radio-viz" id="radio-viz" width="32" height="12"></canvas>
         </div>
-        <span class="radio-icon" id="radio-icon">♪</span>
+        <span class="material-symbols-rounded radio-icon" id="radio-icon">music_cast</span>
       </div>
       <div class="hud-timer" id="hud-timer">0:00</div>
     </div>
@@ -198,6 +198,9 @@ export function setMuteIcon(muted) {
     } else {
       _radioWidget.classList.remove('muted');
     }
+  }
+  if (_radioIcon) {
+    _radioIcon.textContent = muted ? 'no_sound' : 'music_cast';
   }
 }
 
