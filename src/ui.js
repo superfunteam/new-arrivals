@@ -70,6 +70,7 @@ export function createHUD() {
         <span class="material-symbols-rounded radio-icon" id="radio-icon">no_sound</span>
       </div>
       <div class="hud-timer" id="hud-timer">0:00</div>
+      <button class="help-btn" id="help-btn" aria-label="Help">?</button>
     </div>
   `;
 
@@ -248,6 +249,11 @@ export function updateRadioViz(time, muted) {
 export function onHelpClick(callback) {
   const logo = document.getElementById('hud-logo');
   if (logo) logo.addEventListener('click', callback);
+  const helpBtn = document.getElementById('help-btn');
+  if (helpBtn) helpBtn.addEventListener('click', () => {
+    // Show the onboarding tutorial
+    showOnboarding(() => {});
+  });
 }
 
 // ─── Splash Screen ──────────────────────────────────────────────────────────
@@ -357,7 +363,8 @@ export function showOnboarding(onComplete, onSlideRender) {
     {
       title: 'Welcome to the Store',
       anim: `<canvas class="onboarding-3d-canvas" id="onboarding-3d" width="320" height="180"></canvas>`,
-      body: "You're the new clerk at NEW ARRIVALS VIDEO. Sort 16 tapes into 4 mystery categories to earn your daily wages.",
+      body: `You're the new clerk at NEW ARRIVALS VIDEO. Sort 16 tapes into 4 mystery categories to earn your daily wages.
+        <div class="category-carousel" id="category-carousel"></div>`,
       btn: 'Next',
     },
     {
@@ -442,6 +449,32 @@ export function showOnboarding(onComplete, onSlideRender) {
       demoTape.addEventListener('click', () => {
         demoTape.classList.toggle('demo-selected');
       });
+    }
+
+    // Category carousel on slide 0
+    const carouselEl = document.getElementById('category-carousel');
+    if (carouselEl) {
+      const sampleCategories = [
+        { name: '90s Slasher Movies', color: '#9C27B0' },
+        { name: 'Summer Camp Movies', color: '#4CAF50' },
+        { name: 'Written by Stephen King', color: '#2196F3' },
+        { name: 'Arnold Schwarzenegger Leads', color: '#FFC107' },
+        { name: 'Directed by a Woman', color: '#FF6B9D' },
+        { name: 'Set Entirely in One Building', color: '#00D4FF' },
+        { name: 'The Villain is a Computer', color: '#9C27B0' },
+        { name: 'Bill Murray Comedies', color: '#4CAF50' },
+      ];
+      let catIdx = 0;
+      function showNext() {
+        const cat = sampleCategories[catIdx % sampleCategories.length];
+        carouselEl.innerHTML = `<span class="category-pill-demo" style="background:${cat.color}">${cat.name.toUpperCase()}</span>`;
+        carouselEl.querySelector('.category-pill-demo').classList.add('pill-enter');
+        catIdx++;
+      }
+      showNext();
+      const catInterval = setInterval(showNext, 2500);
+      // Clean up on slide change
+      carouselEl._cleanup = () => clearInterval(catInterval);
     }
 
     // Notify caller which slide just rendered

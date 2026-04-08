@@ -1302,6 +1302,34 @@ html, body {
   50% { color: rgba(0, 212, 255, 0.5); }
 }
 
+/* === Category Pill Carousel (onboarding) === */
+.category-carousel {
+  margin-top: 12px;
+  min-height: 32px;
+  display: flex;
+  justify-content: center;
+}
+
+.category-pill-demo {
+  font-family: var(--font-display);
+  font-size: 8px;
+  color: #fff;
+  padding: 8px 16px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
+  display: inline-block;
+  opacity: 0;
+  animation: pillEnter 2.2s ease-out forwards;
+}
+
+@keyframes pillEnter {
+  0% { opacity: 0; transform: translateY(6px); }
+  15% { opacity: 1; transform: translateY(0); }
+  80% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-4px); }
+}
+
 /* === Shift Stats Countdown Button === */
 .shift-stats-btn {
   width: 100%;
