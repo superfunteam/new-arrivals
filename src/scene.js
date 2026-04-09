@@ -22,8 +22,8 @@ export function createScene(canvas) {
 
   // Auto-fit: adjust camera Z so the shelf fills the viewport
   // Shelf is 4.2 wide, ~6.0 tall (with padding). We want ~10% margin.
-  const shelfVisibleW = 4.8; // shelf width + a little margin
-  const shelfVisibleH = 6.5; // shelf height + margin for HUD
+  const shelfVisibleW = 4.0; // tight crop — don't need to see shelf sides
+  const shelfVisibleH = 5.5; // tighter with reduced row spacing
   const fovRad = (camera.fov * Math.PI) / 180;
 
   // Distance needed to fit height
@@ -116,7 +116,7 @@ function buildShelf() {
   const plankDepth = 0.8;
   const sideThickness = 0.1;
   const numRows = 4;
-  const rowSpacing = 1.35;
+  const rowSpacing = 1.15;
   const bottomY = -2.2;
 
   // 5 horizontal planks
