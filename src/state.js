@@ -37,9 +37,22 @@ export function loadTodaysPuzzle(puzzlesData) {
   const puzzles = puzzlesData.puzzles;
   const today = getPuzzleDate();
 
+  // Direct date match (scheduled puzzle)
   const match = puzzles.find((p) => p.id === today);
   if (match) return match;
 
+  // Fallback for floating puzzles — prefer ones matching today's day of week
+  const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  const todayDayName = dayNames[new Date(today + 'T12:00:00').getDay()];
+
+  // Find floating puzzles (non-date IDs, non-training)
+  const floating = puzzles.filter(p => !/^\d{4}-\d{2}-\d{2}$/.test(p.id) && !p.id.startsWith('training-'));
+
+  // Prefer a puzzle whose preferredDay matches today
+  const dayMatch = floating.find(p => p.preferredDay === todayDayName);
+  if (dayMatch) return dayMatch;
+
+  // Otherwise cycle through all puzzles
   const daysSinceEpoch = Math.floor(Date.now() / 86400000);
   return puzzles[daysSinceEpoch % puzzles.length];
 }
