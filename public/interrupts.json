@@ -7,12 +7,12 @@
       "folder": "Punk Kid Boy",
       "dialogue": "Yo dude, in Total Recall, what planet is Quaid OBSESSED with going to?",
       "answers": [
-        "Mars",
-        "Venus",
         "Jupiter",
-        "Saturn"
+        "Venus",
+        "Saturn",
+        "Mars"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -21,12 +21,12 @@
       "folder": "Blonde Woman",
       "dialogue": "Quick question -- who directed The Breakfast Club?",
       "answers": [
-        "John Hughes",
-        "Joel Schumacher",
+        "Rob Reiner",
         "Howard Deutch",
-        "Rob Reiner"
+        "John Hughes",
+        "Joel Schumacher"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "trivia",
@@ -35,12 +35,12 @@
       "folder": "Viking Man",
       "dialogue": "TELL ME, MORTAL! In Predator, where does the alien hunt Arnold's team?",
       "answers": [
-        "A Central American jungle",
         "The Arctic tundra",
+        "The Australian outback",
         "An African savanna",
-        "The Australian outback"
+        "A Central American jungle"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -49,12 +49,12 @@
       "folder": "Businessman",
       "dialogue": "I'll bet you twenty bucks -- what's the name of the computer in WarGames that nearly starts World War III?",
       "answers": [
-        "WOPR",
         "HAL 9000",
         "Colossus",
+        "WOPR",
         "Proteus"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "hint",
@@ -117,12 +117,13 @@
       "dialogue": "UHHH MY MOM SAID I CAN'T WATCH ALIENS UNTIL I'M LIKE TWELVE BUT HOW MANY XENOMORPHS ARE IN THAT MOVIE ANYWAY??",
       "question": "How many xenomorphs are in Aliens?",
       "answers": [
-        "Hundreds (correct)",
         "Just one queen",
         "Exactly 57",
-        "Only 6 or 7"
+        "Only 6 or 7",
+        "Hundreds (correct)"
       ],
-      "correctAnswer": 0
+      "correctAnswer": 0,
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -132,12 +133,13 @@
       "dialogue": "My boyfriend keeps quoting that elevator scene from Die Hard. What does Hans say to the executive again?",
       "question": "What does Hans Gruber say to executive Takagi in Die Hard?",
       "answers": [
-        "\"I wanted to meet you\" (correct)",
         "\"Give me the codes\"",
+        "\"Welcome to the party\"",
         "\"It's nothing personal\"",
-        "\"Welcome to the party\""
+        "\"I wanted to meet you\" (correct)"
       ],
-      "correctAnswer": 0
+      "correctAnswer": 0,
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -147,12 +149,13 @@
       "dialogue": "Settling a bet with my sister. Who directed The Shining?",
       "question": "Who directed The Shining?",
       "answers": [
-        "Stanley Kubrick (correct)",
-        "Alfred Hitchcock",
         "Brian De Palma",
+        "Alfred Hitchcock",
+        "Stanley Kubrick (correct)",
         "Roman Polanski"
       ],
-      "correctAnswer": 0
+      "correctAnswer": 0,
+      "correct": 2
     },
     {
       "type": "trivia",
@@ -162,12 +165,13 @@
       "dialogue": "MY FRIEND SAYS FERRIS BUELLER BREAKS THE FOURTH WALL BUT WHAT DOES THAT EVEN MEAN??? DOES HE LIKE, PUNCH A WALL OR SOMETHING??",
       "question": "What does 'breaking the fourth wall' mean in Ferris Bueller's Day Off?",
       "answers": [
-        "Talking directly to the audience (correct)",
         "Escaping from school",
-        "Destroying property",
-        "Lying to parents"
+        "Lying to parents",
+        "Talking directly to the audience (correct)",
+        "Destroying property"
       ],
-      "correctAnswer": 0
+      "correctAnswer": 0,
+      "correct": 2
     },
     {
       "type": "hint",
@@ -227,8 +231,8 @@
       "dialogue": "OOOOH I know this one!! In Beverly Hills Cop, what city does Axel Foley travel FROM to get to Beverly Hills?",
       "answers": [
         "Detroit",
-        "Chicago",
         "New York",
+        "Chicago",
         "Philadelphia"
       ],
       "correct": 0
@@ -240,12 +244,12 @@
       "folder": "Blonde Woman",
       "dialogue": "My book club just read a Stephen King novel. In Stand by Me, who wrote the original novella it's based on? Trick question!",
       "answers": [
-        "Stephen King",
-        "Richard Bachman",
         "Peter Straub",
-        "Dean Koontz"
+        "Dean Koontz",
+        "Stephen King",
+        "Richard Bachman"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "trivia",
@@ -254,12 +258,12 @@
       "folder": "Punk Man",
       "dialogue": "In Carrie, what triggers the bucket of blood to fall on her at prom?",
       "answers": [
-        "A rope pulled by her bullies",
-        "A timer mechanism",
         "A supernatural event",
-        "An accidental trip wire"
+        "A timer mechanism",
+        "An accidental trip wire",
+        "A rope pulled by her bullies"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -268,12 +272,12 @@
       "folder": "Old Man",
       "dialogue": "Now let me think... In Home Alone, what's the name of those two burglars the boy fights off? The, uh, Wet Bandits?",
       "answers": [
-        "Yes, the Wet Bandits",
-        "The Sticky Bandits",
+        "The Muddy Bandits",
         "The Slippery Bandits",
-        "The Muddy Bandits"
+        "The Sticky Bandits",
+        "Yes, the Wet Bandits"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "hint",
@@ -335,12 +339,12 @@
       "folder": "Blue Haired Kid Girl",
       "dialogue": "My teacher said Jaws was about a SHARK but like what KIND of shark?? Do you know??",
       "answers": [
-        "Great white shark",
+        "Bull shark",
         "Hammerhead shark",
-        "Tiger shark",
-        "Bull shark"
+        "Great white shark",
+        "Tiger shark"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "trivia",
@@ -349,12 +353,12 @@
       "folder": "Knight",
       "dialogue": "A question of honor! In Raiders of the Lost Ark, what artifact is Indiana Jones searching for?",
       "answers": [
-        "The Ark of the Covenant",
-        "The Holy Grail",
         "The Sankara Stones",
-        "The Crystal Skull"
+        "The Crystal Skull",
+        "The Holy Grail",
+        "The Ark of the Covenant"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -365,8 +369,8 @@
       "answers": [
         "Warren Beatty",
         "Kevin Costner",
-        "Robert De Niro",
-        "Barbra Streisand"
+        "Barbra Streisand",
+        "Robert De Niro"
       ],
       "correct": 0
     },
@@ -377,12 +381,12 @@
       "folder": "Punk Woman",
       "dialogue": "A Clockwork Orange was banned in several countries. Who directed it?",
       "answers": [
+        "Terry Gilliam",
         "Stanley Kubrick",
-        "Ridley Scott",
         "David Lynch",
-        "Terry Gilliam"
+        "Ridley Scott"
       ],
-      "correct": 0
+      "correct": 1
     },
     {
       "type": "hint",
@@ -444,12 +448,12 @@
       "folder": "Blonde Kid Girl",
       "dialogue": "I know this I know this!! In The Little Mermaid, what does Ariel trade to the sea witch to become HUMAN??",
       "answers": [
-        "Her voice",
         "Her tail",
+        "Her memory",
         "Her hair",
-        "Her memory"
+        "Her voice"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -458,12 +462,12 @@
       "folder": "Businessman",
       "dialogue": "In Ghostbusters, what is the name of the demigod that possesses Sigourney Weaver's character?",
       "answers": [
-        "Zuul",
         "Gozer",
-        "Vinz Clortho",
-        "Slimer"
+        "Slimer",
+        "Zuul",
+        "Vinz Clortho"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "trivia",
@@ -472,12 +476,12 @@
       "folder": "Old Woman",
       "dialogue": "Dearie, I love that picture The Magnificent Seven. What foreign film was it a remake of?",
       "answers": [
-        "Seven Samurai",
-        "Yojimbo",
+        "The Hidden Fortress",
         "Rashomon",
-        "The Hidden Fortress"
+        "Yojimbo",
+        "Seven Samurai"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -554,9 +558,9 @@
       "dialogue": "In The Burbs, what do Tom Hanks and his neighbors suspect the new family next door of being?",
       "answers": [
         "Murderers",
-        "Vampires",
         "Aliens",
-        "Government spies"
+        "Government spies",
+        "Vampires"
       ],
       "correct": 0
     },
@@ -568,9 +572,9 @@
       "dialogue": "TREMORS IS THE BEST MOVIE EVER!! But what do they call the underground monsters??",
       "answers": [
         "Graboids",
-        "Sandworms",
+        "Tunnelers",
         "Diggers",
-        "Tunnelers"
+        "Sandworms"
       ],
       "correct": 0
     },
@@ -581,12 +585,12 @@
       "folder": "Old Man",
       "dialogue": "Now let me remember... In Mrs. Doubtfire, Robin Williams disguises himself as an elderly what?",
       "answers": [
-        "British nanny",
         "Scottish housekeeper",
+        "Welsh maid",
         "Irish governess",
-        "Welsh maid"
+        "British nanny"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -595,12 +599,12 @@
       "folder": "Blue Haired Woman",
       "dialogue": "Wes Craven directed The Serpent and the Rainbow. Where is it set?",
       "answers": [
-        "Haiti",
-        "Jamaica",
         "Brazil",
-        "Cuba"
+        "Cuba",
+        "Haiti",
+        "Jamaica"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "hint",
@@ -662,12 +666,12 @@
       "folder": "Knight",
       "dialogue": "A test of knowledge! In Demolition Man, what restaurant is the only one to survive the franchise wars of the future?",
       "answers": [
+        "McDonald's",
         "Taco Bell",
         "Pizza Hut",
-        "McDonald's",
         "Burger King"
       ],
-      "correct": 0
+      "correct": 1
     },
     {
       "type": "trivia",
@@ -676,12 +680,12 @@
       "folder": "Punk Man",
       "dialogue": "Scream is meta as heck. Who plays the killer's first victim in the opening scene?",
       "answers": [
-        "Drew Barrymore",
         "Neve Campbell",
-        "Courteney Cox",
-        "Rose McGowan"
+        "Rose McGowan",
+        "Drew Barrymore",
+        "Courteney Cox"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "trivia",
@@ -690,12 +694,12 @@
       "folder": "Blonde Man",
       "dialogue": "In Escape from New York, what's the name of Kurt Russell's character?",
       "answers": [
-        "Snake Plissken",
-        "Jack Burton",
+        "Dexter Riley",
         "R.J. MacReady",
-        "Dexter Riley"
+        "Jack Burton",
+        "Snake Plissken"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -704,12 +708,12 @@
       "folder": "Old Woman",
       "dialogue": "Oh my, that Terminator picture. What year does the Terminator travel back to?",
       "answers": [
-        "1984",
         "1985",
-        "1991",
-        "1997"
+        "1997",
+        "1984",
+        "1991"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "hint",
@@ -771,12 +775,12 @@
       "folder": "Firefighter",
       "dialogue": "CRITICAL QUESTION! In Blade Runner, what are the human-like androids called?",
       "answers": [
-        "Replicants",
+        "Simulants",
         "Synthetics",
-        "Androids",
-        "Simulants"
+        "Replicants",
+        "Androids"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "trivia",
@@ -799,12 +803,12 @@
       "folder": "Viking Man",
       "dialogue": "WARRIOR'S QUIZ! In The Fugitive, Harrison Ford's character is wrongly convicted of murdering whom?",
       "answers": [
-        "His wife",
-        "His partner",
         "His brother",
-        "His neighbor"
+        "His wife",
+        "His neighbor",
+        "His partner"
       ],
-      "correct": 0
+      "correct": 1
     },
     {
       "type": "trivia",
@@ -814,9 +818,9 @@
       "dialogue": "In the film Legend, directed by Ridley Scott, who plays the Lord of Darkness?",
       "answers": [
         "Tim Curry",
-        "Tom Cruise",
+        "Gary Oldman",
         "Robert De Niro",
-        "Gary Oldman"
+        "Tom Cruise"
       ],
       "correct": 0
     },
@@ -894,12 +898,12 @@
       "folder": "Blue Haired Woman",
       "dialogue": "Goodfellas is based on a true story. What real-life mobster is Ray Liotta playing?",
       "answers": [
-        "Henry Hill",
         "Jimmy Burke",
-        "Tommy DeSimone",
-        "Paul Vario"
+        "Paul Vario",
+        "Henry Hill",
+        "Tommy DeSimone"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "trivia",
@@ -908,12 +912,12 @@
       "folder": "Goblin Kid",
       "dialogue": "In Jumanji, what comes OUT of the board game when they play?? I need to know because I'm NEVER playing board games again!!",
       "answers": [
-        "Wild animals and jungle dangers",
         "Ghosts and skeletons",
         "Robots and lasers",
+        "Wild animals and jungle dangers",
         "Dinosaurs and volcanos"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "trivia",
@@ -922,12 +926,12 @@
       "folder": "Old Man",
       "dialogue": "In The Right Stuff, the film follows test pilots who become what?",
       "answers": [
-        "America's first astronauts",
         "World War II aces",
         "Blue Angels pilots",
-        "CIA operatives"
+        "CIA operatives",
+        "America's first astronauts"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "hint",
@@ -989,12 +993,12 @@
       "folder": "Knight Kid",
       "dialogue": "In Ace Ventura, what ANIMAL is Ace trying to find for the Miami Dolphins?? I bet you don't even KNOW!",
       "answers": [
-        "A dolphin named Snowflake",
         "A parrot named Captain",
+        "A dolphin named Snowflake",
         "A dog named Buddy",
         "A monkey named Spike"
       ],
-      "correct": 0
+      "correct": 1
     },
     {
       "type": "trivia",
@@ -1004,8 +1008,8 @@
       "dialogue": "In Footloose, why is dancing banned in the town?",
       "answers": [
         "The town minister pushed for the ban after teens died in a car accident",
-        "The mayor lost a dance contest and holds a grudge",
         "A fire broke out at a school dance",
+        "The mayor lost a dance contest and holds a grudge",
         "The town council thought it was immoral"
       ],
       "correct": 0
@@ -1017,12 +1021,12 @@
       "folder": "Old Woman",
       "dialogue": "In The Bodyguard, Whitney Houston sings that beautiful song. What's it called, dearie? The big one everyone knows?",
       "answers": [
-        "I Will Always Love You",
         "Greatest Love of All",
-        "I Wanna Dance with Somebody",
-        "How Will I Know"
+        "I Will Always Love You",
+        "How Will I Know",
+        "I Wanna Dance with Somebody"
       ],
-      "correct": 0
+      "correct": 1
     },
     {
       "type": "trivia",
@@ -1031,12 +1035,12 @@
       "folder": "Policeman",
       "dialogue": "In The Blair Witch Project, what state are the filmmakers lost in?",
       "answers": [
-        "Maryland",
+        "Massachusetts",
         "West Virginia",
         "Pennsylvania",
-        "Massachusetts"
+        "Maryland"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "hint",
@@ -1098,12 +1102,12 @@
       "folder": "Blue Haired Kid Girl",
       "dialogue": "In Big Trouble in Little China, what's the NAME of Kurt Russell's character?? My dad says it ALL the time!",
       "answers": [
-        "Jack Burton",
+        "Wyatt Earp",
         "Snake Plissken",
-        "R.J. MacReady",
-        "Wyatt Earp"
+        "Jack Burton",
+        "R.J. MacReady"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "trivia",
@@ -1112,12 +1116,12 @@
       "folder": "Punk Woman",
       "dialogue": "In The Lost Boys, what California beach town is the movie set in?",
       "answers": [
-        "Santa Carla",
-        "Santa Cruz",
         "Santa Monica",
+        "Santa Cruz",
+        "Santa Carla",
         "Santa Barbara"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "trivia",
@@ -1126,12 +1130,12 @@
       "folder": "Old Man",
       "dialogue": "In The Karate Kid, what does Mr. Miyagi have Daniel do as part of his training?",
       "answers": [
-        "Wax cars and paint fences",
+        "Meditate under a waterfall",
         "Run up stairs like Rocky",
         "Break boards with his hands",
-        "Meditate under a waterfall"
+        "Wax cars and paint fences"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -1140,12 +1144,12 @@
       "folder": "Blonde Woman",
       "dialogue": "In True Lies, Jamie Lee Curtis discovers her husband is secretly what?",
       "answers": [
+        "A millionaire",
         "A spy",
-        "A superhero",
         "A hitman",
-        "A millionaire"
+        "A superhero"
       ],
-      "correct": 0
+      "correct": 1
     },
     {
       "type": "hint",
@@ -1207,12 +1211,12 @@
       "folder": "Businessman",
       "dialogue": "In Dead Poets Society, what phrase does Robin Williams' character teach his students to live by?",
       "answers": [
-        "Carpe diem",
         "Memento mori",
-        "Tempus fugit",
-        "Veni vidi vici"
+        "Carpe diem",
+        "Veni vidi vici",
+        "Tempus fugit"
       ],
-      "correct": 0
+      "correct": 1
     },
     {
       "type": "trivia",
@@ -1221,12 +1225,12 @@
       "folder": "Viking Kid Boy",
       "dialogue": "In Batman, who plays the Joker?? NOT the new ones, the ORIGINAL cool one from 1989!!",
       "answers": [
-        "Jack Nicholson",
-        "Tim Curry",
         "Willem Dafoe",
-        "Dennis Hopper"
+        "Jack Nicholson",
+        "Dennis Hopper",
+        "Tim Curry"
       ],
-      "correct": 0
+      "correct": 1
     },
     {
       "type": "trivia",
@@ -1235,12 +1239,12 @@
       "folder": "Punk Man",
       "dialogue": "The Princess Bride -- who says the line 'My name is Inigo Montoya, you killed my father, prepare to die'?",
       "answers": [
-        "Mandy Patinkin",
+        "Christopher Guest",
         "Cary Elwes",
         "Robin Wright",
-        "Christopher Guest"
+        "Mandy Patinkin"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -1249,12 +1253,12 @@
       "folder": "Knight",
       "dialogue": "A question of cinema lore! In A Nightmare on Elm Street, which now-famous actor made their film debut?",
       "answers": [
-        "Johnny Depp",
         "Brad Pitt",
         "George Clooney",
+        "Johnny Depp",
         "Leonardo DiCaprio"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "hint",
@@ -1316,12 +1320,12 @@
       "folder": "Chef",
       "dialogue": "In Raising Arizona, Nicolas Cage's character steals one of a set of how many babies?",
       "answers": [
+        "Twins (two)",
         "Quintuplets (five)",
         "Triplets (three)",
-        "Quadruplets (four)",
-        "Twins (two)"
+        "Quadruplets (four)"
       ],
-      "correct": 0
+      "correct": 1
     },
     {
       "type": "trivia",
@@ -1330,12 +1334,12 @@
       "folder": "Blonde Man",
       "dialogue": "In Rain Man, Dustin Hoffman's character is a savant who's amazing with what?",
       "answers": [
-        "Numbers and memory",
         "Music and piano",
         "Painting and art",
-        "Languages and speech"
+        "Languages and speech",
+        "Numbers and memory"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -1344,12 +1348,12 @@
       "folder": "Punk Kid Boy",
       "dialogue": "They Live is SO COOL!! What does Roddy Piper find that lets him see the aliens??",
       "answers": [
-        "Special sunglasses",
+        "A strange potion",
         "A magic helmet",
         "A radio device",
-        "A strange potion"
+        "Special sunglasses"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -1358,12 +1362,12 @@
       "folder": "Old Woman",
       "dialogue": "Dearie, in Reservoir Dogs, the criminals all use fake names. What are they based on?",
       "answers": [
-        "Colors",
         "Animals",
+        "Cities",
         "Numbers",
-        "Cities"
+        "Colors"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "hint",
@@ -1426,9 +1430,9 @@
       "dialogue": "In Alien, what is the name of the commercial spaceship whose crew encounters the xenomorph?",
       "answers": [
         "Nostromo",
-        "Sulaco",
+        "Serenity",
         "Enterprise",
-        "Serenity"
+        "Sulaco"
       ],
       "correct": 0
     },
@@ -1440,9 +1444,9 @@
       "dialogue": "TELL ME! In RoboCop, what is the name of the corporation that creates the cyborg police officer?",
       "answers": [
         "Omni Consumer Products",
-        "Cyberdyne Systems",
         "Weyland-Yutani",
-        "Tyrell Corporation"
+        "Tyrell Corporation",
+        "Cyberdyne Systems"
       ],
       "correct": 0
     },
@@ -1453,12 +1457,12 @@
       "folder": "Punk Woman",
       "dialogue": "In Beetlejuice, how many times do you have to say his name to summon him?",
       "answers": [
+        "Five times",
         "Three times",
-        "Twice",
         "Once",
-        "Five times"
+        "Twice"
       ],
-      "correct": 0
+      "correct": 1
     },
     {
       "type": "trivia",
@@ -1468,9 +1472,9 @@
       "dialogue": "In Scream, the killer asks trivia questions about SCARY MOVIES!! What movie does the killer ask about in the opening??",
       "answers": [
         "Halloween",
+        "The Texas Chain Saw Massacre",
         "Friday the 13th",
-        "A Nightmare on Elm Street",
-        "The Texas Chain Saw Massacre"
+        "A Nightmare on Elm Street"
       ],
       "correct": 0
     },
@@ -1548,12 +1552,12 @@
       "folder": "Blonde Man",
       "dialogue": "In Highlander, what is the famous tagline about the immortals?",
       "answers": [
-        "There can be only one",
         "Live forever or die trying",
         "Immortality has a price",
-        "The last one standing wins"
+        "The last one standing wins",
+        "There can be only one"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -1562,12 +1566,12 @@
       "folder": "Old Woman",
       "dialogue": "In The Shawshank Redemption, what does Andy Dufresne use to tunnel out of his cell over the years?",
       "answers": [
-        "A rock hammer",
-        "A spoon",
         "A screwdriver",
-        "A chisel"
+        "A chisel",
+        "A spoon",
+        "A rock hammer"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -1576,12 +1580,12 @@
       "folder": "Knight Kid",
       "dialogue": "In Coming to America, Eddie Murphy plays a PRINCE! But what country is he the prince of??",
       "answers": [
+        "Latveria",
         "Zamunda",
-        "Wakanda",
         "Genovia",
-        "Latveria"
+        "Wakanda"
       ],
-      "correct": 0
+      "correct": 1
     },
     {
       "type": "hint",
@@ -1643,12 +1647,12 @@
       "folder": "Goblin Kid",
       "dialogue": "OOOOH OOOOH I know this!! In Ghostbusters, what is the name of the green ghost they catch at the hotel?",
       "answers": [
-        "Slimer",
         "Casper",
         "The Green Goblin",
-        "Booger"
+        "Booger",
+        "Slimer"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -1657,12 +1661,12 @@
       "folder": "Blonde Woman",
       "dialogue": "Here is a fun one -- in Airplane!, what should you not call Leslie Nielsen?",
       "answers": [
-        "Shirley",
-        "Darling",
+        "A doctor",
         "Late for dinner",
-        "A doctor"
+        "Shirley",
+        "Darling"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "trivia",
@@ -1671,12 +1675,12 @@
       "folder": "Viking Man",
       "dialogue": "ANSWER, MORTAL! In The Shawshank Redemption, what does Andy Dufresne crawl through to escape prison?",
       "answers": [
-        "A sewer pipe",
         "A ventilation shaft",
-        "A tunnel behind a poster",
-        "An underground river"
+        "An underground river",
+        "A sewer pipe",
+        "A tunnel behind a poster"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "trivia",
@@ -1687,8 +1691,8 @@
       "answers": [
         "Frances",
         "Elizabeth",
-        "Catherine",
-        "Margaret"
+        "Margaret",
+        "Catherine"
       ],
       "correct": 0
     },
@@ -1752,12 +1756,12 @@
       "folder": "Businessman",
       "dialogue": "Quick -- in Casablanca, what famous line does Rick say at the airport? Hint: it involves problems and a hill of beans.",
       "answers": [
+        "Round up the usual suspects",
         "The problems of three little people don't amount to a hill of beans",
-        "Here's looking at you, kid",
         "We'll always have Paris",
-        "Round up the usual suspects"
+        "Here's looking at you, kid"
       ],
-      "correct": 0
+      "correct": 1
     },
     {
       "type": "trivia",
@@ -1766,12 +1770,12 @@
       "folder": "Blue Haired Woman",
       "dialogue": "In 2001: A Space Odyssey, what is the name of the ship computer that goes haywire?",
       "answers": [
-        "HAL 9000",
-        "WOPR",
         "Mother",
+        "WOPR",
+        "HAL 9000",
         "KITT"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "trivia",
@@ -1780,12 +1784,12 @@
       "folder": "Viking Woman",
       "dialogue": "TELL ME! In Back to the Future, what speed must the DeLorean reach to travel through time?",
       "answers": [
-        "88 mph",
         "100 mph",
         "65 mph",
+        "88 mph",
         "120 mph"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "trivia",
@@ -1794,12 +1798,12 @@
       "folder": "Punk Kid Boy",
       "dialogue": "Yo, in The Matrix, does Neo take the red pill or the blue pill to see the truth?",
       "answers": [
-        "Red pill",
+        "No pill",
         "Blue pill",
         "Both pills",
-        "No pill"
+        "Red pill"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "hint",
@@ -1862,9 +1866,9 @@
       "dialogue": "Easy one -- who played Superman in the original 1978 film?",
       "answers": [
         "Christopher Reeve",
+        "Tom Welling",
         "George Reeves",
-        "Dean Cain",
-        "Tom Welling"
+        "Dean Cain"
       ],
       "correct": 0
     },
@@ -1875,12 +1879,12 @@
       "folder": "Punk Kid Boy",
       "dialogue": "Dude, in Spider-Man 2, what is the name of the villain with the metal tentacle arms?",
       "answers": [
-        "Doctor Octopus",
         "Green Goblin",
+        "Doctor Octopus",
         "Sandman",
         "Venom"
       ],
-      "correct": 0
+      "correct": 1
     },
     {
       "type": "trivia",
@@ -1889,12 +1893,12 @@
       "folder": "Old Woman",
       "dialogue": "Dearie, who played the Dark Knight in the 1989 Batman film?",
       "answers": [
-        "Michael Keaton",
-        "Val Kilmer",
         "George Clooney",
-        "Adam West"
+        "Val Kilmer",
+        "Adam West",
+        "Michael Keaton"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -1903,12 +1907,12 @@
       "folder": "Viking Kid Boy",
       "dialogue": "HEAR ME!! What is Ernest's catchphrase that he says to his neighbor Vern? KnowhatImean?",
       "answers": [
-        "KnowhatImean, Vern?",
         "Hey Vern, it's Ernest!",
-        "Vern, you won't believe this!",
-        "Vern, help me!"
+        "Vern, help me!",
+        "KnowhatImean, Vern?",
+        "Vern, you won't believe this!"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "hint",
@@ -1970,12 +1974,12 @@
       "folder": "Viking Man",
       "dialogue": "SPEAK! In Field of Dreams, what famous line does the voice whisper to Kevin Costner?",
       "answers": [
-        "If you build it, he will come",
-        "Go the distance",
         "Is this heaven?",
-        "Ease his pain"
+        "Ease his pain",
+        "If you build it, he will come",
+        "Go the distance"
       ],
-      "correct": 0
+      "correct": 2
     },
     {
       "type": "trivia",
@@ -1984,12 +1988,12 @@
       "folder": "Blonde Woman",
       "dialogue": "In A League of Their Own, who says 'There's no crying in baseball'?",
       "answers": [
-        "Tom Hanks",
-        "Geena Davis",
         "Madonna",
-        "Rosie O'Donnell"
+        "Tom Hanks",
+        "Rosie O'Donnell",
+        "Geena Davis"
       ],
-      "correct": 0
+      "correct": 1
     },
     {
       "type": "trivia",
@@ -1998,12 +2002,12 @@
       "folder": "Businessman",
       "dialogue": "In The Mighty Ducks, what is the name of the youth hockey team that Gordon Bombay coaches?",
       "answers": [
+        "The Blades",
         "District 5 / The Ducks",
         "The Hawks",
-        "The Wolves",
-        "The Blades"
+        "The Wolves"
       ],
-      "correct": 0
+      "correct": 1
     },
     {
       "type": "trivia",
@@ -2012,12 +2016,12 @@
       "folder": "Punk Woman",
       "dialogue": "In Caddyshack, what animal wreaks havoc on the golf course the entire movie?",
       "answers": [
-        "A gopher",
-        "A squirrel",
         "A rabbit",
-        "A raccoon"
+        "A raccoon",
+        "A squirrel",
+        "A gopher"
       ],
-      "correct": 0
+      "correct": 3
     },
     {
       "type": "hint",
@@ -2079,12 +2083,13 @@
       "folder": "Firefighter",
       "dialogue": "Quick question - in Halloween, what's the name of Michael Myers' psychiatrist who's been chasing him around?",
       "answers": [
-        "Dr. Sam Loomis",
         "Dr. Benjamin Stone",
+        "Dr. Richard Kimble",
         "Dr. Frank Morgan",
-        "Dr. Richard Kimble"
+        "Dr. Sam Loomis"
       ],
-      "correctAnswer": 0
+      "correctAnswer": 0,
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -2093,12 +2098,13 @@
       "folder": "Blonde Man",
       "dialogue": "Settle a bet with my buddy - Airplane! came out the same year as what other disaster? The Shining or Caddyshack?",
       "answers": [
-        "Both came out in 1980",
         "The Shining (1980), but Caddyshack was 1981",
         "Caddyshack (1980), but The Shining was 1979",
-        "Neither, they both came out in 1979"
+        "Neither, they both came out in 1979",
+        "Both came out in 1980"
       ],
-      "correctAnswer": 0
+      "correctAnswer": 0,
+      "correct": 3
     },
     {
       "type": "trivia",
@@ -2108,11 +2114,12 @@
       "dialogue": "UHHH MY MOM SAID I COULD RENT SPACEBALLS IF I KNEW WHO PLAYED THE PRINCESS??? She's got like, giant hair buns or whatever!",
       "answers": [
         "Daphne Zuniga",
-        "Carrie Fisher",
         "Molly Ringwald",
+        "Carrie Fisher",
         "Joan Cusack"
       ],
-      "correctAnswer": 0
+      "correctAnswer": 0,
+      "correct": 0
     },
     {
       "type": "trivia",
@@ -2121,12 +2128,13 @@
       "folder": "Farmer",
       "dialogue": "My wife wants to know - The Texas Chain Saw Massacre, was that Tobe Hooper or Wes Craven who directed it?",
       "answers": [
-        "Tobe Hooper",
-        "Wes Craven",
         "John Carpenter",
-        "George A. Romero"
+        "Tobe Hooper",
+        "George A. Romero",
+        "Wes Craven"
       ],
-      "correctAnswer": 0
+      "correctAnswer": 0,
+      "correct": 1
     },
     {
       "type": "hint",
