@@ -22,8 +22,8 @@ export function createScene(canvas) {
 
   // Auto-fit: adjust camera Z so the shelf fills the viewport
   // Shelf is 4.2 wide, ~6.0 tall (with padding). We want ~10% margin.
-  const shelfVisibleW = 3.362;
-  const shelfVisibleH = 4.623;
+  const shelfVisibleW = 3.564;
+  const shelfVisibleH = 4.900;
   const fovRad = (camera.fov * Math.PI) / 180;
 
   // Distance needed to fit height
