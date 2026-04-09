@@ -2511,5 +2511,115 @@
       "dialogue": "Rented Vertigo for date night because I thought it was a romance. It is NOT a romance. Well, it kind of is? Anyway, there was no second date.",
       "dismiss": "Rough night"
     }
+  ],
+  "easter-puzzle": [
+    {
+      "type": "trivia",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "Dear, I remember when Roger Rabbit came out... what year was that again?",
+      "question": "What year was 'Who Framed Roger Rabbit' released?",
+      "answers": [
+        "1988",
+        "1986",
+        "1989",
+        "1987"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Bride",
+      "sprite": "bride",
+      "folder": "Bride",
+      "dialogue": "My fiancé keeps quoting that 'I love the smell of napalm' line. Which movie is that from?",
+      "question": "Which war film features Robert De Niro and the infamous Russian roulette scenes?",
+      "answers": [
+        "The Deer Hunter",
+        "Platoon",
+        "Apocalypse Now",
+        "Full Metal Jacket"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Blue Haired Kid Girl",
+      "sprite": "blue_haired_kid_girl",
+      "folder": "Blue Haired Kid Girl",
+      "dialogue": "UHHH MY MOM SAID I CAN'T WATCH THE ROBOT COP MOVIE!! What's it rated anyway??",
+      "question": "What rating did 'RoboCop' receive?",
+      "answers": [
+        "R",
+        "PG-13",
+        "PG",
+        "X"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Joker",
+      "sprite": "joker",
+      "folder": "Joker",
+      "dialogue": "I'm looking for that Costner movie with all the gangsters. Who directed The Untouchables?",
+      "question": "Who directed 'The Untouchables'?",
+      "answers": [
+        "Brian De Palma",
+        "Francis Ford Coppola",
+        "Martin Scorsese",
+        "Michael Mann"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "type": "hint",
+      "character": "Old Man",
+      "sprite": "old_man",
+      "folder": "Old Man",
+      "dialogue": "Looking for something with... what do you call them... hippity-hoppity creatures. Fluffy ears, you know.",
+      "hintCategory": "Bunny Business: Rabbits on Screen"
+    },
+    {
+      "type": "hint",
+      "character": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "folder": "Goblin Kid",
+      "dialogue": "I WANT MOVIES WHERE DEAD PEOPLE COME BACK!! Like zombies but COOLER!! MY FRIEND SAID THERE'S ONE WITH A BIRD GUY!!",
+      "hintCategory": "Resurrection Stories: Characters Who Return from Death"
+    },
+    {
+      "type": "hint",
+      "character": "Blonde Woman",
+      "sprite": "blonde_woman",
+      "folder": "Blonde Woman",
+      "dialogue": "I'm in the mood for something seasonal. You know, flowers blooming, new beginnings, that sort of thing.",
+      "hintCategory": "Spring Forward: Films Set During Easter or Spring"
+    },
+    {
+      "type": "story",
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "Guy came in last week, returned Fatal Attraction, wouldn't make eye contact. His wife was with him. I've never seen someone look so scared of a VHS tape.",
+      "dismissLabel": "Yikes..."
+    },
+    {
+      "type": "story",
+      "character": "Policeman",
+      "sprite": "policeman",
+      "folder": "Policeman",
+      "dialogue": "We got a call about a 'suspicious package' behind the store last month. Know what it was? Someone's overdue copy of An Officer and a Gentleman. Six months late.",
+      "dismissLabel": "Arrest them!"
+    },
+    {
+      "type": "story",
+      "character": "Viking Woman",
+      "sprite": "viking_woman",
+      "folder": "Viking Woman",
+      "dialogue": "My ex tried to impress me by renting Watership Down for date night. Thought it was a cute bunny movie. We broke up halfway through.",
+      "dismissLabel": "Understandable"
+    }
   ]
 }
