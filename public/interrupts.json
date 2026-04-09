@@ -2184,5 +2184,332 @@
       "dialogue": "Back in my day, we didn't need all these fancy tapes. We had the radio, and we used our imaginations. Now I can't figure out how to rewind the darn things...",
       "dismissLabel": "Be kind, rewind"
     }
+  ],
+  "wednesday-horror-night": [
+    {
+      "type": "trivia",
+      "character": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "folder": "Goblin Kid",
+      "dialogue": "HEY HEY HEY what's the name of the killer doll in Child's Play?? I NEED ONE FOR MY BIRTHDAY!!",
+      "answers": [
+        "Annabelle",
+        "Chucky",
+        "Tiffany",
+        "Slappy"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "Dearie, my late husband loved that shark picture. What was the police chief's name in Jaws?",
+      "answers": [
+        "Matt Hooper",
+        "Sam Quint",
+        "Larry Vaughn",
+        "Martin Brody"
+      ],
+      "correct": 3
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Woman",
+      "sprite": "punk_woman",
+      "folder": "Punk Woman",
+      "dialogue": "Settle this for me -- who directed The Birds? My boyfriend says it's Romero but he's an idiot.",
+      "answers": [
+        "Alfred Hitchcock",
+        "George Romero",
+        "William Castle",
+        "Roger Corman"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Viking Kid Boy",
+      "sprite": "viking_kid_boy",
+      "folder": "Viking Kid Boy",
+      "dialogue": "MY DAD LET ME WATCH THE EVIL DEAD AND NOW I CAN'T SLEEP!! WHAT STATE IS THAT CABIN IN ANYWAY???",
+      "answers": [
+        "West Virginia",
+        "Maine",
+        "Tennessee",
+        "Vermont"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "hint",
+      "character": "Knight",
+      "sprite": "knight",
+      "folder": "Knight",
+      "dialogue": "I seek tales of masked fiends who stalk their prey with bladed weapons. The kind where you shout at the maiden to flee.",
+      "hintCategory": "Slashers",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Blonde Man",
+      "sprite": "blonde_man",
+      "folder": "Blonde Man",
+      "dialogue": "Looking for something where the house itself is the problem, you know? Like maybe you should just MOVE.",
+      "hintCategory": "Haunted House",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Firefighter",
+      "sprite": "firefighter",
+      "folder": "Firefighter",
+      "dialogue": "I deal with dangerous animals on the job sometimes but NOTHING like the ones in these movies. Teeth, claws, the works.",
+      "hintCategory": "Animal Attack",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Ninja",
+      "sprite": "ninja",
+      "folder": "Ninja",
+      "dialogue": "I watched Jaws before a beach vacation. Spent the entire trip standing on the shore like a sentinel. My family was not amused.",
+      "dismiss": "Wise choice"
+    },
+    {
+      "type": "story",
+      "character": "Blue Haired Kid Girl",
+      "sprite": "blue_haired_kid_girl",
+      "folder": "Blue Haired Kid Girl",
+      "dialogue": "I MADE MY OWN CHUCKY DOLL OUT OF MY BROTHER'S TEDDY BEAR AND SOME KETCHUP AND NOW HE WON'T COME OUT OF HIS ROOM HAHAHAHA!!!",
+      "dismiss": "That's concerning"
+    },
+    {
+      "type": "story",
+      "character": "Chef",
+      "sprite": "chef",
+      "folder": "Chef",
+      "dialogue": "Someone returned The Amityville Horror and the tape was warm. WARM. I don't want to know why and I'm not rewinding it.",
+      "dismiss": "Don't touch it"
+    }
+  ],
+  "wednesday-franchise-frenzy": [
+    {
+      "type": "trivia",
+      "character": "Businessman",
+      "sprite": "businessman",
+      "folder": "Businessman",
+      "dialogue": "I'm a franchise investor, so I appreciate a good sequel. Which Halloween film has nothing to do with Michael Myers?",
+      "answers": [
+        "Halloween II",
+        "Halloween 4",
+        "Halloween III: Season of the Witch",
+        "Halloween: Resurrection"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Kid Boy",
+      "sprite": "punk_kid_boy",
+      "folder": "Punk Kid Boy",
+      "dialogue": "Yo, in A Nightmare on Elm Street 3, what do the kids call themselves when they fight Freddy?",
+      "answers": [
+        "The Dream Warriors",
+        "The Sleep Fighters",
+        "The Nightmare Squad",
+        "Freddy's Rejects"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Woman",
+      "sprite": "blonde_woman",
+      "folder": "Blonde Woman",
+      "dialogue": "My friend says Friday the 13th Part III was originally shown in 3D. Is that actually true? What format was it?",
+      "answers": [
+        "Standard widescreen",
+        "IMAX",
+        "Dolby Stereo only",
+        "3D"
+      ],
+      "correct": 3
+    },
+    {
+      "type": "trivia",
+      "character": "Blue Haired Woman",
+      "sprite": "blue_haired_woman",
+      "folder": "Blue Haired Woman",
+      "dialogue": "I love Bride of Chucky. Who plays Chucky's bride Tiffany in that one?",
+      "answers": [
+        "Fairuza Balk",
+        "Jennifer Tilly",
+        "Christina Ricci",
+        "Rose McGowan"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "hint",
+      "character": "Old Man",
+      "sprite": "old_man",
+      "folder": "Old Man",
+      "dialogue": "I'm looking for the ones with the hockey mask fella. He's at that lake camp, you know. The whole bunch of 'em.",
+      "hintCategory": "Friday the 13th",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "My kids keep having nightmares and they say some fella with a striped sweater and knives for fingers is in all of 'em. Got a whole series about it?",
+      "hintCategory": "A Nightmare on Elm Street",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Bride",
+      "sprite": "bride",
+      "folder": "Bride",
+      "dialogue": "I'm looking for that series with the creepy little doll? I think he eventually gets a wife. Relationship goals, honestly.",
+      "hintCategory": "Child's Play",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "sprite": "joker",
+      "folder": "Joker",
+      "dialogue": "Why did Jason Voorhees fail math class? Because he could never make it past FRIDAY! Get it? Friday the 13th? I'll see myself out.",
+      "dismiss": "Please do"
+    },
+    {
+      "type": "story",
+      "character": "Knight Kid",
+      "sprite": "knight_kid",
+      "folder": "Knight Kid",
+      "dialogue": "I RENTED ALL FOUR CHILD'S PLAY TAPES AND STACKED THEM LIKE A TOWER AND MY MOM KNOCKED THEM OVER AND I SCREAMED LIKE CHUCKY WAS ACTUALLY IN THE ROOM!!!",
+      "dismiss": "Deep breaths"
+    },
+    {
+      "type": "story",
+      "character": "Policeman",
+      "sprite": "policeman",
+      "folder": "Policeman",
+      "dialogue": "Got a noise complaint from someone watching all four Nightmare on Elm Street movies back to back. They weren't screaming at the TV -- the TV was screaming at them. Busted VCR.",
+      "dismiss": "Case closed"
+    }
+  ],
+  "wacky-wednesday-murders": [
+    {
+      "type": "trivia",
+      "character": "Viking Woman",
+      "sprite": "viking_woman",
+      "folder": "Viking Woman",
+      "dialogue": "A question of cunning! In Silence of the Lambs, what is Hannibal Lecter's profession before he became... notorious?",
+      "answers": [
+        "Surgeon",
+        "Professor",
+        "Psychiatrist",
+        "Chef"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Kid Girl",
+      "sprite": "blonde_kid_girl",
+      "folder": "Blonde Kid Girl",
+      "dialogue": "My babysitter let me watch The Ring and NOW I'M SCARED OF MY TV. How many days do you have after watching the tape??",
+      "answers": [
+        "Three days",
+        "Seven days",
+        "Thirteen days",
+        "One day"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Man",
+      "sprite": "punk_men",
+      "folder": "Punk Man",
+      "dialogue": "Big Hitchcock fan here. In Rear Window, what's Jimmy Stewart's character stuck doing the whole movie?",
+      "answers": [
+        "Hiding in a closet",
+        "Trapped in an elevator",
+        "Locked in an attic",
+        "Sitting in a wheelchair with a broken leg"
+      ],
+      "correct": 3
+    },
+    {
+      "type": "trivia",
+      "character": "Viking Man",
+      "sprite": "viking_man",
+      "folder": "Viking Man",
+      "dialogue": "MORTAL! In Se7en, the killer's scheme is based on what concept?",
+      "answers": [
+        "The seven deadly sins",
+        "The seven circles of Hell",
+        "The seven plagues of Egypt",
+        "The seven seals of Revelation"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "I want something from when pictures were still in black and white, dearie. The old murder mysteries, very classy, very Hitchcock.",
+      "hintCategory": "'50s Kills",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Ninja",
+      "sprite": "ninja",
+      "folder": "Ninja",
+      "dialogue": "The decade of disco brought something far darker. Chainsaws. Proms gone wrong. Hills with eyes that watch. Seek the terrors of the seventies.",
+      "hintCategory": "'70s Kills",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Businessman",
+      "sprite": "businessman",
+      "folder": "Businessman",
+      "dialogue": "I'm looking for the newer horror stuff -- early 2000s. You know, elaborate traps, cursed videotapes, that whole vibe.",
+      "hintCategory": "'00s Kills",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "folder": "Goblin Kid",
+      "dialogue": "I WATCHED FINAL DESTINATION AND NOW I'M AFRAID OF EVERYTHING!! ROLLER COASTERS, LOGS, BUSES, EVEN THE BATHTUB!! MY MOM SAYS I'M BEING DRAMATIC BUT DEATH HAS A PLAN!!!",
+      "dismiss": "Stay vigilant"
+    },
+    {
+      "type": "story",
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "Someone left a Texas Chain Saw Massacre tape in the returns bin with a note that just said 'sorry.' That's never a good sign. I put gloves on before I touched it.",
+      "dismiss": "Fair enough"
+    },
+    {
+      "type": "story",
+      "character": "Blonde Woman",
+      "sprite": "blonde_woman",
+      "folder": "Blonde Woman",
+      "dialogue": "Rented Vertigo for date night because I thought it was a romance. It is NOT a romance. Well, it kind of is? Anyway, there was no second date.",
+      "dismiss": "Rough night"
+    }
   ]
 }
