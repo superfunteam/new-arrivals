@@ -32,16 +32,19 @@ import {
   Puzzle,
   Plus,
   ExternalLink,
+  Users,
 } from 'lucide-react';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import CalendarPage from './components/CalendarPage';
 import PuzzleEditor from './components/PuzzleEditor';
+import UsersPage from './components/UsersPage';
 
 const NAV_ITEMS = [
   { key: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { key: 'calendar', label: 'Calendar', icon: CalendarDays },
   { key: 'editor', label: 'New Puzzle', icon: Plus },
+  { key: 'users', label: 'Users', icon: Users },
 ];
 
 function AppBreadcrumb({ view, editingPuzzle }) {
@@ -269,6 +272,7 @@ export default function App() {
                 onCancel={handleEditorCancel}
               />
             )}
+            {view === 'users' && <UsersPage />}
           </main>
         </SidebarInset>
       </SidebarProvider>
