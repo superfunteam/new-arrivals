@@ -49,6 +49,16 @@
     <div id="hud"></div>
     <div id="overlay"></div>
   </div>
+  <script>
+    // Catch Netlify Identity tokens and redirect to backroom
+    if (window.location.hash && (
+      window.location.hash.includes('invite_token=') ||
+      window.location.hash.includes('confirmation_token=') ||
+      window.location.hash.includes('recovery_token=')
+    )) {
+      window.location.href = '/backroom/' + window.location.hash;
+    }
+  </script>
   <script type="module" src="/src/main.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
