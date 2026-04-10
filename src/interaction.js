@@ -172,6 +172,7 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
   // Capture actual camera position (may vary by viewport due to auto-fit)
   const defaultCamPos = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
   const defaultFov = 50;
+  const maxZoomOutFov = defaultFov * 1.2; // 20% zoom out
 
   // The world-space point that was under the pinch center at start
   let anchorWorldX = 0;
@@ -211,18 +212,17 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
     };
   }
 
-  function animateSnapBack() {
+  function animateSnapTo(targetFov) {
     if (snapBackRaf) cancelAnimationFrame(snapBackRaf);
     const sf = camera.fov, sx = camera.position.x, sy = camera.position.y;
     const startTime = performance.now();
 
-    // Hide labels during snap-back too
     const hud = document.getElementById('hud');
 
     function step(now) {
       const t = Math.min((now - startTime) / 300, 1);
       const e = 1 - Math.pow(1 - t, 3);
-      camera.fov = sf + (defaultFov - sf) * e;
+      camera.fov = sf + (targetFov - sf) * e;
       camera.position.x = sx + (defaultCamPos.x - sx) * e;
       camera.position.y = sy + (defaultCamPos.y - sy) * e;
       camera.updateProjectionMatrix();
@@ -230,7 +230,6 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
         snapBackRaf = requestAnimationFrame(step);
       } else {
         snapBackRaf = null;
-        // Show labels again
         if (hud) hud.classList.remove('hud-pinch-mode');
       }
     }
@@ -271,36 +270,44 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
       // Calculate new FOV from pinch scale
       const currentDist = getTouchDistance(e.touches);
       const scale = currentDist / initialPinchDistance;
-      const newFov = Math.max(20, Math.min(defaultFov, startFov / scale));
+      const newFov = Math.max(20, Math.min(maxZoomOutFov, startFov / scale));
       camera.fov = newFov;
       camera.updateProjectionMatrix();
 
-      // Map-native zoom: move camera so the anchor world point
-      // stays under the same screen position
-      const fovRad = (newFov * Math.PI) / 180;
-      const halfH = Math.tan(fovRad / 2) * camera.position.z;
-      const halfW = halfH * camera.aspect;
+      if (newFov > defaultFov) {
+        // Zooming out — keep centered on main shelf
+        camera.position.x = defaultCamPos.x;
+        camera.position.y = defaultCamPos.y;
+      } else {
+        // Zooming in — anchor-based panning
+        const fovRad = (newFov * Math.PI) / 180;
+        const halfH = Math.tan(fovRad / 2) * camera.position.z;
+        const halfW = halfH * camera.aspect;
 
-      // Track pinch center movement for panning
-      const center = getTouchCenter(e.touches);
-      const rect = renderer.domElement.getBoundingClientRect();
-      const currentNx = ((center.x - rect.left) / rect.width) * 2 - 1;
-      const currentNy = -(((center.y - rect.top) / rect.height) * 2 - 1);
+        const center = getTouchCenter(e.touches);
+        const rect = renderer.domElement.getBoundingClientRect();
+        const currentNx = ((center.x - rect.left) / rect.width) * 2 - 1;
+        const currentNy = -(((center.y - rect.top) / rect.height) * 2 - 1);
 
-      // Camera position that keeps anchor world point under current screen position
-      camera.position.x = anchorWorldX - currentNx * halfW;
-      camera.position.y = anchorWorldY - currentNy * halfH;
+        camera.position.x = anchorWorldX - currentNx * halfW;
+        camera.position.y = anchorWorldY - currentNy * halfH;
 
-      // Clamp
-      camera.position.x = Math.max(-4, Math.min(4, camera.position.x));
-      camera.position.y = Math.max(-4, Math.min(5, camera.position.y));
+        camera.position.x = Math.max(-4, Math.min(4, camera.position.x));
+        camera.position.y = Math.max(-4, Math.min(5, camera.position.y));
+      }
     }
   }
 
   function onPinchTouchEnd(e) {
     if (isPinching && e.touches.length < 2) {
       isPinching = false;
-      animateSnapBack();
+      if (camera.fov > defaultFov) {
+        // Zoomed out — stick at current FOV, settle centered
+        animateSnapTo(camera.fov);
+      } else {
+        // Zoomed in — snap back to default
+        animateSnapTo(defaultFov);
+      }
     }
   }
 

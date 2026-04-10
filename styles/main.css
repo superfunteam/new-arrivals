@@ -95,25 +95,37 @@ html, body {
   padding: 12px 16px;
 }
 
+.hud-top-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.hud-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
 .hud-logo {
   font-family: var(--font-display);
   font-size: 11px;
   color: var(--neon-pink);
   text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
-  line-height: 1.4;
+  white-space: nowrap;
 }
 
 .hud-date {
-  display: block;
+  font-family: var(--font-display);
   font-size: 8px;
   color: rgba(255, 255, 255, 0.5);
-  margin-top: 4px;
-  line-height: 1.4;
+  letter-spacing: 0.5px;
 }
 
 .hud-puzzle-title {
   color: var(--neon-blue);
-  font-size: 7px;
+  font-family: var(--font-display);
+  font-size: 8px;
   letter-spacing: 0.5px;
 }
 
@@ -225,10 +237,12 @@ html, body {
   gap: 10px;
 }
 
-.hud-timer {
+.hud-clock {
   font-family: var(--font-body);
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.3);
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 /* === Shelve It Button === */
@@ -1426,26 +1440,86 @@ html, body {
   100% { opacity: 0; transform: translate(-50%, -60%); }
 }
 
-/* === Help Button (inline in bottom-right) === */
-.help-btn {
-  background: rgba(255, 255, 255, 0.5);
-  border: none;
-  color: #000;
+/* === Help Link (inline text in bottom-right) === */
+.help-link {
   font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 700;
-  width: 32px;
-  height: 32px;
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.4);
   cursor: pointer;
-  border-radius: 50%;
+  -webkit-tap-highlight-color: transparent;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 6px 0;
+  margin-right: 184px;
+}
+
+/* === Help Menu Modal === */
+#help-menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999998;
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  -webkit-tap-highlight-color: transparent;
-  /* Larger tap target without growing the visual */
-  padding: 0;
-  position: relative;
+  animation: helpMenuFadeIn 0.2s ease-out;
+}
+
+@keyframes helpMenuFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.help-menu {
+  background: rgba(0, 0, 0, 0.95);
+  border: 2px solid var(--neon-pink);
+  border-radius: 12px;
+  padding: 24px 20px 16px;
+  width: min(280px, 85vw);
+  text-align: center;
+  animation: helpMenuSlideUp 0.25s ease-out;
+}
+
+@keyframes helpMenuSlideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.help-menu-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--neon-pink);
+  text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+.help-menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.help-menu-btn {
+  font-size: 10px !important;
+  padding: 14px 16px !important;
+  letter-spacing: 1.5px !important;
+}
+
+.help-menu-btn:disabled {
+  opacity: 0.35;
+}
+
+.help-menu-close {
+  background: none;
+  border: none;
+  font-family: var(--font-display);
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  margin-top: 16px;
+  letter-spacing: 1.5px;
+  padding: 8px;
 }
 
 /* === Solved Row Label (NYT Connections-style band) === */
@@ -1954,6 +2028,13 @@ html, body {
   inset: 0;
   z-index: 999999;
   pointer-events: none;
+  background: rgba(0, 0, 0, 0.2);
+  animation: interruptTintIn 0.3s ease-out;
+}
+
+@keyframes interruptTintIn {
+  from { background: rgba(0, 0, 0, 0); }
+  to { background: rgba(0, 0, 0, 0.2); }
 }
 
 #interrupt-container > * {
@@ -1966,11 +2047,11 @@ html, body {
   left: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.95);
-  border-top: 3px solid var(--neon-pink);
   border-radius: 16px 16px 0 0;
   padding: 16px;
   padding-bottom: max(16px, env(safe-area-inset-bottom));
   z-index: 999999;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.6), 0 -2px 10px rgba(0, 0, 0, 0.4);
   animation: interruptSlideUp 0.3s ease-out;
 }
 

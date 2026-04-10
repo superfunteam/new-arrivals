@@ -87,7 +87,7 @@ import {
 } from './ui.js';
 import { audio } from './audio.js';
 import { triggerShare } from './share.js';
-import { initInterrupts, stopInterrupts, pauseInterrupts, resumeInterrupts } from './interrupts.js';
+import { initInterrupts, stopInterrupts, pauseInterrupts, resumeInterrupts, fireHelpHint } from './interrupts.js';
 
 // ---------------------------------------------------------------------------
 // Utilities
@@ -284,7 +284,14 @@ async function main() {
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('portal') === 'true') {
     ensureRadioStarted();
-    startGameSession(dailyPuzzle, 'daily', puzzlesData);
+    // Show the Vibe Jam puzzle unless already completed
+    const vibeJamPuzzle = allPuzzles.find(p => p.id === VIBE_JAM_ID);
+    const vibeJamCompleted = vibeJamPuzzle && getGameScores()[VIBE_JAM_ID];
+    if (vibeJamPuzzle && !vibeJamCompleted) {
+      startGameSession(vibeJamPuzzle, 'practice', puzzlesData);
+    } else {
+      startGameSession(dailyPuzzle, 'daily', puzzlesData);
+    }
     return; // skip splash/onboarding/welcome
   }
 
@@ -296,9 +303,10 @@ async function main() {
     dailyState = savedState.completed ? 'completed' : 'in_progress';
   }
 
-  // ── 4. Determine practice puzzles (training only — don't spoil upcoming dailies) ──
+  // ── 4. Determine practice puzzles (training + vibe jam) ──
   const allPuzzles = puzzlesData.puzzles;
-  const practicePuzzles = allPuzzles.filter(p => p.id.startsWith('training-'));
+  const VIBE_JAM_ID = '2026-vibe-jam';
+  const practicePuzzles = allPuzzles.filter(p => p.id.startsWith('training-') || p.id === VIBE_JAM_ID);
 
   // ── 5. Determine past puzzles and completed dailies ───────────────────────
   const pastPuzzles = getPastPuzzles(puzzlesData);
@@ -471,12 +479,10 @@ async function startGameSession(puzzle, mode, puzzlesData) {
   createHUD();
   setStationName(STATIONS[currentStationIdx].name);
 
-  // Show puzzle title + day of week in HUD
-  const hudDate = document.querySelector('.hud-date');
-  if (hudDate && puzzle.title) {
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const dayName = days[new Date().getDay()];
-    hudDate.innerHTML = `${dayName} · ${hudDate.textContent}<br><span class="hud-puzzle-title">${puzzle.title}</span>`;
+  // Show puzzle title in HUD
+  const hudPuzzleTitle = document.getElementById('hud-puzzle-title');
+  if (hudPuzzleTitle && puzzle.title) {
+    hudPuzzleTitle.textContent = puzzle.title;
   }
 
   // ── 4. Setup radio + mute + station switching ──────────────────────────────
@@ -738,9 +744,18 @@ async function startGameSession(puzzle, mode, puzzlesData) {
     // Set up the SHELVE IT button
     setShelveButton(false, handleShelveIt, 0);
 
-    // Set up help button — reloads to show onboarding + welcome screen
+    // Set up help button — shows menu with hint purchase or instructions
     onHelpClick(() => {
       location.reload();
+    }, {
+      onBuyHint: () => {
+        fireHelpHint();
+      },
+      isHintAvailable: () => {
+        const solvedNames = new Set(game.solvedCategories.map((c) => c.name));
+        const allInts = interruptsData[puzzle.id] || [];
+        return allInts.some((i) => i.type === 'hint' && !solvedNames.has(i.hintCategory));
+      },
     });
 
     // Device shake (sustained 1s+) → bump all tapes on the shelf

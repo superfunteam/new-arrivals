@@ -45,12 +45,18 @@ export function createHUD() {
   if (!hud) return;
 
   const dateStr = formatDate(new Date());
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const dayName = days[new Date().getDay()];
 
   hud.innerHTML = `
     <div class="hud-top">
-      <div class="hud-logo" id="hud-logo" style="cursor:pointer">
-        NEW ARRIVALS
-        <span class="hud-date">${dateStr}</span>
+      <div class="hud-top-left" id="hud-logo" style="cursor:pointer">
+        <div class="hud-title-row">
+          <span class="hud-logo">NEW ARRIVALS</span>
+          <span class="hud-clock" id="hud-timer">11:00 PM</span>
+        </div>
+        <div class="hud-date">${dayName} · ${dateStr}</div>
+        <div class="hud-puzzle-title" id="hud-puzzle-title"></div>
       </div>
       <div class="hud-wage-wrap">
         <div class="hud-wage" id="hud-wage">$25</div>
@@ -69,8 +75,7 @@ export function createHUD() {
         </div>
         <span class="material-symbols-rounded radio-icon" id="radio-icon">no_sound</span>
       </div>
-      <div class="hud-timer" id="hud-timer">0:00</div>
-      <button class="help-btn" id="help-btn" aria-label="Help">?</button>
+      <span class="help-link" id="help-btn">Help</span>
     </div>
   `;
 
@@ -108,8 +113,26 @@ export function updateWage(wage, isPenalty = false) {
  * Updates the timer display.
  * @param {string} timeStr  e.g. "1:23"
  */
-export function updateTimer(timeStr) {
-  if (_timer) _timer.textContent = timeStr;
+/**
+ * Update the store clock. Takes real elapsed seconds, converts to fake clock time.
+ * Starts at 11:00 PM. Each 5 real seconds = 1 fake minute.
+ */
+export function updateTimer(elapsedRealSeconds) {
+  if (!_timer) return;
+  // Parse if string like "2:34" for backward compat
+  let secs = elapsedRealSeconds;
+  if (typeof elapsedRealSeconds === 'string') {
+    const parts = elapsedRealSeconds.split(':');
+    secs = (parseInt(parts[0]) || 0) * 60 + (parseInt(parts[1]) || 0);
+  }
+  const fakeMinutes = Math.floor(secs / 5);
+  const startHour = 23; // 11 PM
+  const totalMinutes = startHour * 60 + fakeMinutes;
+  let hour = Math.floor(totalMinutes / 60) % 24;
+  const min = totalMinutes % 60;
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const displayHour = hour % 12 || 12;
+  _timer.textContent = `${displayHour}:${String(min).padStart(2, '0')} ${ampm}`;
 }
 
 /**
@@ -243,16 +266,72 @@ export function updateRadioViz(time, muted) {
 // ─── Help Button ────────────────────────────────────────────────────────────
 
 /**
- * Add a click listener to the help button.
- * @param {Function} callback
+ * Show a help menu modal with two choices: buy a hint or view instructions.
+ * @param {Object} opts
+ * @param {Function} opts.onBuyHint  Called when user wants a hint
+ * @param {boolean}  opts.hintAvailable  Whether unsolved hints exist
  */
-export function onHelpClick(callback) {
+function showHelpMenu({ onBuyHint, hintAvailable }) {
+  const existing = document.getElementById('help-menu-overlay');
+  if (existing) existing.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'help-menu-overlay';
+  overlay.innerHTML = `
+    <div class="help-menu">
+      <div class="help-menu-title">NEED HELP?</div>
+      <div class="help-menu-buttons">
+        <button class="interrupt-btn primary help-menu-btn" id="help-hint-btn"
+                ${hintAvailable ? '' : 'disabled'}>
+          ${hintAvailable ? 'BUY A HINT — $3' : 'NO HINTS LEFT'}
+        </button>
+        <button class="interrupt-btn secondary help-menu-btn" id="help-instructions-btn">
+          HOW TO PLAY
+        </button>
+      </div>
+      <button class="help-menu-close" id="help-menu-close">NEVERMIND</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  // Close on backdrop tap
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      overlay.remove();
+    }
+  });
+
+  document.getElementById('help-menu-close').addEventListener('click', () => {
+    overlay.remove();
+  });
+
+  document.getElementById('help-hint-btn').addEventListener('click', () => {
+    overlay.remove();
+    if (onBuyHint) onBuyHint();
+  });
+
+  document.getElementById('help-instructions-btn').addEventListener('click', () => {
+    overlay.remove();
+    showOnboarding(() => {});
+  });
+}
+
+/**
+ * Wire up the help button click.
+ * @param {Function} logoCallback  Called when the logo itself is clicked
+ * @param {Object}   helpOpts
+ * @param {Function} helpOpts.onBuyHint       Fires a hint interrupt
+ * @param {Function} helpOpts.isHintAvailable  Returns boolean
+ */
+export function onHelpClick(logoCallback, helpOpts) {
   const logo = document.getElementById('hud-logo');
-  if (logo) logo.addEventListener('click', callback);
+  if (logo) logo.addEventListener('click', logoCallback);
   const helpBtn = document.getElementById('help-btn');
   if (helpBtn) helpBtn.addEventListener('click', () => {
-    // Show the onboarding tutorial
-    showOnboarding(() => {});
+    showHelpMenu({
+      onBuyHint: helpOpts?.onBuyHint,
+      hintAvailable: helpOpts?.isHintAvailable ? helpOpts.isHintAvailable() : false,
+    });
   });
 }
 

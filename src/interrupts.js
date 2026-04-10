@@ -84,6 +84,34 @@ export function stopInterrupts() {
   cleanup();
 }
 
+/**
+ * Fire a hint interrupt on demand (from the Help menu).
+ * Picks a random hint whose category hasn't been solved yet.
+ * Returns true if a hint was fired, false if none available.
+ */
+export function fireHelpHint() {
+  if (!opts || active) return false;
+
+  const solvedNames = new Set(
+    (opts.game.solvedCategories || []).map((c) => c.name)
+  );
+
+  // Gather all hint-type interrupts for this puzzle whose category is unsolved
+  const allInterrupts = opts.interruptsData[opts.puzzleId] || [];
+  const available = allInterrupts.filter(
+    (i) => i.type === 'hint' && !solvedNames.has(i.hintCategory)
+  );
+
+  if (available.length === 0) return false;
+
+  const hint = available[Math.floor(Math.random() * available.length)];
+  active = true;
+
+  if (opts.onPause) opts.onPause();
+  showInterrupt(hint);
+  return true;
+}
+
 export function pauseInterrupts() {
   paused = true;
 }
