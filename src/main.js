@@ -3,7 +3,7 @@
 
 import * as THREE from 'three';
 
-import { createScene, resizeScene, getRowPositions, animateShelfZoomIn } from './scene.js';
+import { createScene, resizeScene, getRowPositions, animateShelfZoomIn, createExitPortal, createReturnPortal } from './scene.js';
 import {
   loadTexture,
   preloadTextures,
@@ -280,6 +280,14 @@ async function main() {
   // ── 2. Determine daily puzzle ─────────────────────────────────────────────
   const dailyPuzzle = loadTodaysPuzzle(puzzlesData);
 
+  // ── Portal instant entry: skip splash/onboarding/welcome ─────────────────
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('portal') === 'true') {
+    ensureRadioStarted();
+    startGameSession(dailyPuzzle, 'daily', puzzlesData);
+    return; // skip splash/onboarding/welcome
+  }
+
   // ── 3. Check daily state ──────────────────────────────────────────────────
   const savedState = loadGameState();
   const hasSavedDaily = savedState && savedState.puzzleId === dailyPuzzle.id;
@@ -397,6 +405,55 @@ async function startGameSession(puzzle, mode, puzzlesData) {
   // ── 2. Create Three.js scene ──────────────────────────────────────────────
   const canvas = document.getElementById('game-canvas');
   const { scene, camera, renderer, shelfGroup } = createScene(canvas);
+
+  // ── Vibe Jam 2026 portals ────────────────────────────────────────────────
+  const activePortals = [];
+
+  // Exit portal (green) — always present, links to Vibe Jam 2026
+  const exitPortal = createExitPortal(scene);
+  exitPortal.url = 'https://vibejam.cc/portal/2026?portal=true&ref=game.vhsgarage.com&username=clerk';
+  activePortals.push(exitPortal);
+
+  // Return portal (red/pink) — only if ?ref= is present in the URL
+  const gameUrlParams = new URLSearchParams(window.location.search);
+  const refUrl = gameUrlParams.get('ref');
+  if (refUrl) {
+    const returnPortal = createReturnPortal(scene);
+    // Build the return URL: use the ref value, forward portal param
+    const returnHref = refUrl.startsWith('http') ? refUrl : `https://${refUrl}`;
+    returnPortal.url = `${returnHref}?portal=true`;
+    activePortals.push(returnPortal);
+  }
+
+  // Portal click detection via raycaster
+  const portalRaycaster = new THREE.Raycaster();
+  const portalPointer = new THREE.Vector2();
+
+  function onPortalClick(e) {
+    const clientX = e.clientX ?? e.changedTouches?.[0]?.clientX;
+    const clientY = e.clientY ?? e.changedTouches?.[0]?.clientY;
+    if (clientX === undefined) return;
+
+    const rect = renderer.domElement.getBoundingClientRect();
+    portalPointer.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+    portalPointer.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+
+    portalRaycaster.setFromCamera(portalPointer, camera);
+
+    for (const portal of activePortals) {
+      const meshes = [];
+      portal.group.traverse((child) => {
+        if (child.isMesh) meshes.push(child);
+      });
+      const hits = portalRaycaster.intersectObjects(meshes, false);
+      if (hits.length > 0) {
+        window.location.href = portal.url;
+        return;
+      }
+    }
+  }
+
+  renderer.domElement.addEventListener('click', onPortalClick);
 
   // ── 3. Create HUD ─────────────────────────────────────────────────────────
   createHUD();
@@ -1263,6 +1320,11 @@ async function startGameSession(puzzle, mode, puzzlesData) {
 
       for (const box of unsolvedBoxes) {
         applyIdleWobble(box, time);
+      }
+
+      // Animate Vibe Jam portals
+      for (const portal of activePortals) {
+        portal.animate(time);
       }
 
       // Update radio spectrograph visualization

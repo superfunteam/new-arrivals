@@ -249,3 +249,167 @@ export function getRowPositions(shelfGroup) {
 export function getShelfWidth(shelfGroup) {
   return shelfGroup.userData.shelfWidth;
 }
+
+// ---------------------------------------------------------------------------
+// Vibe Jam 2026 Portal System
+// ---------------------------------------------------------------------------
+
+/**
+ * Create a canvas texture with a text label for the portal.
+ */
+function createPortalLabel(text, color) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256;
+  canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, 256, 64);
+  ctx.font = 'bold 22px monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = color;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 12;
+  ctx.fillText(text, 128, 32);
+  // Double pass for stronger glow
+  ctx.fillText(text, 128, 32);
+  return new THREE.CanvasTexture(canvas);
+}
+
+/**
+ * Build a portal group (torus ring + inner disc + particles + label).
+ * @param {object} opts
+ * @param {number} opts.color - hex color (e.g. 0x00ff00)
+ * @param {string} opts.label - text label above the portal
+ * @param {THREE.Vector3} opts.position - world position
+ * @returns {{ group: THREE.Group, animate: (time: number) => void }}
+ */
+function buildPortal({ color, label, position }) {
+  const group = new THREE.Group();
+  group.position.copy(position);
+
+  // -- Torus ring --
+  const torusGeo = new THREE.TorusGeometry(0.6, 0.08, 16, 48);
+  const torusMat = new THREE.MeshStandardMaterial({
+    color,
+    emissive: color,
+    emissiveIntensity: 0.8,
+    transparent: true,
+    opacity: 0.9,
+    roughness: 0.3,
+    metalness: 0.6,
+  });
+  const torus = new THREE.Mesh(torusGeo, torusMat);
+  group.add(torus);
+
+  // -- Inner glowing disc --
+  const discGeo = new THREE.CircleGeometry(0.5, 32);
+  const discMat = new THREE.MeshBasicMaterial({
+    color,
+    transparent: true,
+    opacity: 0.25,
+    side: THREE.DoubleSide,
+  });
+  const disc = new THREE.Mesh(discGeo, discMat);
+  group.add(disc);
+
+  // -- Point light for local glow --
+  const glow = new THREE.PointLight(color, 0.6, 3);
+  glow.position.set(0, 0, 0.2);
+  group.add(glow);
+
+  // -- Particles orbiting the ring --
+  const particleCount = 200;
+  const positions = new Float32Array(particleCount * 3);
+  for (let i = 0; i < particleCount; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const r = 0.5 + Math.random() * 0.25;
+    positions[i * 3] = Math.cos(angle) * r;
+    positions[i * 3 + 1] = Math.sin(angle) * r;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 0.15;
+  }
+  const particleGeo = new THREE.BufferGeometry();
+  particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const particleMat = new THREE.PointsMaterial({
+    color,
+    size: 0.03,
+    transparent: true,
+    opacity: 0.7,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  });
+  const particles = new THREE.Points(particleGeo, particleMat);
+  group.add(particles);
+
+  // -- Label above the portal --
+  const labelTex = createPortalLabel(label, '#' + new THREE.Color(color).getHexString());
+  const labelGeo = new THREE.PlaneGeometry(1.5, 0.25);
+  const labelMat = new THREE.MeshBasicMaterial({
+    map: labelTex,
+    transparent: true,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+  });
+  const labelMesh = new THREE.Mesh(labelGeo, labelMat);
+  labelMesh.position.set(0, 0.9, 0);
+  group.add(labelMesh);
+
+  // Tag all meshes in the group so raycasting can identify portal clicks
+  group.traverse((child) => {
+    if (child.isMesh || child.isPoints) {
+      child.userData.isPortal = true;
+      child.userData.portalGroup = group;
+    }
+  });
+
+  // -- Animate function (call each frame with elapsed time) --
+  function animate(time) {
+    torus.rotation.z = time * 0.5;
+    torus.rotation.x = Math.sin(time * 0.3) * 0.15;
+
+    // Drift particles
+    const posArr = particleGeo.attributes.position.array;
+    for (let i = 0; i < particleCount; i++) {
+      const angle = time * 0.4 + i * 0.031;
+      const r = 0.5 + Math.sin(time + i) * 0.12;
+      posArr[i * 3] = Math.cos(angle) * r;
+      posArr[i * 3 + 1] = Math.sin(angle) * r;
+    }
+    particleGeo.attributes.position.needsUpdate = true;
+
+    // Pulse the inner disc opacity
+    discMat.opacity = 0.2 + Math.sin(time * 2) * 0.1;
+
+    // Pulse glow intensity
+    glow.intensity = 0.5 + Math.sin(time * 3) * 0.2;
+  }
+
+  return { group, animate };
+}
+
+/**
+ * Create the exit portal (green) near the right neighbor shelf.
+ * Always visible. Links to Vibe Jam 2026.
+ */
+export function createExitPortal(scene) {
+  const portal = buildPortal({
+    color: 0x00ff00,
+    label: 'VIBE JAM PORTAL',
+    position: new THREE.Vector3(5.5, 0.5, -0.5),
+  });
+  scene.add(portal.group);
+  return portal;
+}
+
+/**
+ * Create the return portal (red/pink) near the left neighbor shelf.
+ * Only shown when ?ref= is present. Links back to the referring game.
+ */
+export function createReturnPortal(scene) {
+  const portal = buildPortal({
+    color: 0xff4488,
+    label: 'RETURN PORTAL',
+    position: new THREE.Vector3(-5.5, 0.5, -0.5),
+  });
+  scene.add(portal.group);
+  return portal;
+}
