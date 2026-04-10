@@ -103,7 +103,66 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
     const box = getIntersectedBox(x, y);
     if (box && box.userData.state !== 'locked' && box.userData.state !== 'grayed') {
       callbacks.onTap?.(box);
+    } else if (!box) {
+      // No tape hit — check if click is on the edge to peek at side shelves
+      const rect = renderer.domElement.getBoundingClientRect();
+      const normX = (x - rect.left) / rect.width;
+      const edgeZone = 0.15; // 15% of screen width on each side
+      if (normX < edgeZone || normX > (1 - edgeZone)) {
+        peekAtShelf(normX < 0.5 ? 'left' : 'right');
+      }
     }
+  }
+
+  // Desktop: temporarily pan camera to show side shelf
+  let peekActive = false;
+  let peekRaf = null;
+
+  function peekAtShelf(direction) {
+    if (peekActive || interactionLocked) return;
+    peekActive = true;
+
+    const startX = camera.position.x;
+    const startY = camera.position.y;
+    const peekX = direction === 'right' ? 3.5 : -3.5;
+    const startTime = performance.now();
+    const panDuration = 400;
+    const holdDuration = 2000;
+    const returnDuration = 400;
+    const totalDuration = panDuration + holdDuration + returnDuration;
+
+    // Hide solved labels during peek
+    const hud = document.getElementById('hud');
+    if (hud) hud.classList.add('hud-pinch-mode');
+
+    function step(now) {
+      const elapsed = now - startTime;
+
+      if (elapsed < panDuration) {
+        // Pan out
+        const t = elapsed / panDuration;
+        const e = 1 - Math.pow(1 - t, 3);
+        camera.position.x = startX + (peekX - startX) * e;
+      } else if (elapsed < panDuration + holdDuration) {
+        // Hold
+        camera.position.x = peekX;
+      } else if (elapsed < totalDuration) {
+        // Return
+        const t = (elapsed - panDuration - holdDuration) / returnDuration;
+        const e = 1 - Math.pow(1 - t, 3);
+        camera.position.x = peekX + (startX - peekX) * e;
+      } else {
+        camera.position.x = startX;
+        camera.position.y = startY;
+        peekActive = false;
+        if (hud) hud.classList.remove('hud-pinch-mode');
+        return;
+      }
+
+      peekRaf = requestAnimationFrame(step);
+    }
+
+    peekRaf = requestAnimationFrame(step);
   }
 
   // ── Pinch-to-zoom (map-native: world point under pinch stays fixed) ──
