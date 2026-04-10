@@ -896,7 +896,7 @@ export function showLightbox(movie, options = {}) {
   // Uncover button (swaps the 3D box texture in real-time)
   const uncoverBtnHtml = uncovered
     ? ''
-    : `<button class="lightbox-btn uncover" id="lightbox-uncover"${isUncoverDisabled ? ' disabled' : ''}>Uncover Poster — $1</button>`;
+    : `<button class="lightbox-btn uncover" id="lightbox-uncover"${isUncoverDisabled ? ' disabled' : ''}>Unlock HD — $1</button>`;
 
   overlay.innerHTML = `
     <div class="lightbox" id="lightbox-inner">
