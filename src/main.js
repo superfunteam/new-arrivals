@@ -411,7 +411,19 @@ async function startGameSession(puzzle, mode, puzzlesData) {
 
   // Exit portal (green) — always present, links to Vibe Jam 2026
   const exitPortal = createExitPortal(scene);
-  exitPortal.url = 'https://vibejam.cc/portal/2026?portal=true&ref=game.vhsgarage.com';
+  exitPortal.getUrl = () => {
+    const hp = Math.max(0, Math.min(100, 100 - Math.max(0, 20 - (game?.wage ?? 25)) * 2));
+    const params = new URLSearchParams({
+      portal: 'true',
+      ref: 'game.vhsgarage.com',
+      username: 'Video Clerk',
+      color: 'FF6B9D',
+      hp: String(hp),
+      team: 'New Arrivals Video',
+      avatar_url: 'https://game.vhsgarage.com/avatar.png',
+    });
+    return `https://vibejam.cc/portal/2026?${params.toString()}`;
+  };
   activePortals.push(exitPortal);
 
   // Return portal (red/pink) — only if ?ref= is present in the URL
@@ -447,7 +459,7 @@ async function startGameSession(puzzle, mode, puzzlesData) {
       });
       const hits = portalRaycaster.intersectObjects(meshes, false);
       if (hits.length > 0) {
-        window.location.href = portal.url;
+        window.location.href = portal.getUrl ? portal.getUrl() : portal.url;
         return;
       }
     }
