@@ -411,7 +411,7 @@ async function startGameSession(puzzle, mode, puzzlesData) {
 
   // Exit portal (green) — always present, links to Vibe Jam 2026
   const exitPortal = createExitPortal(scene);
-  exitPortal.url = 'https://vibejam.cc/portal/2026?portal=true&ref=game.vhsgarage.com&username=clerk';
+  exitPortal.url = 'https://vibejam.cc/portal/2026?portal=true&ref=game.vhsgarage.com';
   activePortals.push(exitPortal);
 
   // Return portal (red/pink) — only if ?ref= is present in the URL
