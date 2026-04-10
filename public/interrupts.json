@@ -2621,5 +2621,1531 @@
       "dialogue": "My ex tried to impress me by renting Watership Down for date night. Thought it was a cute bunny movie. We broke up halfway through.",
       "dismissLabel": "Understandable"
     }
+  ],
+  "monday-morning-rewind": [
+    {
+      "type": "trivia",
+      "character": "Businessman",
+      "sprite": "businessman",
+      "folder": "Businessman",
+      "dialogue": "Quick quiz before I head to the office -- who directed Training Day?",
+      "answers": [
+        "Spike Lee",
+        "Antoine Fuqua",
+        "John Singleton",
+        "F. Gary Gray"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "Dear, I remember that courtroom movie with Joe Pesci... My Cousin Vinny. What state was it set in?",
+      "answers": [
+        "Georgia",
+        "Mississippi",
+        "Alabama",
+        "Louisiana"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "folder": "Goblin Kid",
+      "dialogue": "I HEARD THEY MADE ROCKY FOR LIKE NO MONEY!! HOW MANY DAYS DID THEY SHOOT IT IN??",
+      "answers": [
+        "28 days",
+        "60 days",
+        "45 days",
+        "14 days"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Woman",
+      "sprite": "blonde_woman",
+      "folder": "Blonde Woman",
+      "dialogue": "Denzel Washington won his first Oscar for Glory, right? What branch of the military was his character in?",
+      "answers": [
+        "Navy",
+        "Marines",
+        "Air Force",
+        "Army"
+      ],
+      "correct": 3
+    },
+    {
+      "type": "hint",
+      "character": "Knight",
+      "sprite": "knight",
+      "folder": "Knight",
+      "dialogue": "I seek films where the accused stand before the tribunal! Gavels striking, objections sustained, justice hanging in the balance!",
+      "hintCategory": "Courtroom Drama",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "You know them movies where nobody in the cast was famous yet? Like, you watch 'em now and go 'oh THAT'S who that is!'",
+      "hintCategory": "Entire Cast Was Unknown at the Time",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Ninja",
+      "sprite": "ninja",
+      "folder": "Ninja",
+      "dialogue": "There are films crafted under impossible constraints... shot in haste, completed before the moon could cycle. Speed creates its own power.",
+      "hintCategory": "Film Shot in Under 30 Days",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Chef",
+      "sprite": "chef",
+      "folder": "Chef",
+      "dialogue": "Some guy returned Philadelphia on a Monday morning and wrote 'This movie changed my life' on a napkin tucked inside the case. I laminated it. It's on the wall by the register.",
+      "dismiss": "Wholesome"
+    },
+    {
+      "type": "story",
+      "character": "Punk Kid Boy",
+      "sprite": "punk_kid_boy",
+      "folder": "Punk Kid Boy",
+      "dialogue": "Dude my older brother said Dazed and Confused is basically a documentary about what high school was ACTUALLY like in the 70s. He wasn't even born in the 70s though so like... sus.",
+      "dismiss": "Alright alright alright"
+    },
+    {
+      "type": "story",
+      "character": "Viking Woman",
+      "sprite": "viking_woman",
+      "folder": "Viking Woman",
+      "dialogue": "Every Monday morning the same guy comes in and rents The Warriors. Every single Monday. Says it motivates him for the week. Whatever works, I guess.",
+      "dismiss": "Can you dig it?"
+    }
+  ],
+  "two-for-tuesday": [
+    {
+      "type": "trivia",
+      "character": "Policeman",
+      "sprite": "policeman",
+      "folder": "Policeman",
+      "dialogue": "Big Connery fan here. In The Hunt for Red October, what nationality is his character?",
+      "answers": [
+        "British",
+        "American",
+        "Russian",
+        "Lithuanian"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Man",
+      "sprite": "blonde_man",
+      "folder": "Blonde Man",
+      "dialogue": "My buddy says Reservoir Dogs has no actual heist scene in it. Is that true?",
+      "answers": [
+        "False, there's a brief one",
+        "True, you never see it",
+        "False, it's the opening scene",
+        "True, but there's a flashback"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Knight Kid",
+      "sprite": "knight_kid",
+      "folder": "Knight Kid",
+      "dialogue": "MY DAD SAYS THEY ACTUALLY ESCAPED FROM ALCATRAZ FOR REAL!! HOW MANY GUYS ESCAPED IN THE MOVIE??",
+      "answers": [
+        "Two",
+        "Four",
+        "Three",
+        "Five"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Old Man",
+      "sprite": "old_man",
+      "folder": "Old Man",
+      "dialogue": "That Paul Newman picture, The Sting... what card game do they play in the big con?",
+      "answers": [
+        "Blackjack",
+        "Poker",
+        "Rummy",
+        "Baccarat"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "hint",
+      "character": "Bride",
+      "sprite": "bride",
+      "folder": "Bride",
+      "dialogue": "Looking for films where somebody plans the perfect crime. You know, masks, vaults, getaway drivers, the whole nine yards.",
+      "hintCategory": "Heist Movie",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Blue Haired Woman",
+      "sprite": "blue_haired_woman",
+      "folder": "Blue Haired Woman",
+      "dialogue": "I want movies where the ending you saw in theaters was NOT what the director wanted. Studios meddling, test audiences panicking, that whole mess.",
+      "hintCategory": "Studio Forced a Different Ending",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Firefighter",
+      "sprite": "firefighter",
+      "folder": "Firefighter",
+      "dialogue": "Got a thing for movies set behind bars. You know, prison walls, guards, escape plans. The whole lockdown vibe.",
+      "hintCategory": "Set in a Prison",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "sprite": "joker",
+      "folder": "Joker",
+      "dialogue": "Two-for-Tuesday! Know what else comes in twos? The number of brain cells I have left after watching Highlander three times in a row. THERE CAN BE ONLY ONE... brain cell!",
+      "dismiss": "That's enough"
+    },
+    {
+      "type": "story",
+      "character": "Viking Man",
+      "sprite": "viking_man",
+      "folder": "Viking Man",
+      "dialogue": "A MAN RETURNED THE GREEN MILE LAST TUESDAY AND HIS EYES WERE RED AS BERRIES. HE SAID 'IT'S JUST ALLERGIES.' WE ALL KNEW. WE ALL KNEW.",
+      "dismiss": "We all knew"
+    },
+    {
+      "type": "story",
+      "character": "Punk Woman",
+      "sprite": "punk_woman",
+      "folder": "Punk Woman",
+      "dialogue": "Some guy tried to haggle the two-for-Tuesday deal down to 'free-for-Tuesday.' Manager just stared at him for like thirty seconds straight. He left without a tape.",
+      "dismiss": "Bold strategy"
+    }
+  ],
+  "midweek-madness": [
+    {
+      "type": "trivia",
+      "character": "Firefighter",
+      "sprite": "firefighter",
+      "folder": "Firefighter",
+      "dialogue": "Buddy cop question -- in Rush Hour, what precious artifact gets stolen from the Chinese consulate?",
+      "answers": [
+        "A jade dragon",
+        "A gold Buddha",
+        "A Shaolin sword",
+        "A Han Dynasty vase"
+      ],
+      "correct": 3
+    },
+    {
+      "type": "trivia",
+      "character": "Old Man",
+      "sprite": "old_man",
+      "folder": "Old Man",
+      "dialogue": "I saw The French Connection when it first came out. Gene Hackman chases a train in what city?",
+      "answers": [
+        "Chicago",
+        "New York City",
+        "Philadelphia",
+        "Boston"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Blue Haired Kid Girl",
+      "sprite": "blue_haired_kid_girl",
+      "folder": "Blue Haired Kid Girl",
+      "dialogue": "MY COUSIN SAID LAST ACTION HERO FLOPPED BECAUSE IT OPENED AGAINST WHAT MOVIE?? Something about dinosaurs??",
+      "answers": [
+        "The Flintstones",
+        "Jurassic Park",
+        "Congo",
+        "Baby's Day Out"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Man",
+      "sprite": "punk_man",
+      "folder": "Punk Man",
+      "dialogue": "Wes Craven's New Nightmare -- who plays herself in the movie, the actress from the original Elm Street?",
+      "answers": [
+        "Jamie Lee Curtis",
+        "Neve Campbell",
+        "Heather Langenkamp",
+        "Sigourney Weaver"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "hint",
+      "character": "Blonde Kid Girl",
+      "sprite": "blonde_kid_girl",
+      "folder": "Blonde Kid Girl",
+      "dialogue": "I WANT THE MOVIES WHERE THERE'S A COP AND ANOTHER COP AND THEY DON'T LIKE EACH OTHER BUT THEN THEY'RE BEST FRIENDS!! THOSE ONES!!",
+      "hintCategory": "Buddy Cop Movie",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Chef",
+      "sprite": "chef",
+      "folder": "Chef",
+      "dialogue": "I enjoy films where the characters are watching a film within the film. It's like a cinematic turducken, non?",
+      "hintCategory": "Movie Within a Movie",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Businessman",
+      "sprite": "businessman",
+      "folder": "Businessman",
+      "dialogue": "I appreciate when actors put their bodies on the line. None of this CGI nonsense -- real stunts, real danger, real commitment.",
+      "hintCategory": "Lead Actor Did Their Own Dangerous Stunts",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "folder": "Goblin Kid",
+      "dialogue": "WEDNESDAY IS THE BEST DAY BECAUSE NOBODY'S HERE AND I CAN JUST SIT IN THE ACTION AISLE AND READ ALL THE VHS BOXES WITHOUT ANYONE TELLING ME TO STOP!!",
+      "dismiss": "Carry on"
+    },
+    {
+      "type": "story",
+      "character": "Bride",
+      "sprite": "bride",
+      "folder": "Bride",
+      "dialogue": "My wedding's Saturday and my fiancé is in here renting Bad Boys instead of picking up the cake. If I end up on the evening news, you saw nothing.",
+      "dismiss": "I saw nothing"
+    },
+    {
+      "type": "story",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "Midweek is when the good tapes come back, dearie. All the weekend warriors return their rentals and suddenly the shelves are full again. It's like Christmas morning.",
+      "dismiss": "Happy hunting"
+    }
+  ],
+  "throwback-thursday": [
+    {
+      "type": "trivia",
+      "character": "Viking Woman",
+      "sprite": "viking_woman",
+      "folder": "Viking Woman",
+      "dialogue": "John Travolta in Pulp Fiction -- what does he order at Jack Rabbit Slim's?",
+      "answers": [
+        "A Big Kahuna Burger",
+        "A $5 milkshake",
+        "A Royale with Cheese",
+        "A vanilla Coke"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "I watched Twister about fifty times. What scale do they use to rate the tornadoes?",
+      "answers": [
+        "Saffir-Simpson",
+        "Richter",
+        "Beaufort",
+        "Fujita"
+      ],
+      "correct": 3
+    },
+    {
+      "type": "trivia",
+      "character": "Ninja",
+      "sprite": "ninja",
+      "folder": "Ninja",
+      "dialogue": "In Chinatown, the detective played by Jack Nicholson has his nose sliced. Who wields the blade?",
+      "answers": [
+        "John Huston's character",
+        "Faye Dunaway's character",
+        "Roman Polanski in a cameo",
+        "An unnamed thug"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Woman",
+      "sprite": "blonde_woman",
+      "folder": "Blonde Woman",
+      "dialogue": "Michael J. Fox was NOT the first choice for Back to the Future. Who originally started filming as Marty McFly?",
+      "answers": [
+        "Eric Stoltz",
+        "John Cusack",
+        "Ralph Macchio",
+        "Rob Lowe"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Old Man",
+      "sprite": "old_man",
+      "folder": "Old Man",
+      "dialogue": "Looking for those big catastrophe pictures -- buildings falling, tidal waves, planes crashing. The bigger the destruction, the better.",
+      "hintCategory": "Disaster Movie",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Punk Kid Boy",
+      "sprite": "punk_kid_boy",
+      "folder": "Punk Kid Boy",
+      "dialogue": "Yo, I want movies set in L.A. -- like palm trees, highways, the Hollywood sign, all that California stuff.",
+      "hintCategory": "Set in Los Angeles",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Knight",
+      "sprite": "knight",
+      "folder": "Knight",
+      "dialogue": "I am curious about films where the hero we see was NOT the hero first chosen. A different warrior was meant to bear the mantle!",
+      "hintCategory": "Lead Actor Was Not the First Choice",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Policeman",
+      "sprite": "policeman",
+      "folder": "Policeman",
+      "dialogue": "Every Thursday some guy comes in wearing bell-bottoms and a butterfly collar asking for Saturday Night Fever. He dances out the door with it. Every. Single. Thursday.",
+      "dismiss": "Stayin' alive"
+    },
+    {
+      "type": "story",
+      "character": "Chef",
+      "sprite": "chef",
+      "folder": "Chef",
+      "dialogue": "A customer asked me to recommend a 'throwback' movie. I said Chinatown. He said he meant something from the 90s. I have never felt so old in my entire life.",
+      "dismiss": "Time is cruel"
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "sprite": "joker",
+      "folder": "Joker",
+      "dialogue": "Throwback Thursday? More like THROW BACK this tape that's been rewound so many times the picture looks like a Monet painting! Ha! Art jokes! I'm branching out!",
+      "dismiss": "Please don't"
+    }
+  ],
+  "friday-night-fever": [
+    {
+      "type": "trivia",
+      "character": "Punk Woman",
+      "sprite": "punk_woman",
+      "folder": "Punk Woman",
+      "dialogue": "Bruce Willis in The Fifth Element -- what's the name of the supreme being he has to protect?",
+      "answers": [
+        "Diva",
+        "Leeloo",
+        "Ruby",
+        "Zorg"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Viking Man",
+      "sprite": "viking_man",
+      "folder": "Viking Man",
+      "dialogue": "IN DIRTY DANCING, WHAT IS THE FAMOUS LINE PATRICK SWAYZE SAYS? ABOUT BABY AND A CORNER?",
+      "answers": [
+        "\"Baby doesn't belong in a corner\"",
+        "\"Don't put Baby in a corner\"",
+        "\"Nobody puts Baby in a corner\"",
+        "\"You can't put Baby in a corner\""
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Blue Haired Woman",
+      "sprite": "blue_haired_woman",
+      "folder": "Blue Haired Woman",
+      "dialogue": "Das Boot is set during which war?",
+      "answers": [
+        "World War I",
+        "The Cold War",
+        "World War II",
+        "The Korean War"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "folder": "Goblin Kid",
+      "dialogue": "DIE HARD 2 IS SET IN AN AIRPORT RIGHT?? WHICH AIRPORT IS IT??",
+      "answers": [
+        "LAX",
+        "JFK",
+        "O'Hare",
+        "Dulles"
+      ],
+      "correct": 3
+    },
+    {
+      "type": "hint",
+      "character": "Bride",
+      "sprite": "bride",
+      "folder": "Bride",
+      "dialogue": "Friday night and I want to DANCE. Give me movies with big dance scenes -- disco, ballroom, whatever, just get me moving.",
+      "hintCategory": "Dance Movie",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "I like movies set on the water. Submarines, cruise ships, sailboats -- anything where you're stuck on a vessel with nowhere to go.",
+      "hintCategory": "Set on a Boat or Ship",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "Dearie, I've heard tell of films where they built a REAL working car or machine just for the picture. Not those computer tricks -- actual contraptions!",
+      "hintCategory": "Prop Master Built a Fully Functional Vehicle",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Firefighter",
+      "sprite": "firefighter",
+      "folder": "Firefighter",
+      "dialogue": "Friday nights in here are CHAOS. Last week two teenagers got into a tug-of-war over the last copy of Die Hard with a Vengeance. The tape didn't survive. Neither did their dignity.",
+      "dismiss": "Rest in peace"
+    },
+    {
+      "type": "story",
+      "character": "Blonde Man",
+      "sprite": "blonde_man",
+      "folder": "Blonde Man",
+      "dialogue": "Every Friday my wife rents Dirty Dancing and I rent an action movie. We compromise by watching Dirty Dancing. Every. Single. Friday.",
+      "dismiss": "Happy wife"
+    },
+    {
+      "type": "story",
+      "character": "Punk Man",
+      "sprite": "punk_man",
+      "folder": "Punk Man",
+      "dialogue": "Some dude came in asking for 'that submarine movie where everyone speaks German.' I said Das Boot. He said 'No, I think it was in English.' Sir, the TITLE is German.",
+      "dismiss": "Achtung"
+    }
+  ],
+  "saturday-matinee": [
+    {
+      "type": "trivia",
+      "character": "Blonde Kid Girl",
+      "sprite": "blonde_kid_girl",
+      "folder": "Blonde Kid Girl",
+      "dialogue": "MY MOM RENTED TEEN WOLF AND IT HAS THAT GUY FROM BACK TO THE FUTURE!! What sport does he play in it??",
+      "answers": [
+        "Football",
+        "Baseball",
+        "Basketball",
+        "Soccer"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Businessman",
+      "sprite": "businessman",
+      "folder": "Businessman",
+      "dialogue": "Enter the Dragon is considered Bruce Lee's masterpiece. What island is the tournament held on?",
+      "answers": [
+        "A private island owned by Han",
+        "Hong Kong Island",
+        "Skull Island",
+        "Okinawa"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "That Clockwork Orange film was quite shocking, dear. What was the main character's name?",
+      "answers": [
+        "Malcolm",
+        "Georgie",
+        "Dim",
+        "Alex"
+      ],
+      "correct": 3
+    },
+    {
+      "type": "trivia",
+      "character": "Viking Kid Boy",
+      "sprite": "viking_kid_boy",
+      "folder": "Viking Kid Boy",
+      "dialogue": "THE BLUES BROTHERS MOVIE HAS THE BIGGEST CAR CHASE EVER!! HOW MANY CARS DID THEY WRECK??",
+      "answers": [
+        "About 60",
+        "Over 100",
+        "About 30",
+        "Over 200"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "hint",
+      "character": "Ninja",
+      "sprite": "ninja",
+      "folder": "Ninja",
+      "dialogue": "I seek films of combat discipline. Kicks and strikes, dojos and tournaments, the ancient arts of hand-to-hand warfare on screen.",
+      "hintCategory": "Martial Arts Movie",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Policeman",
+      "sprite": "policeman",
+      "folder": "Policeman",
+      "dialogue": "I've heard some movies had to be cut down from an X rating or NC-17. Pushed the limits so far the ratings board freaked out.",
+      "hintCategory": "Originally Rated X / NC-17",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Blue Haired Woman",
+      "sprite": "blue_haired_woman",
+      "folder": "Blue Haired Woman",
+      "dialogue": "I read somewhere that for certain movies they actually DEMOLISHED a real building for the shot. Not a set -- a real structure. Insane commitment.",
+      "hintCategory": "A Real Building Was Demolished for Filming",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Knight",
+      "sprite": "knight",
+      "folder": "Knight",
+      "dialogue": "On Saturday mornings the store fills with younglings seeking animated tales. I too once sought such tales. Now I seek only honor. And also RoboCop.",
+      "dismiss": "Noble quest"
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "sprite": "joker",
+      "folder": "Joker",
+      "dialogue": "Saturday matinee! When I was a kid we'd sneak into the second showing by hiding in the bathroom. Now I just rent VHS tapes like a law-abiding clown. Character growth!",
+      "dismiss": "Proud of you"
+    },
+    {
+      "type": "story",
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "My boy wants to rent Kickboxer for his birthday party. He's seven. I told him we're watching The Secret of My Success instead. He's not speaking to me.",
+      "dismiss": "Fair parenting"
+    }
+  ],
+  "sunday-slow-burn": [
+    {
+      "type": "trivia",
+      "character": "Punk Woman",
+      "sprite": "punk_woman",
+      "folder": "Punk Woman",
+      "dialogue": "Robert De Niro in Raging Bull -- he gained how much weight for the older version of Jake LaMotta?",
+      "answers": [
+        "About 30 pounds",
+        "About 60 pounds",
+        "About 40 pounds",
+        "About 80 pounds"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Chef",
+      "sprite": "chef",
+      "folder": "Chef",
+      "dialogue": "L.A. Confidential -- who plays the by-the-book detective Edmund Exley?",
+      "answers": [
+        "Kevin Spacey",
+        "Russell Crowe",
+        "Guy Pearce",
+        "Danny DeVito"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Knight Kid",
+      "sprite": "knight_kid",
+      "folder": "Knight Kid",
+      "dialogue": "MY DAD MADE ME WATCH APOCALYPSE NOW AND IT WAS SO LONG!! WHAT RIVER DO THEY GO UP IN THE MOVIE??",
+      "answers": [
+        "The Mekong",
+        "The Amazon",
+        "The Nung River",
+        "The Mississippi"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Man",
+      "sprite": "blonde_man",
+      "folder": "Blonde Man",
+      "dialogue": "The Usual Suspects -- what's the name of the legendary crime lord nobody believes is real?",
+      "answers": [
+        "Kaiser Permanente",
+        "Kobayashi",
+        "Keyser Soze",
+        "Dean Keaton"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "hint",
+      "character": "Old Man",
+      "sprite": "old_man",
+      "folder": "Old Man",
+      "dialogue": "I like those dark detective pictures. Femme fatales, neon signs in the rain, everybody smoking cigarettes and looking suspicious. The moody ones.",
+      "hintCategory": "Film Noir Revival",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Bride",
+      "sprite": "bride",
+      "folder": "Bride",
+      "dialogue": "I've heard some movies have a director's cut that's basically a completely different film. Like, different ending, different scenes, the works.",
+      "hintCategory": "Director's Cut Is Drastically Different",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Firefighter",
+      "sprite": "firefighter",
+      "folder": "Firefighter",
+      "dialogue": "I respect dedication. Some actors stayed in character for MONTHS -- off camera, at home, at restaurants. Total commitment.",
+      "hintCategory": "Actor Stayed in Character Off-Set for Months",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Viking Woman",
+      "sprite": "viking_woman",
+      "folder": "Viking Woman",
+      "dialogue": "Sunday is for slow movies. Spent all day watching Raging Bull and now I want to fight everyone in this store. That film does something to you.",
+      "dismiss": "Take it easy"
+    },
+    {
+      "type": "story",
+      "character": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "folder": "Goblin Kid",
+      "dialogue": "MY GRANDPA FELL ASLEEP WATCHING APOCALYPSE NOW AND WHEN THE HELICOPTER SCENE CAME ON HE WOKE UP AND THREW THE REMOTE AT THE TV. SUNDAYS ARE WILD AT OUR HOUSE.",
+      "dismiss": "The horror"
+    },
+    {
+      "type": "story",
+      "character": "Blonde Woman",
+      "sprite": "blonde_woman",
+      "folder": "Blonde Woman",
+      "dialogue": "I love a Sunday slow burn. Made a cup of tea, put on Body Heat, and just let the afternoon melt away. This is what weekends are for.",
+      "dismiss": "Self care"
+    }
+  ],
+  "the-clearance-rack": [
+    {
+      "type": "trivia",
+      "character": "Old Man",
+      "sprite": "old_man",
+      "folder": "Old Man",
+      "dialogue": "Keanu Reeves in Speed -- what speed does the bus have to stay above or it explodes?",
+      "answers": [
+        "60 mph",
+        "55 mph",
+        "50 mph",
+        "45 mph"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Kid Boy",
+      "sprite": "punk_kid_boy",
+      "folder": "Punk Kid Boy",
+      "dialogue": "Dude, in Bill and Ted's Excellent Adventure, what do they use to travel through time?",
+      "answers": [
+        "A DeLorean",
+        "A phone booth",
+        "A hot tub",
+        "A wardrobe"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Blue Haired Woman",
+      "sprite": "blue_haired_woman",
+      "folder": "Blue Haired Woman",
+      "dialogue": "Alien is famous for its tagline. What is it?",
+      "answers": [
+        "\"Be afraid. Be very afraid.\"",
+        "\"In space, no one can hear you scream.\"",
+        "\"Who will survive and what will be left of them?\"",
+        "\"The night he came home.\""
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "Tremors takes place in a tiny desert town. What's the name of it?",
+      "answers": [
+        "Perfection",
+        "Salvation",
+        "Redemption",
+        "Paradise"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Knight",
+      "sprite": "knight",
+      "folder": "Knight",
+      "dialogue": "I seek tales of survival against terrible beasts! Creatures that hunt in darkness, monsters with acid blood, things that burrow beneath the earth!",
+      "hintCategory": "Survival Horror",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Viking Kid Boy",
+      "sprite": "viking_kid_boy",
+      "folder": "Viking Kid Boy",
+      "dialogue": "MY BROTHER SAYS THERE ARE MOVIES WHERE THE BOX COVER IS COOLER THAN THE ACTUAL MOVIE!! LIKE THE PICTURE IS AWESOME BUT THE MOVIE STINKS!!",
+      "hintCategory": "Movie Poster is More Famous Than the Film",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Businessman",
+      "sprite": "businessman",
+      "folder": "Businessman",
+      "dialogue": "I read that some classic films didn't even have a finished script when cameras started rolling. They literally made it up as they went along.",
+      "hintCategory": "Script Was Rewritten During Filming",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Ninja",
+      "sprite": "ninja",
+      "folder": "Ninja",
+      "dialogue": "The clearance rack is where forgotten warriors go to rest. But sometimes... a customer rescues one. And it lives again. Mostly it's Gymkata though.",
+      "dismiss": "Rest well"
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "sprite": "joker",
+      "folder": "Joker",
+      "dialogue": "The clearance rack! Where dreams go to die for $1.99! I found a copy of Solarbabies there once and honestly? I overpaid!",
+      "dismiss": "Bargain bin truth"
+    },
+    {
+      "type": "story",
+      "character": "Policeman",
+      "sprite": "policeman",
+      "folder": "Policeman",
+      "dialogue": "Found a kid hiding behind the clearance rack eating candy he didn't pay for. When I confronted him he said 'You'll never take me alive' and ran. He was six.",
+      "dismiss": "APB issued"
+    }
+  ],
+  "back-of-the-store": [
+    {
+      "type": "trivia",
+      "character": "Punk Man",
+      "sprite": "punk_man",
+      "folder": "Punk Man",
+      "dialogue": "Tarantino's first film was Reservoir Dogs. What color name does Tim Roth's character go by?",
+      "answers": [
+        "Mr. Blonde",
+        "Mr. White",
+        "Mr. Pink",
+        "Mr. Orange"
+      ],
+      "correct": 3
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Woman",
+      "sprite": "blonde_woman",
+      "folder": "Blonde Woman",
+      "dialogue": "In The Crow, Brandon Lee tragically died during filming. What was his character's name?",
+      "answers": [
+        "Eric Draven",
+        "James O'Barr",
+        "Tin Tin",
+        "Top Dollar"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Viking Man",
+      "sprite": "viking_man",
+      "folder": "Viking Man",
+      "dialogue": "DEATH WISH! CHARLES BRONSON! What city does his character clean up?",
+      "answers": [
+        "Chicago",
+        "Los Angeles",
+        "Detroit",
+        "New York City"
+      ],
+      "correct": 3
+    },
+    {
+      "type": "trivia",
+      "character": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "folder": "Goblin Kid",
+      "dialogue": "THE WIZARD OF OZ IS LIKE A MILLION YEARS OLD!! WHAT COLOR ARE DOROTHY'S MAGIC SHOES??",
+      "answers": [
+        "Silver",
+        "Gold",
+        "Ruby red",
+        "Blue"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "hint",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "I'm looking for those revenge pictures, dearie. Someone gets wronged and they come back with a vengeance. Very satisfying.",
+      "hintCategory": "Revenge Thriller",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Ninja",
+      "sprite": "ninja",
+      "folder": "Ninja",
+      "dialogue": "Films set in the great city of steel and glass... the island of Manhattan, where warriors walk among millions.",
+      "hintCategory": "Set in New York City",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Firefighter",
+      "sprite": "firefighter",
+      "folder": "Firefighter",
+      "dialogue": "I've heard horror stories about movie sets where actors got seriously hurt. Not stunt doubles -- the actual stars. Dangerous business, filmmaking.",
+      "hintCategory": "An Actor Was Injured on Set",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Chef",
+      "sprite": "chef",
+      "folder": "Chef",
+      "dialogue": "Customer whispered to me: 'What's in the BACK of the store?' I said 'A mop closet and my lunch.' He looked so disappointed. What was he expecting?",
+      "dismiss": "The forbidden aisle"
+    },
+    {
+      "type": "story",
+      "character": "Bride",
+      "sprite": "bride",
+      "folder": "Bride",
+      "dialogue": "My fiancé found a bootleg copy of Kill Bill behind the store counter and tried to buy it. The manager said 'That's my personal copy.' They stared at each other for way too long.",
+      "dismiss": "Standoff"
+    },
+    {
+      "type": "story",
+      "character": "Blue Haired Kid Girl",
+      "sprite": "blue_haired_kid_girl",
+      "folder": "Blue Haired Kid Girl",
+      "dialogue": "THERE'S A SECTION IN THE BACK WITH A CURTAIN AND MY MOM WON'T LET ME GO IN THERE!! SHE SAYS IT'S FOR 'BORING ADULT MOVIES' BUT WHY IS THERE A CURTAIN THEN??",
+      "dismiss": "Ask your mother"
+    }
+  ],
+  "staff-picks": [
+    {
+      "type": "trivia",
+      "character": "Businessman",
+      "sprite": "businessman",
+      "folder": "Businessman",
+      "dialogue": "Scorsese and De Niro are a legendary duo. How many films did they make together?",
+      "answers": [
+        "Six",
+        "Nine",
+        "Twelve",
+        "Seven"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Old Man",
+      "sprite": "old_man",
+      "folder": "Old Man",
+      "dialogue": "All the President's Men is about Watergate. What newspaper do Woodward and Bernstein work for?",
+      "answers": [
+        "The New York Times",
+        "The Washington Post",
+        "The Los Angeles Times",
+        "The Chicago Tribune"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Knight Kid",
+      "sprite": "knight_kid",
+      "folder": "Knight Kid",
+      "dialogue": "IN JAWS THE SHARK POPS UP AND THE GUY SAYS THEY NEED A BIGGER SOMETHING!! BIGGER WHAT??",
+      "answers": [
+        "Net",
+        "Gun",
+        "Crew",
+        "Boat"
+      ],
+      "correct": 3
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Woman",
+      "sprite": "punk_woman",
+      "folder": "Punk Woman",
+      "dialogue": "Fargo by the Coen Brothers -- what state is it primarily set in?",
+      "answers": [
+        "Minnesota",
+        "North Dakota",
+        "Wisconsin",
+        "Montana"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Blonde Man",
+      "sprite": "blonde_man",
+      "folder": "Blonde Man",
+      "dialogue": "I'm into conspiracy stuff. Secret government programs, paranoid journalists, shadowy organizations pulling strings behind the scenes.",
+      "hintCategory": "Conspiracy Thriller",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Blue Haired Woman",
+      "sprite": "blue_haired_woman",
+      "folder": "Blue Haired Woman",
+      "dialogue": "Some movies just NAIL the opening scene. Like, the first five minutes are so good you could almost stop watching after that. Almost.",
+      "hintCategory": "Opening Scene Is the Best Scene",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Viking Woman",
+      "sprite": "viking_woman",
+      "folder": "Viking Woman",
+      "dialogue": "I appreciate a good eye behind the camera. There's one cinematographer whose name keeps popping up on every best-of list. Roger something?",
+      "hintCategory": "Shot by Roger Deakins",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "The staff picks shelf hasn't changed in three months. It's just whatever Todd likes. Todd likes Goodfellas. We all know Todd likes Goodfellas, Todd.",
+      "dismiss": "Classic Todd"
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "sprite": "joker",
+      "folder": "Joker",
+      "dialogue": "I put a staff pick sticker on every tape in the horror section. Manager made me peel them all off. Took four hours. Worth it for the look on his face!",
+      "dismiss": "Commitment"
+    },
+    {
+      "type": "story",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "The young man at the counter recommended The Manchurian Candidate. I told him I saw it in theaters in 1962. He looked at me like I was a time traveler. I suppose I am, in a way.",
+      "dismiss": "Living history"
+    }
+  ],
+  "cult-corner": [
+    {
+      "type": "trivia",
+      "character": "Punk Kid Boy",
+      "sprite": "punk_kid_boy",
+      "folder": "Punk Kid Boy",
+      "dialogue": "Dude, in 12 Monkeys, Bruce Willis gets sent back in time from what year?",
+      "answers": [
+        "2025",
+        "2035",
+        "2050",
+        "2030"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "An American Werewolf in London won the first-ever Oscar for Best Makeup. Who did the effects?",
+      "answers": [
+        "Tom Savini",
+        "Stan Winston",
+        "Rick Baker",
+        "Dick Smith"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Woman",
+      "sprite": "blonde_woman",
+      "folder": "Blonde Woman",
+      "dialogue": "Poltergeist -- who actually directed it? There's been a huge controversy about this.",
+      "answers": [
+        "Steven Spielberg",
+        "John Carpenter",
+        "Tobe Hooper",
+        "Joe Dante"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Blue Haired Kid Girl",
+      "sprite": "blue_haired_kid_girl",
+      "folder": "Blue Haired Kid Girl",
+      "dialogue": "SILVER BULLET IS BASED ON A STEPHEN KING BOOK RIGHT?? WHAT'S THE BOOK CALLED??",
+      "answers": [
+        "Silver Bullet",
+        "Cycle of the Werewolf",
+        "The Dark Half",
+        "Night Shift"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "hint",
+      "character": "Knight",
+      "sprite": "knight",
+      "folder": "Knight",
+      "dialogue": "I seek tales of temporal displacement! Heroes flung through the ages, paradoxes unraveling, timelines bending like a bow!",
+      "hintCategory": "Time Travel Movie",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "folder": "Goblin Kid",
+      "dialogue": "I WANT THE SHINY TAPES!! THE ONES WITH THE HOLOGRAM COVERS THAT CHANGE WHEN YOU TILT THEM!! THEY'RE SO COOL DO YOU HAVE ANY??",
+      "hintCategory": "VHS Cover Had a Lenticular or Holographic Sleeve",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Old Man",
+      "sprite": "old_man",
+      "folder": "Old Man",
+      "dialogue": "I heard some movies had the director fired halfway through and someone else had to finish it. Hollywood politics, I tell you.",
+      "hintCategory": "Director Was Fired and Replaced Mid-Shoot",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Ninja",
+      "sprite": "ninja",
+      "folder": "Ninja",
+      "dialogue": "The cult corner is sacred ground. Here, the misunderstood films find their people. I once met a man who had watched The Howling forty-seven times. He had achieved enlightenment.",
+      "dismiss": "Respect"
+    },
+    {
+      "type": "story",
+      "character": "Policeman",
+      "sprite": "policeman",
+      "folder": "Policeman",
+      "dialogue": "Got called to the store because someone was 'causing a disturbance' in the cult section. Turned out he was just loudly explaining why Tombstone is historically inaccurate. To nobody.",
+      "dismiss": "Case closed"
+    },
+    {
+      "type": "story",
+      "character": "Viking Woman",
+      "sprite": "viking_woman",
+      "folder": "Viking Woman",
+      "dialogue": "I spent three hours in the cult corner last Sunday and left with seven tapes. My husband asked if I joined a religion. Honestly? Closer to the truth than he thinks.",
+      "dismiss": "Welcome to the fold"
+    }
+  ],
+  "two-copies-left": [
+    {
+      "type": "trivia",
+      "character": "Bride",
+      "sprite": "bride",
+      "folder": "Bride",
+      "dialogue": "Jeff Goldblum in The Fly -- what does his character transform into?",
+      "answers": [
+        "A giant spider",
+        "A human-fly hybrid",
+        "A cockroach creature",
+        "A wasp-man"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Chef",
+      "sprite": "chef",
+      "folder": "Chef",
+      "dialogue": "Dawn of the Dead takes place almost entirely in what kind of building?",
+      "answers": [
+        "A hospital",
+        "A military base",
+        "A shopping mall",
+        "A farmhouse"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Viking Man",
+      "sprite": "viking_man",
+      "folder": "Viking Man",
+      "dialogue": "TOP GUN! KENNY LOGGINS! What is the name of that glorious song that plays during the volleyball scene?",
+      "answers": [
+        "\"Danger Zone\"",
+        "\"Playing with the Boys\"",
+        "\"Take My Breath Away\"",
+        "\"Highway to the Danger Zone\""
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Kid Girl",
+      "sprite": "blonde_kid_girl",
+      "folder": "Blonde Kid Girl",
+      "dialogue": "RE-ANIMATOR IS LIKE THE GROSSEST MOVIE EVER!! What does Herbert West use to bring people back to life??",
+      "answers": [
+        "A magic spell",
+        "Lightning",
+        "A glowing green serum",
+        "Ancient Egyptian scrolls"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "hint",
+      "character": "Punk Woman",
+      "sprite": "punk_woman",
+      "folder": "Punk Woman",
+      "dialogue": "Looking for zombie flicks. Not the fast ones from later -- the classic shambling undead. Romero and that whole crew.",
+      "hintCategory": "Zombie Movie",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Blonde Man",
+      "sprite": "blonde_man",
+      "folder": "Blonde Man",
+      "dialogue": "You know how some movie soundtracks sold more copies than the movie sold tickets? The music just took on a life of its own?",
+      "hintCategory": "Soundtrack Went Multi-Platinum",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "I heard the most disturbing thing, dearie -- that some older films used REAL human remains as props. Gives me the shivers just thinking about it.",
+      "hintCategory": "Used a Real Skeleton as a Prop",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Firefighter",
+      "sprite": "firefighter",
+      "folder": "Firefighter",
+      "dialogue": "TWO COPIES LEFT of Jurassic Park and there are THREE people eyeing it. This is about to become a situation. I can feel it. Where's my walkie-talkie.",
+      "dismiss": "Life finds a way"
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "sprite": "joker",
+      "folder": "Joker",
+      "dialogue": "Only two copies left! That's one more than the number of brain cells I use to pick movies! I just go by the cover art! That's how I ended up watching Re-Animator at age nine!",
+      "dismiss": "That explains a lot"
+    },
+    {
+      "type": "story",
+      "character": "Businessman",
+      "sprite": "businessman",
+      "folder": "Businessman",
+      "dialogue": "I drove to three different video stores looking for The Fly. This is the last one with copies. If they're both rented out I'm going to have a very public meltdown.",
+      "dismiss": "Deep breaths"
+    }
+  ],
+  "the-drop-box": [
+    {
+      "type": "trivia",
+      "character": "Old Man",
+      "sprite": "old_man",
+      "folder": "Old Man",
+      "dialogue": "Tim Burton's Beetlejuice -- how many times do you have to say his name to summon him?",
+      "answers": [
+        "Once",
+        "Twice",
+        "Three times",
+        "Five times"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "folder": "Goblin Kid",
+      "dialogue": "CHILD'S PLAY!! THE DOLL'S NAME IS CHUCKY BUT WHAT'S THE REAL NAME OF THE KILLER INSIDE HIM??",
+      "answers": [
+        "Charles Lee Ray",
+        "Robert Lee Harris",
+        "William Henry Boyd",
+        "James Earl Jones"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Blue Haired Woman",
+      "sprite": "blue_haired_woman",
+      "folder": "Blue Haired Woman",
+      "dialogue": "Tron was groundbreaking for its use of computer graphics. What year was it released?",
+      "answers": [
+        "1984",
+        "1980",
+        "1982",
+        "1986"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Man",
+      "sprite": "punk_man",
+      "folder": "Punk Man",
+      "dialogue": "Fast Times at Ridgemont High -- who played the legendary stoner Jeff Spicoli?",
+      "answers": [
+        "Nicolas Cage",
+        "Sean Penn",
+        "Eric Stoltz",
+        "Judge Reinhold"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "hint",
+      "character": "Bride",
+      "sprite": "bride",
+      "folder": "Bride",
+      "dialogue": "I love movies about cursed objects. Dolls that come alive, cars that kill people, videotapes that doom you -- that creepy 'don't touch that!' vibe.",
+      "hintCategory": "Haunted or Cursed Object",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Viking Kid Boy",
+      "sprite": "viking_kid_boy",
+      "folder": "Viking Kid Boy",
+      "dialogue": "I WANT MOVIES WHERE THEY'RE IN SCHOOL!! LIKE HIGH SCHOOL WITH LOCKERS AND CAFETERIAS AND STUFF!! BUT SCARY ONES TOO!!",
+      "hintCategory": "Set in a High School",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Businessman",
+      "sprite": "businessman",
+      "folder": "Businessman",
+      "dialogue": "I'm fascinated by films that literally invented new special effects technology. Where they had to create something that didn't exist to get the shot.",
+      "hintCategory": "Had to Create a New FX Technique for the Film",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Farmer",
+      "sprite": "farmer",
+      "folder": "Farmer",
+      "dialogue": "Someone dropped a tape in the drop box at 3 AM last night. The security camera showed them sprinting away like they were being chased. It was a copy of Christine. The car movie. Fitting.",
+      "dismiss": "She follows you home"
+    },
+    {
+      "type": "story",
+      "character": "Knight",
+      "sprite": "knight",
+      "folder": "Knight",
+      "dialogue": "The drop box is a noble invention. Return your tape under cover of darkness, no judgment, no eye contact. It is the knight's preferred method of return. Ask no questions.",
+      "dismiss": "Honorable"
+    },
+    {
+      "type": "story",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "Dearie, I found a half-eaten sandwich inside a returned VHS case once. The tape was Pee-wee's Big Adventure. I don't know what I expected, honestly.",
+      "dismiss": "On brand"
+    }
+  ],
+  "members-only": [
+    {
+      "type": "trivia",
+      "character": "Ninja",
+      "sprite": "ninja",
+      "folder": "Ninja",
+      "dialogue": "Al Pacino's famous line in Scarface -- what does he say about his little friend?",
+      "answers": [
+        "\"Meet my little friend\"",
+        "\"Introducing my little friend\"",
+        "\"Here's my little friend\"",
+        "\"Say hello to my little friend\""
+      ],
+      "correct": 3
+    },
+    {
+      "type": "trivia",
+      "character": "Chef",
+      "sprite": "chef",
+      "folder": "Chef",
+      "dialogue": "In Lawrence of Arabia, who plays the title character?",
+      "answers": [
+        "Richard Burton",
+        "Peter O'Toole",
+        "Omar Sharif",
+        "Anthony Quinn"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Kid Girl",
+      "sprite": "blonde_kid_girl",
+      "folder": "Blonde Kid Girl",
+      "dialogue": "THEY LIVE HAS THAT SCENE WHERE THE GUY PUTS ON SUNGLASSES AND SEES ALIENS!! WHO IS THE GUY??",
+      "answers": [
+        "Kurt Russell",
+        "Keith David",
+        "Roddy Piper",
+        "Dolph Lundgren"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Viking Woman",
+      "sprite": "viking_woman",
+      "folder": "Viking Woman",
+      "dialogue": "Amadeus won Best Picture. How many Oscars did it take home that night?",
+      "answers": [
+        "Six",
+        "Eight",
+        "Five",
+        "Eleven"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "hint",
+      "character": "Policeman",
+      "sprite": "policeman",
+      "folder": "Policeman",
+      "dialogue": "I'm looking for alien movies. Not the friendly kind -- the kind where they come to Earth and wreck everything.",
+      "hintCategory": "Alien Invasion",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Punk Kid Boy",
+      "sprite": "punk_kid_boy",
+      "folder": "Punk Kid Boy",
+      "dialogue": "Yo, I want desert movies. Like sand dunes, scorching heat, no water for miles. That Mad Max vibe.",
+      "hintCategory": "Set in a Desert",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Old Woman",
+      "sprite": "old_woman",
+      "folder": "Old Woman",
+      "dialogue": "Dearie, are there films that bombed at the picture house but somehow won the big award anyway? That seems backwards to me.",
+      "hintCategory": "Flopped Theatrically, Won Best Picture at the Oscars",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "sprite": "joker",
+      "folder": "Joker",
+      "dialogue": "Members only! That's what the bouncer said when I tried to get into the video store wearing my pajamas at 2 AM. Joke's on him -- I WAS a member! The pajamas were just... a choice.",
+      "dismiss": "A bold choice"
+    },
+    {
+      "type": "story",
+      "character": "Blonde Man",
+      "sprite": "blonde_man",
+      "folder": "Blonde Man",
+      "dialogue": "I've been a member here since 1987. My card is so worn you can barely read it. The clerk squints at it every time like I'm presenting a medieval artifact. Buddy, I was here before you were born.",
+      "dismiss": "OG member"
+    },
+    {
+      "type": "story",
+      "character": "Blue Haired Kid Girl",
+      "sprite": "blue_haired_kid_girl",
+      "folder": "Blue Haired Kid Girl",
+      "dialogue": "MY MOM'S MEMBERSHIP CARD HAS A GOLD STAR ON IT BECAUSE SHE'S RENTED OVER 500 MOVIES!! SHE SAYS IT'S NOT SOMETHING TO BRAG ABOUT BUT I THINK IT'S THE COOLEST THING EVER!!",
+      "dismiss": "Hall of fame"
+    }
   ]
 }
