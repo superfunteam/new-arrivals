@@ -135,10 +135,10 @@ html, body {
 }
 .hud-wage-label {
   display: block;
-  font-family: var(--font-body);
+  font-family: var(--font-display);
   font-size: 8px;
   color: rgba(255, 255, 255, 0.5);
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 .hud-shelve-row {
@@ -161,6 +161,7 @@ html, body {
   justify-content: space-between;
   align-items: flex-end;
   padding: 8px 16px;
+  padding-right: 184px; /* 168px jam badge + 16px gap */
   padding-bottom: max(8px, env(safe-area-inset-bottom));
 }
 
@@ -228,7 +229,6 @@ html, body {
   font-family: var(--font-body);
   font-size: 14px;
   color: rgba(255, 255, 255, 0.3);
-  margin-right: 50px;
 }
 
 /* === Shelve It Button === */
