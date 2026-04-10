@@ -75,8 +75,8 @@ export function createHUD() {
         </div>
         <span class="material-symbols-rounded radio-icon" id="radio-icon">no_sound</span>
       </div>
-      <span class="help-link" id="help-btn">Help</span>
     </div>
+    <span class="help-link" id="help-btn"><span class="material-symbols-rounded help-icon">help</span>HELP</span>
   `;
 
   _wage = document.getElementById('hud-wage');

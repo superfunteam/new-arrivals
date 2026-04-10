@@ -55,7 +55,7 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
 
     const box = getIntersectedBox(x, y);
     if (!box || box.userData.state === 'locked' || box.userData.state === 'grayed') {
-      pointerDown = false;
+      // Still track pointer for edge-click peek detection in onPointerUp
       return;
     }
 
@@ -124,7 +124,7 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
 
     const startX = camera.position.x;
     const startY = camera.position.y;
-    const peekX = direction === 'right' ? 3.5 : -3.5;
+    const peekX = direction === 'right' ? 5.0 : -5.0;
     const startTime = performance.now();
     const panDuration = 400;
     const holdDuration = 2000;
@@ -212,9 +212,10 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
     };
   }
 
-  function animateSnapTo(targetFov) {
+  function animateSnapTo(targetFov, targetX) {
     if (snapBackRaf) cancelAnimationFrame(snapBackRaf);
     const sf = camera.fov, sx = camera.position.x, sy = camera.position.y;
+    const tx = targetX ?? defaultCamPos.x;
     const startTime = performance.now();
 
     const hud = document.getElementById('hud');
@@ -223,7 +224,7 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
       const t = Math.min((now - startTime) / 300, 1);
       const e = 1 - Math.pow(1 - t, 3);
       camera.fov = sf + (targetFov - sf) * e;
-      camera.position.x = sx + (defaultCamPos.x - sx) * e;
+      camera.position.x = sx + (tx - sx) * e;
       camera.position.y = sy + (defaultCamPos.y - sy) * e;
       camera.updateProjectionMatrix();
       if (t < 1) {
@@ -275,9 +276,20 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
       camera.updateProjectionMatrix();
 
       if (newFov > defaultFov) {
-        // Zooming out — keep centered on main shelf
-        camera.position.x = defaultCamPos.x;
-        camera.position.y = defaultCamPos.y;
+        // Zooming out — allow horizontal panning to see side shelves/portals
+        const fovRad = (newFov * Math.PI) / 180;
+        const halfH = Math.tan(fovRad / 2) * camera.position.z;
+        const halfW = halfH * camera.aspect;
+
+        const center = getTouchCenter(e.touches);
+        const rect = renderer.domElement.getBoundingClientRect();
+        const currentNx = ((center.x - rect.left) / rect.width) * 2 - 1;
+        const currentNy = -(((center.y - rect.top) / rect.height) * 2 - 1);
+
+        // Pan based on pinch center offset from start, clamped to side shelf range
+        camera.position.x = anchorWorldX - currentNx * halfW;
+        camera.position.y = defaultCamPos.y; // lock vertical to shelf center
+        camera.position.x = Math.max(-5.5, Math.min(5.5, camera.position.x));
       } else {
         // Zooming in — anchor-based panning
         const fovRad = (newFov * Math.PI) / 180;
@@ -302,10 +314,10 @@ export function setupInteraction(camera, renderer, getBoxes, callbacks) {
     if (isPinching && e.touches.length < 2) {
       isPinching = false;
       if (camera.fov > defaultFov) {
-        // Zoomed out — stick at current FOV, settle centered
-        animateSnapTo(camera.fov);
+        // Zoomed out — stick at current FOV, keep horizontal pan position
+        animateSnapTo(camera.fov, camera.position.x);
       } else {
-        // Zoomed in — snap back to default
+        // Zoomed in — snap back to default centered
         animateSnapTo(defaultFov);
       }
     }

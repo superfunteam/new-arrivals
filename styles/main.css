@@ -173,7 +173,6 @@ html, body {
   justify-content: space-between;
   align-items: flex-end;
   padding: 8px 16px;
-  padding-right: 184px; /* 168px jam badge + 16px gap */
   padding-bottom: max(8px, env(safe-area-inset-bottom));
 }
 
@@ -877,7 +876,8 @@ html, body {
 /* Hide HUD corners when lightbox is open */
 .hud-inspect-mode .hud-top,
 .hud-inspect-mode .hud-shelve-row,
-.hud-inspect-mode .hud-bottom {
+.hud-inspect-mode .hud-bottom,
+.hud-inspect-mode .help-link {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s;
@@ -1442,15 +1442,24 @@ html, body {
 
 /* === Help Link (inline text in bottom-right) === */
 .help-link {
+  position: fixed;
+  bottom: max(12px, env(safe-area-inset-bottom));
+  right: 180px;
   font-family: var(--font-display);
-  font-size: 9px;
-  color: rgba(255, 255, 255, 0.4);
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.45);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 6px 0;
-  margin-right: 184px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 8px;
+  z-index: 50;
+}
+
+.help-icon {
+  font-size: 14px;
 }
 
 /* === Help Menu Modal === */
