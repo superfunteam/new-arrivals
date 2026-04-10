@@ -11392,6 +11392,319 @@
           ]
         }
       ]
+    },
+    {
+      "id": "2026-vibe-jam",
+      "title": "2026 Vibe Jam",
+      "categories": [
+        {
+          "name": "Movies with \"Levels\" in the Title",
+          "difficulty": 1,
+          "color": "#4CAF50",
+          "movies": [
+            {
+              "title": "Levels",
+              "year": 2024,
+              "tmdb_id": 791042,
+              "summary": "After witnessing his girlfriend's murder, a man risks everything - including reality itself - to discover the truth.",
+              "genres": [
+                "Science Fiction",
+                "Action",
+                "Thriller"
+              ],
+              "director": "Adam Stern",
+              "stars": [
+                "Cara Gee",
+                "Peter Mooney",
+                "Aaron Abrams",
+                "David Hewlett",
+                "Amanda Tapping"
+              ]
+            },
+            {
+              "title": "Jumanji: The Next Level",
+              "year": 2019,
+              "tmdb_id": 512200,
+              "summary": "As the gang return to Jumanji to rescue one of their own, they discover that nothing is as they expect. The players will have to brave parts unknown and unexplored in order to escape the world’s most dangerous game.",
+              "genres": [
+                "Adventure",
+                "Comedy",
+                "Fantasy"
+              ],
+              "director": "Jake Kasdan",
+              "stars": [
+                "Dwayne Johnson",
+                "Kevin Hart",
+                "Jack Black",
+                "Karen Gillan",
+                "Awkwafina"
+              ]
+            },
+            {
+              "title": "Next Level",
+              "year": 2005,
+              "tmdb_id": 1141372,
+              "summary": "",
+              "genres": [
+                "Comedy",
+                "Science Fiction"
+              ],
+              "director": "Marcello Gori",
+              "stars": [
+                "Enrico Ottaviano",
+                "Oliviero Nobili",
+                "Beatrice Marchiori"
+              ]
+            },
+            {
+              "title": "Level 16",
+              "year": 2018,
+              "tmdb_id": 548066,
+              "summary": "The teenage girls of Vestalis Academy are meticulously trained in the art of being “clean girls,” practicing the virtues of perfect femininity. But what exactly are they being trained for? Vivien intends to find out.",
+              "genres": [
+                "Science Fiction",
+                "Thriller"
+              ],
+              "director": "Danishka Esterhazy",
+              "stars": [
+                "Katie Douglas",
+                "Celina Martin",
+                "Peter Outerbridge",
+                "Sara Canning",
+                "Alexis Whelan"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Movies with \"Bolt\" in the Title",
+          "difficulty": 2,
+          "color": "#FFC107",
+          "movies": [
+            {
+              "title": "Bolt",
+              "year": 2008,
+              "tmdb_id": 13053,
+              "summary": "Bolt is the star of the biggest show in Hollywood. The only problem is, he thinks it's real. After he's accidentally shipped to New York City and separated from Penny, his beloved co-star and owner, Bolt must harness all his \"super powers\" to find a way home.",
+              "genres": [
+                "Animation",
+                "Family",
+                "Adventure",
+                "Comedy"
+              ],
+              "director": "Chris Williams",
+              "stars": [
+                "John Travolta",
+                "Miley Cyrus",
+                "Susie Essman",
+                "Mark Walton",
+                "Malcolm McDowell"
+              ]
+            },
+            {
+              "title": "Usain Bolt: The Fastest Man Alive",
+              "year": 2012,
+              "tmdb_id": 129360,
+              "summary": "I told you all I was going to be No. 1, and I did just that Usain Bolt There is no athlete that can compete with him...he s a global superstar Michael Johnson In this extraordinary film, director Gael Leibland spends a year chronicling every minute of the life of athletics champion and cultural icon Usain Bolt. Granted unprecedented access, Leibland follows Bolt behind the scenes as he attempts to smash records and make history at the 2012 Olympic Games. Through in-depth interviews with Bolt, his family and friends, Bolt: The Movie takes you on a journey into the life of the fastest man on the planet and is a no-holds-barred account of what it is like to be the very best.",
+              "genres": [
+                "Documentary"
+              ],
+              "director": "Gaël Lieblang",
+              "stars": [
+                "Usain Bolt"
+              ]
+            },
+            {
+              "title": "Lightning Bolt",
+              "year": 1966,
+              "tmdb_id": 91265,
+              "summary": "A U.S. agent goes undercover as a rich playboy to stop a madman from destroying a NASA moon project.",
+              "genres": [
+                "Action",
+                "Thriller"
+              ],
+              "director": "Antonio Margheriti",
+              "stars": [
+                "Anthony Eisley",
+                "Wandisa Guida",
+                "Folco Lulli",
+                "Diana Lorys",
+                "Luisa Rivelli"
+              ]
+            },
+            {
+              "title": "3 Nuts in Search of a Bolt",
+              "year": 1964,
+              "tmdb_id": 161104,
+              "summary": "An out-of-work method actor is hired by a male model, an ecdysiast, and a car salesman who live together to save money. They want the actor to listen to their problems and go see a psychiatrist, so they can get counseling for cheap. The psychiatrist is intrigued by the split personalities indicated by the three separate sets of problems presented by the actor, and soon producers are climbing out of the woodwork trying to buy the rights to the film, while the actor is having trouble keeping his act together.",
+              "genres": [
+                "Comedy"
+              ],
+              "director": "Tommy Noonan",
+              "stars": [
+                "Mamie Van Doren",
+                "Tommy Noonan",
+                "Ziva Rodann",
+                "John Cronin",
+                "Howard Koch"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Movies that Vibe",
+          "difficulty": 3,
+          "color": "#2196F3",
+          "movies": [
+            {
+              "title": "Vibes",
+              "year": 1988,
+              "tmdb_id": 21185,
+              "summary": "Medium Sylvia Pickel and psychometrist Nick Deezy meet at a psychic research facility in New York. Not long after, they're contacted by Harry Buscafusco, who offers them $50,000 to find his lost son in South America, in the heart of Incan territory where they discover an ancient mystical secret, and each other.",
+              "genres": [
+                "Romance",
+                "Action",
+                "Comedy"
+              ],
+              "director": "Ken Kwapis",
+              "stars": [
+                "Jeff Goldblum",
+                "Cyndi Lauper",
+                "Peter Falk",
+                "Googy Gress",
+                "Julian Sands"
+              ]
+            },
+            {
+              "title": "Good Vibes Only",
+              "year": 2026,
+              "tmdb_id": 1516724,
+              "summary": "Based on the true story of a married couple who invented a groundbreaking sex toy heralded as forever changing the way women experience pleasure.",
+              "genres": [
+                "Comedy"
+              ],
+              "director": "Reem Kherici",
+              "stars": [
+                "Alexandra Lamy",
+                "François Cluzet",
+                "Mitty Hazanavicius",
+                "Delphine Baril",
+                "François-Xavier Demaison"
+              ]
+            },
+            {
+              "title": "Good Vibrations",
+              "year": 2017,
+              "tmdb_id": 592100,
+              "summary": "",
+              "genres": [],
+              "director": "Lydia Erbibou",
+              "stars": []
+            },
+            {
+              "title": "Vibes",
+              "year": 2019,
+              "tmdb_id": 1026995,
+              "summary": "Mayssa is looking for a sexual release to cure her recent depression but luck – and her mother – are not on her side.",
+              "genres": [
+                "Comedy"
+              ],
+              "director": "Bane Fakih",
+              "stars": [
+                "Rebecca Karpovsky",
+                "Jasmin Tenucci",
+                "Virginia Thomas"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Hacker Classics",
+          "difficulty": 4,
+          "color": "#9C27B0",
+          "movies": [
+            {
+              "title": "WarGames",
+              "year": 1983,
+              "tmdb_id": 860,
+              "summary": "High school student David Lightman has a talent for hacking. But while trying to hack into a computer system to play unreleased video games, he unwittingly taps into the Department of Defense's war computer and initiates a confrontation of global proportions. Together with his friend and a wizardly computer genius, David must race against time to outwit his opponent and prevent a nuclear Armageddon.",
+              "genres": [
+                "Thriller",
+                "Science Fiction",
+                "Drama"
+              ],
+              "director": "John Badham",
+              "stars": [
+                "Matthew Broderick",
+                "Dabney Coleman",
+                "John Wood",
+                "Ally Sheedy",
+                "Barry Corbin"
+              ]
+            },
+            {
+              "title": "Hackers",
+              "year": 1995,
+              "tmdb_id": 10428,
+              "summary": "Along with his new friends, a teenager who was arrested by the US Secret Service and banned from using a computer for writing a computer virus discovers a plot by a nefarious hacker, but they must use their computer skills to find the evidence while being pursued by the Secret Service and the evil computer genius behind the virus.",
+              "genres": [
+                "Action",
+                "Crime",
+                "Thriller",
+                "Drama"
+              ],
+              "director": "Iain Softley",
+              "stars": [
+                "Jonny Lee Miller",
+                "Angelina Jolie",
+                "Matthew Lillard",
+                "Jesse Bradford",
+                "Renoly Santiago"
+              ]
+            },
+            {
+              "title": "Sneakers",
+              "year": 1992,
+              "tmdb_id": 2322,
+              "summary": "When shadowy U.S. intelligence agents blackmail a reformed computer hacker and his eccentric team of security experts into stealing a code-breaking 'black box' from a Soviet-funded genius, they uncover a bigger conspiracy. Now, he and his 'sneakers' must save themselves and the world economy by retrieving the box from their blackmailers.",
+              "genres": [
+                "Comedy",
+                "Crime",
+                "Drama"
+              ],
+              "director": "Phil Alden Robinson",
+              "stars": [
+                "Robert Redford",
+                "Sidney Poitier",
+                "David Strathairn",
+                "Dan Aykroyd",
+                "River Phoenix"
+              ]
+            },
+            {
+              "title": "The Net",
+              "year": 1995,
+              "tmdb_id": 1642,
+              "summary": "Angela Bennett is a freelance computer systems analyst who tracks down software viruses. At night she hooks up to the internet and chats to others 'surfing the net'. While de-bugging a new high-tech game for a cyber friend, she comes across a top secret program and becomes the target of a mysterious organization who will stop at nothing to erase her identity and her existence, in order to protect the project.",
+              "genres": [
+                "Crime",
+                "Drama",
+                "Mystery",
+                "Thriller",
+                "Action"
+              ],
+              "director": "Irwin Winkler",
+              "stars": [
+                "Sandra Bullock",
+                "Jeremy Northam",
+                "Dennis Miller",
+                "Wendy Gazelle",
+                "Diane Baker"
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -4147,5 +4147,111 @@
       "dialogue": "MY MOM'S MEMBERSHIP CARD HAS A GOLD STAR ON IT BECAUSE SHE'S RENTED OVER 500 MOVIES!! SHE SAYS IT'S NOT SOMETHING TO BRAG ABOUT BUT I THINK IT'S THE COOLEST THING EVER!!",
       "dismiss": "Hall of fame"
     }
+  ],
+  "2026-vibe-jam": [
+    {
+      "type": "trivia",
+      "character": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "folder": "Goblin Kid",
+      "dialogue": "UHHH MY MOM SAID I CAN RENT ONE MOVIE AND IT HAS TO BE EDUCATIONAL!! What's WarGames about??",
+      "answers": [
+        "A kid hacks into a military computer and almost starts World War III",
+        "Kids get trapped in a board game and have to win to escape",
+        "A teenage hacker steals money from evil corporations",
+        "Computers become self-aware and take over the Pentagon"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Old Man",
+      "sprite": "old_man",
+      "folder": "Old Man",
+      "dialogue": "My grandson keeps talking about this Bolt picture. Is that the one with the dog or the runner fellow?",
+      "answers": [
+        "It's an animated movie about a dog who thinks he has superpowers",
+        "It's a documentary about Olympic sprinter Usain Bolt",
+        "It's about a dog who runs in the Olympics",
+        "It's a nature documentary about lightning storms"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Businessman",
+      "sprite": "businessman",
+      "folder": "Businessman",
+      "dialogue": "Date night. She likes those feel-good movies. What's Good Vibrations about?",
+      "answers": [
+        "A music drama about a record shop owner in Belfast during the Troubles",
+        "California surfers starting a rock band in the 60s",
+        "A Beach Boys biography from their early years",
+        "A romantic comedy set at a music festival"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Viking Kid Boy",
+      "sprite": "viking_kid_boy",
+      "folder": "Viking Kid Boy",
+      "dialogue": "MY DAD SAYS HACKERS IS COOL BUT IS IT COOLER THAN TINDENDO?? What do they even hack in it??",
+      "answers": [
+        "They hack a corporate computer system and uncover an embezzlement scheme",
+        "They hack into NORAD and almost launch nuclear missiles",
+        "They hack ATMs to steal money for college tuition",
+        "They hack the FBI database to clear their criminal records"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "type": "hint",
+      "character": "Punk Woman",
+      "sprite": "punk_woman",
+      "folder": "Punk Woman",
+      "dialogue": "Looking for something with good energy, you know? Groovy wavelengths. Positive frequencies.",
+      "hintCategory": "Movies that Vibe"
+    },
+    {
+      "type": "hint",
+      "character": "Punk Man",
+      "sprite": "punk_man",
+      "folder": "Punk Man",
+      "dialogue": "My buddy's into those computer crime flicks. Breaking into systems, sticking it to the man, that whole scene.",
+      "hintCategory": "Hacker Classics"
+    },
+    {
+      "type": "hint",
+      "character": "Blonde Kid Girl",
+      "sprite": "blonde_kid_girl",
+      "folder": "Blonde Kid Girl",
+      "dialogue": "I NEED MOVIES ABOUT GOING UP!! Like stairs but COOLER!! My brother says there's a bunch with the same word!!",
+      "hintCategory": "Movies with \"Levels\" in the Title"
+    },
+    {
+      "type": "story",
+      "character": "Policeman",
+      "sprite": "policeman",
+      "folder": "Policeman",
+      "dialogue": "Kid tried to rent Sneakers yesterday with a fake ID. Fake ID said he was 47 years old. Kid was maybe twelve.",
+      "dismissLabel": "Amateur hour"
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "sprite": "joker",
+      "folder": "Joker",
+      "dialogue": "Why did the VHS tape go to therapy? It had too many issues and kept getting rewound! Get it? REWOUND!",
+      "dismissLabel": "Ba dum tss"
+    },
+    {
+      "type": "story",
+      "character": "Knight",
+      "sprite": "knight",
+      "folder": "Knight",
+      "dialogue": "A gentleman always rewinds his tapes. Last week I returned The Net without rewinding. I haven't slept since. The shame is unbearable.",
+      "dismissLabel": "Seek forgiveness"
+    }
   ]
 }
