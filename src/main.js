@@ -42,6 +42,7 @@ import {
   getTimePenalty,
   calculateFinalWage,
   getElapsedTime,
+  getElapsedSeconds,
   serializeGame,
   restoreGame,
 } from './game-logic.js';
@@ -1268,6 +1269,22 @@ async function startGameSession(puzzle, mode, puzzlesData) {
     // Save score for all modes (best score kept)
     const finalWage = calculateFinalWage(game);
     saveGameScore(puzzle.id, finalWage);
+
+    // Post anonymous stats to aggregate report
+    const stars = finalWage >= 25 ? 3 : finalWage > 15 ? 2 : 1;
+    fetch('/api/report-stats', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        puzzleId: puzzle.id,
+        finalWage,
+        wrongGuesses: game.wrongGuesses,
+        hintsUsed: game.hintsUsed,
+        timeSecs: Math.round(getElapsedSeconds(game.startTime)),
+        stars,
+        triviaEarnings: game.triviaEarnings || 0,
+      }),
+    }).catch(() => {}); // fire-and-forget
 
     // Update stats (daily only)
     if (isDaily) {

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Arrivals — Store Report</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0a0a0f;
+      color: #33ff33;
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .report {
+      max-width: 640px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* CRT scanline overlay */
+    .report::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.15) 2px,
+        rgba(0,0,0,0.15) 4px
+      );
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* Faint CRT glow */
+    .report::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(51,255,51,0.03) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px dashed #33ff3344;
+    }
+
+    .header-logo {
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: #33ff3388;
+      margin-bottom: 4px;
+    }
+
+    .header-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+
+    .header-date {
+      font-size: 11px;
+      color: #33ff3366;
+      margin-top: 4px;
+    }
+
+    .header-system {
+      font-size: 10px;
+      color: #33ff3344;
+      margin-top: 2px;
+    }
+
+    .section {
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: #33ff3388;
+      border-bottom: 1px solid #33ff3322;
+      padding-bottom: 4px;
+      margin-bottom: 10px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      padding: 2px 0;
+    }
+
+    .row-label {
+      color: #33ff33aa;
+    }
+
+    .row-value {
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .row-highlight .row-value {
+      color: #ffff33;
+    }
+
+    .divider {
+      border-top: 1px dashed #33ff3322;
+      margin: 8px 0;
+    }
+
+    .bar-chart {
+      margin-top: 8px;
+    }
+
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 2px 0;
+      font-size: 11px;
+    }
+
+    .bar-label {
+      width: 70px;
+      text-align: right;
+      color: #33ff3388;
+      flex-shrink: 0;
+      font-size: 10px;
+    }
+
+    .bar-track {
+      flex: 1;
+      height: 10px;
+      background: #33ff3311;
+      position: relative;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: #33ff3366;
+      transition: width 0.5s ease;
+    }
+
+    .bar-count {
+      width: 36px;
+      text-align: right;
+      font-size: 10px;
+      color: #33ff3388;
+      flex-shrink: 0;
+    }
+
+    .star-dist {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    .star-item {
+      text-align: center;
+    }
+
+    .star-item .star-icon {
+      color: #ffff33;
+      font-size: 14px;
+    }
+
+    .star-item .star-count {
+      display: block;
+      font-size: 11px;
+      color: #33ff3388;
+      margin-top: 2px;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px dashed #33ff3344;
+      font-size: 10px;
+      color: #33ff3344;
+      line-height: 2;
+    }
+
+    .footer a {
+      color: #33ff3366;
+      text-decoration: none;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 60px 0;
+      color: #33ff3366;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .perf-tear {
+      margin: 16px 0;
+      border-top: 2px dashed #33ff3333;
+      position: relative;
+    }
+
+    .perf-tear::before {
+      content: 'TEAR HERE';
+      position: absolute;
+      top: -7px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0a0a0f;
+      padding: 0 8px;
+      font-size: 8px;
+      color: #33ff3322;
+      letter-spacing: 2px;
+    }
+
+    /* Puzzle leaderboard */
+    .puzzle-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 3px 0;
+      font-size: 11px;
+    }
+
+    .puzzle-name {
+      color: #33ff33aa;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 70%;
+    }
+
+    .puzzle-count {
+      color: #33ff33;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="report" id="report">
+    <div class="loading" id="loading">LOADING STORE RECORDS...</div>
+  </div>
+
+  <script>
+    async function loadReport() {
+      const loading = document.getElementById('loading');
+
+      try {
+        const res = await fetch('/api/report-stats');
+        const { aggregate: agg, daily } = await res.json();
+
+        if (!agg || agg.totalShifts === 0) {
+          loading.textContent = 'NO RECORDS FOUND. PLAY A GAME FIRST.';
+          return;
+        }
+
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('en-US', {
+          weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        }).toUpperCase();
+        const timeStr = now.toLocaleTimeString('en-US', {
+          hour: '2-digit', minute: '2-digit', second: '2-digit'
+        });
+
+        const avgWage = agg.totalShifts > 0
+          ? (agg.totalWages / agg.totalShifts).toFixed(2)
+          : '0.00';
+
+        const totalHours = Math.floor(agg.totalTimeSecs / 3600);
+        const totalMins = Math.floor((agg.totalTimeSecs % 3600) / 60);
+        const avgTimeSecs = agg.totalShifts > 0
+          ? Math.round(agg.totalTimeSecs / agg.totalShifts)
+          : 0;
+        const avgMins = Math.floor(avgTimeSecs / 60);
+        const avgSecs = avgTimeSecs % 60;
+
+        const perfectPct = agg.totalShifts > 0
+          ? ((agg.perfectShifts / agg.totalShifts) * 100).toFixed(1)
+          : '0.0';
+
+        // Top puzzles by play count
+        const puzzleEntries = Object.entries(agg.puzzleCounts || {})
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 8);
+
+        // Daily chart
+        const maxDayShifts = Math.max(...daily.map(d => d.shifts), 1);
+
+        const report = document.getElementById('report');
+        report.innerHTML = `
+          <div class="header">
+            <div class="header-logo">* * * NEW ARRIVALS * * *</div>
+            <div class="header-title">STORE REPORT</div>
+            <div class="header-date">${dateStr}</div>
+            <div class="header-system">VHS-GARAGE MGMT SYSTEM v2.1 // REPORT GENERATED ${timeStr}</div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">PAYROLL SUMMARY</div>
+            <div class="row"><span class="row-label">Total Shifts Worked</span><span class="row-value">${agg.totalShifts.toLocaleString()}</span></div>
+            <div class="row"><span class="row-label">Total Wages Paid</span><span class="row-value">$${agg.totalWages.toLocaleString()}</span></div>
+            <div class="row"><span class="row-label">Average Wage / Shift</span><span class="row-value">$${avgWage}</span></div>
+            <div class="row row-highlight"><span class="row-label">Best Wage Recorded</span><span class="row-value">$${agg.bestWage}</span></div>
+            <div class="divider"></div>
+            <div class="row"><span class="row-label">Total Time Clocked</span><span class="row-value">${totalHours}h ${totalMins}m</span></div>
+            <div class="row"><span class="row-label">Avg Shift Duration</span><span class="row-value">${avgMins}m ${avgSecs}s</span></div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">PERFORMANCE METRICS</div>
+            <div class="row"><span class="row-label">Wrong Shelves (Total)</span><span class="row-value">${agg.totalWrongGuesses.toLocaleString()}</span></div>
+            <div class="row"><span class="row-label">Hints Purchased</span><span class="row-value">${agg.totalHintsPurchased.toLocaleString()}</span></div>
+            <div class="row"><span class="row-label">Trivia Bonuses Earned</span><span class="row-value">$${agg.totalTriviaEarnings.toLocaleString()}</span></div>
+            <div class="divider"></div>
+            <div class="row row-highlight"><span class="row-label">Perfect Shifts</span><span class="row-value">${agg.perfectShifts.toLocaleString()} (${perfectPct}%)</span></div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">STAR RATINGS</div>
+            <div class="star-dist">
+              <div class="star-item">
+                <span class="star-icon">*</span>
+                <span class="star-count">${(agg.starCounts['1'] || 0).toLocaleString()}</span>
+              </div>
+              <div class="star-item">
+                <span class="star-icon">* *</span>
+                <span class="star-count">${(agg.starCounts['2'] || 0).toLocaleString()}</span>
+              </div>
+              <div class="star-item">
+                <span class="star-icon">* * *</span>
+                <span class="star-count">${(agg.starCounts['3'] || 0).toLocaleString()}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="perf-tear"></div>
+
+          <div class="section">
+            <div class="section-title">DAILY SHIFT LOG (14 DAYS)</div>
+            <div class="bar-chart">
+              ${daily.map(d => {
+                const pct = maxDayShifts > 0 ? (d.shifts / maxDayShifts * 100) : 0;
+                const label = d.date.slice(5); // MM-DD
+                return `<div class="bar-row">
+                  <span class="bar-label">${label}</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+                  <span class="bar-count">${d.shifts}</span>
+                </div>`;
+              }).join('')}
+            </div>
+          </div>
+
+          ${puzzleEntries.length > 0 ? `
+          <div class="section">
+            <div class="section-title">MOST RENTED TAPES</div>
+            ${puzzleEntries.map(([id, count]) => `
+              <div class="puzzle-row">
+                <span class="puzzle-name">${id}</span>
+                <span class="puzzle-count">${count} plays</span>
+              </div>
+            `).join('')}
+          </div>` : ''}
+
+          <div class="footer">
+            END OF REPORT<br>
+            VHS GARAGE MANAGEMENT SYSTEM // ALL RIGHTS RESERVED<br>
+            <a href="/">RETURN TO STORE</a>
+          </div>
+        `;
+
+      } catch (err) {
+        loading.textContent = 'ERROR: COULD NOT LOAD STORE RECORDS';
+        console.error(err);
+      }
+    }
+
+    loadReport();
+  </script>
+</body>
+</html>
