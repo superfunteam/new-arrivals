@@ -1,8 +1,80 @@
 import { verifyToken } from './lib/auth.mjs';
+import { SignJWT } from 'jose';
 import { getStore } from '@netlify/blobs';
 
 const NETLIFY_API = 'https://api.netlify.com/api/v1';
+const IDENTITY_URL = 'https://game.vhsgarage.com/.netlify/identity';
 const ROLES_STORE = 'user-roles';
+
+// Cache the JWT secret in memory for the function lifetime
+let _cachedJwtSecret = null;
+
+/**
+ * Fetch the GoTrue JWT secret from the Netlify site API.
+ */
+async function getGoTrueSecret() {
+  if (_cachedJwtSecret) return _cachedJwtSecret;
+
+  const { token, siteId } = getCredentials();
+  if (!token || !siteId) return null;
+
+  try {
+    const res = await fetch(`${NETLIFY_API}/sites/${siteId}`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (data.jwt_secret) {
+      _cachedJwtSecret = data.jwt_secret;
+      return _cachedJwtSecret;
+    }
+  } catch {}
+  return null;
+}
+
+/**
+ * Sign a GoTrue admin JWT using the site's JWT secret.
+ */
+async function makeAdminToken() {
+  const secret = await getGoTrueSecret();
+  if (!secret) return null;
+
+  return new SignJWT({
+    role: 'admin',
+    aud: '',
+  })
+    .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
+    .setIssuedAt()
+    .setExpirationTime('5m')
+    .sign(new TextEncoder().encode(secret));
+}
+
+/**
+ * Call GoTrue admin API with a signed JWT.
+ */
+async function gotrueAdmin(method, path, body) {
+  const token = await makeAdminToken();
+  if (!token) throw new Error('Could not get admin token');
+
+  const res = await fetch(`${IDENTITY_URL}/admin${path}`, {
+    method,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+
+  const text = await res.text();
+  console.log(`[admin-users] GoTrue ${method} /admin${path} → ${res.status}`);
+
+  if (!res.ok) {
+    console.log(`[admin-users] GoTrue error: ${text.slice(0, 200)}`);
+    throw new Error(`GoTrue ${res.status}`);
+  }
+
+  return text ? JSON.parse(text) : null;
+}
 
 function getCredentials() {
   const token = Netlify.env.get('NETLIFY_API_TOKEN');
@@ -40,48 +112,12 @@ export default async (req, context) => {
     const cookie = req.headers.get('cookie');
     if (!(await verifyToken(cookie))) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const { token, siteId } = getCredentials();
-    const results = {};
-
-    // Try multiple paths to find identity config
-    const paths = [
-      `/sites/${siteId}/identity`,
-      `/sites/${siteId}/services/identity`,
-      `/sites/${siteId}`,
-    ];
-
-    for (const p of paths) {
-      try {
-        const res = await fetch(`${NETLIFY_API}${p}`, {
-          headers: { 'Authorization': `Bearer ${token}` },
-        });
-        const body = await res.text();
-        if (res.ok) {
-          const data = JSON.parse(body);
-          const keys = Object.keys(data);
-          // Look for anything JWT related in the response
-          const jwtKeys = keys.filter(k => /jwt|secret|identity|token/i.test(k));
-          results[p] = { status: res.status, keys: keys.slice(0, 20), jwtKeys };
-          // Check nested objects
-          if (data.identity_instance_id) results.identityInstanceId = data.identity_instance_id;
-          if (data.jwt_secret) results.jwtSecret = data.jwt_secret.slice(0, 8) + '...';
-          if (data.settings?.jwt_secret) results.settingsJwtSecret = data.settings.jwt_secret.slice(0, 8) + '...';
-        } else {
-          results[p] = { status: res.status };
-        }
-      } catch (e) { results[p] = { error: e.message }; }
-    }
-
-    // Also try GoTrue settings endpoint directly
-    try {
-      const res = await fetch('https://game.vhsgarage.com/.netlify/identity/settings');
-      if (res.ok) {
-        const data = await res.json();
-        results.gotrueSettings = Object.keys(data);
-      }
-    } catch (e) { results.gotrueSettingsError = e.message; }
-
-    return Response.json(results);
+    // Diagnostic only — confirm JWT secret is accessible
+    const secret = await getGoTrueSecret();
+    return Response.json({
+      hasSecret: !!secret,
+      secretPreview: secret ? secret.slice(0, 8) + '...' : null,
+    });
   }
 
   const cookie = req.headers.get('cookie');
@@ -113,25 +149,19 @@ export default async (req, context) => {
         return Response.json({ email: emailParam, role });
       }
 
-      // List all users — try Netlify API endpoints
+      // List users via GoTrue admin API
       let users = [];
-      const endpoints = [
-        `/sites/${siteId}/identity/users`,
-        `/sites/${siteId}/identity/users?per_page=100`,
-        `/sites/${siteId}/members`,
-      ];
-
-      for (const ep of endpoints) {
+      try {
+        const data = await gotrueAdmin('GET', '/users');
+        users = data?.users || [];
+        console.log(`[admin-users] Found ${users.length} users via GoTrue`);
+      } catch (err) {
+        console.log(`[admin-users] GoTrue list failed: ${err.message}`);
+        // Fallback to Netlify API
         try {
-          const data = await netlifyApi('GET', ep);
-          users = Array.isArray(data) ? data : (data?.users || []);
-          if (users.length > 0) {
-            console.log(`[admin-users] Found ${users.length} users via ${ep}`);
-            break;
-          }
-        } catch (err) {
-          console.log(`[admin-users] ${ep} failed: ${err.message}`);
-        }
+          const data = await netlifyApi('GET', `/sites/${siteId}/members`);
+          users = Array.isArray(data) ? data : [];
+        } catch {}
       }
 
       // Enrich with roles from blob store
@@ -164,41 +194,17 @@ export default async (req, context) => {
 
       if (body.action === 'invite') {
         console.log(`[admin-users] Inviting ${body.email}...`);
-
-        // Try Netlify API invite endpoint
-        let invited = false;
-        const inviteEndpoints = [
-          `/sites/${siteId}/identity/users/invite`,
-          `/sites/${siteId}/identity/invite`,
-        ];
-
-        for (const ep of inviteEndpoints) {
-          try {
-            const result = await netlifyApi('POST', ep, { email: body.email });
-            console.log(`[admin-users] Invite succeeded via ${ep}`);
-            invited = true;
-            // Set role
-            if (body.email) {
-              await store.set(body.email, body.role || 'author');
-            }
-            return Response.json({ ok: true, user: result });
-          } catch (err) {
-            console.log(`[admin-users] Invite via ${ep} failed: ${err.message}`);
+        try {
+          const result = await gotrueAdmin('POST', '/invite', { email: body.email });
+          if (body.email) {
+            await store.set(body.email, body.role || 'author');
           }
+          console.log(`[admin-users] Invite sent to ${body.email}`);
+          return Response.json({ ok: true, user: result });
+        } catch (err) {
+          console.log(`[admin-users] Invite failed: ${err.message}`);
+          return Response.json({ error: 'Failed to send invite: ' + err.message }, { status: 500 });
         }
-
-        // Fallback: just store the role and return success
-        // The admin can manually add the user in Netlify Identity dashboard
-        if (!invited && body.email) {
-          await store.set(body.email, body.role || 'author');
-          console.log(`[admin-users] Stored role for ${body.email}, but invite API failed. Use Netlify dashboard to invite.`);
-          return Response.json({
-            ok: true,
-            warning: 'Role saved. Invite the user manually from Netlify Identity dashboard.',
-          });
-        }
-
-        return Response.json({ error: 'Invite failed' }, { status: 500 });
       }
 
       if (body.action === 'set-role') {

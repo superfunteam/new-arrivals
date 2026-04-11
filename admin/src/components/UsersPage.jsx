@@ -45,13 +45,23 @@ export default function UsersPage({ userRole = 'author' }) {
     setInviteError('');
     setInviteWarning('');
     try {
-      await apiPost('/admin-users', { action: 'set-role', email: inviteEmail, role: inviteRole });
+      const res = await fetch('/api/admin-users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ action: 'invite', email: inviteEmail, role: inviteRole }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setInviteError(data.error || 'Failed to invite user');
+        return;
+      }
       setInviteEmail('');
       setInviteRole('author');
       setInviteOpen(false);
       loadUsers();
     } catch (err) {
-      setInviteError('Failed to save role');
+      setInviteError('Connection error');
     } finally {
       setInviting(false);
     }
@@ -80,18 +90,10 @@ export default function UsersPage({ userRole = 'author' }) {
           <h2 className="text-2xl font-bold tracking-tight">Users</h2>
           <p className="text-sm text-muted-foreground">Manage backroom access and team members.</p>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" asChild>
-            <a href="https://app.netlify.com/sites/new-arrivals/identity" target="_blank" rel="noopener">
-              <UserPlus className="mr-2 size-4" />
-              Invite via Netlify
-            </a>
-          </Button>
-          <Button onClick={() => setInviteOpen(true)}>
-            <Shield className="mr-2 size-4" />
-            Set Role
-          </Button>
-        </div>
+        <Button onClick={() => setInviteOpen(true)}>
+          <UserPlus className="mr-2 size-4" />
+          Invite User
+        </Button>
       </div>
 
       {error && (
@@ -201,9 +203,9 @@ export default function UsersPage({ userRole = 'author' }) {
       <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Set User Role</DialogTitle>
+            <DialogTitle>Invite a User</DialogTitle>
             <DialogDescription>
-              Pre-assign a role for a user. Invite them via Netlify Identity first.
+              Send an invitation email to grant backroom access.
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleInvite} className="space-y-4">
@@ -245,7 +247,7 @@ export default function UsersPage({ userRole = 'author' }) {
                 <Button type="button" variant="outline">Cancel</Button>
               </DialogClose>
               <Button type="submit" disabled={inviting || !inviteEmail}>
-                {inviting ? 'Saving...' : 'Save Role'}
+                {inviting ? 'Sending...' : 'Send Invite'}
               </Button>
             </div>
           </form>
