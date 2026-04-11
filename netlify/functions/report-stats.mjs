@@ -3,6 +3,58 @@ import { getStore } from '@netlify/blobs';
 const STORE_NAME = 'game-stats';
 const AGG_KEY = 'aggregate';
 const DAILY_PREFIX = 'daily:';
+const FEED_KEY = 'live-feed';
+const MAX_FEED = 50;
+
+// ── Canned event messages ────────────────────────────────────────────────────
+
+const PERFECT_MSGS = [
+  'A video clerk just ran a flawless shift!',
+  'Someone just shelved every tape perfectly.',
+  'A coworker just got a perfect score!',
+  'Somebody just earned Employee of the Month.',
+];
+const HIGH_MSGS = [
+  'A clerk just earned ${w} — not bad for one shift.',
+  '${w}?! Somebody knows their movies.',
+  'Another clerk just banked ${w}.',
+];
+const MID_MSGS = [
+  'A clerk just earned ${w}. Honest work.',
+  'Someone finished their shift — ${w} earned.',
+  'Another tape sorted, another ${w} earned.',
+];
+const LOW_MSGS = [
+  'Rough shift. Someone walked out with ${w}.',
+  '${w}... somebody had a tough night.',
+];
+const FAST_MSGS = [
+  'A speed clerk just finished in ${t}!',
+  '${t}?! That clerk was in a hurry.',
+];
+const STAR3_MSGS = [
+  'A clerk just earned three stars!',
+  'Three-star performance from the night shift.',
+];
+
+function buildEventMessage(finalWage, wrongGuesses, stars, timeSecs) {
+  const w = `$${finalWage}`;
+  const m = Math.floor(timeSecs / 60);
+  const s = timeSecs % 60;
+  const t = `${m}:${String(s).padStart(2, '0')}`;
+
+  let pool;
+  if (wrongGuesses === 0 && Math.random() < 0.6) pool = PERFECT_MSGS;
+  else if (stars === 3 && Math.random() < 0.5) pool = STAR3_MSGS;
+  else if (timeSecs > 0 && timeSecs < 120 && Math.random() < 0.4) pool = FAST_MSGS;
+  else if (finalWage >= 23) pool = HIGH_MSGS;
+  else if (finalWage >= 15) pool = MID_MSGS;
+  else pool = LOW_MSGS;
+
+  return pool[Math.floor(Math.random() * pool.length)]
+    .replace('${w}', w)
+    .replace('${t}', t);
+}
 
 function emptyAggregate() {
   return {
@@ -96,6 +148,19 @@ export default async (req, context) => {
     day.wrongGuesses += wrongGuesses;
     if (wrongGuesses === 0) day.perfectShifts += 1;
     await store.setJSON(`${DAILY_PREFIX}${today}`, day);
+
+    // Append to live feed
+    const feed = await store.get(FEED_KEY, { type: 'json' }) || [];
+    feed.push({
+      ts: new Date().toISOString(),
+      msg: buildEventMessage(finalWage, wrongGuesses, stars, timeSecs),
+      wage: finalWage,
+      stars,
+      perfect: wrongGuesses === 0,
+    });
+    // Keep only the last MAX_FEED events
+    if (feed.length > MAX_FEED) feed.splice(0, feed.length - MAX_FEED);
+    await store.setJSON(FEED_KEY, feed);
 
     return Response.json({ ok: true });
   }
