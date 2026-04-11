@@ -1,5 +1,12 @@
 // New Arrivals — UI Overlays (HUD, Onboarding, Lightbox, End Screen)
 
+import {
+  isNotifyEnabled,
+  enableDailyNotification,
+  disableDailyNotification,
+  scheduleNotification,
+} from './state.js';
+
 // ─── DOM refs (populated by createHUD) ─────────────────────────────────────
 let _wage = null;
 let _timer = null;
@@ -9,6 +16,25 @@ let _helpBtn = null;
 let _radioVizCanvas = null;
 let _radioIcon = null;
 let _radioWidget = null;
+
+// Cached notify state (read once, updated on toggle)
+let _isNotifyEnabled = isNotifyEnabled();
+
+async function _handleNotifyToggle(checked) {
+  if (checked) {
+    const ok = await enableDailyNotification();
+    _isNotifyEnabled = ok;
+    // If permission was denied, uncheck the box
+    if (!ok) {
+      document.querySelectorAll('#notify-check, #welcome-notify-check').forEach(el => {
+        el.checked = false;
+      });
+    }
+  } else {
+    disableDailyNotification();
+    _isNotifyEnabled = false;
+  }
+}
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -489,10 +515,16 @@ export function showOnboarding(onComplete, onSlideRender) {
       )
       .join('');
 
+    const notifyChecked = _isNotifyEnabled ? ' checked' : '';
     const skipCheckboxHtml = isLastSlide
-      ? `<label class="skip-checkbox">
-          <input type="checkbox" id="skip-intro-check"> Skip this next time
-        </label>`
+      ? `<div class="checkbox-group">
+          <label class="skip-checkbox">
+            <input type="checkbox" id="skip-intro-check"> Skip this next time
+          </label>
+          <label class="skip-checkbox">
+            <input type="checkbox" id="notify-check"${notifyChecked}> Alert me for daily game
+          </label>
+        </div>`
       : '';
 
     overlay.innerHTML = `
@@ -516,6 +548,8 @@ export function showOnboarding(onComplete, onSlideRender) {
       } else {
         const skipCheck = document.getElementById('skip-intro-check');
         const skipChecked = skipCheck ? skipCheck.checked : false;
+        const notifyCheck = document.getElementById('notify-check');
+        if (notifyCheck) _handleNotifyToggle(notifyCheck.checked);
         overlay.innerHTML = '';
         overlay.classList.remove('active');
         if (typeof onComplete === 'function') onComplete(skipChecked);
@@ -735,6 +769,12 @@ export function showWelcomeScreen(options = {}) {
           ${practiceCardsHtml}
         </div>
       </div>
+
+      <div class="welcome-notify">
+        <label class="skip-checkbox">
+          <input type="checkbox" id="welcome-notify-check"${_isNotifyEnabled ? ' checked' : ''}> Alert me for daily game
+        </label>
+      </div>
       </div>
     </div>
   `;
@@ -770,6 +810,14 @@ export function showWelcomeScreen(options = {}) {
       if (typeof onStartPast === 'function') onStartPast(pastPuzzles[idx]);
     });
   });
+
+  // Notification checkbox handler
+  const welcomeNotify = document.getElementById('welcome-notify-check');
+  if (welcomeNotify) {
+    welcomeNotify.addEventListener('change', () => {
+      _handleNotifyToggle(welcomeNotify.checked);
+    });
+  }
 }
 
 // ─── Genre Color Map ────────────────────────────────────────────────────────

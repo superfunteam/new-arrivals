@@ -7,6 +7,7 @@ const KEY_STATE = 'newArrivals_state';
 const KEY_STATS = 'newArrivals_stats';
 const KEY_COMPLETED_DAILIES = 'newArrivals_completedDailies';
 const KEY_GAME_SCORES = 'newArrivals_gameScores';
+const KEY_NOTIFY = 'newArrivals_notify';
 
 /**
  * Get the current "puzzle date" based on Central Time (America/Chicago).
@@ -289,4 +290,85 @@ export function getPaycheckData(puzzlesData) {
 
   const total = days.reduce((sum, d) => sum + d.wage, 0);
   return { days, total };
+}
+
+// ─── Daily Notifications ───────────────────────────────────────────────────
+
+export function isNotifyEnabled() {
+  return localStorage.getItem(KEY_NOTIFY) === 'true';
+}
+
+export function setNotifyEnabled(value) {
+  localStorage.setItem(KEY_NOTIFY, value ? 'true' : 'false');
+}
+
+/**
+ * Request notification permission and schedule a nightly reminder.
+ * Uses the service worker to show a notification at 10pm Central each night.
+ */
+export async function enableDailyNotification() {
+  if (!('Notification' in window) || !('serviceWorker' in navigator)) return false;
+
+  const permission = await Notification.requestPermission();
+  if (permission !== 'granted') {
+    setNotifyEnabled(false);
+    return false;
+  }
+
+  setNotifyEnabled(true);
+  scheduleNotification();
+  return true;
+}
+
+export function disableDailyNotification() {
+  setNotifyEnabled(false);
+  // Clear any pending notification timeout
+  if (window._notifyTimeout) {
+    clearTimeout(window._notifyTimeout);
+    window._notifyTimeout = null;
+  }
+}
+
+/**
+ * Schedule the next notification for 10pm Central Time.
+ * Uses setTimeout to fire at the right moment, then re-schedules for tomorrow.
+ */
+export function scheduleNotification() {
+  if (!isNotifyEnabled()) return;
+
+  const msUntilReset = getNextResetMs();
+  if (window._notifyTimeout) clearTimeout(window._notifyTimeout);
+
+  window._notifyTimeout = setTimeout(async () => {
+    try {
+      const reg = await navigator.serviceWorker.ready;
+      reg.showNotification('New Arrivals', {
+        body: "Tonight's tapes just hit the shelf. Start your shift!",
+        icon: '/favicon-32.png',
+        badge: '/favicon-32.png',
+        tag: 'daily-puzzle',
+        renotify: true,
+      });
+    } catch {
+      // Fallback if SW notification fails
+      if (Notification.permission === 'granted') {
+        new Notification('New Arrivals', {
+          body: "Tonight's tapes just hit the shelf. Start your shift!",
+          icon: '/favicon-32.png',
+        });
+      }
+    }
+    // Re-schedule for tomorrow
+    scheduleNotification();
+  }, msUntilReset);
+}
+
+function getNextResetMs() {
+  const centralNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+  const next = new Date(centralNow);
+  if (centralNow.getHours() >= 22) {
+    next.setDate(next.getDate() + 1);
+  }
+  next.setHours(22, 0, 0, 0);
+  return Math.max(0, next.getTime() - centralNow.getTime());
 }

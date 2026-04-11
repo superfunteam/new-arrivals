@@ -58,6 +58,8 @@ import {
   getGameScores,
   saveGameScore,
   getPaycheckData,
+  isNotifyEnabled,
+  scheduleNotification,
 } from './state.js';
 import {
   createHUD,
@@ -267,6 +269,9 @@ function changeStation() {
 // ---------------------------------------------------------------------------
 
 async function main() {
+  // ── 0. Resume daily notification schedule if enabled ──────────────────────
+  if (isNotifyEnabled()) scheduleNotification();
+
   // ── 1. Fetch puzzles ──────────────────────────────────────────────────────
   let puzzlesData;
   try {
