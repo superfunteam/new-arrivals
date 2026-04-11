@@ -35,6 +35,22 @@ async function netlifyApi(method, path, body) {
 export default async (req, context) => {
   console.log(`[admin-users] ${req.method} ${req.url}`);
 
+  // One-time diagnostic: log all env vars related to identity/jwt
+  if (req.method === 'GET' && new URL(req.url).searchParams.get('debug') === 'env') {
+    const cookie = req.headers.get('cookie');
+    if (!(await verifyToken(cookie))) return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    const allKeys = [];
+    for (const key of ['GOTRUE_JWT_SECRET', 'JWT_SECRET', 'IDENTITY_JWT_SECRET', 'NETLIFY_IDENTITY_JWT_SECRET',
+      'SITE_ID', 'NETLIFY_API_TOKEN', 'GOTRUE_URL', 'IDENTITY_URL', 'ROLES_KEY']) {
+      const val = Netlify.env.get(key);
+      allKeys.push({ key, set: !!val, preview: val ? val.slice(0, 8) + '...' : null });
+    }
+    // Also check context
+    const ctxKeys = context ? Object.keys(context) : [];
+    const clientCtx = context?.clientContext ? Object.keys(context.clientContext) : [];
+    return Response.json({ env: allKeys, contextKeys: ctxKeys, clientContextKeys: clientCtx });
+  }
+
   const cookie = req.headers.get('cookie');
   if (!(await verifyToken(cookie))) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
