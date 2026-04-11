@@ -64,6 +64,17 @@ html, body {
 }
 
 #hud > * {
+  pointer-events: none;
+}
+
+#hud button,
+#hud .help-link,
+#hud .hud-logo,
+#hud .hud-top-left,
+#hud .hud-wage-wrap,
+#hud .hud-radio,
+#hud .radio-icon,
+#hud input {
   pointer-events: auto;
 }
 
