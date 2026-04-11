@@ -88,7 +88,7 @@ import {
   updateRadioViz,
 } from './ui.js';
 import { audio } from './audio.js';
-import { triggerShare } from './share.js';
+import { triggerShare, copyScoreToClipboard } from './share.js';
 import { initInterrupts, stopInterrupts, pauseInterrupts, resumeInterrupts, fireHelpHint } from './interrupts.js';
 
 // ---------------------------------------------------------------------------
@@ -1301,18 +1301,24 @@ async function startGameSession(puzzle, mode, puzzlesData) {
     };
 
     if (isDaily) {
+      const shareData = {
+        finalWage,
+        timeStr,
+        date: g.puzzle.id,
+        solvedCategories: g.solvedCategories,
+        allCategories: g.puzzle.categories,
+        wrongGuesses: g.wrongGuesses,
+        posterStates: {
+          uncoveredIds: g.uncoveredIds,
+        },
+      };
       endScreenOpts.onShare = () => {
         audio.play('share');
-        triggerShare({
-          finalWage,
-          timeStr,
-          date: g.puzzle.id,
-          solvedCategories: g.solvedCategories,
-          allCategories: g.puzzle.categories,
-          posterStates: {
-            uncoveredIds: g.uncoveredIds,
-          },
-        });
+        triggerShare(shareData);
+      };
+      endScreenOpts.onCopy = () => {
+        audio.play('share');
+        copyScoreToClipboard(shareData);
       };
     } else {
       // Practice mode: back to menu or play again

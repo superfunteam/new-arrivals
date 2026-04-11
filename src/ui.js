@@ -1236,6 +1236,7 @@ export function showEndScreen(result = {}) {
     solvedCategories = [],
     allCategories = [],
     onShare,
+    onCopy,
     mode = 'daily',
     onBackToMenu,
     onPlayAgain,
@@ -1308,8 +1309,9 @@ export function showEndScreen(result = {}) {
     const countdownText = `Next shift in ${hoursLeft}h ${minsLeft}m`;
     bottomHtml = `
       <div class="end-buttons">
-        <button class="return-store-btn" id="end-return-btn" style="flex:1.4;white-space:nowrap">Back to Store</button>
-        <button class="share-btn" id="end-share-btn">Share</button>
+        <button class="return-store-btn" id="end-return-btn" style="flex:1.2;white-space:nowrap">Back to Store</button>
+        <button class="share-btn share-primary" id="end-share-btn">Share</button>
+        <button class="share-btn share-copy" id="end-copy-btn">Copy</button>
       </div>
       <div class="countdown" id="end-countdown">${countdownText}</div>
     `;
@@ -1353,6 +1355,15 @@ export function showEndScreen(result = {}) {
     if (shareBtn) {
       shareBtn.addEventListener('click', () => {
         if (typeof onShare === 'function') onShare();
+      });
+    }
+
+    const copyBtn = document.getElementById('end-copy-btn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        if (typeof onCopy === 'function') onCopy();
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);
       });
     }
 

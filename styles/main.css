@@ -1237,11 +1237,19 @@ html, body {
   font-size: 10px;
   padding: 14px 16px;
   flex: 1;
-  background: rgba(255, 255, 255, 0.1);
   color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: none;
   cursor: pointer;
   text-transform: uppercase;
+}
+
+.share-primary {
+  background: var(--neon-pink);
+}
+
+.share-copy {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .countdown {

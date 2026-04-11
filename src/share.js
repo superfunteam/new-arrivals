@@ -196,58 +196,78 @@ export async function generateShareImage(result) {
 // ─── Text Fallback ────────────────────────────────────────────────────────────
 
 /**
- * Generate a plain-text share string.
+ * Generate a viral emoji share string.
+ * Shows solve order, star rating, wage, and wrong guesses.
  * @param {Object} result
  * @returns {string}
  */
 export function generateTextFallback(result) {
-  const { finalWage, timeStr, date, solvedCategories, allCategories } = result;
+  const { finalWage, timeStr, date, solvedCategories, allCategories, wrongGuesses = 0 } = result;
 
-  const sortedCategories = [...allCategories].sort((a, b) => a.difficulty - b.difficulty);
+  const sortedByDifficulty = [...allCategories].sort((a, b) => a.difficulty - b.difficulty);
   const solvedNames = new Set(solvedCategories.map((c) => c.name));
+  const solvedOrder = solvedCategories.map((c) => c.name);
 
   const dateLabel = formatShareDate(date);
+  const stars = finalWage >= 25 ? 3 : finalWage > 15 ? 2 : 1;
+  const starStr = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
+
   const lines = [];
-
   lines.push(`📼 NEW ARRIVALS — ${dateLabel}`);
-  lines.push(`💰 $${finalWage} / $25 | ⏱ ${timeStr}`);
+  lines.push('');
 
-  for (const cat of sortedCategories) {
-    const emoji = DIFF_EMOJI[cat.difficulty] ?? '⬛';
-    const solved = solvedNames.has(cat.name);
-    const block = solved ? `${emoji}${emoji}${emoji}${emoji}` : '⬛⬛⬛⬛';
-    lines.push(block);
+  // Emoji grid: rows in solve order, each row is 4 blocks of the category's difficulty color
+  // Unsolved categories show as ⬛⬛⬛⬛
+  // This reveals the ORDER you solved them in (easy first? hard first?)
+  for (const cat of solvedOrder) {
+    const catObj = allCategories.find((c) => c.name === cat);
+    const emoji = DIFF_EMOJI[catObj?.difficulty] ?? '⬛';
+    lines.push(`${emoji}${emoji}${emoji}${emoji}`);
+  }
+  // Append unsolved categories
+  for (const cat of sortedByDifficulty) {
+    if (!solvedNames.has(cat.name)) {
+      lines.push('⬛⬛⬛⬛');
+    }
   }
 
+  lines.push('');
+  lines.push(`${starStr}  💰$${finalWage}  ⏱${timeStr}`);
+
+  // Wrong guesses indicator
+  if (wrongGuesses === 0) {
+    lines.push('🧹 Perfect shift — no mistakes!');
+  } else if (wrongGuesses <= 2) {
+    lines.push(`📦 ${wrongGuesses} wrong shelf${wrongGuesses > 1 ? 's' : ''}`);
+  } else {
+    lines.push(`🔥 ${wrongGuesses} wrong shelves`);
+  }
+
+  lines.push('');
   lines.push('game.vhsgarage.com');
 
   return lines.join('\n');
 }
 
-// ─── Trigger Share ────────────────────────────────────────────────────────────
+// ─── Trigger Share (native share intent) ─────────────────────────────────────
 
 /**
- * Generate and share/download the result image.
+ * Share via native share sheet (image + text).
  * @param {Object} result
  */
 export async function triggerShare(result) {
   const canvas = await generateShareImage(result);
   const text = generateTextFallback(result);
 
-  // Convert canvas to PNG blob
   const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
   const file = new File([blob], 'new-arrivals.png', { type: 'image/png' });
 
   // Try Web Share API with file
   if (navigator.canShare && navigator.canShare({ files: [file] })) {
     try {
-      await navigator.share({
-        files: [file],
-        text,
-      });
+      await navigator.share({ files: [file], text });
       return;
     } catch (err) {
-      // User cancelled or share failed — fall through
       if (err.name === 'AbortError') return;
     }
   }
@@ -262,20 +282,23 @@ export async function triggerShare(result) {
     }
   }
 
-  // Fallback: copy text to clipboard + download PNG
+  // Fallback: copy to clipboard
+  await copyScoreToClipboard(result);
+}
+
+// ─── Copy to Clipboard ───────────────────────────────────────────────────────
+
+/**
+ * Copy the emoji share text to clipboard.
+ * @param {Object} result
+ * @returns {Promise<boolean>} true if copied
+ */
+export async function copyScoreToClipboard(result) {
+  const text = generateTextFallback(result);
   try {
     await navigator.clipboard.writeText(text);
+    return true;
   } catch (_) {
-    // Clipboard unavailable — skip
+    return false;
   }
-
-  // Download the PNG
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'new-arrivals.png';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
 }
