@@ -132,7 +132,22 @@ function createPlaceholderTexture(title) {
 // Mini Three.js scene for onboarding slide 0 (cascading twirl showcase)
 // ---------------------------------------------------------------------------
 
-function startOnboarding3DScene(posterIds) {
+const ONBOARDING_CATEGORIES = [
+  {
+    name: "90's Comedies", color: '#4CAF50',
+    ids: [3049, 8467, 9614, 8872], // Ace Ventura, Dumb & Dumber, Happy Gilmore, Wayne's World
+  },
+  {
+    name: 'Classic Romance', color: '#FF6B9D',
+    ids: [114, 88, 639, 2028], // Pretty Woman, Dirty Dancing, When Harry Met Sally, Say Anything
+  },
+  {
+    name: 'Starring John Candy', color: '#FFC107',
+    ids: [2609, 11862, 10073, 11983], // Planes/Trains, Uncle Buck, Cool Runnings, Great Outdoors
+  },
+];
+
+function startOnboarding3DScene(onCategoryChange) {
   const canvas = document.getElementById('onboarding-3d');
   if (!canvas) return () => {};
 
@@ -148,7 +163,6 @@ function startOnboarding3DScene(posterIds) {
   camera.position.set(0, 0, 3);
   camera.lookAt(0, 0, 0);
 
-  // Lighting matching the main game
   scene.add(new THREE.AmbientLight(0xfff5e6, 0.5));
   const dirLight = new THREE.DirectionalLight(0xfff0d4, 0.8);
   dirLight.position.set(0, 3, 4);
@@ -157,51 +171,87 @@ function startOnboarding3DScene(posterIds) {
   neon.position.set(2, 2, 2);
   scene.add(neon);
 
-  // Create 4 VHS boxes using the real createVHSBox
-  const movieIds = posterIds.slice(0, 4);
+  // Preload all textures for all 3 categories
+  const texCache = {}; // { tmdbId: THREE.Texture }
+  const allIds = ONBOARDING_CATEGORIES.flatMap(c => c.ids);
+  allIds.forEach(id => {
+    loadTexture(`/posters/${id}_pixel.jpg`).then(tex => { texCache[id] = tex; }).catch(() => {});
+  });
+
+  // Create 4 boxes with the first category's posters
+  const firstCat = ONBOARDING_CATEGORIES[0];
   const boxes = [];
   const gap = 0.75;
-  const startX = -((movieIds.length - 1) * gap) / 2;
+  const startX = -3 * gap / 2;
 
-  let loadedCount = 0;
-
-  movieIds.forEach((id, i) => {
+  firstCat.ids.forEach((id, i) => {
     loadTexture(`/posters/${id}_pixel.jpg`).then(tex => {
       const movie = { tmdb_id: id, title: '' };
       const box = createVHSBox(movie, tex);
       box.position.set(startX + i * gap, 0, 0);
-      box.scale.setScalar(1);
       scene.add(box);
       boxes[i] = box;
-      loadedCount++;
-    }).catch(() => { loadedCount++; });
+    }).catch(() => {});
   });
 
-  // Animation loop with cascading twirl
   let running = true;
   const clock = new THREE.Clock();
+  let currentCatIdx = 0;
+  let lastCatIdx = -1;
+  const CYCLE_DURATION = 4; // seconds per category
+
+  // Track which boxes have been swapped this cycle
+  let swappedThisCycle = [false, false, false, false];
+
+  function swapBoxTexture(boxIdx, tmdbId) {
+    const box = boxes[boxIdx];
+    const tex = texCache[tmdbId];
+    if (!box || !tex) return;
+    // The front face material is the first child's material[4] (front face of the box)
+    // But createVHSBox stores frontMaterial in userData
+    if (box.userData.frontMaterial) {
+      box.userData.frontMaterial.map = tex;
+      box.userData.frontMaterial.needsUpdate = true;
+    }
+  }
 
   function animate() {
     if (!running) return;
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
 
-    // Each box twirls on its own schedule:
-    // Cycle is 6s total. Each box gets a 1.2s twirl window, staggered 0.4s apart.
-    // Remaining time is the pause.
-    for (let i = 0; i < boxes.length; i++) {
+    // Which category are we showing?
+    currentCatIdx = Math.floor(t / CYCLE_DURATION) % ONBOARDING_CATEGORIES.length;
+    const cat = ONBOARDING_CATEGORIES[currentCatIdx];
+
+    // Notify UI of category change
+    if (currentCatIdx !== lastCatIdx) {
+      lastCatIdx = currentCatIdx;
+      swappedThisCycle = [false, false, false, false];
+      if (onCategoryChange) onCategoryChange(cat);
+    }
+
+    // Cascading twirl: each box twirls in sequence
+    const cycleT = t % CYCLE_DURATION;
+    for (let i = 0; i < 4; i++) {
       const box = boxes[i];
       if (!box) continue;
 
-      const cycleT = (t + 10) % 6; // +10 to avoid start-of-cycle weirdness
-      const boxStart = i * 0.4;
-      const twirlDuration = 1.2;
+      const boxStart = i * 0.35;
+      const twirlDuration = 1.0;
 
       if (cycleT >= boxStart && cycleT < boxStart + twirlDuration) {
         const localT = (cycleT - boxStart) / twirlDuration;
-        const eased = 1 - Math.pow(1 - localT, 3); // easeOutCubic
+        const eased = 1 - Math.pow(1 - localT, 3);
         box.rotation.y = eased * Math.PI * 2;
         box.position.y = Math.sin(localT * Math.PI) * 0.12;
+
+        // Swap texture at the halfway point (cover facing away)
+        if (localT > 0.4 && localT < 0.6 && !swappedThisCycle[i]) {
+          swappedThisCycle[i] = true;
+          const nextCat = ONBOARDING_CATEGORIES[(currentCatIdx + 1) % ONBOARDING_CATEGORIES.length];
+          swapBoxTexture(i, nextCat.ids[i]);
+        }
       } else {
         box.rotation.y = 0;
         box.position.y = 0;
@@ -212,7 +262,6 @@ function startOnboarding3DScene(posterIds) {
   }
   animate();
 
-  // Return cleanup function
   return () => {
     running = false;
     renderer.dispose();
@@ -379,7 +428,13 @@ async function main() {
         if (miniSceneCleanup) { miniSceneCleanup(); miniSceneCleanup = null; }
         // Start 3D tape showcase on slide 0
         if (slideIndex === 0) {
-          miniSceneCleanup = startOnboarding3DScene(splashPosterIds);
+          miniSceneCleanup = startOnboarding3DScene((cat) => {
+            // Update the category label in the carousel
+            const el = document.getElementById('category-carousel');
+            if (el) {
+              el.innerHTML = `<span class="solved-label-demo" style="background:${cat.color}">${cat.name.toUpperCase()}</span>`;
+            }
+          });
         }
       });
     } else {

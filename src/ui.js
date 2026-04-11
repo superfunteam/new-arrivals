@@ -591,31 +591,8 @@ export function showOnboarding(onComplete, onSlideRender) {
       });
     }
 
-    // Category carousel on slide 0
-    const carouselEl = document.getElementById('category-carousel');
-    if (carouselEl) {
-      const sampleCategories = [
-        { name: '90s Slasher Movies', color: '#9C27B0' },
-        { name: 'Summer Camp Movies', color: '#4CAF50' },
-        { name: 'Written by Stephen King', color: '#2196F3' },
-        { name: 'Arnold Schwarzenegger Leads', color: '#FFC107' },
-        { name: 'Directed by a Woman', color: '#FF6B9D' },
-        { name: 'Set Entirely in One Building', color: '#00D4FF' },
-        { name: 'The Villain is a Computer', color: '#9C27B0' },
-        { name: 'Bill Murray Comedies', color: '#4CAF50' },
-      ];
-      let catIdx = 0;
-      function showNext() {
-        const cat = sampleCategories[catIdx % sampleCategories.length];
-        carouselEl.innerHTML = `<span class="category-pill-demo" style="background:${cat.color}">${cat.name.toUpperCase()}</span>`;
-        carouselEl.querySelector('.category-pill-demo').classList.add('pill-enter');
-        catIdx++;
-      }
-      showNext();
-      const catInterval = setInterval(showNext, 2500);
-      // Clean up on slide change
-      carouselEl._cleanup = () => clearInterval(catInterval);
-    }
+    // Category carousel on slide 0 — driven by the 3D scene's onCategoryChange callback
+    // No JS needed here; the carousel element is populated by main.js
 
     // Notify caller which slide just rendered
     if (typeof onSlideRender === 'function') onSlideRender(current);

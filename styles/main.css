@@ -1394,24 +1394,24 @@ html, body {
   justify-content: center;
 }
 
-.category-pill-demo {
+.solved-label-demo {
   font-family: var(--font-display);
-  font-size: 8px;
+  font-size: 9px;
   color: #fff;
-  padding: 8px 16px;
+  padding: 6px 16px;
+  border-radius: 4px;
   text-transform: uppercase;
   letter-spacing: 2px;
   text-align: center;
   display: inline-block;
-  opacity: 0;
-  animation: pillEnter 2.2s ease-out forwards;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  animation: labelDemoIn 0.5s ease-out forwards;
 }
 
-@keyframes pillEnter {
-  0% { opacity: 0; transform: translateY(6px); }
-  15% { opacity: 1; transform: translateY(0); }
-  80% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(-4px); }
+@keyframes labelDemoIn {
+  0% { opacity: 0; letter-spacing: 6px; transform: translateY(4px); }
+  100% { opacity: 1; letter-spacing: 2px; transform: translateY(0); }
 }
 
 /* === Shift Stats Countdown Button === */
