@@ -3,19 +3,36 @@
 // ─── Constants ───────────────────────────────────────────────────────────────
 
 const CANVAS_W = 600;
-const CANVAS_H = 800;
+const CANVAS_H = 750;
 const BG_COLOR = '#1A1A2E';
 const TITLE_COLOR = '#FF6B9D';
 const SCORE_COLOR = '#00E676';
 const MUTED_WHITE = 'rgba(255,255,255,0.6)';
 
-const POSTER_W = 100;
-const POSTER_H = 150;
+const POSTER_W = 120;
+const POSTER_H = 180;
 const POSTER_GAP = 10;
 const POSTERS_PER_ROW = 4;
 
 // Difficulty emoji map for text fallback
 const DIFF_EMOJI = { 1: '🟩', 2: '🟨', 3: '🟦', 4: '🟪' };
+
+// Same seeded shuffle as main.js so we can reconstruct the initial layout
+function shuffleWithSeed(array, seed) {
+  const arr = [...array];
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+    hash |= 0;
+  }
+  for (let i = arr.length - 1; i > 0; i--) {
+    hash = ((hash << 5) - hash) + i;
+    hash |= 0;
+    const j = Math.abs(hash) % (i + 1);
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -86,89 +103,34 @@ export async function generateShareImage(result) {
   ctx.textBaseline = 'top';
   ctx.fillText(formatShareDate(date), CANVAS_W / 2, 52);
 
-  // ── Poster Grid ─────────────────────────────────────────────────────────────
-  // Layout: 4 rows × 4 posters
-  // Total poster area width: 4*100 + 3*10 = 430px, centered in 600px → margin 85px
-  // Left bar (4px) sits to the left of the poster block, so offset posters by 4+4=8px
+  // ── Poster Grid (shuffled order, all pixelated — no spoilers) ────────────────
+  const allMovies = allCategories.flatMap(c => c.movies);
+  const shuffled = shuffleWithSeed(allMovies, date);
+
   const gridTotalW = POSTERS_PER_ROW * POSTER_W + (POSTERS_PER_ROW - 1) * POSTER_GAP;
-  const leftBar = 4;
-  const barGap = 4; // gap between bar and first poster column
-  const blockW = leftBar + barGap + gridTotalW;
-  const gridStartX = Math.round((CANVAS_W - blockW) / 2);
-  const posterStartX = gridStartX + leftBar + barGap;
+  const gridStartX = Math.round((CANVAS_W - gridTotalW) / 2);
+  const rowH = POSTER_H + POSTER_GAP;
+  const gridStartY = 75;
+  const numRows = Math.ceil(shuffled.length / POSTERS_PER_ROW);
 
-  // Category label height + spacing
-  const labelH = 20; // px reserved below each row for category name
-  const rowH = POSTER_H + POSTER_GAP + labelH; // row pitch
-  const gridStartY = 80;
+  for (let i = 0; i < shuffled.length; i++) {
+    const row = Math.floor(i / POSTERS_PER_ROW);
+    const col = i % POSTERS_PER_ROW;
+    const px = gridStartX + col * (POSTER_W + POSTER_GAP);
+    const py = gridStartY + row * rowH;
+    const tmdbId = shuffled[i].tmdb_id;
 
-  const uncoveredIds = posterStates?.uncoveredIds ?? [];
-  const solvedMovieIds = new Set(
-    solvedCategories.flatMap((cat) => cat.movies.map((m) => m.tmdb_id))
-  );
-
-  for (let rowIdx = 0; rowIdx < sortedCategories.length; rowIdx++) {
-    const cat = sortedCategories[rowIdx];
-    const rowY = gridStartY + rowIdx * rowH;
-
-    // Draw colored left bar
-    ctx.fillStyle = cat.color;
-    ctx.fillRect(gridStartX, rowY, leftBar, POSTER_H);
-
-    // Draw 4 poster slots
-    for (let col = 0; col < POSTERS_PER_ROW; col++) {
-      const movie = cat.movies[col];
-      const px = posterStartX + col * (POSTER_W + POSTER_GAP);
-      const py = rowY;
-
-      if (!movie) {
-        // Empty slot — dark rectangle
-        ctx.fillStyle = '#2a2a3e';
-        ctx.fillRect(px, py, POSTER_W, POSTER_H);
-        continue;
-      }
-
-      const tmdbId = movie.tmdb_id;
-      const isUncovered = uncoveredIds.includes(tmdbId);
-      const isSolved = solvedMovieIds.has(tmdbId);
-      // Show full poster if the category was solved or the poster was individually uncovered;
-      // otherwise show pixelated version.
-      const usePixel = !isSolved && !isUncovered;
-      const posterSrc = usePixel
-        ? `/posters/${tmdbId}_pixel.jpg`
-        : `/posters/${tmdbId}.jpg`;
-
-      try {
-        const img = await loadImage(posterSrc);
-        ctx.drawImage(img, px, py, POSTER_W, POSTER_H);
-      } catch (_) {
-        // Fallback: dark gray rectangle + truncated title
-        ctx.fillStyle = '#333344';
-        ctx.fillRect(px, py, POSTER_W, POSTER_H);
-
-        ctx.fillStyle = 'rgba(255,255,255,0.5)';
-        ctx.font = '7px "Space Mono"';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        const title = movie.title ?? '';
-        // Truncate to ~14 chars per line, wrap to 2 lines
-        const line1 = title.slice(0, 14);
-        const line2 = title.slice(14, 28);
-        ctx.fillText(line1, px + POSTER_W / 2, py + POSTER_H / 2 - 8);
-        if (line2) ctx.fillText(line2, px + POSTER_W / 2, py + POSTER_H / 2 + 8);
-      }
+    try {
+      const img = await loadImage(`/posters/${tmdbId}_pixel.jpg`);
+      ctx.drawImage(img, px, py, POSTER_W, POSTER_H);
+    } catch (_) {
+      ctx.fillStyle = '#333344';
+      ctx.fillRect(px, py, POSTER_W, POSTER_H);
     }
-
-    // Category name below the row
-    ctx.fillStyle = cat.color;
-    ctx.font = '9px "Press Start 2P"';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'top';
-    ctx.fillText(cat.name, posterStartX, rowY + POSTER_H + 4);
   }
 
   // ── Score & Time ─────────────────────────────────────────────────────────────
-  const scoreY = gridStartY + sortedCategories.length * rowH + 14;
+  const scoreY = gridStartY + numRows * rowH + 10;
 
   ctx.fillStyle = SCORE_COLOR;
   ctx.font = 'bold 20px "Space Mono"';

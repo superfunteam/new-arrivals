@@ -130,15 +130,27 @@ function fireNext() {
     return;
   }
 
-  const interrupt = queue[queueIndex];
-  queueIndex++;
-  active = true;
+  // Skip hint interrupts whose category is already solved
+  const solvedNames = new Set(
+    (opts.game.solvedCategories || []).map((c) => c.name)
+  );
 
-  // Pause game timer
-  if (opts.onPause) opts.onPause();
+  while (queueIndex < queue.length) {
+    const interrupt = queue[queueIndex];
+    queueIndex++;
 
-  // Show the chat box
-  showInterrupt(interrupt);
+    if (interrupt.type === 'hint' && solvedNames.has(interrupt.hintCategory)) {
+      continue; // skip this hint, category already revealed
+    }
+
+    active = true;
+    if (opts.onPause) opts.onPause();
+    showInterrupt(interrupt);
+    return;
+  }
+
+  // All remaining interrupts were skipped
+  stopInterrupts();
 }
 
 // ---------------------------------------------------------------------------
