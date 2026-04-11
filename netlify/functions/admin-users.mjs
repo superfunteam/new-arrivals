@@ -54,7 +54,13 @@ export default async (req, context) => {
       const url = new URL(req.url);
       const emailParam = url.searchParams.get('email');
       if (emailParam) {
-        const role = await store.get(emailParam, { type: 'text' }) || 'author';
+        let role = await store.get(emailParam, { type: 'text' });
+        if (!role) {
+          // Bootstrap: first user to check gets admin if no role is set
+          role = 'admin';
+          await store.set(emailParam, role);
+          console.log(`[admin-users] Bootstrapped ${emailParam} as admin (first login)`);
+        }
         return Response.json({ email: emailParam, role });
       }
 
@@ -80,12 +86,25 @@ export default async (req, context) => {
       }
 
       // Enrich with roles from blob store
+      // First user with no role set gets admin (bootstrap)
+      let hasAnyAdmin = false;
       for (const user of users) {
         const email = user.email;
         if (email) {
           const role = await store.get(email, { type: 'text' });
-          user.role = role || 'author';
+          user.role = role || null;
+          if (role === 'admin') hasAnyAdmin = true;
         }
+      }
+      // If no admin exists, make the first user admin
+      if (!hasAnyAdmin && users.length > 0 && !users[0].role) {
+        users[0].role = 'admin';
+        await store.set(users[0].email, 'admin');
+        console.log(`[admin-users] Bootstrapped ${users[0].email} as admin`);
+      }
+      // Default remaining null roles to author
+      for (const user of users) {
+        if (!user.role) user.role = 'author';
       }
 
       return Response.json({ users });

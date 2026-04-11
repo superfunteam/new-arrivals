@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Users, UserPlus, Mail, Shield, Clock } from 'lucide-react';
 import { apiGet, apiPost } from '@/lib/api';
 
-export default function UsersPage() {
+export default function UsersPage({ userRole = 'author' }) {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -142,15 +142,21 @@ export default function UsersPage() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Select value={user.role || 'author'} onValueChange={(v) => handleRoleChange(user.email, v)}>
-                        <SelectTrigger className="w-28 h-8 text-xs">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="admin">Admin</SelectItem>
-                          <SelectItem value="author">Author</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      {userRole === 'admin' ? (
+                        <Select value={user.role || 'author'} onValueChange={(v) => handleRoleChange(user.email, v)}>
+                          <SelectTrigger className="w-28 h-8 text-xs">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="admin">Admin</SelectItem>
+                            <SelectItem value="author">Author</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      ) : (
+                        <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
+                          {user.role === 'admin' ? 'Admin' : 'Author'}
+                        </Badge>
+                      )}
                     </TableCell>
                     <TableCell>
                       {user.confirmed_at ? (

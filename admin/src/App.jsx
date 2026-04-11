@@ -45,7 +45,7 @@ const NAV_ITEMS_ALL = [
   { key: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { key: 'calendar', label: 'Calendar', icon: CalendarDays },
   { key: 'editor', label: 'New Puzzle', icon: Plus },
-  { key: 'users', label: 'Users', icon: Users, adminOnly: true },
+  { key: 'users', label: 'Users', icon: Users },
 ];
 
 function AppBreadcrumb({ view, editingPuzzle }) {
@@ -224,7 +224,7 @@ export default function App() {
             <SidebarGroup>
               <SidebarGroupLabel>Navigation</SidebarGroupLabel>
               <SidebarMenu>
-                {NAV_ITEMS_ALL.filter(item => !item.adminOnly || userRole === 'admin').map((item) => (
+                {NAV_ITEMS_ALL.map((item) => (
                   <SidebarMenuItem key={item.key}>
                     <SidebarMenuButton
                       tooltip={item.label}
@@ -292,7 +292,7 @@ export default function App() {
                 userRole={userRole}
               />
             )}
-            {view === 'users' && <UsersPage />}
+            {view === 'users' && <UsersPage userRole={userRole} />}
           </main>
         </SidebarInset>
       </SidebarProvider>
