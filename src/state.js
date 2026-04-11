@@ -329,6 +329,28 @@ export function disableDailyNotification() {
   }
 }
 
+const NOTIFY_MESSAGES = [
+  "Tonight's tapes just hit the shelf. Start your shift!",
+  "The drop box is full. Time to sort the new arrivals.",
+  "Your manager left a note: 16 tapes, 4 categories. Good luck.",
+  "A fresh shipment just came in. The shelf won't sort itself.",
+  "Clock's ticking — tonight's puzzle is live. Punch in!",
+  "New tapes on the counter. Regulars are already browsing.",
+  "The night shift starts now. New arrivals are waiting.",
+  "Someone returned 16 tapes at closing. Sort them before dawn.",
+  "Hey clerk — new stock just arrived. Time to earn your wage.",
+  "The store opens in the morning. Get these tapes shelved tonight.",
+];
+
+const KEY_NOTIFY_INDEX = 'newArrivals_notifyIdx';
+
+function getNextMessage() {
+  let idx = parseInt(localStorage.getItem(KEY_NOTIFY_INDEX) || '0', 10);
+  const msg = NOTIFY_MESSAGES[idx % NOTIFY_MESSAGES.length];
+  localStorage.setItem(KEY_NOTIFY_INDEX, String((idx + 1) % NOTIFY_MESSAGES.length));
+  return msg;
+}
+
 /**
  * Schedule the next notification for 10pm Central Time.
  * Uses setTimeout to fire at the right moment, then re-schedules for tomorrow.
@@ -340,25 +362,21 @@ export function scheduleNotification() {
   if (window._notifyTimeout) clearTimeout(window._notifyTimeout);
 
   window._notifyTimeout = setTimeout(async () => {
+    const body = getNextMessage();
     try {
       const reg = await navigator.serviceWorker.ready;
       reg.showNotification('New Arrivals', {
-        body: "Tonight's tapes just hit the shelf. Start your shift!",
+        body,
         icon: '/favicon-32.png',
         badge: '/favicon-32.png',
         tag: 'daily-puzzle',
         renotify: true,
       });
     } catch {
-      // Fallback if SW notification fails
       if (Notification.permission === 'granted') {
-        new Notification('New Arrivals', {
-          body: "Tonight's tapes just hit the shelf. Start your shift!",
-          icon: '/favicon-32.png',
-        });
+        new Notification('New Arrivals', { body, icon: '/favicon-32.png' });
       }
     }
-    // Re-schedule for tomorrow
     scheduleNotification();
   }, msUntilReset);
 }
