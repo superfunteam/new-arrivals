@@ -20,19 +20,8 @@ export function createScene(canvas) {
   const aspect = window.innerWidth / window.innerHeight;
   const camera = new THREE.PerspectiveCamera(50, aspect, 0.1, 50);
 
-  // Auto-fit: adjust camera Z so the shelf fills the viewport
-  // Shelf is 4.2 wide, ~6.0 tall (with padding). We want ~10% margin.
-  const shelfVisibleW = 3.564;
-  const shelfVisibleH = 4.900;
-  const fovRad = (camera.fov * Math.PI) / 180;
-
-  // Distance needed to fit height
-  const distForHeight = (shelfVisibleH / 2) / Math.tan(fovRad / 2);
-  // Distance needed to fit width
-  const distForWidth = (shelfVisibleW / 2) / (Math.tan(fovRad / 2) * aspect);
-  // Use the larger (further) distance so nothing clips
-  const camZ = Math.max(distForHeight, distForWidth);
-
+  // Auto-fit: compute camera Z so tapes fill the usable viewport
+  const camZ = computeCameraZ(camera.fov, aspect);
   camera.position.set(0, 0.5, camZ);
   camera.lookAt(0, 0, 0);
 
@@ -225,18 +214,48 @@ export function animateShelfZoomIn(camera, onComplete) {
   requestAnimationFrame(step);
 }
 
+/**
+ * Compute the optimal camera Z to fit the tape grid in the usable viewport.
+ *
+ * The shelf is 4.2 units wide. The tape grid spans ~5.6 units vertically
+ * (from bottom tape at y≈-1.65 to top tape top at y≈3.4), centered around
+ * the camera's y=0.5.
+ *
+ * On mobile, the HUD eats ~120px (top bar + shelve button). We shrink the
+ * effective viewport height accordingly so tapes don't hide behind UI.
+ */
+function computeCameraZ(fov, aspect) {
+  // World-space bounding box of the tape content we need visible
+  const contentW = 4.4;  // shelf width + small breathing room
+
+  // Vertical extent relative to camera center (y=0.5):
+  //   Top tape top:    ~3.4 - 0.5 = 2.9 above camera
+  //   Bottom tape bot: ~-2.1 - 0.5 = -2.6 below camera (with bottom plank)
+  const contentAbove = 2.9;
+  const contentBelow = 2.6;
+  const contentH = contentAbove + contentBelow; // ~5.5
+
+  // Account for HUD eating into the viewport
+  const screenH = window.innerHeight;
+  const hudPixels = 120; // top bar (~60px) + shelve button area (~60px)
+  const usableRatio = Math.max(0.6, (screenH - hudPixels) / screenH);
+
+  // The camera sees `contentH` but we only have `usableRatio` of the screen
+  const effectiveH = contentH / usableRatio;
+
+  const fovRad = (fov * Math.PI) / 180;
+  const distForHeight = (effectiveH / 2) / Math.tan(fovRad / 2);
+  const distForWidth = (contentW / 2) / (Math.tan(fovRad / 2) * aspect);
+
+  return Math.max(distForHeight, distForWidth);
+}
+
 export function resizeScene(camera, renderer) {
   const width = window.innerWidth;
   const height = window.innerHeight;
   camera.aspect = width / height;
 
-  // Re-fit shelf to new viewport
-  const shelfVisibleW = 4.8;
-  const shelfVisibleH = 6.5;
-  const fovRad = (camera.fov * Math.PI) / 180;
-  const distForHeight = (shelfVisibleH / 2) / Math.tan(fovRad / 2);
-  const distForWidth = (shelfVisibleW / 2) / (Math.tan(fovRad / 2) * camera.aspect);
-  camera.position.z = Math.max(distForHeight, distForWidth);
+  camera.position.z = computeCameraZ(camera.fov, camera.aspect);
 
   camera.updateProjectionMatrix();
   renderer.setSize(width, height);
