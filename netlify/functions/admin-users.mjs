@@ -35,20 +35,34 @@ async function netlifyApi(method, path, body) {
 export default async (req, context) => {
   console.log(`[admin-users] ${req.method} ${req.url}`);
 
-  // One-time diagnostic: log all env vars related to identity/jwt
+  // Diagnostic endpoint
   if (req.method === 'GET' && new URL(req.url).searchParams.get('debug') === 'env') {
     const cookie = req.headers.get('cookie');
     if (!(await verifyToken(cookie))) return Response.json({ error: 'Unauthorized' }, { status: 401 });
-    const allKeys = [];
-    for (const key of ['GOTRUE_JWT_SECRET', 'JWT_SECRET', 'IDENTITY_JWT_SECRET', 'NETLIFY_IDENTITY_JWT_SECRET',
-      'SITE_ID', 'NETLIFY_API_TOKEN', 'GOTRUE_URL', 'IDENTITY_URL', 'ROLES_KEY']) {
-      const val = Netlify.env.get(key);
-      allKeys.push({ key, set: !!val, preview: val ? val.slice(0, 8) + '...' : null });
-    }
-    // Also check context
-    const ctxKeys = context ? Object.keys(context) : [];
-    const clientCtx = context?.clientContext ? Object.keys(context.clientContext) : [];
-    return Response.json({ env: allKeys, contextKeys: ctxKeys, clientContextKeys: clientCtx });
+
+    const { token, siteId } = getCredentials();
+    const results = {};
+
+    // Try fetching identity service config (may contain JWT secret)
+    try {
+      const res = await fetch(`${NETLIFY_API}/sites/${siteId}/identity`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      results.identityEndpoint = res.status;
+      if (res.ok) {
+        const data = await res.json();
+        results.identityKeys = Object.keys(data);
+        results.hasJwtSecret = !!data.jwt_secret;
+        if (data.jwt_secret) results.jwtPreview = data.jwt_secret.slice(0, 8) + '...';
+      } else {
+        results.identityBody = (await res.text()).slice(0, 200);
+      }
+    } catch (e) { results.identityError = e.message; }
+
+    // Check context.site
+    results.contextSite = context?.site ? Object.keys(context.site) : [];
+
+    return Response.json(results);
   }
 
   const cookie = req.headers.get('cookie');
