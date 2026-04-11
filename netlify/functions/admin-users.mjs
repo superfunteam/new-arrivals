@@ -114,14 +114,42 @@ export default async (req, context) => {
       const body = await req.json();
 
       if (body.action === 'invite') {
-        const result = await netlifyApi('POST', `/sites/${siteId}/identity/users/invite`, {
-          email: body.email,
-        });
-        // Set default role for new invite
-        if (body.email) {
-          await store.set(body.email, body.role || 'author');
+        console.log(`[admin-users] Inviting ${body.email}...`);
+
+        // Try Netlify API invite endpoint
+        let invited = false;
+        const inviteEndpoints = [
+          `/sites/${siteId}/identity/users/invite`,
+          `/sites/${siteId}/identity/invite`,
+        ];
+
+        for (const ep of inviteEndpoints) {
+          try {
+            const result = await netlifyApi('POST', ep, { email: body.email });
+            console.log(`[admin-users] Invite succeeded via ${ep}`);
+            invited = true;
+            // Set role
+            if (body.email) {
+              await store.set(body.email, body.role || 'author');
+            }
+            return Response.json({ ok: true, user: result });
+          } catch (err) {
+            console.log(`[admin-users] Invite via ${ep} failed: ${err.message}`);
+          }
         }
-        return Response.json({ ok: true, user: result });
+
+        // Fallback: just store the role and return success
+        // The admin can manually add the user in Netlify Identity dashboard
+        if (!invited && body.email) {
+          await store.set(body.email, body.role || 'author');
+          console.log(`[admin-users] Stored role for ${body.email}, but invite API failed. Use Netlify dashboard to invite.`);
+          return Response.json({
+            ok: true,
+            warning: 'Role saved. Invite the user manually from Netlify Identity dashboard.',
+          });
+        }
+
+        return Response.json({ error: 'Invite failed' }, { status: 500 });
       }
 
       if (body.action === 'set-role') {

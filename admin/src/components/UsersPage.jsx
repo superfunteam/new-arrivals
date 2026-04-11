@@ -35,18 +35,45 @@ export default function UsersPage({ userRole = 'author' }) {
     }
   }
 
+  const [inviteError, setInviteError] = useState('');
+  const [inviteWarning, setInviteWarning] = useState('');
+
   async function handleInvite(e) {
     e.preventDefault();
     if (!inviteEmail) return;
     setInviting(true);
+    setInviteError('');
+    setInviteWarning('');
     try {
-      await apiPost('/admin-users', { action: 'invite', email: inviteEmail, role: inviteRole });
-      setInviteEmail('');
-      setInviteRole('author');
-      setInviteOpen(false);
-      loadUsers();
+      const res = await fetch('/api/admin-users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ action: 'invite', email: inviteEmail, role: inviteRole }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setInviteError(data.error || 'Failed to invite user');
+        return;
+      }
+      if (data.warning) {
+        setInviteWarning(data.warning);
+        // Still close after showing warning briefly
+        setTimeout(() => {
+          setInviteEmail('');
+          setInviteRole('author');
+          setInviteOpen(false);
+          setInviteWarning('');
+          loadUsers();
+        }, 3000);
+      } else {
+        setInviteEmail('');
+        setInviteRole('author');
+        setInviteOpen(false);
+        loadUsers();
+      }
     } catch (err) {
-      setError('Failed to invite user');
+      setInviteError('Connection error');
     } finally {
       setInviting(false);
     }
@@ -217,6 +244,16 @@ export default function UsersPage({ userRole = 'author' }) {
                 </SelectContent>
               </Select>
             </div>
+            {inviteError && (
+              <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2">
+                <p className="text-sm text-destructive">{inviteError}</p>
+              </div>
+            )}
+            {inviteWarning && (
+              <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-3 py-2">
+                <p className="text-sm text-amber-600">{inviteWarning}</p>
+              </div>
+            )}
             <div className="flex justify-end gap-2">
               <DialogClose asChild>
                 <Button type="button" variant="outline">Cancel</Button>
