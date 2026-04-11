@@ -39,12 +39,13 @@ import Dashboard from './components/Dashboard';
 import CalendarPage from './components/CalendarPage';
 import PuzzleEditor from './components/PuzzleEditor';
 import UsersPage from './components/UsersPage';
+import { getCurrentUser } from '@/lib/identity';
 
-const NAV_ITEMS = [
+const NAV_ITEMS_ALL = [
   { key: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { key: 'calendar', label: 'Calendar', icon: CalendarDays },
   { key: 'editor', label: 'New Puzzle', icon: Plus },
-  { key: 'users', label: 'Users', icon: Users },
+  { key: 'users', label: 'Users', icon: Users, adminOnly: true },
 ];
 
 function AppBreadcrumb({ view, editingPuzzle }) {
@@ -91,6 +92,20 @@ export default function App() {
   const [loadError, setLoadError] = useState(null);
   const [view, setView] = useState('dashboard');
   const [editingPuzzle, setEditingPuzzle] = useState(null);
+  const [userRole, setUserRole] = useState('author'); // 'admin' | 'author'
+
+  async function fetchUserRole() {
+    const user = getCurrentUser();
+    const email = user?.email;
+    if (!email) return;
+    try {
+      const res = await fetch(`/api/admin-users?email=${encodeURIComponent(email)}`, { credentials: 'include' });
+      if (res.ok) {
+        const data = await res.json();
+        setUserRole(data.role || 'author');
+      }
+    } catch { /* default to author */ }
+  }
 
   useEffect(() => {
     fetch('/api/admin-puzzles')
@@ -101,6 +116,7 @@ export default function App() {
           return;
         }
         setAuthed(true);
+        fetchUserRole();
         return res.json();
       })
       .then((data) => {
@@ -171,6 +187,7 @@ export default function App() {
       <Login
         onLogin={() => {
           setAuthed(true);
+          fetchUserRole();
           fetch('/api/admin-puzzles')
             .then((res) => res.json())
             .then((data) => {
@@ -207,7 +224,7 @@ export default function App() {
             <SidebarGroup>
               <SidebarGroupLabel>Navigation</SidebarGroupLabel>
               <SidebarMenu>
-                {NAV_ITEMS.map((item) => (
+                {NAV_ITEMS_ALL.filter(item => !item.adminOnly || userRole === 'admin').map((item) => (
                   <SidebarMenuItem key={item.key}>
                     <SidebarMenuButton
                       tooltip={item.label}
@@ -254,6 +271,7 @@ export default function App() {
                 onShaChange={setSha}
                 onNewPuzzle={handleNewPuzzle}
                 onEditPuzzle={handleEditPuzzle}
+                userRole={userRole}
               />
             )}
             {view === 'calendar' && (
@@ -263,6 +281,7 @@ export default function App() {
                 onPuzzlesChange={setPuzzles}
                 onShaChange={setSha}
                 onEditPuzzle={handleEditPuzzle}
+                userRole={userRole}
               />
             )}
             {view === 'editor' && (
@@ -270,6 +289,7 @@ export default function App() {
                 puzzle={editingPuzzle}
                 onSave={handleEditorSave}
                 onCancel={handleEditorCancel}
+                userRole={userRole}
               />
             )}
             {view === 'users' && <UsersPage />}

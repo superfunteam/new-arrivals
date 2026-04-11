@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Users, UserPlus, Mail, Shield, Clock } from 'lucide-react';
 import { apiGet, apiPost } from '@/lib/api';
 
@@ -38,7 +39,7 @@ export default function UsersPage() {
     if (!inviteEmail) return;
     setInviting(true);
     try {
-      await apiPost('/admin-users', { action: 'invite', email: inviteEmail });
+      await apiPost('/admin-users', { action: 'invite', email: inviteEmail, role: 'author' });
       setInviteEmail('');
       setInviteOpen(false);
       loadUsers();
@@ -46,6 +47,15 @@ export default function UsersPage() {
       setError('Failed to invite user');
     } finally {
       setInviting(false);
+    }
+  }
+
+  async function handleRoleChange(email, role) {
+    try {
+      await apiPost('/admin-users', { action: 'set-role', email, role });
+      setUsers(prev => prev.map(u => u.email === email ? { ...u, role } : u));
+    } catch (err) {
+      setError('Failed to update role');
     }
   }
 
@@ -132,12 +142,15 @@ export default function UsersPage() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="flex items-center gap-1.5">
-                        <Shield className="size-3.5 text-muted-foreground" />
-                        <span className="text-sm">
-                          {user.app_metadata?.roles?.includes('admin') ? 'Admin' : 'Editor'}
-                        </span>
-                      </div>
+                      <Select value={user.role || 'author'} onValueChange={(v) => handleRoleChange(user.email, v)}>
+                        <SelectTrigger className="w-28 h-8 text-xs">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="admin">Admin</SelectItem>
+                          <SelectItem value="author">Author</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </TableCell>
                     <TableCell>
                       {user.confirmed_at ? (

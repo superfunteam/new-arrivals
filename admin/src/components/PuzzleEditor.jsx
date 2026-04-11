@@ -58,7 +58,7 @@ function slugify(title) {
     .replace(/^-|-$/g, '');
 }
 
-export default function PuzzleEditor({ puzzle, onSave, onCancel }) {
+export default function PuzzleEditor({ puzzle, onSave, onCancel, userRole = 'author' }) {
   const [title, setTitle] = useState(puzzle?.title || '');
   const [categories, setCategories] = useState(() => initCategories(puzzle));
   const [errors, setErrors] = useState({});
@@ -337,10 +337,11 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel }) {
             <Button
               type="button"
               onClick={handleSave}
-              disabled={submitted && !isValid()}
+              disabled={(submitted && !isValid()) || userRole !== 'admin'}
+              title={userRole !== 'admin' ? 'Only admins can publish puzzles' : ''}
             >
               <Save className="mr-2 size-4" />
-              Process & Publish
+              {userRole === 'admin' ? 'Process & Publish' : 'Publish (Admin Only)'}
             </Button>
           </div>
         </div>

@@ -1,6 +1,8 @@
 import { verifyToken } from './lib/auth.mjs';
+import { getStore } from '@netlify/blobs';
 
 const NETLIFY_API = 'https://api.netlify.com/api/v1';
+const ROLES_STORE = 'user-roles';
 
 function getCredentials() {
   const token = Netlify.env.get('NETLIFY_API_TOKEN');
@@ -44,9 +46,20 @@ export default async (req, context) => {
     return Response.json({ users: [] });
   }
 
+  const store = getStore(ROLES_STORE);
+
   try {
     if (req.method === 'GET') {
-      // Try multiple Netlify API endpoints to find users
+      // Check for ?email= param to get a single user's role
+      const url = new URL(req.url);
+      const emailParam = url.searchParams.get('email');
+      if (emailParam) {
+        const role = await store.get(emailParam, { type: 'text' }) || 'author';
+        return Response.json({ email: emailParam, role });
+      }
+
+      // List all users — try Netlify API endpoints
+      let users = [];
       const endpoints = [
         `/sites/${siteId}/identity/users`,
         `/sites/${siteId}/identity/users?per_page=100`,
@@ -56,18 +69,26 @@ export default async (req, context) => {
       for (const ep of endpoints) {
         try {
           const data = await netlifyApi('GET', ep);
-          const users = Array.isArray(data) ? data : (data?.users || []);
+          users = Array.isArray(data) ? data : (data?.users || []);
           if (users.length > 0) {
             console.log(`[admin-users] Found ${users.length} users via ${ep}`);
-            return Response.json({ users });
+            break;
           }
         } catch (err) {
           console.log(`[admin-users] ${ep} failed: ${err.message}`);
         }
       }
 
-      console.log('[admin-users] All endpoints returned empty');
-      return Response.json({ users: [] });
+      // Enrich with roles from blob store
+      for (const user of users) {
+        const email = user.email;
+        if (email) {
+          const role = await store.get(email, { type: 'text' });
+          user.role = role || 'author';
+        }
+      }
+
+      return Response.json({ users });
     }
 
     if (req.method === 'POST') {
@@ -77,7 +98,21 @@ export default async (req, context) => {
         const result = await netlifyApi('POST', `/sites/${siteId}/identity/users/invite`, {
           email: body.email,
         });
+        // Set default role for new invite
+        if (body.email) {
+          await store.set(body.email, body.role || 'author');
+        }
         return Response.json({ ok: true, user: result });
+      }
+
+      if (body.action === 'set-role') {
+        const { email, role } = body;
+        if (!email || !['admin', 'author'].includes(role)) {
+          return Response.json({ error: 'Invalid email or role' }, { status: 400 });
+        }
+        await store.set(email, role);
+        console.log(`[admin-users] Set role for ${email}: ${role}`);
+        return Response.json({ ok: true, email, role });
       }
 
       return Response.json({ error: 'Unknown action' }, { status: 400 });
