@@ -5,30 +5,43 @@ import { verifyToken } from './lib/auth.mjs';
  * This uses the personal access token to query site members directly.
  */
 async function listUsersViaNetlifyApi() {
+  // Log every env var we care about (redacted)
   const netlifyToken = Netlify.env.get('NETLIFY_API_TOKEN');
   const siteId = Netlify.env.get('SITE_ID');
 
+  console.log(`[admin-users] ENV CHECK:`);
+  console.log(`  NETLIFY_API_TOKEN: ${netlifyToken ? netlifyToken.slice(0, 8) + '...' : 'NOT SET'}`);
+  console.log(`  SITE_ID: ${siteId || 'NOT SET'}`);
+
   if (!netlifyToken) {
-    console.log('[admin-users] NETLIFY_API_TOKEN not set');
+    console.log('[admin-users] ABORT: no NETLIFY_API_TOKEN');
+    return [];
+  }
+  if (!siteId) {
+    console.log('[admin-users] ABORT: no SITE_ID');
     return [];
   }
 
-  // Try Identity users endpoint via Netlify API
-  if (siteId) {
-    try {
-      const res = await fetch(
-        `https://api.netlify.com/api/v1/sites/${siteId}/identity/users`,
-        { headers: { 'Authorization': `Bearer ${netlifyToken}` } }
-      );
-      if (res.ok) {
-        const users = await res.json();
-        console.log(`[admin-users] Found ${users.length} identity users via Netlify API`);
-        return users;
-      }
-      console.log(`[admin-users] Netlify API identity/users: ${res.status} ${await res.text()}`);
-    } catch (err) {
-      console.log(`[admin-users] Netlify API error: ${err.message}`);
+  const url = `https://api.netlify.com/api/v1/sites/${siteId}/identity/users`;
+  console.log(`[admin-users] Fetching: ${url}`);
+
+  try {
+    const res = await fetch(url, {
+      headers: { 'Authorization': `Bearer ${netlifyToken}` },
+    });
+
+    const body = await res.text();
+    console.log(`[admin-users] Response: ${res.status} (${body.length} bytes)`);
+
+    if (res.ok) {
+      const users = JSON.parse(body);
+      console.log(`[admin-users] Found ${users.length} users`);
+      return users;
     }
+
+    console.log(`[admin-users] Error body: ${body.slice(0, 500)}`);
+  } catch (err) {
+    console.log(`[admin-users] Fetch error: ${err.message}`);
   }
 
   return [];
