@@ -419,10 +419,20 @@ async function main() {
     if (!isSkipIntro()) {
       let miniSceneCleanup = null;
 
-      showOnboarding((skipChecked) => {
+      showOnboarding((skipChecked, choice) => {
         if (miniSceneCleanup) { miniSceneCleanup(); miniSceneCleanup = null; }
         setSkipIntro(skipChecked);
-        showWelcome();
+        if (choice === 'training') {
+          // Jump straight into the first training puzzle
+          ensureRadioStarted();
+          startGameSession(practicePuzzles[0], 'practice', puzzlesData);
+        } else if (choice === 'daily') {
+          // Jump straight into today's puzzle
+          ensureRadioStarted();
+          startGameSession(dailyPuzzle, 'daily', puzzlesData);
+        } else {
+          showWelcome();
+        }
       }, (slideIndex) => {
         // Clean up previous mini scene
         if (miniSceneCleanup) { miniSceneCleanup(); miniSceneCleanup = null; }

@@ -543,7 +543,7 @@ export function showOnboarding(onComplete, onSlideRender) {
       .join('');
 
     const notifyChecked = _isNotifyEnabled ? ' checked' : '';
-    const skipCheckboxHtml = isLastSlide
+    const checkboxHtml = isLastSlide
       ? `<div class="checkbox-group">
           <label class="skip-checkbox">
             <input type="checkbox" id="skip-intro-check"> Skip this next time
@@ -554,34 +554,46 @@ export function showOnboarding(onComplete, onSlideRender) {
         </div>`
       : '';
 
+    const buttonsHtml = isLastSlide
+      ? `<div class="onboarding-final-buttons">
+          <button class="onboarding-btn" id="onboarding-training">Start Training</button>
+          <button class="onboarding-btn-secondary" id="onboarding-skip-daily">Skip to Daily Puzzle</button>
+        </div>`
+      : `<button class="onboarding-btn" id="onboarding-next">${slides[current].btn}</button>`;
+
     overlay.innerHTML = `
       <div class="onboarding">
         ${_marqueeHtml}
         <div class="onboarding-card">
           ${slidesHtml}
           <div class="onboarding-dots">${dotsHtml}</div>
-          ${skipCheckboxHtml}
-          <button class="onboarding-btn" id="onboarding-next">${slides[current].btn}</button>
+          ${checkboxHtml}
+          ${buttonsHtml}
         </div>
       </div>
     `;
 
     overlay.classList.add('active');
 
-    document.getElementById('onboarding-next').addEventListener('click', () => {
-      if (current < slides.length - 1) {
+    function finishOnboarding(choice) {
+      const skipCheck = document.getElementById('skip-intro-check');
+      const skipChecked = skipCheck ? skipCheck.checked : false;
+      const notifyCheck = document.getElementById('notify-check');
+      if (notifyCheck) _handleNotifyToggle(notifyCheck.checked);
+      overlay.innerHTML = '';
+      overlay.classList.remove('active');
+      if (typeof onComplete === 'function') onComplete(skipChecked, choice);
+    }
+
+    if (isLastSlide) {
+      document.getElementById('onboarding-training').addEventListener('click', () => finishOnboarding('training'));
+      document.getElementById('onboarding-skip-daily').addEventListener('click', () => finishOnboarding('daily'));
+    } else {
+      document.getElementById('onboarding-next').addEventListener('click', () => {
         current++;
         render();
-      } else {
-        const skipCheck = document.getElementById('skip-intro-check');
-        const skipChecked = skipCheck ? skipCheck.checked : false;
-        const notifyCheck = document.getElementById('notify-check');
-        if (notifyCheck) _handleNotifyToggle(notifyCheck.checked);
-        overlay.innerHTML = '';
-        overlay.classList.remove('active');
-        if (typeof onComplete === 'function') onComplete(skipChecked);
-      }
-    });
+      });
+    }
 
     // Interactive demo tape on slide 2
     const demoTape = document.getElementById('demo-tape');
