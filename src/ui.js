@@ -684,7 +684,7 @@ export function showWelcomeScreen(options = {}) {
   let dailyBtnLabel = 'START SHIFT';
   let dailyBtnClass = 'welcome-btn daily';
   let dailyDisabled = false;
-  if (dailyState === 'completed') {
+  if (dailyState === 'completed' || hasScore(dailyPuzzle.id)) {
     dailyBtnLabel = 'COMPLETED \u2713';
     dailyBtnClass = 'welcome-btn completed';
     dailyDisabled = true;
@@ -736,7 +736,7 @@ export function showWelcomeScreen(options = {}) {
   const pastReturnsHtml = pastPuzzles.length > 0
     ? `
       <div class="welcome-section">
-        <div class="welcome-section-title">PAST RETURNS</div>
+        <div class="welcome-section-title">RERUNS (PAST DAYS)</div>
         <div class="past-returns-list">
           ${pastCardsHtml}
         </div>
