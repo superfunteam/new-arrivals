@@ -326,41 +326,75 @@ export function setNotifyEnabled(value) {
 }
 
 /**
+ * Detect if running inside Capacitor native shell.
+ */
+function isCapacitor() {
+  return window.Capacitor && window.Capacitor.isNativePlatform();
+}
+
+/**
  * Check if notifications are actually permitted at the OS/browser level.
  */
 export function isNotifyPermissionGranted() {
+  if (isCapacitor()) return isNotifyEnabled(); // Capacitor manages its own permissions
   return 'Notification' in window && Notification.permission === 'granted';
 }
 
 /**
  * Request notification permission and enable daily alerts.
+ * Sends a test notification on success so the user sees it worked.
  * Returns true if permission was granted.
  */
 export async function enableDailyNotification() {
-  if (!('Notification' in window)) return false;
-
-  // If already granted, just enable
-  if (Notification.permission === 'granted') {
-    setNotifyEnabled(true);
-    scheduleNotification();
-    return true;
+  if (isCapacitor()) {
+    // Use Capacitor Local Notifications
+    try {
+      const { LocalNotifications } = await import('@capacitor/local-notifications');
+      const result = await LocalNotifications.requestPermissions();
+      if (result.display !== 'granted') {
+        setNotifyEnabled(false);
+        return false;
+      }
+      setNotifyEnabled(true);
+      await scheduleCapacitorNotifications();
+      // Test notification
+      await LocalNotifications.schedule({
+        notifications: [{
+          id: 99999,
+          title: 'New Arrivals',
+          body: "You're all set! We'll remind you when new tapes arrive.",
+          smallIcon: 'ic_launcher',
+        }],
+      });
+      return true;
+    } catch (e) {
+      console.log('Capacitor notification error:', e);
+      setNotifyEnabled(false);
+      return false;
+    }
   }
 
-  // If denied, can't re-ask — browser blocks re-prompts
+  // Web path
+  if (!('Notification' in window)) return false;
+
   if (Notification.permission === 'denied') {
     setNotifyEnabled(false);
     return false;
   }
 
-  // Default — ask for permission
-  const permission = await Notification.requestPermission();
-  if (permission !== 'granted') {
-    setNotifyEnabled(false);
-    return false;
+  if (Notification.permission !== 'granted') {
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
+      setNotifyEnabled(false);
+      return false;
+    }
   }
 
   setNotifyEnabled(true);
   scheduleNotification();
+
+  // Test notification so user sees it works
+  fireTestNotification();
   return true;
 }
 
@@ -370,16 +404,46 @@ export function disableDailyNotification() {
     clearTimeout(window._notifyTimeout);
     window._notifyTimeout = null;
   }
+  // Cancel Capacitor scheduled notifications
+  if (isCapacitor()) {
+    import('@capacitor/local-notifications').then(({ LocalNotifications }) => {
+      LocalNotifications.cancel({ notifications: [{ id: 1 }] }).catch(() => {});
+    }).catch(() => {});
+  }
 }
 
 /**
- * Fire a notification right now (used for catch-up and scheduled).
+ * Fire a one-time test notification immediately.
+ */
+function fireTestNotification() {
+  try {
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.ready.then((reg) => {
+        reg.showNotification('New Arrivals', {
+          body: "You're all set! We'll remind you when new tapes arrive.",
+          icon: '/apple-touch-icon.png',
+          badge: '/favicon-32.png',
+          tag: 'test-notification',
+        });
+      });
+    } else if (Notification.permission === 'granted') {
+      new Notification('New Arrivals', {
+        body: "You're all set! We'll remind you when new tapes arrive.",
+        icon: '/apple-touch-icon.png',
+      });
+    }
+  } catch {
+    // Silently fail
+  }
+}
+
+/**
+ * Fire a daily notification (used for catch-up and scheduled).
  */
 async function fireNotification() {
   const body = getNextMessage();
   const today = getPuzzleDate();
 
-  // Don't double-fire for the same puzzle date
   if (localStorage.getItem(KEY_LAST_NOTIFY_DATE) === today) return;
   localStorage.setItem(KEY_LAST_NOTIFY_DATE, today);
 
@@ -403,11 +467,59 @@ async function fireNotification() {
 }
 
 /**
- * Schedule the next notification for 10pm Central.
+ * Schedule notifications via Capacitor Local Notifications.
+ * Schedules the next 7 days of 10pm Central notifications.
+ */
+async function scheduleCapacitorNotifications() {
+  try {
+    const { LocalNotifications } = await import('@capacitor/local-notifications');
+
+    // Cancel existing
+    await LocalNotifications.cancel({ notifications: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }, { id: 7 }] });
+
+    // Schedule next 7 days at 10pm Central
+    const notifications = [];
+    for (let i = 0; i < 7; i++) {
+      const centralNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+      const target = new Date(centralNow);
+      target.setDate(target.getDate() + i);
+      target.setHours(22, 0, 0, 0);
+      if (target <= centralNow) {
+        target.setDate(target.getDate() + 1);
+      }
+      // Convert back to local time for scheduling
+      const localTarget = new Date(target.toLocaleString('en-US') + ' CST');
+
+      notifications.push({
+        id: i + 1,
+        title: 'New Arrivals',
+        body: NOTIFY_MESSAGES[i % NOTIFY_MESSAGES.length],
+        schedule: { at: localTarget },
+        smallIcon: 'ic_launcher',
+      });
+    }
+
+    await LocalNotifications.schedule({ notifications });
+    console.log('Scheduled', notifications.length, 'native notifications');
+  } catch (e) {
+    console.log('Failed to schedule native notifications:', e);
+  }
+}
+
+/**
+ * Schedule the next web notification for 10pm Central.
  * Also checks if we missed today's notification and fires it immediately.
  */
 export function scheduleNotification() {
-  if (!isNotifyEnabled() || !isNotifyPermissionGranted()) return;
+  if (!isNotifyEnabled()) return;
+
+  // Capacitor uses its own scheduling
+  if (isCapacitor()) {
+    scheduleCapacitorNotifications();
+    return;
+  }
+
+  if (!isNotifyPermissionGranted()) return;
 
   // Check if we missed today's notification (page was closed at 10pm)
   const centralNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
@@ -425,7 +537,6 @@ export function scheduleNotification() {
 
   window._notifyTimeout = setTimeout(() => {
     fireNotification();
-    // Re-schedule for tomorrow
     scheduleNotification();
   }, msUntilReset);
 }

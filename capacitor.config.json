@@ -7,6 +7,25 @@
     "cleartext": false
   },
   "android": {
-    "backgroundColor": "#1A1A2E"
+    "backgroundColor": "#1A1A2E",
+    "allowMixedContent": true
+  },
+  "plugins": {
+    "StatusBar": {
+      "backgroundColor": "#1A1A2E",
+      "style": "LIGHT",
+      "overlaysWebView": false
+    },
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "backgroundColor": "#1A1A2E",
+      "androidScaleType": "CENTER_CROP",
+      "launchShowDuration": 2000,
+      "showSpinner": false
+    },
+    "LocalNotifications": {
+      "smallIcon": "ic_launcher",
+      "iconColor": "#FF6B9D"
+    }
   }
 }
