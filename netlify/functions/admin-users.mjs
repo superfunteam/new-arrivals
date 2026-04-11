@@ -1,41 +1,16 @@
-import { SignJWT } from 'jose';
-import { verifyToken as verifyAdminToken } from './lib/auth.mjs';
+import { verifyToken } from './lib/auth.mjs';
 
-const IDENTITY_URL = 'https://game.vhsgarage.com/.netlify/identity';
+const NETLIFY_API = 'https://api.netlify.com/api/v1';
 
-/**
- * Generate a GoTrue admin JWT signed with the Identity JWT secret.
- * GoTrue accepts any valid JWT with role=admin signed with its secret.
- */
-async function makeGoTrueAdminToken() {
-  // Netlify auto-injects this for sites with Identity enabled
-  const jwtSecret = Netlify.env.get('GOTRUE_JWT_SECRET');
-  if (!jwtSecret) {
-    console.log('[admin-users] GOTRUE_JWT_SECRET not set — check Identity settings');
-    return null;
-  }
-
-  const secret = new TextEncoder().encode(jwtSecret);
-  const token = await new SignJWT({
-    role: 'admin',
-    aud: '',
-  })
-    .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
-    .setIssuedAt()
-    .setExpirationTime('5m')
-    .sign(secret);
-
-  return token;
+function getCredentials() {
+  const token = Netlify.env.get('NETLIFY_API_TOKEN');
+  const siteId = Netlify.env.get('SITE_ID');
+  return { token, siteId };
 }
 
-async function gotrueAdmin(method, path, body) {
-  const token = await makeGoTrueAdminToken();
-  if (!token) return null;
-
-  const url = `${IDENTITY_URL}/admin${path}`;
-  console.log(`[admin-users] GoTrue ${method} ${url}`);
-
-  const res = await fetch(url, {
+async function netlifyApi(method, path, body) {
+  const { token } = getCredentials();
+  const res = await fetch(`${NETLIFY_API}${path}`, {
     method,
     headers: {
       'Authorization': `Bearer ${token}`,
@@ -44,36 +19,64 @@ async function gotrueAdmin(method, path, body) {
     body: body ? JSON.stringify(body) : undefined,
   });
 
-  const resBody = await res.text();
-  console.log(`[admin-users] GoTrue response: ${res.status} (${resBody.length} bytes)`);
+  const text = await res.text();
+  console.log(`[admin-users] ${method} ${path} → ${res.status}`);
 
   if (!res.ok) {
-    console.log(`[admin-users] GoTrue error: ${resBody.slice(0, 300)}`);
-    throw new Error(`GoTrue ${res.status}: ${resBody.slice(0, 100)}`);
+    console.log(`[admin-users] Error: ${text.slice(0, 300)}`);
+    throw new Error(`Netlify API ${res.status}`);
   }
 
-  return JSON.parse(resBody);
+  return text ? JSON.parse(text) : null;
 }
 
 export default async (req, context) => {
   console.log(`[admin-users] ${req.method} ${req.url}`);
 
   const cookie = req.headers.get('cookie');
-  if (!(await verifyAdminToken(cookie))) {
+  if (!(await verifyToken(cookie))) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const { token, siteId } = getCredentials();
+  if (!token || !siteId) {
+    console.log(`[admin-users] Missing env: token=${!!token} siteId=${!!siteId}`);
+    return Response.json({ users: [] });
   }
 
   try {
     if (req.method === 'GET') {
-      const data = await gotrueAdmin('GET', '/users');
-      return Response.json({ users: data?.users || [] });
+      // Try multiple Netlify API endpoints to find users
+      const endpoints = [
+        `/sites/${siteId}/identity/users`,
+        `/sites/${siteId}/identity/users?per_page=100`,
+        `/sites/${siteId}/members`,
+      ];
+
+      for (const ep of endpoints) {
+        try {
+          const data = await netlifyApi('GET', ep);
+          const users = Array.isArray(data) ? data : (data?.users || []);
+          if (users.length > 0) {
+            console.log(`[admin-users] Found ${users.length} users via ${ep}`);
+            return Response.json({ users });
+          }
+        } catch (err) {
+          console.log(`[admin-users] ${ep} failed: ${err.message}`);
+        }
+      }
+
+      console.log('[admin-users] All endpoints returned empty');
+      return Response.json({ users: [] });
     }
 
     if (req.method === 'POST') {
       const body = await req.json();
 
       if (body.action === 'invite') {
-        const result = await gotrueAdmin('POST', '/invite', { email: body.email });
+        const result = await netlifyApi('POST', `/sites/${siteId}/identity/users/invite`, {
+          email: body.email,
+        });
         return Response.json({ ok: true, user: result });
       }
 
