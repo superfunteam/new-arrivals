@@ -1,24 +1,48 @@
 import { verifyToken } from './lib/auth.mjs';
 
-const IDENTITY_URL = `https://game.vhsgarage.com/.netlify/identity`;
+const SITE_URL = 'https://game.vhsgarage.com';
+const IDENTITY_URL = `${SITE_URL}/.netlify/identity`;
 
-// Use the Netlify Identity Admin API
-// Requires NETLIFY_API_TOKEN or site-level identity admin access
+/**
+ * Call the Netlify Identity Admin API.
+ * Uses the Netlify site API to get an admin token for the Identity instance.
+ */
+async function getIdentityAdminToken() {
+  const siteId = Netlify.env.get('SITE_ID') || Netlify.env.get('NETLIFY_SITE_ID');
+  const netlifyToken = Netlify.env.get('NETLIFY_API_TOKEN');
+
+  if (!netlifyToken || !siteId) {
+    console.log('[admin-users] Missing NETLIFY_API_TOKEN or SITE_ID');
+    return null;
+  }
+
+  // Use the Netlify API to generate a short-lived Identity admin token
+  const res = await fetch(`https://api.netlify.com/api/v1/sites/${siteId}/identity/token`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${netlifyToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!res.ok) {
+    const errText = await res.text();
+    console.log(`[admin-users] Failed to get admin token: ${res.status} ${errText}`);
+    return null;
+  }
+
+  const data = await res.json();
+  return data.token;
+}
+
 async function identityAdmin(method, path, body) {
-  // The identity admin endpoint uses the site's identity URL
+  const adminToken = await getIdentityAdminToken();
+
   const url = `${IDENTITY_URL}/admin${path}`;
+  const headers = { 'Content-Type': 'application/json' };
 
-  const headers = {
-    'Content-Type': 'application/json',
-  };
-
-  // Try to use the NETLIFY_API_TOKEN if available for admin access
-  const token = typeof Netlify !== 'undefined' && Netlify.env
-    ? Netlify.env.get('IDENTITY_ADMIN_TOKEN')
-    : process.env.IDENTITY_ADMIN_TOKEN;
-
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
+  if (adminToken) {
+    headers['Authorization'] = `Bearer ${adminToken}`;
   }
 
   const res = await fetch(url, {
