@@ -1,7 +1,7 @@
-name: Build Android APK
+name: Build Android APK + AAB
 
 on:
-  workflow_dispatch:  # Manual trigger from GitHub Actions tab
+  workflow_dispatch:
   push:
     paths:
       - 'capacitor.config.json'
@@ -35,13 +35,60 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x android/gradlew
 
+      # ── Debug APK (for sideloading/testing) ──
       - name: Build debug APK
         working-directory: android
         run: ./gradlew assembleDebug
 
-      - name: Upload APK
+      # ── Signed Release AAB (for Play Store) ──
+      - name: Setup keystore
+        run: |
+          if [ -n "${{ secrets.KEYSTORE_BASE64 }}" ]; then
+            echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/release.jks
+            echo "Using stored keystore"
+          else
+            keytool -genkey -v \
+              -keystore android/app/release.jks \
+              -keyalg RSA -keysize 2048 -validity 10000 \
+              -alias new-arrivals \
+              -storepass "VhsGarage2026!" \
+              -keypass "VhsGarage2026!" \
+              -dname "CN=Superfun Games LLC, OU=Games, O=Superfun Games LLC, L=Austin, ST=Texas, C=US"
+            echo "Generated new keystore"
+            echo "⚠️ IMPORTANT: Save the keystore! Run this to get the base64:"
+            echo "    base64 -w 0 android/app/release.jks"
+            echo "    Then store it as KEYSTORE_BASE64 in GitHub Secrets"
+          fi
+
+      - name: Build signed release AAB
+        working-directory: android
+        run: ./gradlew bundleRelease
+        env:
+          KEYSTORE_PASSWORD: "VhsGarage2026!"
+
+      - name: Build signed release APK
+        working-directory: android
+        run: ./gradlew assembleRelease
+        env:
+          KEYSTORE_PASSWORD: "VhsGarage2026!"
+
+      - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
           name: new-arrivals-debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
+
+      - name: Upload release AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: new-arrivals-release-aab
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          retention-days: 90
+
+      - name: Upload release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: new-arrivals-release-apk
+          path: android/app/build/outputs/apk/release/app-release.apk
+          retention-days: 90
