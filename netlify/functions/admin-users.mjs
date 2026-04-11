@@ -1,60 +1,63 @@
 import { verifyToken } from './lib/auth.mjs';
 
-const SITE_URL = 'https://game.vhsgarage.com';
-const IDENTITY_URL = `${SITE_URL}/.netlify/identity`;
-
 /**
- * Call the Netlify Identity Admin API.
- * Uses the Netlify site API to get an admin token for the Identity instance.
+ * List users via the Netlify API (not the Identity GoTrue admin endpoint).
+ * This uses the personal access token to query site members directly.
  */
-async function getIdentityAdminToken() {
-  const siteId = Netlify.env.get('SITE_ID') || Netlify.env.get('NETLIFY_SITE_ID');
+async function listUsersViaNetlifyApi() {
   const netlifyToken = Netlify.env.get('NETLIFY_API_TOKEN');
+  const siteId = Netlify.env.get('SITE_ID');
 
-  if (!netlifyToken || !siteId) {
-    console.log('[admin-users] Missing NETLIFY_API_TOKEN or SITE_ID');
-    return null;
+  if (!netlifyToken) {
+    console.log('[admin-users] NETLIFY_API_TOKEN not set');
+    return [];
   }
 
-  // Use the Netlify API to generate a short-lived Identity admin token
-  const res = await fetch(`https://api.netlify.com/api/v1/sites/${siteId}/identity/token`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${netlifyToken}`,
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!res.ok) {
-    const errText = await res.text();
-    console.log(`[admin-users] Failed to get admin token: ${res.status} ${errText}`);
-    return null;
+  // Try Identity users endpoint via Netlify API
+  if (siteId) {
+    try {
+      const res = await fetch(
+        `https://api.netlify.com/api/v1/sites/${siteId}/identity/users`,
+        { headers: { 'Authorization': `Bearer ${netlifyToken}` } }
+      );
+      if (res.ok) {
+        const users = await res.json();
+        console.log(`[admin-users] Found ${users.length} identity users via Netlify API`);
+        return users;
+      }
+      console.log(`[admin-users] Netlify API identity/users: ${res.status} ${await res.text()}`);
+    } catch (err) {
+      console.log(`[admin-users] Netlify API error: ${err.message}`);
+    }
   }
 
-  const data = await res.json();
-  return data.token;
+  return [];
 }
 
-async function identityAdmin(method, path, body) {
-  const adminToken = await getIdentityAdminToken();
+async function inviteUserViaNetlifyApi(email) {
+  const netlifyToken = Netlify.env.get('NETLIFY_API_TOKEN');
+  const siteId = Netlify.env.get('SITE_ID');
 
-  const url = `${IDENTITY_URL}/admin${path}`;
-  const headers = { 'Content-Type': 'application/json' };
-
-  if (adminToken) {
-    headers['Authorization'] = `Bearer ${adminToken}`;
+  if (!netlifyToken || !siteId) {
+    throw new Error('Missing NETLIFY_API_TOKEN or SITE_ID');
   }
 
-  const res = await fetch(url, {
-    method,
-    headers,
-    body: body ? JSON.stringify(body) : undefined,
-  });
+  const res = await fetch(
+    `https://api.netlify.com/api/v1/sites/${siteId}/identity/users/invite`,
+    {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${netlifyToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    }
+  );
 
   if (!res.ok) {
     const errText = await res.text();
-    console.log(`[admin-users] Identity API error: ${res.status} ${errText}`);
-    throw new Error(`Identity API error: ${res.status}`);
+    console.log(`[admin-users] Invite error: ${res.status} ${errText}`);
+    throw new Error(`Invite failed: ${res.status}`);
   }
 
   return res.json();
@@ -70,24 +73,15 @@ export default async (req, context) => {
 
   try {
     if (req.method === 'GET') {
-      // List users via Identity Admin API
-      try {
-        const data = await identityAdmin('GET', '/users');
-        return Response.json({ users: data.users || [] });
-      } catch (err) {
-        console.log(`[admin-users] Identity not available, returning empty: ${err.message}`);
-        return Response.json({ users: [] });
-      }
+      const users = await listUsersViaNetlifyApi();
+      return Response.json({ users });
     }
 
     if (req.method === 'POST') {
       const body = await req.json();
 
       if (body.action === 'invite') {
-        // Invite a user via Identity Admin API
-        const result = await identityAdmin('POST', '/invite', {
-          email: body.email,
-        });
+        const result = await inviteUserViaNetlifyApi(body.email);
         return Response.json({ ok: true, user: result });
       }
 
