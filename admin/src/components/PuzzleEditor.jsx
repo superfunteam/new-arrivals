@@ -11,10 +11,11 @@ import {
   SelectContent,
   SelectItem,
 } from '@/components/ui/select';
-import { ArrowLeft, Loader2, Save } from 'lucide-react';
+import { ArrowLeft, Loader2, Save, Lightbulb } from 'lucide-react';
 import MovieSearch from './MovieSearch';
 import { FullPuzzleSparkle, CategorySparkle } from './AiGeneratePanel';
 import ProcessingProgress from './ProcessingProgress';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const DIFFICULTIES = [
   { value: 1, label: 'Easy', dot: 'bg-emerald-500', text: 'text-emerald-700', bg: 'bg-emerald-50' },
@@ -64,6 +65,9 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel, userRole = 'aut
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [aiLoadingFull, setAiLoadingFull] = useState(false);
+  const [aiLoadingCat, setAiLoadingCat] = useState({}); // { [catIdx]: true }
+  const [showHints, setShowHints] = useState(!puzzle); // Show walkthrough for new puzzles
 
   function updateCategory(catIdx, field, value) {
     setCategories((prev) =>
@@ -137,6 +141,8 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel, userRole = 'aut
   }
 
   function handleAiGenerated(aiData) {
+    setAiLoadingFull(false);
+    setShowHints(false);
     if (aiData.title) setTitle(aiData.title);
     if (aiData.categories) {
       setCategories(
@@ -150,6 +156,7 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel, userRole = 'aut
   }
 
   function handleCategoryMoviesGenerated(catIdx, movies) {
+    setAiLoadingCat(prev => ({ ...prev, [catIdx]: false }));
     setCategories((prev) =>
       prev.map((cat, i) => {
         if (i !== catIdx) return cat;
@@ -202,10 +209,22 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel, userRole = 'aut
         </p>
       </div>
 
+      {/* Walkthrough Hint */}
+      {showHints && (
+        <Alert className="mb-6 border-blue-200 bg-blue-50/50">
+          <Lightbulb className="size-4 text-blue-600" />
+          <AlertDescription className="text-sm text-blue-800">
+            <strong>How to create a puzzle:</strong> Enter a theme below and hit "Generate Full Puzzle" to have AI create all 4 categories with movies. Or build manually — name each category, then search for movies to fill the 4 slots. Tap any poster to see it full-size.
+            <Button variant="link" size="sm" className="text-blue-600 p-0 h-auto ml-1" onClick={() => setShowHints(false)}>Dismiss</Button>
+          </AlertDescription>
+        </Alert>
+      )}
+
       {/* AI Full Puzzle Generator */}
       <FullPuzzleSparkle
         onGenerated={handleAiGenerated}
         existingTitle={title}
+        onLoadingChange={setAiLoadingFull}
       />
 
       {/* Title Input */}
@@ -260,6 +279,7 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel, userRole = 'aut
                         categoryName={cat.name}
                         existingMovies={getAllSelectedMovies().map((t) => ({ title: t }))}
                         onMoviesGenerated={(movies) => handleCategoryMoviesGenerated(ci, movies)}
+                        onLoadingChange={(loading) => setAiLoadingCat(prev => ({ ...prev, [ci]: loading }))}
                       />
                     </div>
                     {submitted && errors[`cat_${ci}_name`] && (
@@ -305,6 +325,7 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel, userRole = 'aut
                       <MovieSearch
                         value={movie}
                         onChange={(m) => updateMovie(ci, mi, m)}
+                        isLoading={aiLoadingFull || !!aiLoadingCat[ci]}
                       />
                       {submitted && errors[`cat_${ci}_movie_${mi}`] && (
                         <Badge variant="destructive" className="text-[10px] px-1.5 py-0">

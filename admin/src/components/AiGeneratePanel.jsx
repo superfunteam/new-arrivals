@@ -41,7 +41,7 @@ async function resolveMoviesViaTmdb(movies) {
   return results;
 }
 
-export function FullPuzzleSparkle({ onGenerated, existingTitle }) {
+export function FullPuzzleSparkle({ onGenerated, existingTitle, onLoadingChange }) {
   const [theme, setTheme] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -52,6 +52,7 @@ export function FullPuzzleSparkle({ onGenerated, existingTitle }) {
 
     setLoading(true);
     setError(null);
+    if (onLoadingChange) onLoadingChange(true);
 
     try {
       const aiResult = await apiPost('/admin-ai-generate', {
@@ -79,6 +80,7 @@ export function FullPuzzleSparkle({ onGenerated, existingTitle }) {
     } catch (err) {
       console.error('AI generation failed:', err);
       setError(err.message || 'AI generation failed');
+      if (onLoadingChange) onLoadingChange(false);
     } finally {
       setLoading(false);
     }
@@ -140,13 +142,14 @@ export function FullPuzzleSparkle({ onGenerated, existingTitle }) {
   );
 }
 
-export function CategorySparkle({ categoryName, existingMovies, onMoviesGenerated }) {
+export function CategorySparkle({ categoryName, existingMovies, onMoviesGenerated, onLoadingChange }) {
   const [loading, setLoading] = useState(false);
 
   async function handleGenerate() {
     if (!categoryName.trim()) return;
 
     setLoading(true);
+    if (onLoadingChange) onLoadingChange(true);
 
     try {
       const usedTitles = existingMovies
@@ -167,6 +170,7 @@ export function CategorySparkle({ categoryName, existingMovies, onMoviesGenerate
       );
     } catch (err) {
       console.error('Category generation failed:', err);
+      if (onLoadingChange) onLoadingChange(false);
     } finally {
       setLoading(false);
     }

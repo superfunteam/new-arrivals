@@ -78,12 +78,16 @@ export default async (req, context) => {
     }
 
     if (query) {
-      // Search movies
-      const params = new URLSearchParams({ query });
+      // Search movies — prefer English, US-released, sorted by popularity
+      const params = new URLSearchParams({
+        query,
+        language: 'en-US',
+        include_adult: 'false',
+        region: 'US',
+      });
       if (year) params.set('year', year);
 
       console.log(`[admin-tmdb] Searching TMDB: query=${query}, year=${year}`);
-      console.log(`[admin-tmdb] TMDB token present: ${!!Netlify.env.get("TMDB_ACCESS_TOKEN")}`);
       const res = await fetch(`${TMDB_BASE}/search/movie?${params}`, {
         headers: tmdbHeaders(),
       });
@@ -95,13 +99,25 @@ export default async (req, context) => {
       }
 
       const data = await res.json();
-      const results = (data.results || []).slice(0, 10).map((m) => ({
-        tmdb_id: m.id,
-        title: m.title,
-        year: m.release_date ? m.release_date.slice(0, 4) : null,
-        poster_path: m.poster_path,
-        overview: m.overview,
-      }));
+      const results = (data.results || [])
+        // Prefer English-language movies with posters
+        .sort((a, b) => {
+          // English first
+          const aEn = a.original_language === 'en' ? 0 : 1;
+          const bEn = b.original_language === 'en' ? 0 : 1;
+          if (aEn !== bEn) return aEn - bEn;
+          // Then by popularity
+          return (b.popularity || 0) - (a.popularity || 0);
+        })
+        .slice(0, 10)
+        .map((m) => ({
+          tmdb_id: m.id,
+          title: m.title,
+          year: m.release_date ? m.release_date.slice(0, 4) : null,
+          poster_path: m.poster_path,
+          overview: m.overview,
+          popularity: m.popularity,
+        }));
 
       return Response.json(results);
     }
