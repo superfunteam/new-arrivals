@@ -16,6 +16,7 @@ export default function UsersPage({ userRole = 'author' }) {
   const [error, setError] = useState(null);
   const [inviteOpen, setInviteOpen] = useState(false);
   const [inviteEmail, setInviteEmail] = useState('');
+  const [inviteRole, setInviteRole] = useState('author');
   const [inviting, setInviting] = useState(false);
 
   useEffect(() => {
@@ -39,8 +40,9 @@ export default function UsersPage({ userRole = 'author' }) {
     if (!inviteEmail) return;
     setInviting(true);
     try {
-      await apiPost('/admin-users', { action: 'invite', email: inviteEmail, role: 'author' });
+      await apiPost('/admin-users', { action: 'invite', email: inviteEmail, role: inviteRole });
       setInviteEmail('');
+      setInviteRole('author');
       setInviteOpen(false);
       loadUsers();
     } catch (err) {
@@ -199,9 +201,21 @@ export default function UsersPage({ userRole = 'author' }) {
                 value={inviteEmail}
                 onChange={(e) => setInviteEmail(e.target.value)}
                 placeholder="email@example.com"
-                className="pl-9"
+                className="pl-9 h-10"
                 autoFocus
               />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">Role</label>
+              <Select value={inviteRole} onValueChange={setInviteRole}>
+                <SelectTrigger className="h-10">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="admin">Admin — can publish & schedule puzzles</SelectItem>
+                  <SelectItem value="author">Author — can create puzzles, cannot publish</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div className="flex justify-end gap-2">
               <DialogClose asChild>
