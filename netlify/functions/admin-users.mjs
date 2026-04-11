@@ -43,24 +43,43 @@ export default async (req, context) => {
     const { token, siteId } = getCredentials();
     const results = {};
 
-    // Try fetching identity service config (may contain JWT secret)
+    // Try multiple paths to find identity config
+    const paths = [
+      `/sites/${siteId}/identity`,
+      `/sites/${siteId}/services/identity`,
+      `/sites/${siteId}`,
+    ];
+
+    for (const p of paths) {
+      try {
+        const res = await fetch(`${NETLIFY_API}${p}`, {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        const body = await res.text();
+        if (res.ok) {
+          const data = JSON.parse(body);
+          const keys = Object.keys(data);
+          // Look for anything JWT related in the response
+          const jwtKeys = keys.filter(k => /jwt|secret|identity|token/i.test(k));
+          results[p] = { status: res.status, keys: keys.slice(0, 20), jwtKeys };
+          // Check nested objects
+          if (data.identity_instance_id) results.identityInstanceId = data.identity_instance_id;
+          if (data.jwt_secret) results.jwtSecret = data.jwt_secret.slice(0, 8) + '...';
+          if (data.settings?.jwt_secret) results.settingsJwtSecret = data.settings.jwt_secret.slice(0, 8) + '...';
+        } else {
+          results[p] = { status: res.status };
+        }
+      } catch (e) { results[p] = { error: e.message }; }
+    }
+
+    // Also try GoTrue settings endpoint directly
     try {
-      const res = await fetch(`${NETLIFY_API}/sites/${siteId}/identity`, {
-        headers: { 'Authorization': `Bearer ${token}` },
-      });
-      results.identityEndpoint = res.status;
+      const res = await fetch('https://game.vhsgarage.com/.netlify/identity/settings');
       if (res.ok) {
         const data = await res.json();
-        results.identityKeys = Object.keys(data);
-        results.hasJwtSecret = !!data.jwt_secret;
-        if (data.jwt_secret) results.jwtPreview = data.jwt_secret.slice(0, 8) + '...';
-      } else {
-        results.identityBody = (await res.text()).slice(0, 200);
+        results.gotrueSettings = Object.keys(data);
       }
-    } catch (e) { results.identityError = e.message; }
-
-    // Check context.site
-    results.contextSite = context?.site ? Object.keys(context.site) : [];
+    } catch (e) { results.gotrueSettingsError = e.message; }
 
     return Response.json(results);
   }
