@@ -737,16 +737,16 @@ export function showWelcomeScreen(options = {}) {
     )
     .join('');
 
-  // Past Returns cards HTML — whole card is tappable
+  // Past Returns cards HTML — show first 7, hide rest behind "Show More"
   const completedSet = new Set(completedDailyIds);
-  const pastCardsHtml = pastPuzzles
-    .map(
-      (p, i) => {
-        const pDate = new Date(p.id + 'T12:00:00');
-        const pDateStr = formatDate(pDate);
-        const played = completedSet.has(p.id) || hasScore(p.id);
-        return `
-      <div class="game-card" data-past-index="${i}">
+  const RERUNS_INITIAL = 7;
+
+  function pastCardHtml(p, i, hidden) {
+    const pDate = new Date(p.id + 'T12:00:00');
+    const pDateStr = formatDate(pDate);
+    const played = completedSet.has(p.id) || hasScore(p.id);
+    return `
+      <div class="game-card${hidden ? ' rerun-hidden' : ''}" data-past-index="${i}">
         <div class="game-card-info">
           <div class="game-card-title">${p.title}</div>
           <div class="game-card-date">${pDateStr}</div>
@@ -755,18 +755,21 @@ export function showWelcomeScreen(options = {}) {
           ${played ? `<span class="game-card-replay">↻</span>${scoreButton(p.id)}` : '<span class="game-card-play-btn">PLAY</span>'}
         </div>
       </div>`;
-      }
-    )
-    .join('');
+  }
 
-  // Build Past Returns section (only if there are past puzzles)
+  const pastCardsHtml = pastPuzzles.map((p, i) => pastCardHtml(p, i, i >= RERUNS_INITIAL)).join('');
+  const showMoreBtn = pastPuzzles.length > RERUNS_INITIAL
+    ? `<button class="rerun-show-more" id="rerun-show-more">Show More</button>`
+    : '';
+
   const pastReturnsHtml = pastPuzzles.length > 0
     ? `
       <div class="welcome-section">
         <div class="welcome-section-title">RERUNS (PAST DAYS)</div>
-        <div class="past-returns-list">
+        <div class="past-returns-list" id="past-returns-list">
           ${pastCardsHtml}
         </div>
+        ${showMoreBtn}
       </div>`
     : '';
 
@@ -837,6 +840,15 @@ export function showWelcomeScreen(options = {}) {
       if (typeof onStartPast === 'function') onStartPast(pastPuzzles[idx]);
     });
   });
+
+  // "Show More" reruns handler
+  const showMoreEl = document.getElementById('rerun-show-more');
+  if (showMoreEl) {
+    showMoreEl.addEventListener('click', () => {
+      document.querySelectorAll('.rerun-hidden').forEach(el => el.classList.remove('rerun-hidden'));
+      showMoreEl.remove();
+    });
+  }
 
   // Notification checkbox handler
   const welcomeNotify = document.getElementById('welcome-notify-check');
