@@ -294,40 +294,8 @@ export function getPaycheckData(puzzlesData) {
 
 // ─── Daily Notifications ───────────────────────────────────────────────────
 
-export function isNotifyEnabled() {
-  return localStorage.getItem(KEY_NOTIFY) === 'true';
-}
-
-export function setNotifyEnabled(value) {
-  localStorage.setItem(KEY_NOTIFY, value ? 'true' : 'false');
-}
-
-/**
- * Request notification permission and schedule a nightly reminder.
- * Uses the service worker to show a notification at 10pm Central each night.
- */
-export async function enableDailyNotification() {
-  if (!('Notification' in window) || !('serviceWorker' in navigator)) return false;
-
-  const permission = await Notification.requestPermission();
-  if (permission !== 'granted') {
-    setNotifyEnabled(false);
-    return false;
-  }
-
-  setNotifyEnabled(true);
-  scheduleNotification();
-  return true;
-}
-
-export function disableDailyNotification() {
-  setNotifyEnabled(false);
-  // Clear any pending notification timeout
-  if (window._notifyTimeout) {
-    clearTimeout(window._notifyTimeout);
-    window._notifyTimeout = null;
-  }
-}
+const KEY_NOTIFY_INDEX = 'newArrivals_notifyIdx';
+const KEY_LAST_NOTIFY_DATE = 'newArrivals_lastNotifyDate';
 
 const NOTIFY_MESSAGES = [
   "Tonight's tapes just hit the shelf. Start your shift!",
@@ -342,8 +310,6 @@ const NOTIFY_MESSAGES = [
   "The store opens in the morning. Get these tapes shelved tonight.",
 ];
 
-const KEY_NOTIFY_INDEX = 'newArrivals_notifyIdx';
-
 function getNextMessage() {
   let idx = parseInt(localStorage.getItem(KEY_NOTIFY_INDEX) || '0', 10);
   const msg = NOTIFY_MESSAGES[idx % NOTIFY_MESSAGES.length];
@@ -351,32 +317,115 @@ function getNextMessage() {
   return msg;
 }
 
+export function isNotifyEnabled() {
+  return localStorage.getItem(KEY_NOTIFY) === 'true';
+}
+
+export function setNotifyEnabled(value) {
+  localStorage.setItem(KEY_NOTIFY, value ? 'true' : 'false');
+}
+
 /**
- * Schedule the next notification for 10pm Central Time.
- * Uses setTimeout to fire at the right moment, then re-schedules for tomorrow.
+ * Check if notifications are actually permitted at the OS/browser level.
  */
-export function scheduleNotification() {
-  if (!isNotifyEnabled()) return;
+export function isNotifyPermissionGranted() {
+  return 'Notification' in window && Notification.permission === 'granted';
+}
 
-  const msUntilReset = getNextResetMs();
-  if (window._notifyTimeout) clearTimeout(window._notifyTimeout);
+/**
+ * Request notification permission and enable daily alerts.
+ * Returns true if permission was granted.
+ */
+export async function enableDailyNotification() {
+  if (!('Notification' in window)) return false;
 
-  window._notifyTimeout = setTimeout(async () => {
-    const body = getNextMessage();
-    try {
+  // If already granted, just enable
+  if (Notification.permission === 'granted') {
+    setNotifyEnabled(true);
+    scheduleNotification();
+    return true;
+  }
+
+  // If denied, can't re-ask — browser blocks re-prompts
+  if (Notification.permission === 'denied') {
+    setNotifyEnabled(false);
+    return false;
+  }
+
+  // Default — ask for permission
+  const permission = await Notification.requestPermission();
+  if (permission !== 'granted') {
+    setNotifyEnabled(false);
+    return false;
+  }
+
+  setNotifyEnabled(true);
+  scheduleNotification();
+  return true;
+}
+
+export function disableDailyNotification() {
+  setNotifyEnabled(false);
+  if (window._notifyTimeout) {
+    clearTimeout(window._notifyTimeout);
+    window._notifyTimeout = null;
+  }
+}
+
+/**
+ * Fire a notification right now (used for catch-up and scheduled).
+ */
+async function fireNotification() {
+  const body = getNextMessage();
+  const today = getPuzzleDate();
+
+  // Don't double-fire for the same puzzle date
+  if (localStorage.getItem(KEY_LAST_NOTIFY_DATE) === today) return;
+  localStorage.setItem(KEY_LAST_NOTIFY_DATE, today);
+
+  try {
+    if ('serviceWorker' in navigator) {
       const reg = await navigator.serviceWorker.ready;
-      reg.showNotification('New Arrivals', {
+      await reg.showNotification('New Arrivals', {
         body,
-        icon: '/favicon-32.png',
+        icon: '/apple-touch-icon.png',
         badge: '/favicon-32.png',
         tag: 'daily-puzzle',
         renotify: true,
+        data: { url: '/' },
       });
-    } catch {
-      if (Notification.permission === 'granted') {
-        new Notification('New Arrivals', { body, icon: '/favicon-32.png' });
-      }
+    } else if (Notification.permission === 'granted') {
+      new Notification('New Arrivals', { body, icon: '/apple-touch-icon.png' });
     }
+  } catch {
+    // Silently fail
+  }
+}
+
+/**
+ * Schedule the next notification for 10pm Central.
+ * Also checks if we missed today's notification and fires it immediately.
+ */
+export function scheduleNotification() {
+  if (!isNotifyEnabled() || !isNotifyPermissionGranted()) return;
+
+  // Check if we missed today's notification (page was closed at 10pm)
+  const centralNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+  if (centralNow.getHours() >= 22) {
+    const today = getPuzzleDate();
+    const lastFired = localStorage.getItem(KEY_LAST_NOTIFY_DATE);
+    if (lastFired !== today) {
+      fireNotification();
+    }
+  }
+
+  // Schedule the next one via setTimeout (works while tab is open)
+  const msUntilReset = getNextResetMs();
+  if (window._notifyTimeout) clearTimeout(window._notifyTimeout);
+
+  window._notifyTimeout = setTimeout(() => {
+    fireNotification();
+    // Re-schedule for tomorrow
     scheduleNotification();
   }, msUntilReset);
 }

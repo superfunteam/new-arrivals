@@ -2,6 +2,7 @@
 
 import {
   isNotifyEnabled,
+  isNotifyPermissionGranted,
   enableDailyNotification,
   disableDailyNotification,
   scheduleNotification,
@@ -17,23 +18,49 @@ let _radioVizCanvas = null;
 let _radioIcon = null;
 let _radioWidget = null;
 
-// Cached notify state (read once, updated on toggle)
-let _isNotifyEnabled = isNotifyEnabled();
+// Cached notify state — also verify permission is still granted
+let _isNotifyEnabled = isNotifyEnabled() && (
+  !('Notification' in window) || Notification.permission === 'granted'
+);
 
 async function _handleNotifyToggle(checked) {
   if (checked) {
+    // Check if permission was previously denied
+    if ('Notification' in window && Notification.permission === 'denied') {
+      // Can't re-ask — show instructions
+      _showNotifyBlockedHint();
+      document.querySelectorAll('#notify-check, #welcome-notify-check').forEach(el => {
+        el.checked = false;
+      });
+      _isNotifyEnabled = false;
+      return;
+    }
+
     const ok = await enableDailyNotification();
     _isNotifyEnabled = ok;
-    // If permission was denied, uncheck the box
     if (!ok) {
       document.querySelectorAll('#notify-check, #welcome-notify-check').forEach(el => {
         el.checked = false;
+      });
+    } else {
+      // Sync both checkboxes
+      document.querySelectorAll('#notify-check, #welcome-notify-check').forEach(el => {
+        el.checked = true;
       });
     }
   } else {
     disableDailyNotification();
     _isNotifyEnabled = false;
   }
+}
+
+function _showNotifyBlockedHint() {
+  // Show a brief toast explaining how to unblock
+  const toast = document.createElement('div');
+  toast.className = 'notify-blocked-toast';
+  toast.textContent = 'Notifications are blocked. Tap the lock icon in your browser address bar to allow them.';
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 5000);
 }
 
 // ─── Helpers ────────────────────────────────────────────────────────────────

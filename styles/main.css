@@ -534,7 +534,7 @@ html, body {
 .checkbox-group {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   margin-bottom: 16px;
   align-self: flex-start;
 }
@@ -542,25 +542,72 @@ html, body {
 .skip-checkbox {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-family: var(--font-body);
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.55);
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .skip-checkbox input[type="checkbox"] {
-  width: 14px;
-  height: 14px;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
-  accent-color: var(--neon-pink);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
   cursor: pointer;
+  position: relative;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.skip-checkbox input[type="checkbox"]:checked {
+  background: var(--neon-pink);
+  border-color: var(--neon-pink);
+}
+
+.skip-checkbox input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 5px;
+  height: 9px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
 
 .welcome-notify {
   padding: 16px 0 8px;
   display: flex;
   justify-content: center;
+}
+
+.notify-blocked-toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 11px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: 1px solid var(--neon-pink);
+  z-index: 999999;
+  max-width: 300px;
+  text-align: center;
+  animation: notifyToastIn 0.3s ease-out;
+}
+
+@keyframes notifyToastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 .onboarding-anim {
