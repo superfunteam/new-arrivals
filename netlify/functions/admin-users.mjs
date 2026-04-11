@@ -22,24 +22,63 @@ async function listUsersViaNetlifyApi() {
     return [];
   }
 
-  const url = `https://api.netlify.com/api/v1/sites/${siteId}/identity/users`;
-  console.log(`[admin-users] Fetching: ${url}`);
+  // The GoTrue admin endpoint uses a special admin token.
+  // We get it by calling the Netlify API to generate one.
+  const tokenUrl = `https://api.netlify.com/api/v1/sites/${siteId}/identity/token`;
+  console.log(`[admin-users] Getting admin token from: ${tokenUrl}`);
 
   try {
-    const res = await fetch(url, {
+    const tokenRes = await fetch(tokenUrl, {
+      method: 'POST',
       headers: { 'Authorization': `Bearer ${netlifyToken}` },
     });
 
-    const body = await res.text();
-    console.log(`[admin-users] Response: ${res.status} (${body.length} bytes)`);
+    const tokenBody = await tokenRes.text();
+    console.log(`[admin-users] Token response: ${tokenRes.status} (${tokenBody.length} bytes)`);
 
-    if (res.ok) {
-      const users = JSON.parse(body);
+    if (!tokenRes.ok) {
+      console.log(`[admin-users] Token error: ${tokenBody.slice(0, 200)}`);
+
+      // Fallback: try GoTrue admin directly with the Netlify PAT
+      // Some setups allow this
+      console.log(`[admin-users] Trying direct GoTrue admin fallback...`);
+      const gotrueUrl = `https://game.vhsgarage.com/.netlify/identity/admin/users`;
+      const directRes = await fetch(gotrueUrl, {
+        headers: { 'Authorization': `Bearer ${netlifyToken}` },
+      });
+      const directBody = await directRes.text();
+      console.log(`[admin-users] Direct GoTrue: ${directRes.status} (${directBody.length} bytes)`);
+
+      if (directRes.ok) {
+        const data = JSON.parse(directBody);
+        const users = data.users || [];
+        console.log(`[admin-users] Found ${users.length} users via direct GoTrue`);
+        return users;
+      }
+      console.log(`[admin-users] Direct GoTrue error: ${directBody.slice(0, 200)}`);
+      return [];
+    }
+
+    // Got admin token — use it to query GoTrue
+    const { token } = JSON.parse(tokenBody);
+    console.log(`[admin-users] Got admin token: ${token ? token.slice(0, 20) + '...' : 'EMPTY'}`);
+
+    const usersUrl = `https://game.vhsgarage.com/.netlify/identity/admin/users`;
+    const usersRes = await fetch(usersUrl, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+
+    const usersBody = await usersRes.text();
+    console.log(`[admin-users] Users response: ${usersRes.status} (${usersBody.length} bytes)`);
+
+    if (usersRes.ok) {
+      const data = JSON.parse(usersBody);
+      const users = data.users || [];
       console.log(`[admin-users] Found ${users.length} users`);
       return users;
     }
 
-    console.log(`[admin-users] Error body: ${body.slice(0, 500)}`);
+    console.log(`[admin-users] Users error: ${usersBody.slice(0, 200)}`);
   } catch (err) {
     console.log(`[admin-users] Fetch error: ${err.message}`);
   }
