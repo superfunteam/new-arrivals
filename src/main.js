@@ -955,10 +955,30 @@ async function startGameSession(puzzle, mode, puzzlesData) {
     el.addEventListener('touchmove', onMove, { passive: true });
     el.addEventListener('touchend', onEnd, { passive: true });
 
+    // Desktop: arrow keys to navigate
+    function onKeyDown(e) {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      e.preventDefault();
+      const box = getCurrentBox();
+      if (!box) return;
+      const direction = e.key === 'ArrowRight' ? 1 : -1;
+      const allTapes = unsolvedBoxes.map(b => b.userData.movie);
+      const currentIndex = allTapes.findIndex(m => m.tmdb_id === box.userData.movie.tmdb_id);
+      const newIndex = (currentIndex + direction + allTapes.length) % allTapes.length;
+      if (allTapes.length > 1) {
+        const sticker = document.querySelector('.lightbox-sticker');
+        if (sticker) sticker.classList.add('sticker-out');
+        dismissSwipeHint();
+        navigateToTape(newIndex, direction === -1 ? 'right' : 'left', getCurrentBox, setCurrentBox);
+      }
+    }
+    document.addEventListener('keydown', onKeyDown);
+
     lightboxSwipeCleanup = () => {
       el.removeEventListener('touchstart', onStart);
       el.removeEventListener('touchmove', onMove);
       el.removeEventListener('touchend', onEnd);
+      document.removeEventListener('keydown', onKeyDown);
       lightboxSwipeCleanup = null;
     };
   }
