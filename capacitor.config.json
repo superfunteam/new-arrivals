@@ -2,10 +2,6 @@
   "appId": "com.vhsgarage.newarrivals",
   "appName": "New Arrivals",
   "webDir": "dist",
-  "server": {
-    "url": "https://game.vhsgarage.com",
-    "cleartext": false
-  },
   "android": {
     "backgroundColor": "#1A1A2E",
     "allowMixedContent": true
