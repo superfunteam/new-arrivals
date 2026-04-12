@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-// Difficulty is determined by card slot position (1-4)
-import { ArrowLeft, Loader2, Save, Lightbulb } from 'lucide-react';
+import { ArrowLeft, Loader2, Save, HelpCircle } from 'lucide-react';
 import MovieSearch from './MovieSearch';
 import { FullPuzzleSparkle, CategorySparkle } from './AiGeneratePanel';
 import ProcessingProgress from './ProcessingProgress';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { driver } from 'driver.js';
+import 'driver.js/dist/driver.css';
 
 const DIFFICULTIES = [
   { value: 1, label: 'Easy', dot: 'bg-emerald-500', text: 'text-emerald-700', bg: 'bg-emerald-50' },
@@ -61,7 +61,60 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel, userRole = 'aut
   const [processing, setProcessing] = useState(false);
   const [aiLoadingFull, setAiLoadingFull] = useState(false);
   const [aiLoadingCat, setAiLoadingCat] = useState({}); // { [catIdx]: true }
-  const [showHints, setShowHints] = useState(!puzzle); // Show walkthrough for new puzzles
+
+  // Auto-start tour for new puzzles on first visit
+  useEffect(() => {
+    if (!puzzle && !localStorage.getItem('editorTourSeen')) {
+      const timer = setTimeout(() => {
+        startTour();
+        localStorage.setItem('editorTourSeen', 'true');
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  function startTour() {
+    const d = driver({
+      showProgress: true,
+      animate: true,
+      overlayColor: 'rgba(0,0,0,0.6)',
+      steps: [
+        {
+          element: '#tour-ai-generator',
+          popover: {
+            title: 'Step 1: Generate with AI',
+            description: 'Type a theme and hit the sparkle button. Claude will create all 4 categories with movies for you. This is the fastest way to build a puzzle.',
+            side: 'bottom',
+          },
+        },
+        {
+          element: '#tour-puzzle-title',
+          popover: {
+            title: 'Step 2: Name Your Puzzle',
+            description: 'Give your puzzle a fun title. This is what players see on the game select screen — e.g. "Friday Night Rush" or "Horror Aisle Deep Cut".',
+            side: 'bottom',
+          },
+        },
+        {
+          element: '#tour-category-0',
+          popover: {
+            title: 'Step 3: Fill Categories',
+            description: 'Each category needs a name and 4 movies. Search for movies by title, or tap the sparkle icon to have AI fill a category. Tap any poster to see it full-size.',
+            side: 'top',
+          },
+        },
+        {
+          element: '#tour-publish',
+          popover: {
+            title: 'Step 4: Publish',
+            description: 'Once all 4 categories are filled, hit Process & Publish. This fetches poster art, generates customer dialogues, and pushes the puzzle live.',
+            side: 'top',
+          },
+        },
+      ],
+    });
+    d.drive();
+  }
 
   function updateCategory(catIdx, field, value) {
     setCategories((prev) =>
@@ -195,34 +248,33 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel, userRole = 'aut
           <ArrowLeft className="mr-1.5 size-4" />
           Back to Dashboard
         </Button>
-        <h1 className="text-2xl font-bold tracking-tight">
-          {puzzle ? `Edit: ${puzzle.title}` : 'New Puzzle'}
-        </h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold tracking-tight">
+            {puzzle ? `Edit: ${puzzle.title}` : 'New Puzzle'}
+          </h1>
+          {!puzzle && (
+            <Button variant="outline" size="sm" onClick={startTour} className="gap-1.5">
+              <HelpCircle className="size-3.5" />
+              How it works
+            </Button>
+          )}
+        </div>
         <p className="text-sm text-muted-foreground mt-1">
           Fill in the categories and select 4 movies per group.
         </p>
       </div>
 
-      {/* Walkthrough Hint */}
-      {showHints && (
-        <Alert className="mb-6 border-blue-200 bg-blue-50/50">
-          <Lightbulb className="size-4 text-blue-600" />
-          <AlertDescription className="text-sm text-blue-800">
-            <strong>How to create a puzzle:</strong> Enter a theme below and hit "Generate Full Puzzle" to have AI create all 4 categories with movies. Or build manually — name each category, then search for movies to fill the 4 slots. Tap any poster to see it full-size.
-            <Button variant="link" size="sm" className="text-blue-600 p-0 h-auto ml-1" onClick={() => setShowHints(false)}>Dismiss</Button>
-          </AlertDescription>
-        </Alert>
-      )}
-
       {/* AI Full Puzzle Generator */}
+      <div id="tour-ai-generator">
       <FullPuzzleSparkle
         onGenerated={handleAiGenerated}
         existingTitle={title}
         onLoadingChange={setAiLoadingFull}
       />
+      </div>
 
       {/* Title Input */}
-      <Card className="mb-6">
+      <Card id="tour-puzzle-title" className="mb-6">
         <CardContent className="pt-4">
           <label className="text-sm font-medium text-foreground mb-2 block">
             Puzzle Title
@@ -245,7 +297,7 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel, userRole = 'aut
         {categories.map((cat, ci) => {
           const diff = DIFFICULTIES.find((d) => d.value === cat.difficulty) || DIFFICULTIES[ci];
           return (
-            <Card key={ci} className={diff.bg}>
+            <Card key={ci} id={ci === 0 ? 'tour-category-0' : undefined} className={diff.bg}>
               <CardHeader className="pb-2">
                 <div className="flex items-center gap-2">
                   <div className={`size-2 rounded-full ${diff.dot}`} />
@@ -309,7 +361,7 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel, userRole = 'aut
       </div>
 
       {/* Sticky bottom bar */}
-      <div className="fixed bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur-sm z-40">
+      <div id="tour-publish" className="fixed bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur-sm z-40">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-3">
           <p className="text-xs text-muted-foreground hidden sm:block">
             {isValid() ? 'Ready to process and publish' : 'Fill all fields to continue'}
