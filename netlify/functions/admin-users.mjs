@@ -15,6 +15,15 @@ let _cachedJwtSecret = null;
 async function getGoTrueSecret() {
   if (_cachedJwtSecret) return _cachedJwtSecret;
 
+  // Try env var first (set manually in Netlify dashboard)
+  const envSecret = Netlify.env.get('GOTRUE_JWT_SECRET');
+  if (envSecret) {
+    console.log('[admin-users] Using GOTRUE_JWT_SECRET from env');
+    _cachedJwtSecret = envSecret;
+    return _cachedJwtSecret;
+  }
+
+  // Fallback: try to read from site API
   const { token, siteId } = getCredentials();
   if (!token || !siteId) return null;
 
@@ -22,21 +31,15 @@ async function getGoTrueSecret() {
     const res = await fetch(`${NETLIFY_API}/sites/${siteId}`, {
       headers: { 'Authorization': `Bearer ${token}` },
     });
-    console.log(`[admin-users] Site API response: ${res.status}`);
-    if (!res.ok) {
-      console.log(`[admin-users] Site API error: ${await res.text().then(t => t.slice(0, 200))}`);
-      return null;
-    }
+    if (!res.ok) return null;
     const data = await res.json();
-    console.log(`[admin-users] jwt_secret present: ${!!data.jwt_secret}, type: ${typeof data.jwt_secret}`);
-    if (data.jwt_secret) {
+    if (data.jwt_secret && typeof data.jwt_secret === 'string') {
       _cachedJwtSecret = data.jwt_secret;
       return _cachedJwtSecret;
     }
-    console.log(`[admin-users] No jwt_secret in site response. Keys with 'jwt': ${Object.keys(data).filter(k => k.includes('jwt'))}`);
-  } catch (e) {
-    console.log(`[admin-users] getGoTrueSecret error: ${e.message}`);
-  }
+  } catch {}
+
+  console.log('[admin-users] No JWT secret found — set GOTRUE_JWT_SECRET env var in Netlify dashboard');
   return null;
 }
 
