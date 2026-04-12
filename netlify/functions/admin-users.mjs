@@ -22,13 +22,21 @@ async function getGoTrueSecret() {
     const res = await fetch(`${NETLIFY_API}/sites/${siteId}`, {
       headers: { 'Authorization': `Bearer ${token}` },
     });
-    if (!res.ok) return null;
+    console.log(`[admin-users] Site API response: ${res.status}`);
+    if (!res.ok) {
+      console.log(`[admin-users] Site API error: ${await res.text().then(t => t.slice(0, 200))}`);
+      return null;
+    }
     const data = await res.json();
+    console.log(`[admin-users] jwt_secret present: ${!!data.jwt_secret}, type: ${typeof data.jwt_secret}`);
     if (data.jwt_secret) {
       _cachedJwtSecret = data.jwt_secret;
       return _cachedJwtSecret;
     }
-  } catch {}
+    console.log(`[admin-users] No jwt_secret in site response. Keys with 'jwt': ${Object.keys(data).filter(k => k.includes('jwt'))}`);
+  } catch (e) {
+    console.log(`[admin-users] getGoTrueSecret error: ${e.message}`);
+  }
   return null;
 }
 
