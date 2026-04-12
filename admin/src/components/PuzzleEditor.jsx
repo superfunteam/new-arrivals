@@ -4,13 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from '@/components/ui/select';
+// Difficulty is determined by card slot position (1-4)
 import { ArrowLeft, Loader2, Save, Lightbulb } from 'lucide-react';
 import MovieSearch from './MovieSearch';
 import { FullPuzzleSparkle, CategorySparkle } from './AiGeneratePanel';
@@ -261,56 +255,29 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel, userRole = 'aut
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                {/* Category Name + AI + Difficulty */}
-                <div className="flex gap-3 items-end">
-                  <div className="flex-1 space-y-1.5">
-                    <label className="text-xs font-medium text-muted-foreground">
-                      Category Name
-                    </label>
-                    <div className="flex items-center gap-2">
-                      <Input
-                        type="text"
-                        value={cat.name}
-                        onChange={(e) => updateCategory(ci, 'name', e.target.value)}
-                        placeholder="e.g. Horror Classics"
-                        className={submitted && errors[`cat_${ci}_name`] ? 'border-destructive focus-visible:ring-destructive' : ''}
-                      />
-                      <CategorySparkle
-                        categoryName={cat.name}
-                        existingMovies={getAllSelectedMovies().map((t) => ({ title: t }))}
-                        onMoviesGenerated={(movies) => handleCategoryMoviesGenerated(ci, movies)}
-                        onLoadingChange={(loading) => setAiLoadingCat(prev => ({ ...prev, [ci]: loading }))}
-                      />
-                    </div>
-                    {submitted && errors[`cat_${ci}_name`] && (
-                      <p className="text-xs text-destructive">{errors[`cat_${ci}_name`]}</p>
-                    )}
+                {/* Category Name + AI sparkle (full width) */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-muted-foreground">
+                    Category Name
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="text"
+                      value={cat.name}
+                      onChange={(e) => updateCategory(ci, 'name', e.target.value)}
+                      placeholder="e.g. Horror Classics"
+                      className={`h-10 flex-1 ${submitted && errors[`cat_${ci}_name`] ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+                    />
+                    <CategorySparkle
+                      categoryName={cat.name}
+                      existingMovies={getAllSelectedMovies().map((t) => ({ title: t }))}
+                      onMoviesGenerated={(movies) => handleCategoryMoviesGenerated(ci, movies)}
+                      onLoadingChange={(loading) => setAiLoadingCat(prev => ({ ...prev, [ci]: loading }))}
+                    />
                   </div>
-                  <div className="w-36 space-y-1.5">
-                    <label className="text-xs font-medium text-muted-foreground">
-                      Difficulty
-                    </label>
-                    <Select
-                      value={String(cat.difficulty)}
-                      onValueChange={(val) =>
-                        updateCategory(ci, 'difficulty', parseInt(val, 10))
-                      }
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {DIFFICULTIES.map((d) => (
-                          <SelectItem key={d.value} value={String(d.value)}>
-                            <span className="flex items-center gap-2">
-                              <span className={`size-2 rounded-full ${d.dot}`} />
-                              {d.label}
-                            </span>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  {submitted && errors[`cat_${ci}_name`] && (
+                    <p className="text-xs text-destructive">{errors[`cat_${ci}_name`]}</p>
+                  )}
                 </div>
 
                 <Separator />

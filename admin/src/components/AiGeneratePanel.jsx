@@ -179,19 +179,15 @@ export function CategorySparkle({ categoryName, existingMovies, onMoviesGenerate
   return (
     <Button
       type="button"
-      size="sm"
       onClick={handleGenerate}
       disabled={loading || !categoryName.trim()}
       title={categoryName.trim() ? `Generate 4 movies for "${categoryName}"` : 'Enter a category name first'}
-      className="bg-amber-500 text-white hover:bg-amber-600 shadow-none px-2.5 text-xs disabled:opacity-40"
+      className="h-10 w-10 shrink-0 bg-amber-500 text-white hover:bg-amber-600 shadow-none p-0 disabled:opacity-40"
     >
       {loading ? (
-        <Loader2 className="size-3.5 animate-spin" />
+        <Loader2 className="size-4 animate-spin" />
       ) : (
-        <>
-          <Sparkles className="mr-1 size-3.5" />
-          AI Fill
-        </>
+        <Sparkles className="size-4" />
       )}
     </Button>
   );
