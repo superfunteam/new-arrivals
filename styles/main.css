@@ -67,12 +67,18 @@ html, body {
   pointer-events: none;
 }
 
+/* Only leaf-level interactive elements get pointer-events.
+   Container divs (hud-top, hud-top-left, hud-wage-wrap) stay
+   pointer-events: none so they don't block canvas clicks. */
 #hud button,
 #hud .help-link,
 #hud .hud-logo,
-#hud .hud-top-left,
-#hud .hud-wage-wrap,
-#hud .hud-radio,
+#hud .hud-clock,
+#hud .hud-date,
+#hud .hud-puzzle-title,
+#hud .hud-wage,
+#hud .hud-wage-label,
+#hud .radio-tune,
 #hud .radio-icon,
 #hud input {
   pointer-events: auto;

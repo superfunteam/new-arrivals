@@ -225,22 +225,28 @@ export function animateShelfZoomIn(camera, onComplete) {
  * effective viewport height accordingly so tapes don't hide behind UI.
  */
 function computeCameraZ(fov, aspect) {
-  // World-space bounding box of the tape content we need visible
-  const contentW = 4.4;  // shelf width + small breathing room
+  // World-space bounding box we need visible
+  const contentW = 4.4; // shelf width (4.2) + margin
 
-  // Vertical extent relative to camera center (y=0.5):
-  //   Top tape top:    ~3.4 - 0.5 = 2.9 above camera
-  //   Bottom tape bot: ~-2.1 - 0.5 = -2.6 below camera (with bottom plank)
-  const contentAbove = 2.9;
-  const contentBelow = 2.6;
-  const contentH = contentAbove + contentBelow; // ~5.5
+  // Actual tape positions (from buildShelf: bottomY=-2.2, rowSpacing=1.15, offset=0.55):
+  //   Row 0 (top):    y = 2.4 + 0.55 = 2.95  → rowPositions[0] = 1.84 (reversed)
+  //   Row 3 (bottom): y = -2.2 + 0.55 = -1.65 → rowPositions[3] = -1.61
+  // Box height = 0.935, camera at y=0.5
+  //
+  // Top of top tape:    1.84 + 0.935/2 = 2.31
+  // Bottom of bot tape: -1.61 - 0.935/2 = -2.08
+  // Relative to camera (y=0.5):
+  //   Above camera: 2.31 - 0.5 = 1.81
+  //   Below camera: 0.5 - (-2.08) = 2.58
+  const contentAbove = 1.85; // small margin above top tape
+  const contentBelow = 2.60; // small margin below bottom tape
+  const contentH = contentAbove + contentBelow; // ~4.45
 
   // Account for HUD eating into the viewport
   const screenH = window.innerHeight;
-  const hudPixels = 120; // top bar (~60px) + shelve button area (~60px)
-  const usableRatio = Math.max(0.6, (screenH - hudPixels) / screenH);
+  const hudPixels = 110; // top HUD (~50px) + shelve button (~60px)
+  const usableRatio = Math.max(0.65, (screenH - hudPixels) / screenH);
 
-  // The camera sees `contentH` but we only have `usableRatio` of the screen
   const effectiveH = contentH / usableRatio;
 
   const fovRad = (fov * Math.PI) / 180;
