@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Users, UserPlus, Mail, Shield, Clock } from 'lucide-react';
 import { apiGet, apiPost } from '@/lib/api';
+import { getCurrentUser } from '@/lib/identity';
 
 export default function UsersPage({ userRole = 'author' }) {
   const [users, setUsers] = useState([]);
@@ -23,13 +24,51 @@ export default function UsersPage({ userRole = 'author' }) {
     loadUsers();
   }, []);
 
+  function getIdentityHeaders() {
+    const user = getCurrentUser();
+    const token = user?.token?.access_token;
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
+  }
+
+  async function gotrueAdmin(method, path, body) {
+    const res = await fetch(`/.netlify/functions/identity-helper?path=${encodeURIComponent(path)}`, {
+      method,
+      headers: { ...getIdentityHeaders(), 'Content-Type': 'application/json' },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    if (!res.ok) throw new Error(`GoTrue ${res.status}`);
+    return res.json();
+  }
+
   async function loadUsers() {
     setLoading(true);
     try {
-      const data = await apiGet('/admin-users');
-      setUsers(data.users || []);
+      // Get Identity users via GoTrue admin (through v1 helper)
+      const data = await gotrueAdmin('GET', '/users');
+      let identityUsers = data?.users || [];
+
+      // Enrich with roles from our blob store
+      const roleData = await apiGet('/admin-users');
+      const roleUsers = roleData.users || [];
+      const roleMap = {};
+      for (const u of roleUsers) {
+        if (u.email && u.role) roleMap[u.email] = u.role;
+      }
+      identityUsers = identityUsers.map(u => ({
+        ...u,
+        role: roleMap[u.email] || 'author',
+      }));
+
+      setUsers(identityUsers);
     } catch (err) {
-      setError('Could not load users. Make sure Netlify Identity is enabled.');
+      console.error('Load users failed:', err);
+      // Fallback to admin-users endpoint
+      try {
+        const data = await apiGet('/admin-users');
+        setUsers(data.users || []);
+      } catch {
+        setError('Could not load users.');
+      }
     } finally {
       setLoading(false);
     }
@@ -45,23 +84,18 @@ export default function UsersPage({ userRole = 'author' }) {
     setInviteError('');
     setInviteWarning('');
     try {
-      const res = await fetch('/api/admin-users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ action: 'invite', email: inviteEmail, role: inviteRole }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setInviteError(data.error || 'Failed to invite user');
-        return;
-      }
+      // Send invite via GoTrue admin (through v1 helper)
+      await gotrueAdmin('POST', '/invite', { email: inviteEmail });
+
+      // Save role in our blob store
+      await apiPost('/admin-users', { action: 'set-role', email: inviteEmail, role: inviteRole });
+
       setInviteEmail('');
       setInviteRole('author');
       setInviteOpen(false);
       loadUsers();
     } catch (err) {
-      setInviteError('Connection error');
+      setInviteError(err.message || 'Failed to invite user');
     } finally {
       setInviting(false);
     }

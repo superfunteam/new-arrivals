@@ -1,83 +1,30 @@
 import { verifyToken } from './lib/auth.mjs';
-import { SignJWT } from 'jose';
 import { getStore } from '@netlify/blobs';
 
 const NETLIFY_API = 'https://api.netlify.com/api/v1';
-const IDENTITY_URL = 'https://game.vhsgarage.com/.netlify/identity';
+const HELPER_URL = 'https://game.vhsgarage.com/.netlify/functions/identity-helper';
 const ROLES_STORE = 'user-roles';
 
-// Cache the JWT secret in memory for the function lifetime
-let _cachedJwtSecret = null;
-
 /**
- * Fetch the GoTrue JWT secret from the Netlify site API.
+ * Call GoTrue admin API via the v1 identity-helper function,
+ * which has access to a pre-signed admin JWT via clientContext.
+ * We forward the user's Identity JWT so the helper gets the context.
  */
-async function getGoTrueSecret() {
-  if (_cachedJwtSecret) return _cachedJwtSecret;
-
-  // Try env var first (set manually in Netlify dashboard)
-  const envSecret = Netlify.env.get('GOTRUE_JWT_SECRET');
-  if (envSecret) {
-    console.log('[admin-users] Using GOTRUE_JWT_SECRET from env');
-    _cachedJwtSecret = envSecret;
-    return _cachedJwtSecret;
+async function gotrueAdmin(method, path, body, identityJwt) {
+  const url = `${HELPER_URL}?path=${encodeURIComponent(path)}`;
+  const headers = { 'Content-Type': 'application/json' };
+  if (identityJwt) {
+    headers['Authorization'] = `Bearer ${identityJwt}`;
   }
 
-  // Fallback: try to read from site API
-  const { token, siteId } = getCredentials();
-  if (!token || !siteId) return null;
-
-  try {
-    const res = await fetch(`${NETLIFY_API}/sites/${siteId}`, {
-      headers: { 'Authorization': `Bearer ${token}` },
-    });
-    if (!res.ok) return null;
-    const data = await res.json();
-    if (data.jwt_secret && typeof data.jwt_secret === 'string') {
-      _cachedJwtSecret = data.jwt_secret;
-      return _cachedJwtSecret;
-    }
-  } catch {}
-
-  console.log('[admin-users] No JWT secret found — set GOTRUE_JWT_SECRET env var in Netlify dashboard');
-  return null;
-}
-
-/**
- * Sign a GoTrue admin JWT using the site's JWT secret.
- */
-async function makeAdminToken() {
-  const secret = await getGoTrueSecret();
-  if (!secret) return null;
-
-  return new SignJWT({
-    role: 'admin',
-    aud: '',
-  })
-    .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
-    .setIssuedAt()
-    .setExpirationTime('5m')
-    .sign(new TextEncoder().encode(secret));
-}
-
-/**
- * Call GoTrue admin API with a signed JWT.
- */
-async function gotrueAdmin(method, path, body) {
-  const token = await makeAdminToken();
-  if (!token) throw new Error('Could not get admin token');
-
-  const res = await fetch(`${IDENTITY_URL}/admin${path}`, {
+  const res = await fetch(url, {
     method,
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
+    headers,
     body: body ? JSON.stringify(body) : undefined,
   });
 
   const text = await res.text();
-  console.log(`[admin-users] GoTrue ${method} /admin${path} → ${res.status}`);
+  console.log(`[admin-users] GoTrue ${method} ${path} → ${res.status}`);
 
   if (!res.ok) {
     console.log(`[admin-users] GoTrue error: ${text.slice(0, 200)}`);
