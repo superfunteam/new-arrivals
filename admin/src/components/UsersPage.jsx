@@ -84,8 +84,9 @@ export default function UsersPage({ userRole = 'author' }) {
     setInviteError('');
     setInviteWarning('');
     try {
-      // Send invite via GoTrue admin (through v1 helper)
-      await gotrueAdmin('POST', '/invite', { email: inviteEmail });
+      // Create user via GoTrue admin (through v1 helper)
+      // POST /admin/users with invite: true sends an invite email
+      await gotrueAdmin('POST', '/users', { email: inviteEmail, confirm: false });
 
       // Save role in our blob store
       await apiPost('/admin-users', { action: 'set-role', email: inviteEmail, role: inviteRole });
