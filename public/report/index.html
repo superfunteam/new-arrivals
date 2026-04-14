@@ -300,6 +300,15 @@
           .sort((a, b) => b[1] - a[1])
           .slice(0, 8);
 
+        // Extra Shift stats
+        const extraShiftEntries = Object.entries(agg.puzzleCounts || {})
+          .filter(([id]) => id.startsWith('extra-shift-'));
+        const extraShiftsPlayed = extraShiftEntries.reduce((sum, [, c]) => sum + c, 0);
+        const extraShiftRevenue = extraShiftsPlayed * 10;
+        const extraShiftWages = extraShiftEntries.length > 0
+          ? Math.round(extraShiftEntries.reduce((sum, [, c]) => sum + c, 0) * (agg.totalWages / Math.max(1, agg.totalShifts)))
+          : 0;
+
         // Daily chart
         const maxDayShifts = Math.max(...daily.map(d => d.shifts), 1);
 
@@ -349,6 +358,15 @@
               </div>
             </div>
           </div>
+
+          ${extraShiftsPlayed > 0 ? `
+          <div class="section">
+            <div class="section-title">EXTRA SHIFTS PROGRAM</div>
+            <div class="row"><span class="row-label">Extra Shifts Worked</span><span class="row-value">${extraShiftsPlayed.toLocaleString()}</span></div>
+            <div class="row"><span class="row-label">Shift Fees Collected</span><span class="row-value">$${extraShiftRevenue.toLocaleString()}</span></div>
+            <div class="row"><span class="row-label">Unique Puzzles Played</span><span class="row-value">${extraShiftEntries.length}</span></div>
+            <div class="row"><span class="row-label">Available Puzzles</span><span class="row-value">20</span></div>
+          </div>` : ''}
 
           <div class="perf-tear"></div>
 
