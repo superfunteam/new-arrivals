@@ -331,8 +331,12 @@
     <div id="categories"></div>
 
     <div class="name-field">
-      <label>Your Name (optional)</label>
+      <label>Your Name (optional, shown)</label>
       <input type="text" id="submitter-name" placeholder="Anonymous Clerk" maxlength="40">
+    </div>
+    <div class="name-field">
+      <label>Your Email (optional, never shown or shared)</label>
+      <input type="text" id="submitter-email" placeholder="clerk@vhsgarage.com" maxlength="80">
     </div>
 
     <button class="submit-btn" id="submit-btn" disabled>SUBMIT FOR REVIEW</button>
@@ -495,6 +499,7 @@
     document.getElementById('submit-btn').addEventListener('click', async () => {
       const title = document.getElementById('puzzle-title').value.trim();
       const name = document.getElementById('submitter-name').value.trim() || 'Anonymous Clerk';
+      const email = document.getElementById('submitter-email').value.trim() || null;
 
       // Show loader
       const overlay = document.createElement('div');
@@ -516,6 +521,7 @@
         const payload = {
           title,
           submittedBy: name,
+          submittedEmail: email,
           categories: state.categories.map((cat, i) => ({
             name: cat.name.trim(),
             difficulty: i + 1,
