@@ -729,8 +729,13 @@ export function showWelcomeScreen(options = {}) {
     )
     .join('');
 
-  // Extra Shifts cards HTML
+  // Extra Shifts — show 5 at a time, unlock more as you complete them
+  const EXTRA_PAGE_SIZE = 5;
+  const completedExtras = extraShiftPuzzles.filter(p => hasScore(p.id)).length;
+  const extraVisible = Math.min(extraShiftPuzzles.length, EXTRA_PAGE_SIZE + completedExtras);
+
   const extraShiftCardsHtml = extraShiftPuzzles
+    .slice(0, extraVisible)
     .map(
       (p, i) => {
         const played = hasScore(p.id);
@@ -747,6 +752,11 @@ export function showWelcomeScreen(options = {}) {
     )
     .join('');
 
+  const extraRemaining = extraShiftPuzzles.length - extraVisible;
+  const extraProgressHtml = extraRemaining > 0
+    ? `<div class="extra-shift-subtitle" style="margin-top:8px">Complete shifts to unlock ${extraRemaining} more</div>`
+    : '';
+
   const extraShiftsHtml = (extraShiftPuzzles.length > 0 && extraBalance >= 10)
     ? `
       <div class="welcome-section">
@@ -755,6 +765,7 @@ export function showWelcomeScreen(options = {}) {
         <div class="trainee-list">
           ${extraShiftCardsHtml}
         </div>
+        ${extraProgressHtml}
       </div>`
     : '';
 
