@@ -225,33 +225,25 @@ export function animateShelfZoomIn(camera, onComplete) {
  * effective viewport height accordingly so tapes don't hide behind UI.
  */
 function computeCameraZ(fov, aspect) {
-  // World-space bounding box we need visible
-  const contentW = 4.4; // shelf width (4.2) + margin
+  // Tape grid actual dimensions:
+  //   Width:  4 * 0.605 + 3 * 0.12 = 2.78 (+ margin = 3.1)
+  //   Height: top tape at y=2.31, bottom tape at y=-2.08, camera at y=0.5
+  const contentW = 3.1; // tape grid + small side margin
 
-  // Actual tape positions (from buildShelf: bottomY=-2.2, rowSpacing=1.15, offset=0.55):
-  //   Row 0 (top):    y = 2.4 + 0.55 = 2.95  → rowPositions[0] = 1.84 (reversed)
-  //   Row 3 (bottom): y = -2.2 + 0.55 = -1.65 → rowPositions[3] = -1.61
-  // Box height = 0.935, camera at y=0.5
-  //
-  // Top of top tape:    1.84 + 0.935/2 = 2.31
-  // Bottom of bot tape: -1.61 - 0.935/2 = -2.08
-  // Relative to camera (y=0.5):
-  //   Above camera: 2.31 - 0.5 = 1.81
-  //   Below camera: 0.5 - (-2.08) = 2.58
-  const contentAbove = 1.85; // small margin above top tape
-  const contentBelow = 2.60; // small margin below bottom tape
+  const contentAbove = 1.85; // 2.31 - 0.5 + margin
+  const contentBelow = 2.60; // 0.5 - (-2.08) + margin
   const contentH = contentAbove + contentBelow; // ~4.45
 
-  // Account for HUD eating into the viewport
+  // Account for HUD eating into viewport
   const screenH = window.innerHeight;
-  const hudPixels = 110; // top HUD (~50px) + shelve button (~60px)
+  const hudPixels = 110;
   const usableRatio = Math.max(0.65, (screenH - hudPixels) / screenH);
-
   const effectiveH = contentH / usableRatio;
 
   const fovRad = (fov * Math.PI) / 180;
-  const distForHeight = (effectiveH / 2) / Math.tan(fovRad / 2);
-  const distForWidth = (contentW / 2) / (Math.tan(fovRad / 2) * aspect);
+  const halfTan = Math.tan(fovRad / 2);
+  const distForHeight = (effectiveH / 2) / halfTan;
+  const distForWidth = (contentW / 2) / (halfTan * aspect);
 
   return Math.max(distForHeight, distForWidth);
 }
