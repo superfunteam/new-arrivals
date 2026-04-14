@@ -228,7 +228,7 @@ function computeCameraZ(fov, aspect) {
   // Tape grid actual dimensions:
   //   Width:  4 * 0.605 + 3 * 0.12 = 2.78 (+ margin = 3.1)
   //   Height: top tape at y=2.31, bottom tape at y=-2.08, camera at y=0.5
-  const contentW = 3.1; // tape grid + small side margin
+  const contentW = 3.25; // tape grid (2.78) + side margin
 
   const contentAbove = 1.85; // 2.31 - 0.5 + margin
   const contentBelow = 2.60; // 0.5 - (-2.08) + margin
