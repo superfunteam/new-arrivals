@@ -61,6 +61,9 @@ import {
   getPaycheckData,
   isNotifyEnabled,
   scheduleNotification,
+  getExtraShiftBalance,
+  spendFromPaycheck,
+  markExtraShiftPlayed,
 } from './state.js';
 import {
   createHUD,
@@ -362,6 +365,7 @@ async function main() {
   const allPuzzles = puzzlesData.puzzles;
   const VIBE_JAM_ID = '2026-vibe-jam';
   const practicePuzzles = allPuzzles.filter(p => p.id.startsWith('training-') || p.id === VIBE_JAM_ID);
+  const extraShiftPuzzles = allPuzzles.filter(p => p.id.startsWith('extra-shift-'));
 
   // ── 5. Determine past puzzles and completed dailies ───────────────────────
   const pastPuzzles = getPastPuzzles(puzzlesData);
@@ -393,6 +397,8 @@ async function main() {
       completedDailyIds,
       gameScores: getGameScores(),
       paycheckData: getPaycheckData(puzzlesData),
+      extraShiftPuzzles,
+      extraBalance: getExtraShiftBalance(puzzlesData),
       onStartDaily: () => {
         ensureRadioStarted();
         startGameSession(dailyPuzzle, 'daily', puzzlesData);
@@ -402,6 +408,13 @@ async function main() {
         startGameSession(practicePuzzles[index], 'practice', puzzlesData);
       },
       onStartPast: (puzzle) => {
+        ensureRadioStarted();
+        startGameSession(puzzle, 'practice', puzzlesData);
+      },
+      onStartExtra: (index) => {
+        const puzzle = extraShiftPuzzles[index];
+        spendFromPaycheck(10);
+        markExtraShiftPlayed(puzzle.id);
         ensureRadioStarted();
         startGameSession(puzzle, 'practice', puzzlesData);
       },

@@ -673,9 +673,12 @@ export function showWelcomeScreen(options = {}) {
     completedDailyIds = [],
     gameScores = {},
     paycheckData = null,
+    extraShiftPuzzles = [],
+    extraBalance = 0,
     onStartDaily,
     onStartPractice,
     onStartPast,
+    onStartExtra,
   } = options;
 
   const overlay = document.getElementById('overlay');
@@ -725,6 +728,35 @@ export function showWelcomeScreen(options = {}) {
       }
     )
     .join('');
+
+  // Extra Shifts cards HTML
+  const extraShiftCardsHtml = extraShiftPuzzles
+    .map(
+      (p, i) => {
+        const played = hasScore(p.id);
+        return `
+      <div class="game-card" data-extra-index="${i}">
+        <div class="game-card-info">
+          <div class="game-card-title">${p.title}</div>
+        </div>
+        <div class="game-card-action">
+          ${played ? `<span class="game-card-replay">↻</span>${scoreButton(p.id)}` : '<span class="extra-shift-price">$10</span>'}
+        </div>
+      </div>`;
+      }
+    )
+    .join('');
+
+  const extraShiftsHtml = (extraShiftPuzzles.length > 0 && extraBalance >= 10)
+    ? `
+      <div class="welcome-section">
+        <div class="welcome-section-title">EXTRA SHIFTS</div>
+        <div class="extra-shift-subtitle">$10 per shift · Full $25 earning potential</div>
+        <div class="trainee-list">
+          ${extraShiftCardsHtml}
+        </div>
+      </div>`
+    : '';
 
   // Past Returns cards HTML — show first 7, hide rest behind "Show More"
   const completedSet = new Set(completedDailyIds);
@@ -789,6 +821,8 @@ export function showWelcomeScreen(options = {}) {
         </div>
       </div>
 
+      ${extraShiftsHtml}
+
       <div class="welcome-notify">
         <label class="skip-checkbox">
           <input type="checkbox" id="welcome-notify-check"${_isNotifyEnabled ? ' checked' : ''}> Alert me for daily game
@@ -817,6 +851,16 @@ export function showWelcomeScreen(options = {}) {
       overlay.innerHTML = '';
       overlay.classList.remove('active');
       if (typeof onStartPractice === 'function') onStartPractice(idx);
+    });
+  });
+
+  // Extra Shift button handlers
+  overlay.querySelectorAll('[data-extra-index]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-extra-index'), 10);
+      overlay.innerHTML = '';
+      overlay.classList.remove('active');
+      if (typeof onStartExtra === 'function') onStartExtra(idx);
     });
   });
 

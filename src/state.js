@@ -8,6 +8,8 @@ const KEY_STATS = 'newArrivals_stats';
 const KEY_COMPLETED_DAILIES = 'newArrivals_completedDailies';
 const KEY_GAME_SCORES = 'newArrivals_gameScores';
 const KEY_NOTIFY = 'newArrivals_notify';
+const KEY_EXTRA_SPENT = 'newArrivals_extraSpent';
+const KEY_EXTRA_PLAYED = 'newArrivals_extraPlayed';
 
 /**
  * Get the current "puzzle date" based on Central Time (America/Chicago).
@@ -290,6 +292,108 @@ export function getPaycheckData(puzzlesData) {
 
   const total = days.reduce((sum, d) => sum + d.wage, 0);
   return { days, total };
+}
+
+// ─── Extra Shifts ──────────────────────────────────────────────────────────
+
+/**
+ * Helper to get the current week key (ISO week start date) for
+ * scoping extra-shift spending to a weekly window.
+ * @returns {string} YYYY-MM-DD of the most recent Monday
+ */
+function _getWeekKey() {
+  const today = getPuzzleDate();
+  const d = new Date(today + 'T12:00:00');
+  const day = d.getDay(); // 0=Sun, 1=Mon, ...
+  const diff = (day === 0 ? 6 : day - 1); // days since Monday
+  d.setDate(d.getDate() - diff);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${dd}`;
+}
+
+/**
+ * Get weekly earnings from the paycheck (total wages for the current 7-day window).
+ * @param {Object} puzzlesData  Object with a `puzzles` array
+ * @returns {number}
+ */
+export function getWeeklyEarnings(puzzlesData) {
+  const { total } = getPaycheckData(puzzlesData);
+  return total;
+}
+
+/**
+ * Deduct an amount from the player's paycheck balance for extra shifts.
+ * Stored per-week so it resets automatically.
+ * @param {number} amount
+ */
+export function spendFromPaycheck(amount) {
+  try {
+    const raw = localStorage.getItem(KEY_EXTRA_SPENT);
+    let data = raw ? JSON.parse(raw) : {};
+    const weekKey = _getWeekKey();
+    // Reset if week changed
+    if (data.week !== weekKey) {
+      data = { week: weekKey, spent: 0 };
+    }
+    data.spent += amount;
+    localStorage.setItem(KEY_EXTRA_SPENT, JSON.stringify(data));
+  } catch (_) {}
+}
+
+/**
+ * Get the current balance available for extra shifts
+ * (weekly earnings minus extra shift spending this week).
+ * @param {Object} puzzlesData  Object with a `puzzles` array
+ * @returns {number}
+ */
+export function getExtraShiftBalance(puzzlesData) {
+  const earnings = getWeeklyEarnings(puzzlesData);
+  let spent = 0;
+  try {
+    const raw = localStorage.getItem(KEY_EXTRA_SPENT);
+    if (raw) {
+      const data = JSON.parse(raw);
+      const weekKey = _getWeekKey();
+      if (data.week === weekKey) {
+        spent = data.spent || 0;
+      }
+    }
+  } catch (_) {}
+  return earnings - spent;
+}
+
+/**
+ * Check if an extra shift puzzle has already been played.
+ * @param {string} puzzleId
+ * @returns {boolean}
+ */
+export function hasPlayedExtraShift(puzzleId) {
+  try {
+    const raw = localStorage.getItem(KEY_EXTRA_PLAYED);
+    if (raw) {
+      const played = JSON.parse(raw);
+      return Array.isArray(played) && played.includes(puzzleId);
+    }
+  } catch (_) {}
+  return false;
+}
+
+/**
+ * Mark an extra shift puzzle as played.
+ * @param {string} puzzleId
+ */
+export function markExtraShiftPlayed(puzzleId) {
+  try {
+    const raw = localStorage.getItem(KEY_EXTRA_PLAYED);
+    let played = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(played)) played = [];
+    if (!played.includes(puzzleId)) {
+      played.push(puzzleId);
+      localStorage.setItem(KEY_EXTRA_PLAYED, JSON.stringify(played));
+    }
+  } catch (_) {}
 }
 
 // ─── Daily Notifications ───────────────────────────────────────────────────
