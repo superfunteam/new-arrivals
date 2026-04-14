@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit a Puzzle — New Arrivals</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #1A1A2E;
+      --surface: rgba(255,255,255,0.05);
+      --border: rgba(255,255,255,0.1);
+      --pink: #FF6B9D;
+      --green: #4CAF50;
+      --amber: #FFC107;
+      --blue: #2196F3;
+      --purple: #9C27B0;
+      --text: rgba(255,255,255,0.85);
+      --muted: rgba(255,255,255,0.4);
+      --font-display: 'Press Start 2P', monospace;
+      --font-body: 'Space Mono', monospace;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 13px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 24px 16px 120px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .header h1 {
+      font-family: var(--font-display);
+      font-size: 14px;
+      color: var(--pink);
+      text-shadow: 0 0 20px rgba(255,107,157,0.4);
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 11px;
+      color: var(--muted);
+      max-width: 400px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    .hint-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 24px;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .hint-box strong { color: var(--text); }
+
+    .field { margin-bottom: 20px; }
+
+    .field label {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 8px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 13px;
+      padding: 10px 12px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus { border-color: var(--pink); }
+
+    .cat-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .cat-card[data-diff="1"] { border-left: 3px solid var(--green); }
+    .cat-card[data-diff="2"] { border-left: 3px solid var(--amber); }
+    .cat-card[data-diff="3"] { border-left: 3px solid var(--blue); }
+    .cat-card[data-diff="4"] { border-left: 3px solid var(--purple); }
+
+    .cat-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .cat-diff {
+      font-family: var(--font-display);
+      font-size: 7px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    .movie-slot {
+      position: relative;
+      margin-bottom: 8px;
+    }
+
+    .movie-slot input {
+      padding-right: 50px;
+    }
+
+    .movie-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background: #1e1e36;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-top: 2px;
+      max-height: 240px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .movie-results.open { display: block; }
+
+    .movie-result {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: background 0.1s;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .movie-result:hover { background: rgba(255,255,255,0.05); }
+
+    .movie-result img {
+      width: 30px;
+      height: 45px;
+      border-radius: 3px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .movie-result .no-poster {
+      width: 30px;
+      height: 45px;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.05);
+      flex-shrink: 0;
+    }
+
+    .movie-result-info { min-width: 0; }
+    .movie-result-title { font-size: 12px; font-weight: 700; }
+    .movie-result-year { font-size: 10px; color: var(--muted); }
+
+    .selected-movie {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 12px;
+    }
+
+    .selected-movie img {
+      width: 30px;
+      height: 45px;
+      border-radius: 3px;
+      object-fit: cover;
+    }
+
+    .selected-movie .info { flex: 1; min-width: 0; }
+    .selected-movie .title { font-size: 12px; font-weight: 700; }
+    .selected-movie .year { font-size: 10px; color: var(--muted); }
+
+    .remove-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 18px;
+      padding: 4px;
+      line-height: 1;
+    }
+
+    .remove-btn:hover { color: var(--pink); }
+
+    .submit-btn {
+      width: 100%;
+      font-family: var(--font-display);
+      font-size: 10px;
+      padding: 16px;
+      background: var(--pink);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      box-shadow: 0 0 20px rgba(255,107,157,0.3);
+      transition: transform 0.1s;
+    }
+
+    .submit-btn:active { transform: scale(0.97); }
+    .submit-btn:disabled { opacity: 0.4; cursor: default; }
+
+    .name-field {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    /* Loader overlay */
+    .loader-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(26,26,46,0.95);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .loader-spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(255,255,255,0.1);
+      border-top-color: var(--pink);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loader-text {
+      font-family: var(--font-body);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+      max-width: 280px;
+      line-height: 1.6;
+    }
+
+    .success-screen {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .success-screen h2 {
+      font-family: var(--font-display);
+      font-size: 12px;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+
+    .success-screen p {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
+
+    .success-screen a {
+      color: var(--pink);
+      text-decoration: none;
+    }
+
+    .back-link {
+      display: inline-block;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 11px;
+      margin-bottom: 16px;
+    }
+
+    .back-link:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="page" id="page">
+    <a href="/" class="back-link">&larr; Back to game</a>
+
+    <div class="header">
+      <h1>SUBMIT A PUZZLE</h1>
+      <p>Think you can stump the night shift? Build a puzzle and submit it for review. If the manager likes it, it goes live for everyone.</p>
+    </div>
+
+    <div class="hint-box">
+      <strong>How it works:</strong> Pick a fun title, create 4 categories, and fill each with 4 movies. Search by title and we'll pull the poster from our tape database. The store manager will review your puzzle before it goes on the shelf.
+    </div>
+
+    <div class="field">
+      <label>Puzzle Title</label>
+      <input type="text" id="puzzle-title" placeholder="e.g. Friday Night Picks" maxlength="60">
+    </div>
+
+    <div id="categories"></div>
+
+    <div class="name-field">
+      <label>Your Name (optional)</label>
+      <input type="text" id="submitter-name" placeholder="Anonymous Clerk" maxlength="40">
+    </div>
+
+    <button class="submit-btn" id="submit-btn" disabled>SUBMIT FOR REVIEW</button>
+  </div>
+
+  <script>
+    const DIFF_LABELS = ['Easy', 'Medium', 'Hard', 'Devious'];
+    const DIFF_COLORS = ['#4CAF50', '#FFC107', '#2196F3', '#9C27B0'];
+
+    const state = {
+      categories: [
+        { name: '', movies: [null, null, null, null] },
+        { name: '', movies: [null, null, null, null] },
+        { name: '', movies: [null, null, null, null] },
+        { name: '', movies: [null, null, null, null] },
+      ],
+    };
+
+    let searchTimers = {};
+
+    function render() {
+      const container = document.getElementById('categories');
+      container.innerHTML = state.categories.map((cat, ci) => `
+        <div class="cat-card" data-diff="${ci + 1}">
+          <div class="cat-header">
+            <span class="cat-diff">CATEGORY ${ci + 1} — ${DIFF_LABELS[ci]}</span>
+          </div>
+          <div class="field">
+            <label>Category Name</label>
+            <input type="text" data-cat="${ci}" class="cat-name-input"
+                   value="${cat.name}" placeholder="e.g. Movies Where The Dog Lives"
+                   maxlength="50">
+          </div>
+          ${cat.movies.map((movie, mi) => movie
+            ? `<div class="selected-movie" data-cat="${ci}" data-movie="${mi}">
+                ${movie.poster ? `<img src="${movie.poster}" alt="">` : '<div class="no-poster"></div>'}
+                <div class="info">
+                  <div class="title">${movie.title}</div>
+                  <div class="year">${movie.year || ''}</div>
+                </div>
+                <button class="remove-btn" data-cat="${ci}" data-movie="${mi}">&times;</button>
+              </div>`
+            : `<div class="movie-slot">
+                <input type="text" data-cat="${ci}" data-movie="${mi}"
+                       class="movie-search" placeholder="Search movie ${mi + 1}...">
+                <div class="movie-results" id="results-${ci}-${mi}"></div>
+              </div>`
+          ).join('')}
+        </div>
+      `).join('');
+
+      // Wire up events
+      container.querySelectorAll('.cat-name-input').forEach(input => {
+        input.addEventListener('input', e => {
+          state.categories[+e.target.dataset.cat].name = e.target.value;
+          checkValid();
+        });
+      });
+
+      container.querySelectorAll('.movie-search').forEach(input => {
+        input.addEventListener('input', e => {
+          const ci = +e.target.dataset.cat;
+          const mi = +e.target.dataset.movie;
+          const q = e.target.value.trim();
+          const key = `${ci}-${mi}`;
+          clearTimeout(searchTimers[key]);
+          if (q.length < 2) {
+            document.getElementById(`results-${ci}-${mi}`).classList.remove('open');
+            return;
+          }
+          searchTimers[key] = setTimeout(() => searchTMDB(q, ci, mi), 300);
+        });
+        input.addEventListener('focus', e => {
+          const ci = +e.target.dataset.cat;
+          const mi = +e.target.dataset.movie;
+          const el = document.getElementById(`results-${ci}-${mi}`);
+          if (el.children.length > 0) el.classList.add('open');
+        });
+      });
+
+      container.querySelectorAll('.remove-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const ci = +e.target.dataset.cat;
+          const mi = +e.target.dataset.movie;
+          state.categories[ci].movies[mi] = null;
+          render();
+        });
+      });
+
+      checkValid();
+    }
+
+    async function searchTMDB(query, ci, mi) {
+      const el = document.getElementById(`results-${ci}-${mi}`);
+      try {
+        const res = await fetch(`/api/tmdb-search?q=${encodeURIComponent(query)}`);
+        const movies = await res.json();
+        if (!movies.length) {
+          el.innerHTML = '<div style="padding:12px;color:rgba(255,255,255,0.3);font-size:11px;text-align:center">No movies found</div>';
+          el.classList.add('open');
+          return;
+        }
+        el.innerHTML = movies.map(m => `
+          <div class="movie-result" data-movie='${JSON.stringify(m).replace(/'/g, "&#39;")}'>
+            ${m.poster ? `<img src="${m.poster}" alt="">` : '<div class="no-poster"></div>'}
+            <div class="movie-result-info">
+              <div class="movie-result-title">${m.title}</div>
+              <div class="movie-result-year">${m.year || ''}</div>
+            </div>
+          </div>
+        `).join('');
+        el.classList.add('open');
+        el.querySelectorAll('.movie-result').forEach(row => {
+          row.addEventListener('click', () => {
+            const movie = JSON.parse(row.dataset.movie);
+            state.categories[ci].movies[mi] = {
+              title: movie.title,
+              year: movie.year,
+              tmdb_id: movie.id,
+              poster: movie.poster,
+            };
+            render();
+          });
+        });
+      } catch {
+        el.innerHTML = '';
+        el.classList.remove('open');
+      }
+    }
+
+    function checkValid() {
+      const title = document.getElementById('puzzle-title').value.trim();
+      const allFilled = title && state.categories.every(cat =>
+        cat.name.trim() && cat.movies.every(m => m && m.tmdb_id)
+      );
+      document.getElementById('submit-btn').disabled = !allFilled;
+    }
+
+    document.getElementById('puzzle-title').addEventListener('input', checkValid);
+
+    // Close dropdowns on outside click
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.movie-slot')) {
+        document.querySelectorAll('.movie-results').forEach(el => el.classList.remove('open'));
+      }
+    });
+
+    // Submit
+    const LOADER_MESSAGES = [
+      'Firing up the tape database server...',
+      'Checking worker schedules...',
+      'Verifying VHS inventory levels...',
+      'Cross-referencing the card catalog...',
+      'Rewinding submission tapes...',
+      'Consulting the store manager...',
+      'Filing paperwork in triplicate...',
+      'Stamping the approval form...',
+    ];
+
+    document.getElementById('submit-btn').addEventListener('click', async () => {
+      const title = document.getElementById('puzzle-title').value.trim();
+      const name = document.getElementById('submitter-name').value.trim() || 'Anonymous Clerk';
+
+      // Show loader
+      const overlay = document.createElement('div');
+      overlay.className = 'loader-overlay';
+      overlay.innerHTML = `
+        <div class="loader-spinner"></div>
+        <div class="loader-text" id="loader-text">${LOADER_MESSAGES[0]}</div>
+      `;
+      document.body.appendChild(overlay);
+
+      let msgIdx = 0;
+      const msgInterval = setInterval(() => {
+        msgIdx = (msgIdx + 1) % LOADER_MESSAGES.length;
+        const el = document.getElementById('loader-text');
+        if (el) el.textContent = LOADER_MESSAGES[msgIdx];
+      }, 1800);
+
+      try {
+        const payload = {
+          title,
+          submittedBy: name,
+          categories: state.categories.map((cat, i) => ({
+            name: cat.name.trim(),
+            difficulty: i + 1,
+            color: DIFF_COLORS[i],
+            movies: cat.movies.map(m => ({
+              title: m.title,
+              year: m.year,
+              tmdb_id: m.tmdb_id,
+            })),
+          })),
+        };
+
+        const res = await fetch('/api/puzzle-submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        clearInterval(msgInterval);
+
+        if (res.ok) {
+          document.getElementById('page').innerHTML = `
+            <div class="success-screen">
+              <h2>PUZZLE SUBMITTED!</h2>
+              <p>Your puzzle "${title}" has been dropped in the manager's inbox.
+                 If it passes inspection, it'll hit the shelves for everyone to play.</p>
+              <p style="font-size:10px;color:rgba(255,255,255,0.25)">Submitted by ${name}</p>
+              <p><a href="/">Back to the store</a></p>
+            </div>
+          `;
+        } else {
+          const data = await res.json();
+          alert('Submission failed: ' + (data.error || 'Unknown error'));
+        }
+      } catch (err) {
+        clearInterval(msgInterval);
+        alert('Connection error — try again');
+      }
+
+      overlay.remove();
+    });
+
+    // Initial render
+    render();
+  </script>
+</body>
+</html>
