@@ -1654,6 +1654,169 @@ html, body {
   padding: 8px;
 }
 
+/* === Shift Schedule Modal === */
+#schedule-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999998;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: helpMenuFadeIn 0.2s ease-out;
+}
+
+.schedule-modal {
+  background: rgba(0, 0, 0, 0.95);
+  border: 2px solid var(--neon-pink);
+  border-radius: 12px;
+  padding: 24px 20px;
+  width: min(320px, 90vw);
+  text-align: center;
+  animation: helpMenuSlideUp 0.25s ease-out;
+}
+
+.schedule-header {
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: var(--neon-pink);
+  text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+.schedule-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.schedule-next-label {
+  font-family: var(--font-display);
+  font-size: 7px;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.schedule-next-time {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.schedule-next-detail {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.schedule-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.schedule-status-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.schedule-status-on {
+  background: rgba(0, 230, 118, 0.08);
+  color: var(--wage-green);
+}
+
+.schedule-status-warn {
+  background: rgba(255, 193, 7, 0.08);
+  color: #FFC107;
+}
+
+.schedule-status-off {
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.schedule-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  -webkit-tap-highlight-color: transparent;
+  padding: 4px 0;
+}
+
+.schedule-toggle input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  position: relative;
+}
+
+.schedule-toggle input:checked {
+  background: var(--neon-pink);
+  border-color: var(--neon-pink);
+}
+
+.schedule-toggle input:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 5px;
+  height: 9px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.schedule-divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 16px 0;
+}
+
+.schedule-extra-hint {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.3);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.schedule-extra-hint strong {
+  color: var(--wage-green);
+}
+
+.schedule-close {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  font-family: var(--font-display);
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  padding: 12px 24px;
+  letter-spacing: 1.5px;
+  width: 100%;
+  border-radius: 6px;
+}
+
 /* === Solved Row Label (NYT Connections-style band) === */
 .solved-row-label {
   position: absolute;

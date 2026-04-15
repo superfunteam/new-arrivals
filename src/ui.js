@@ -341,22 +341,20 @@ function showHelpMenu({ onBuyHint, hintAvailable }) {
         <button class="interrupt-btn secondary help-menu-btn" id="help-instructions-btn">
           HOW TO PLAY
         </button>
+        <button class="interrupt-btn secondary help-menu-btn" id="help-schedule-btn">
+          SHIFT SCHEDULE
+        </button>
       </div>
       <button class="help-menu-close" id="help-menu-close">NEVERMIND</button>
     </div>
   `;
   document.body.appendChild(overlay);
 
-  // Close on backdrop tap
   overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) {
-      overlay.remove();
-    }
+    if (e.target === overlay) overlay.remove();
   });
 
-  document.getElementById('help-menu-close').addEventListener('click', () => {
-    overlay.remove();
-  });
+  document.getElementById('help-menu-close').addEventListener('click', () => overlay.remove());
 
   document.getElementById('help-hint-btn').addEventListener('click', () => {
     overlay.remove();
@@ -366,6 +364,117 @@ function showHelpMenu({ onBuyHint, hintAvailable }) {
   document.getElementById('help-instructions-btn').addEventListener('click', () => {
     overlay.remove();
     showOnboarding(() => {});
+  });
+
+  document.getElementById('help-schedule-btn').addEventListener('click', () => {
+    overlay.remove();
+    showShiftSchedule();
+  });
+}
+
+/**
+ * Show the Shift Schedule screen — notification status + next shift info.
+ */
+function showShiftSchedule() {
+  const existing = document.getElementById('schedule-overlay');
+  if (existing) existing.remove();
+
+  const enabled = isNotifyEnabled();
+  const permGranted = isNotifyPermissionGranted();
+
+  // Calculate next shift time (10pm Central)
+  const centralNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+  const next = new Date(centralNow);
+  if (centralNow.getHours() >= 22) {
+    next.setDate(next.getDate() + 1);
+  }
+  next.setHours(22, 0, 0, 0);
+  const msUntil = next.getTime() - centralNow.getTime();
+  const hoursUntil = Math.floor(msUntil / 3600000);
+  const minsUntil = Math.floor((msUntil % 3600000) / 60000);
+
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const nextDayName = days[next.getDay()];
+  const nextDateStr = next.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+  let statusIcon, statusText, statusClass;
+  if (enabled && permGranted) {
+    statusIcon = 'notifications_active';
+    statusText = "You're on the schedule. We'll page you.";
+    statusClass = 'schedule-status-on';
+  } else if (enabled && !permGranted) {
+    statusIcon = 'notification_important';
+    statusText = 'Notifications are blocked by your browser. Tap the lock icon in the address bar to allow them.';
+    statusClass = 'schedule-status-warn';
+  } else {
+    statusIcon = 'notifications_off';
+    statusText = "You're not on the schedule. Toggle below to get paged for new shifts.";
+    statusClass = 'schedule-status-off';
+  }
+
+  const overlay = document.createElement('div');
+  overlay.id = 'schedule-overlay';
+  overlay.innerHTML = `
+    <div class="schedule-modal">
+      <div class="schedule-header">SHIFT SCHEDULE</div>
+      <div class="schedule-card">
+        <div class="schedule-next-label">YOUR NEXT SHIFT</div>
+        <div class="schedule-next-time">${nextDayName}, ${nextDateStr}</div>
+        <div class="schedule-next-detail">10:00 PM Central · in ${hoursUntil}h ${minsUntil}m</div>
+      </div>
+      <div class="schedule-status ${statusClass}">
+        <span class="material-symbols-rounded schedule-status-icon">${statusIcon}</span>
+        <span>${statusText}</span>
+      </div>
+      <label class="schedule-toggle">
+        <input type="checkbox" id="schedule-notify-toggle" ${enabled ? 'checked' : ''}>
+        <span>Page me when new tapes arrive</span>
+      </label>
+      <div class="schedule-divider"></div>
+      <div class="schedule-extra-hint">
+        Looking for more hours? Pick up an <strong>Extra Shift</strong> for $10 from the puzzle select screen.
+      </div>
+      <button class="schedule-close" id="schedule-close">BACK TO WORK</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.remove();
+  });
+
+  document.getElementById('schedule-close').addEventListener('click', () => overlay.remove());
+
+  document.getElementById('schedule-notify-toggle').addEventListener('change', async (e) => {
+    const statusEl = overlay.querySelector('.schedule-status');
+    const iconEl = overlay.querySelector('.schedule-status-icon');
+    const textEl = statusEl.querySelector('span:last-child');
+
+    if (e.target.checked) {
+      const ok = await enableDailyNotification();
+      _isNotifyEnabled = ok;
+      if (ok) {
+        statusEl.className = 'schedule-status schedule-status-on';
+        iconEl.textContent = 'notifications_active';
+        textEl.textContent = "You're on the schedule. We'll page you.";
+      } else {
+        e.target.checked = false;
+        statusEl.className = 'schedule-status schedule-status-warn';
+        iconEl.textContent = 'notification_important';
+        textEl.textContent = 'Notifications are blocked. Check your browser settings.';
+      }
+    } else {
+      disableDailyNotification();
+      _isNotifyEnabled = false;
+      statusEl.className = 'schedule-status schedule-status-off';
+      iconEl.textContent = 'notifications_off';
+      textEl.textContent = "You're off the schedule. No more pages.";
+    }
+
+    // Sync other checkboxes
+    document.querySelectorAll('#notify-check, #welcome-notify-check').forEach(el => {
+      el.checked = e.target.checked;
+    });
   });
 }
 
