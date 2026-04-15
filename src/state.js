@@ -508,10 +508,14 @@ export function disableDailyNotification() {
     clearTimeout(window._notifyTimeout);
     window._notifyTimeout = null;
   }
-  // Cancel Capacitor scheduled notifications
+  // Cancel ALL Capacitor scheduled notifications
   if (isCapacitor()) {
     import('@capacitor/local-notifications').then(({ LocalNotifications }) => {
-      LocalNotifications.cancel({ notifications: [{ id: 1 }] }).catch(() => {});
+      LocalNotifications.getPending().then(pending => {
+        if (pending.notifications.length > 0) {
+          LocalNotifications.cancel(pending);
+        }
+      });
     }).catch(() => {});
   }
 }
@@ -543,13 +547,19 @@ function fireTestNotification() {
 
 /**
  * Fire a daily notification (used for catch-up and scheduled).
+ * Uses a timestamp-based lock to prevent duplicate firings.
  */
 async function fireNotification() {
-  const body = getNextMessage();
-  const today = getPuzzleDate();
+  // De-duplicate using a precise timestamp lock (not puzzle date, which shifts at 10pm)
+  const now = Date.now();
+  const lockKey = KEY_LAST_NOTIFY_DATE;
+  const lastFiredMs = parseInt(localStorage.getItem(lockKey) || '0', 10);
 
-  if (localStorage.getItem(KEY_LAST_NOTIFY_DATE) === today) return;
-  localStorage.setItem(KEY_LAST_NOTIFY_DATE, today);
+  // Don't fire if we fired within the last 12 hours
+  if (now - lastFiredMs < 12 * 60 * 60 * 1000) return;
+  localStorage.setItem(lockKey, String(now));
+
+  const body = getNextMessage();
 
   try {
     if ('serviceWorker' in navigator) {
@@ -559,7 +569,7 @@ async function fireNotification() {
         icon: '/apple-touch-icon.png',
         badge: '/favicon-32.png',
         tag: 'daily-puzzle',
-        renotify: true,
+        // renotify: false — let the tag de-duplicate
         data: { url: '/' },
       });
     } else if (Notification.permission === 'granted') {
@@ -572,27 +582,36 @@ async function fireNotification() {
 
 /**
  * Schedule notifications via Capacitor Local Notifications.
- * Schedules the next 7 days of 10pm Central notifications.
+ * Cancels ALL existing, then schedules next 7 days.
  */
 async function scheduleCapacitorNotifications() {
   try {
     const { LocalNotifications } = await import('@capacitor/local-notifications');
 
-    // Cancel existing
-    await LocalNotifications.cancel({ notifications: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }, { id: 7 }] });
+    // Cancel ALL pending notifications to avoid stacking
+    const pending = await LocalNotifications.getPending();
+    if (pending.notifications.length > 0) {
+      await LocalNotifications.cancel(pending);
+    }
 
-    // Schedule next 7 days at 10pm Central
+    // Calculate 10pm Central in the device's local timezone
+    // Central Time offset: -6 (CST) or -5 (CDT)
+    const centralNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+    const localNow = new Date();
+    const offsetMs = localNow.getTime() - centralNow.getTime();
+
     const notifications = [];
     for (let i = 0; i < 7; i++) {
-      const centralNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
-      const target = new Date(centralNow);
-      target.setDate(target.getDate() + i);
-      target.setHours(22, 0, 0, 0);
-      if (target <= centralNow) {
-        target.setDate(target.getDate() + 1);
+      // Target: 10pm Central
+      const centralTarget = new Date(centralNow);
+      centralTarget.setDate(centralTarget.getDate() + i);
+      centralTarget.setHours(22, 0, 0, 0);
+      if (centralTarget <= centralNow) {
+        centralTarget.setDate(centralTarget.getDate() + 1);
       }
-      // Convert back to local time for scheduling
-      const localTarget = new Date(target.toLocaleString('en-US') + ' CST');
+
+      // Convert Central time to device local time
+      const localTarget = new Date(centralTarget.getTime() + offsetMs);
 
       notifications.push({
         id: i + 1,
@@ -611,13 +630,15 @@ async function scheduleCapacitorNotifications() {
 }
 
 /**
- * Schedule the next web notification for 10pm Central.
- * Also checks if we missed today's notification and fires it immediately.
+ * Schedule notifications. Called once on page load.
+ *
+ * - Capacitor: schedules 7 days of native notifications (works when app is closed)
+ * - Web: sets a setTimeout for 10pm (only works while tab is open) + catch-up on load
  */
 export function scheduleNotification() {
   if (!isNotifyEnabled()) return;
 
-  // Capacitor uses its own scheduling
+  // Capacitor: native scheduling only, skip web path entirely
   if (isCapacitor()) {
     scheduleCapacitorNotifications();
     return;
@@ -625,24 +646,23 @@ export function scheduleNotification() {
 
   if (!isNotifyPermissionGranted()) return;
 
-  // Check if we missed today's notification (page was closed at 10pm)
+  // Catch-up: if it's past 10pm Central and we haven't notified recently
   const centralNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
   if (centralNow.getHours() >= 22) {
-    const today = getPuzzleDate();
-    const lastFired = localStorage.getItem(KEY_LAST_NOTIFY_DATE);
-    if (lastFired !== today) {
-      fireNotification();
-    }
+    fireNotification(); // de-duplication is inside fireNotification
   }
 
-  // Schedule the next one via setTimeout (works while tab is open)
-  const msUntilReset = getNextResetMs();
+  // Schedule the next one via setTimeout (only works while tab is open)
   if (window._notifyTimeout) clearTimeout(window._notifyTimeout);
+  const msUntilReset = getNextResetMs();
 
-  window._notifyTimeout = setTimeout(() => {
-    fireNotification();
-    scheduleNotification();
-  }, msUntilReset);
+  // Only set timeout if it's a reasonable duration (< 24 hours)
+  if (msUntilReset > 0 && msUntilReset < 24 * 60 * 60 * 1000) {
+    window._notifyTimeout = setTimeout(() => {
+      fireNotification();
+      // Don't recursively schedule — the next page load will handle it
+    }, msUntilReset);
+  }
 }
 
 function getNextResetMs() {
