@@ -61,25 +61,118 @@ async function searchMovie(title, year) {
   return data.results || [];
 }
 
+// Title/year matcher shared with scripts/verify-puzzles.js. Tolerates subtitle
+// additions, regional title swaps, and ±1 year of release-date drift.
+// Token aliases collapse common interchangeable words to a canonical form.
+// Number words map to digits so "Twelve Monkeys" matches "12 Monkeys".
+const TOKEN_ALIASES = {
+  vol: 'volume', pt: 'part', vs: 'versus', '&': 'and',
+  one: '1', two: '2', three: '3', four: '4', five: '5',
+  six: '6', seven: '7', eight: '8', nine: '9', ten: '10',
+  eleven: '11', twelve: '12', thirteen: '13', fourteen: '14',
+  fifteen: '15', sixteen: '16', seventeen: '17', eighteen: '18',
+  nineteen: '19', twenty: '20', thirty: '30', forty: '40',
+  fifty: '50', sixty: '60', seventy: '70', eighty: '80',
+  ninety: '90', hundred: '100',
+};
+
+// Superscript/subscript digits → regular digits ("Alien³" → "Alien 3")
+const DIGIT_FOLD = {
+  '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4',
+  '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9',
+  '₀': '0', '₁': '1', '₂': '2', '₃': '3', '₄': '4',
+  '₅': '5', '₆': '6', '₇': '7', '₈': '8', '₉': '9',
+};
+
+// ¹²³ live in Latin-1 Supplement (U+00B2/B3/B9), the rest in the
+// Superscripts/Subscripts block — both ranges need folding.
+const SUPERSCRIPT_RE = /[\u00B2\u00B3\u00B9\u2070\u2074-\u2079\u2080-\u2089]/g;
+
+function normalizeTitle(t) {
+  if (!t) return '';
+  return t
+    .toLowerCase()
+    .replace(SUPERSCRIPT_RE, c => DIGIT_FOLD[c] || c)
+    .replace(/^(the |a |an )/, '')
+    .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+    .split(/\s+/)
+    .map(tok => TOKEN_ALIASES[tok] || tok)
+    .filter(Boolean)
+    .join(' ')
+    .trim();
+}
+
+function yearsMatch(puzzleYear, tmdbDate) {
+  if (!puzzleYear || !tmdbDate) return false;
+  const tmdbYear = parseInt(tmdbDate.slice(0, 4), 10);
+  return Math.abs(tmdbYear - puzzleYear) <= 1;
+}
+
+function titlesMatch(puzzleTitle, tmdbTitle, tmdbOriginalTitle, yearMatch) {
+  const a = normalizeTitle(puzzleTitle);
+  const candidates = [normalizeTitle(tmdbTitle), normalizeTitle(tmdbOriginalTitle)]
+    .filter(Boolean);
+  if (candidates.includes(a)) return true;
+  if (!yearMatch) return false;
+  for (const c of candidates) {
+    if (!c) continue;
+    if (c.includes(a) || a.includes(c)) return true;
+    const aHead = a.split(' ').slice(0, 3).join(' ');
+    const cHead = c.split(' ').slice(0, 3).join(' ');
+    if (aHead && aHead === cHead) return true;
+  }
+  return false;
+}
+
+function isCorrectMatch(puzzleTitle, puzzleYear, tmdbResult) {
+  const yMatch = yearsMatch(puzzleYear, tmdbResult.release_date);
+  const tMatch = titlesMatch(puzzleTitle, tmdbResult.title, tmdbResult.original_title, yMatch);
+  return tMatch && yMatch;
+}
+
 async function resolveMovieId(title, year) {
-  // First try with year
+  // First try with year — search any matching candidate (not just position 0,
+  // which can be a different film with a similar title).
   let results = await searchMovie(title, year);
   await sleep(RATE_LIMIT_DELAY);
 
-  if (results.length > 0) {
-    return results[0].id;
-  }
+  let match = results.find(r => isCorrectMatch(title, year, r));
+  if (match) return match.id;
 
   // Fallback: try without year
-  console.log(`  [retry] No results for "${title}" (${year}), retrying without year...`);
+  console.log(`  [retry] No year-matched result for "${title}" (${year}), retrying without year...`);
   results = await searchMovie(title, null);
   await sleep(RATE_LIMIT_DELAY);
 
-  if (results.length > 0) {
-    return results[0].id;
-  }
+  match = results.find(r => isCorrectMatch(title, year, r));
+  if (match) return match.id;
 
   return null;
+}
+
+// Verify an existing tmdb_id actually points to the named movie. Returns true
+// if it does, false if the id is wrong/stale and should be re-resolved.
+// Falls back to /alternative_titles when the primary title doesn't match but
+// the year does (e.g. "The Road Warrior" → TMDB "Mad Max 2").
+async function verifyTmdbId(tmdbId, title, year) {
+  try {
+    const data = await tmdbFetch(`${TMDB_BASE}/movie/${tmdbId}`);
+    await sleep(RATE_LIMIT_DELAY);
+    if (isCorrectMatch(title, year, data)) return true;
+
+    if (yearsMatch(year, data.release_date)) {
+      const alt = await tmdbFetch(`${TMDB_BASE}/movie/${tmdbId}/alternative_titles`);
+      await sleep(RATE_LIMIT_DELAY);
+      const a = normalizeTitle(title);
+      for (const t of alt.titles || []) {
+        if (titlesMatch(title, t.title, null, true) || normalizeTitle(t.title) === a) return true;
+      }
+    }
+    return false;
+  } catch (err) {
+    console.log(`  [warn] Could not verify tmdb_id ${tmdbId} for "${title}": ${err.message}`);
+    return false;
+  }
 }
 
 async function downloadPoster(posterPath, destPath) {
@@ -132,13 +225,45 @@ async function processMovie(movie) {
   const { title, year } = movie;
   let { tmdb_id } = movie;
 
-  // Resolve tmdb_id if null
+  // Fast path: if tmdb_id is set and we already have everything on disk, skip.
+  // Use scripts/verify-puzzles.js to audit existing entries; we don't re-verify
+  // every run for performance reasons.
+  const metadataExists =
+    Array.isArray(movie.genres) &&
+    movie.genres.length > 0 &&
+    movie.director != null &&
+    Array.isArray(movie.stars) &&
+    movie.stars.length > 0 &&
+    movie.summary != null;
+  const postersExistFor = id =>
+    id != null &&
+    fs.existsSync(path.join(POSTERS_DIR, `${id}.jpg`)) &&
+    fs.existsSync(path.join(POSTERS_DIR, `${id}_pixel.jpg`));
+
+  if (tmdb_id && postersExistFor(tmdb_id) && metadataExists) {
+    console.log(`  [skip] Poster + metadata already exist for "${title}" (${tmdb_id})`);
+    return { ...movie, tmdb_id };
+  }
+
+  // We're going to fetch. First, make sure tmdb_id is correct — never trust a
+  // stale/hallucinated ID. Verification is cheap (one API call) compared to
+  // shipping wrong posters.
+  if (tmdb_id) {
+    const ok = await verifyTmdbId(tmdb_id, title, year);
+    if (!ok) {
+      console.log(`  [fix] tmdb_id ${tmdb_id} does not match "${title}" (${year}) — re-resolving`);
+      tmdb_id = null;
+      // Drop stale metadata so the freshly-fetched fields below get written.
+      movie = { ...movie, tmdb_id: null, summary: null, director: null, stars: null, genres: null };
+    }
+  }
+
   if (!tmdb_id) {
     console.log(`Searching TMDB for: "${title}" (${year})`);
     tmdb_id = await resolveMovieId(title, year);
     if (!tmdb_id) {
       console.log(`  [skip] Could not find TMDB ID for "${title}"`);
-      return { ...movie };
+      return { ...movie, tmdb_id: null };
     }
     console.log(`  Found tmdb_id: ${tmdb_id}`);
   } else {
@@ -147,21 +272,7 @@ async function processMovie(movie) {
 
   const posterFile = path.join(POSTERS_DIR, `${tmdb_id}.jpg`);
   const pixelFile = path.join(POSTERS_DIR, `${tmdb_id}_pixel.jpg`);
-
-  const postersExist = fs.existsSync(posterFile) && fs.existsSync(pixelFile);
-  const metadataExists =
-    Array.isArray(movie.genres) &&
-    movie.genres.length > 0 &&
-    movie.director != null &&
-    Array.isArray(movie.stars) &&
-    movie.stars.length > 0 &&
-    movie.summary != null;
-
-  // Skip entirely only when both posters and metadata are present
-  if (postersExist && metadataExists) {
-    console.log(`  [skip] Poster + metadata already exist for "${title}" (${tmdb_id})`);
-    return { ...movie, tmdb_id };
-  }
+  const postersExist = postersExistFor(tmdb_id);
 
   // Fetch movie details (poster path + summary/genres/director/stars in one call)
   let posterPath, summary, genres, director, stars;

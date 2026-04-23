@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "node scripts/fetch-posters.js && vite build",
     "preview": "vite preview",
-    "fetch-posters": "node scripts/fetch-posters.js"
+    "fetch-posters": "node scripts/fetch-posters.js",
+    "verify-posters": "node scripts/verify-puzzles.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.86.0",
