@@ -1,0 +1,129 @@
+name: Auto-publish daily puzzles
+
+# Keeps a rolling buffer of upcoming daily puzzles in public/puzzles.json.
+# Each run:
+#   1. Generates new puzzles via the Anthropic API (only if buffer is short).
+#   2. Resolves TMDB IDs and downloads posters.
+#   3. Verifies every recently-added entry actually points to the right film.
+#   4. Commits puzzles.json + new posters back to the default branch.
+#
+# Required repo secrets:
+#   ANTHROPIC_API_KEY        — Claude API key for puzzle design
+#   TMDB_READ_ACCESS_TOKEN   — TMDB v4 read-access token for poster/metadata lookups
+
+on:
+  workflow_dispatch:
+    inputs:
+      count:
+        description: 'Force-generate this many puzzles (overrides the buffer logic). Leave blank for normal scheduling.'
+        required: false
+        default: ''
+      buffer_days:
+        description: 'How many days ahead to keep buffered (default 14).'
+        required: false
+        default: '14'
+  schedule:
+    # 13:00 UTC daily — early morning Pacific, mid-morning Eastern.
+    # GitHub Actions cron only runs on the default branch.
+    - cron: '0 13 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: auto-puzzles
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Snapshot starting state
+        id: snapshot
+        run: |
+          before=$(node -e "console.log(JSON.parse(require('fs').readFileSync('public/puzzles.json','utf8')).puzzles.length)")
+          echo "before=$before" >> "$GITHUB_OUTPUT"
+
+      - name: Generate upcoming puzzles
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PUZZLE_BUFFER_DAYS: ${{ github.event.inputs.buffer_days || '14' }}
+        run: |
+          if [ -n "${{ github.event.inputs.count }}" ]; then
+            node scripts/generate-puzzles.js --count "${{ github.event.inputs.count }}"
+          else
+            node scripts/generate-puzzles.js
+          fi
+
+      - name: Enrich with TMDB metadata + posters
+        env:
+          TMDB_READ_ACCESS_TOKEN: ${{ secrets.TMDB_READ_ACCESS_TOKEN }}
+        run: node scripts/fetch-posters.js
+
+      - name: Verify newly added puzzles point to correct TMDB entries
+        env:
+          TMDB_READ_ACCESS_TOKEN: ${{ secrets.TMDB_READ_ACCESS_TOKEN }}
+        run: |
+          # Verify only the dated puzzles from today onward (the new ones).
+          today=$(date -u +%F)
+          # Pick a far-future end date so the verifier covers the whole buffer.
+          end="2099-12-31"
+          node scripts/verify-puzzles.js "$today" "$end" || {
+            echo "::warning::Some newly-added puzzles failed TMDB verification — review the commit and fix titles/years if needed."
+          }
+
+      - name: Detect changes
+        id: changes
+        run: |
+          if git diff --quiet public/puzzles.json public/posters; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit and push
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "puzzle-bot"
+          git config user.email "puzzle-bot@users.noreply.github.com"
+          before="${{ steps.snapshot.outputs.before }}"
+          after=$(node -e "console.log(JSON.parse(require('fs').readFileSync('public/puzzles.json','utf8')).puzzles.length)")
+          added=$((after - before))
+          git add public/puzzles.json public/posters
+          git commit -m "Auto-publish: queue ${added} new puzzle(s) (${before} → ${after})"
+          for attempt in 1 2 3 4; do
+            if git push origin HEAD; then
+              echo "pushed on attempt $attempt"
+              exit 0
+            fi
+            echo "push failed (attempt $attempt) — fetching and retrying..."
+            git pull --rebase origin "$(git rev-parse --abbrev-ref HEAD)" || true
+            sleep $((2 ** attempt))
+          done
+          echo "::error::Failed to push after 4 attempts"
+          exit 1
+
+      - name: Summary
+        if: always()
+        run: |
+          before="${{ steps.snapshot.outputs.before }}"
+          after=$(node -e "console.log(JSON.parse(require('fs').readFileSync('public/puzzles.json','utf8')).puzzles.length)")
+          echo "## Puzzle automation run" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Puzzles before: **$before**" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Puzzles after:  **$after**" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Buffer target:  **${{ github.event.inputs.buffer_days || '14' }} days**" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Changes pushed: **${{ steps.changes.outputs.changed }}**" >> "$GITHUB_STEP_SUMMARY"
