@@ -21859,6 +21859,306 @@
           ]
         }
       ]
+    },
+    {
+      "id": "2026-05-06",
+      "title": "Wednesday Whodunits",
+      "categories": [
+        {
+          "name": "Murder Mystery Movies",
+          "difficulty": 1,
+          "color": "#4CAF50",
+          "movies": [
+            { "title": "Clue", "year": 1985 },
+            { "title": "Sleuth", "year": 1972 },
+            { "title": "Knives Out", "year": 2019 },
+            { "title": "Murder by Death", "year": 1976 }
+          ]
+        },
+        {
+          "name": "Alfred Hitchcock Films",
+          "difficulty": 2,
+          "color": "#FFC107",
+          "movies": [
+            { "title": "Psycho", "year": 1960 },
+            { "title": "Rear Window", "year": 1954 },
+            { "title": "The Birds", "year": 1963 },
+            { "title": "North by Northwest", "year": 1959 }
+          ]
+        },
+        {
+          "name": "Famous Twist Endings",
+          "difficulty": 3,
+          "color": "#2196F3",
+          "movies": [
+            { "title": "The Usual Suspects", "year": 1995 },
+            { "title": "The Sixth Sense", "year": 1999 },
+            { "title": "Fight Club", "year": 1999 },
+            { "title": "Primal Fear", "year": 1996 }
+          ]
+        },
+        {
+          "name": "Adapted from Agatha Christie",
+          "difficulty": 4,
+          "color": "#9C27B0",
+          "movies": [
+            { "title": "Murder on the Orient Express", "year": 1974 },
+            { "title": "Death on the Nile", "year": 1978 },
+            { "title": "Witness for the Prosecution", "year": 1957 },
+            { "title": "Evil Under the Sun", "year": 1982 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2026-05-07",
+      "title": "Throwback Thursday",
+      "categories": [
+        {
+          "name": "Iconic 1970s Blockbusters",
+          "difficulty": 1,
+          "color": "#4CAF50",
+          "movies": [
+            { "title": "Star Wars", "year": 1977 },
+            { "title": "Jaws", "year": 1975 },
+            { "title": "The Godfather", "year": 1972 },
+            { "title": "Rocky", "year": 1976 }
+          ]
+        },
+        {
+          "name": "1980s Teen Classics",
+          "difficulty": 2,
+          "color": "#FFC107",
+          "movies": [
+            { "title": "The Breakfast Club", "year": 1985 },
+            { "title": "Ferris Bueller's Day Off", "year": 1986 },
+            { "title": "Sixteen Candles", "year": 1984 },
+            { "title": "Pretty in Pink", "year": 1986 }
+          ]
+        },
+        {
+          "name": "1990s Cult Hits",
+          "difficulty": 3,
+          "color": "#2196F3",
+          "movies": [
+            { "title": "Pulp Fiction", "year": 1994 },
+            { "title": "Reservoir Dogs", "year": 1992 },
+            { "title": "Clerks", "year": 1994 },
+            { "title": "The Big Lebowski", "year": 1998 }
+          ]
+        },
+        {
+          "name": "Films Set in a Past Decade",
+          "difficulty": 4,
+          "color": "#9C27B0",
+          "movies": [
+            { "title": "Grease", "year": 1978 },
+            { "title": "American Graffiti", "year": 1973 },
+            { "title": "Dazed and Confused", "year": 1993 },
+            { "title": "Stand by Me", "year": 1986 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2026-05-08",
+      "title": "Friday Frights",
+      "categories": [
+        {
+          "name": "Slasher Films",
+          "difficulty": 1,
+          "color": "#4CAF50",
+          "movies": [
+            { "title": "Halloween", "year": 1978 },
+            { "title": "Friday the 13th", "year": 1980 },
+            { "title": "A Nightmare on Elm Street", "year": 1984 },
+            { "title": "Scream", "year": 1996 }
+          ]
+        },
+        {
+          "name": "Stephen King Adaptations",
+          "difficulty": 2,
+          "color": "#FFC107",
+          "movies": [
+            { "title": "The Shining", "year": 1980 },
+            { "title": "Misery", "year": 1990 },
+            { "title": "Carrie", "year": 1976 },
+            { "title": "Pet Sematary", "year": 1989 }
+          ]
+        },
+        {
+          "name": "Body Horror",
+          "difficulty": 3,
+          "color": "#2196F3",
+          "movies": [
+            { "title": "The Fly", "year": 1986 },
+            { "title": "Videodrome", "year": 1983 },
+            { "title": "The Thing", "year": 1982 },
+            { "title": "Re-Animator", "year": 1985 }
+          ]
+        },
+        {
+          "name": "Demonic Possession",
+          "difficulty": 4,
+          "color": "#9C27B0",
+          "movies": [
+            { "title": "The Exorcist", "year": 1973 },
+            { "title": "Rosemary's Baby", "year": 1968 },
+            { "title": "The Omen", "year": 1976 },
+            { "title": "Poltergeist", "year": 1982 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2026-05-09",
+      "title": "Saturday Morning Toons",
+      "categories": [
+        {
+          "name": "Disney Renaissance",
+          "difficulty": 1,
+          "color": "#4CAF50",
+          "movies": [
+            { "title": "The Lion King", "year": 1994 },
+            { "title": "Aladdin", "year": 1992 },
+            { "title": "The Little Mermaid", "year": 1989 },
+            { "title": "Beauty and the Beast", "year": 1991 }
+          ]
+        },
+        {
+          "name": "Don Bluth Films",
+          "difficulty": 2,
+          "color": "#FFC107",
+          "movies": [
+            { "title": "The Land Before Time", "year": 1988 },
+            { "title": "An American Tail", "year": 1986 },
+            { "title": "The Secret of NIMH", "year": 1982 },
+            { "title": "All Dogs Go to Heaven", "year": 1989 }
+          ]
+        },
+        {
+          "name": "Studio Ghibli",
+          "difficulty": 3,
+          "color": "#2196F3",
+          "movies": [
+            { "title": "My Neighbor Totoro", "year": 1988 },
+            { "title": "Princess Mononoke", "year": 1997 },
+            { "title": "Spirited Away", "year": 2001 },
+            { "title": "Kiki's Delivery Service", "year": 1989 }
+          ]
+        },
+        {
+          "name": "Stop-Motion Animation",
+          "difficulty": 4,
+          "color": "#9C27B0",
+          "movies": [
+            { "title": "The Nightmare Before Christmas", "year": 1993 },
+            { "title": "James and the Giant Peach", "year": 1996 },
+            { "title": "Chicken Run", "year": 2000 },
+            { "title": "Coraline", "year": 2009 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2026-05-10",
+      "title": "Mother's Day Matinee",
+      "categories": [
+        {
+          "name": "Iconic Movie Moms (Comedy)",
+          "difficulty": 1,
+          "color": "#4CAF50",
+          "movies": [
+            { "title": "Mrs. Doubtfire", "year": 1993 },
+            { "title": "Mamma Mia!", "year": 2008 },
+            { "title": "Stepmom", "year": 1998 },
+            { "title": "Freaky Friday", "year": 2003 }
+          ]
+        },
+        {
+          "name": "Mother-Daughter Dramas",
+          "difficulty": 2,
+          "color": "#FFC107",
+          "movies": [
+            { "title": "Terms of Endearment", "year": 1983 },
+            { "title": "Steel Magnolias", "year": 1989 },
+            { "title": "Postcards from the Edge", "year": 1990 },
+            { "title": "Mermaids", "year": 1990 }
+          ]
+        },
+        {
+          "name": "Mom Saves the Kid",
+          "difficulty": 3,
+          "color": "#2196F3",
+          "movies": [
+            { "title": "Aliens", "year": 1986 },
+            { "title": "Terminator 2: Judgment Day", "year": 1991 },
+            { "title": "The Babadook", "year": 2014 },
+            { "title": "A Quiet Place", "year": 2018 }
+          ]
+        },
+        {
+          "name": "Twisted Mothers",
+          "difficulty": 4,
+          "color": "#9C27B0",
+          "movies": [
+            { "title": "Mommie Dearest", "year": 1981 },
+            { "title": "Serial Mom", "year": 1994 },
+            { "title": "White Oleander", "year": 2002 },
+            { "title": "Black Swan", "year": 2010 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2026-05-11",
+      "title": "Monday Mayhem",
+      "categories": [
+        {
+          "name": "Schwarzenegger Action",
+          "difficulty": 1,
+          "color": "#4CAF50",
+          "movies": [
+            { "title": "The Terminator", "year": 1984 },
+            { "title": "Predator", "year": 1987 },
+            { "title": "Total Recall", "year": 1990 },
+            { "title": "Commando", "year": 1985 }
+          ]
+        },
+        {
+          "name": "80s Cop Action",
+          "difficulty": 2,
+          "color": "#FFC107",
+          "movies": [
+            { "title": "Lethal Weapon", "year": 1987 },
+            { "title": "Beverly Hills Cop", "year": 1984 },
+            { "title": "Die Hard", "year": 1988 },
+            { "title": "48 Hrs.", "year": 1982 }
+          ]
+        },
+        {
+          "name": "Action on a Vehicle",
+          "difficulty": 3,
+          "color": "#2196F3",
+          "movies": [
+            { "title": "Speed", "year": 1994 },
+            { "title": "Con Air", "year": 1997 },
+            { "title": "Under Siege", "year": 1992 },
+            { "title": "The Rock", "year": 1996 }
+          ]
+        },
+        {
+          "name": "Real-Time Thrillers",
+          "difficulty": 4,
+          "color": "#9C27B0",
+          "movies": [
+            { "title": "High Noon", "year": 1952 },
+            { "title": "Run Lola Run", "year": 1998 },
+            { "title": "Phone Booth", "year": 2002 },
+            { "title": "Nick of Time", "year": 1995 }
+          ]
+        }
+      ]
     }
   ]
 }

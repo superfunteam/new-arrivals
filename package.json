@@ -8,6 +8,7 @@
     "build": "node scripts/fetch-posters.js && vite build",
     "preview": "vite preview",
     "fetch-posters": "node scripts/fetch-posters.js",
+    "generate-puzzles": "node scripts/generate-puzzles.js",
     "verify-posters": "node scripts/verify-puzzles.js",
     "verify-interrupts": "node scripts/verify-interrupts.js"
   },
