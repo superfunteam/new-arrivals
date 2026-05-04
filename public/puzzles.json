@@ -21869,10 +21869,22 @@
           "difficulty": 1,
           "color": "#4CAF50",
           "movies": [
-            { "title": "Clue", "year": 1985 },
-            { "title": "Sleuth", "year": 1972 },
-            { "title": "Knives Out", "year": 2019 },
-            { "title": "Murder by Death", "year": 1976 }
+            {
+              "title": "Clue",
+              "year": 1985
+            },
+            {
+              "title": "Sleuth",
+              "year": 1972
+            },
+            {
+              "title": "Knives Out",
+              "year": 2019
+            },
+            {
+              "title": "Murder by Death",
+              "year": 1976
+            }
           ]
         },
         {
@@ -21880,10 +21892,22 @@
           "difficulty": 2,
           "color": "#FFC107",
           "movies": [
-            { "title": "Psycho", "year": 1960 },
-            { "title": "Rear Window", "year": 1954 },
-            { "title": "The Birds", "year": 1963 },
-            { "title": "North by Northwest", "year": 1959 }
+            {
+              "title": "Psycho",
+              "year": 1960
+            },
+            {
+              "title": "Rear Window",
+              "year": 1954
+            },
+            {
+              "title": "The Birds",
+              "year": 1963
+            },
+            {
+              "title": "North by Northwest",
+              "year": 1959
+            }
           ]
         },
         {
@@ -21891,10 +21915,22 @@
           "difficulty": 3,
           "color": "#2196F3",
           "movies": [
-            { "title": "The Usual Suspects", "year": 1995 },
-            { "title": "The Sixth Sense", "year": 1999 },
-            { "title": "Fight Club", "year": 1999 },
-            { "title": "Primal Fear", "year": 1996 }
+            {
+              "title": "The Usual Suspects",
+              "year": 1995
+            },
+            {
+              "title": "The Sixth Sense",
+              "year": 1999
+            },
+            {
+              "title": "Fight Club",
+              "year": 1999
+            },
+            {
+              "title": "Primal Fear",
+              "year": 1996
+            }
           ]
         },
         {
@@ -21902,10 +21938,22 @@
           "difficulty": 4,
           "color": "#9C27B0",
           "movies": [
-            { "title": "Murder on the Orient Express", "year": 1974 },
-            { "title": "Death on the Nile", "year": 1978 },
-            { "title": "Witness for the Prosecution", "year": 1957 },
-            { "title": "Evil Under the Sun", "year": 1982 }
+            {
+              "title": "Murder on the Orient Express",
+              "year": 1974
+            },
+            {
+              "title": "Death on the Nile",
+              "year": 1978
+            },
+            {
+              "title": "Witness for the Prosecution",
+              "year": 1957
+            },
+            {
+              "title": "Evil Under the Sun",
+              "year": 1982
+            }
           ]
         }
       ]
@@ -21919,10 +21967,22 @@
           "difficulty": 1,
           "color": "#4CAF50",
           "movies": [
-            { "title": "Star Wars", "year": 1977 },
-            { "title": "Jaws", "year": 1975 },
-            { "title": "The Godfather", "year": 1972 },
-            { "title": "Rocky", "year": 1976 }
+            {
+              "title": "Star Wars",
+              "year": 1977
+            },
+            {
+              "title": "Jaws",
+              "year": 1975
+            },
+            {
+              "title": "The Godfather",
+              "year": 1972
+            },
+            {
+              "title": "Rocky",
+              "year": 1976
+            }
           ]
         },
         {
@@ -21930,10 +21990,22 @@
           "difficulty": 2,
           "color": "#FFC107",
           "movies": [
-            { "title": "The Breakfast Club", "year": 1985 },
-            { "title": "Ferris Bueller's Day Off", "year": 1986 },
-            { "title": "Sixteen Candles", "year": 1984 },
-            { "title": "Pretty in Pink", "year": 1986 }
+            {
+              "title": "The Breakfast Club",
+              "year": 1985
+            },
+            {
+              "title": "Ferris Bueller's Day Off",
+              "year": 1986
+            },
+            {
+              "title": "Sixteen Candles",
+              "year": 1984
+            },
+            {
+              "title": "Pretty in Pink",
+              "year": 1986
+            }
           ]
         },
         {
@@ -21941,10 +22013,22 @@
           "difficulty": 3,
           "color": "#2196F3",
           "movies": [
-            { "title": "Pulp Fiction", "year": 1994 },
-            { "title": "Reservoir Dogs", "year": 1992 },
-            { "title": "Clerks", "year": 1994 },
-            { "title": "The Big Lebowski", "year": 1998 }
+            {
+              "title": "Pulp Fiction",
+              "year": 1994
+            },
+            {
+              "title": "Reservoir Dogs",
+              "year": 1992
+            },
+            {
+              "title": "Clerks",
+              "year": 1994
+            },
+            {
+              "title": "The Big Lebowski",
+              "year": 1998
+            }
           ]
         },
         {
@@ -21952,10 +22036,22 @@
           "difficulty": 4,
           "color": "#9C27B0",
           "movies": [
-            { "title": "Grease", "year": 1978 },
-            { "title": "American Graffiti", "year": 1973 },
-            { "title": "Dazed and Confused", "year": 1993 },
-            { "title": "Stand by Me", "year": 1986 }
+            {
+              "title": "Grease",
+              "year": 1978
+            },
+            {
+              "title": "American Graffiti",
+              "year": 1973
+            },
+            {
+              "title": "Dazed and Confused",
+              "year": 1993
+            },
+            {
+              "title": "Stand by Me",
+              "year": 1986
+            }
           ]
         }
       ]
@@ -21969,10 +22065,22 @@
           "difficulty": 1,
           "color": "#4CAF50",
           "movies": [
-            { "title": "Halloween", "year": 1978 },
-            { "title": "Friday the 13th", "year": 1980 },
-            { "title": "A Nightmare on Elm Street", "year": 1984 },
-            { "title": "Scream", "year": 1996 }
+            {
+              "title": "Halloween",
+              "year": 1978
+            },
+            {
+              "title": "Friday the 13th",
+              "year": 1980
+            },
+            {
+              "title": "A Nightmare on Elm Street",
+              "year": 1984
+            },
+            {
+              "title": "Scream",
+              "year": 1996
+            }
           ]
         },
         {
@@ -21980,10 +22088,22 @@
           "difficulty": 2,
           "color": "#FFC107",
           "movies": [
-            { "title": "The Shining", "year": 1980 },
-            { "title": "Misery", "year": 1990 },
-            { "title": "Carrie", "year": 1976 },
-            { "title": "Pet Sematary", "year": 1989 }
+            {
+              "title": "The Shining",
+              "year": 1980
+            },
+            {
+              "title": "Misery",
+              "year": 1990
+            },
+            {
+              "title": "Carrie",
+              "year": 1976
+            },
+            {
+              "title": "Pet Sematary",
+              "year": 1989
+            }
           ]
         },
         {
@@ -21991,10 +22111,22 @@
           "difficulty": 3,
           "color": "#2196F3",
           "movies": [
-            { "title": "The Fly", "year": 1986 },
-            { "title": "Videodrome", "year": 1983 },
-            { "title": "The Thing", "year": 1982 },
-            { "title": "Re-Animator", "year": 1985 }
+            {
+              "title": "The Fly",
+              "year": 1986
+            },
+            {
+              "title": "Videodrome",
+              "year": 1983
+            },
+            {
+              "title": "The Thing",
+              "year": 1982
+            },
+            {
+              "title": "Re-Animator",
+              "year": 1985
+            }
           ]
         },
         {
@@ -22002,10 +22134,22 @@
           "difficulty": 4,
           "color": "#9C27B0",
           "movies": [
-            { "title": "The Exorcist", "year": 1973 },
-            { "title": "Rosemary's Baby", "year": 1968 },
-            { "title": "The Omen", "year": 1976 },
-            { "title": "Poltergeist", "year": 1982 }
+            {
+              "title": "The Exorcist",
+              "year": 1973
+            },
+            {
+              "title": "Rosemary's Baby",
+              "year": 1968
+            },
+            {
+              "title": "The Omen",
+              "year": 1976
+            },
+            {
+              "title": "Poltergeist",
+              "year": 1982
+            }
           ]
         }
       ]
@@ -22019,10 +22163,22 @@
           "difficulty": 1,
           "color": "#4CAF50",
           "movies": [
-            { "title": "The Lion King", "year": 1994 },
-            { "title": "Aladdin", "year": 1992 },
-            { "title": "The Little Mermaid", "year": 1989 },
-            { "title": "Beauty and the Beast", "year": 1991 }
+            {
+              "title": "The Lion King",
+              "year": 1994
+            },
+            {
+              "title": "Aladdin",
+              "year": 1992
+            },
+            {
+              "title": "The Little Mermaid",
+              "year": 1989
+            },
+            {
+              "title": "Beauty and the Beast",
+              "year": 1991
+            }
           ]
         },
         {
@@ -22030,10 +22186,22 @@
           "difficulty": 2,
           "color": "#FFC107",
           "movies": [
-            { "title": "The Land Before Time", "year": 1988 },
-            { "title": "An American Tail", "year": 1986 },
-            { "title": "The Secret of NIMH", "year": 1982 },
-            { "title": "All Dogs Go to Heaven", "year": 1989 }
+            {
+              "title": "The Land Before Time",
+              "year": 1988
+            },
+            {
+              "title": "An American Tail",
+              "year": 1986
+            },
+            {
+              "title": "The Secret of NIMH",
+              "year": 1982
+            },
+            {
+              "title": "All Dogs Go to Heaven",
+              "year": 1989
+            }
           ]
         },
         {
@@ -22041,10 +22209,22 @@
           "difficulty": 3,
           "color": "#2196F3",
           "movies": [
-            { "title": "My Neighbor Totoro", "year": 1988 },
-            { "title": "Princess Mononoke", "year": 1997 },
-            { "title": "Spirited Away", "year": 2001 },
-            { "title": "Kiki's Delivery Service", "year": 1989 }
+            {
+              "title": "My Neighbor Totoro",
+              "year": 1988
+            },
+            {
+              "title": "Princess Mononoke",
+              "year": 1997
+            },
+            {
+              "title": "Spirited Away",
+              "year": 2001
+            },
+            {
+              "title": "Kiki's Delivery Service",
+              "year": 1989
+            }
           ]
         },
         {
@@ -22052,10 +22232,22 @@
           "difficulty": 4,
           "color": "#9C27B0",
           "movies": [
-            { "title": "The Nightmare Before Christmas", "year": 1993 },
-            { "title": "James and the Giant Peach", "year": 1996 },
-            { "title": "Chicken Run", "year": 2000 },
-            { "title": "Coraline", "year": 2009 }
+            {
+              "title": "The Nightmare Before Christmas",
+              "year": 1993
+            },
+            {
+              "title": "James and the Giant Peach",
+              "year": 1996
+            },
+            {
+              "title": "Chicken Run",
+              "year": 2000
+            },
+            {
+              "title": "Coraline",
+              "year": 2009
+            }
           ]
         }
       ]
@@ -22069,10 +22261,22 @@
           "difficulty": 1,
           "color": "#4CAF50",
           "movies": [
-            { "title": "Mrs. Doubtfire", "year": 1993 },
-            { "title": "Mamma Mia!", "year": 2008 },
-            { "title": "Stepmom", "year": 1998 },
-            { "title": "Freaky Friday", "year": 2003 }
+            {
+              "title": "Mrs. Doubtfire",
+              "year": 1993
+            },
+            {
+              "title": "Mamma Mia!",
+              "year": 2008
+            },
+            {
+              "title": "Stepmom",
+              "year": 1998
+            },
+            {
+              "title": "Freaky Friday",
+              "year": 2003
+            }
           ]
         },
         {
@@ -22080,10 +22284,22 @@
           "difficulty": 2,
           "color": "#FFC107",
           "movies": [
-            { "title": "Terms of Endearment", "year": 1983 },
-            { "title": "Steel Magnolias", "year": 1989 },
-            { "title": "Postcards from the Edge", "year": 1990 },
-            { "title": "Mermaids", "year": 1990 }
+            {
+              "title": "Terms of Endearment",
+              "year": 1983
+            },
+            {
+              "title": "Steel Magnolias",
+              "year": 1989
+            },
+            {
+              "title": "Postcards from the Edge",
+              "year": 1990
+            },
+            {
+              "title": "Mermaids",
+              "year": 1990
+            }
           ]
         },
         {
@@ -22091,10 +22307,22 @@
           "difficulty": 3,
           "color": "#2196F3",
           "movies": [
-            { "title": "Aliens", "year": 1986 },
-            { "title": "Terminator 2: Judgment Day", "year": 1991 },
-            { "title": "The Babadook", "year": 2014 },
-            { "title": "A Quiet Place", "year": 2018 }
+            {
+              "title": "Aliens",
+              "year": 1986
+            },
+            {
+              "title": "Terminator 2: Judgment Day",
+              "year": 1991
+            },
+            {
+              "title": "The Babadook",
+              "year": 2014
+            },
+            {
+              "title": "A Quiet Place",
+              "year": 2018
+            }
           ]
         },
         {
@@ -22102,10 +22330,22 @@
           "difficulty": 4,
           "color": "#9C27B0",
           "movies": [
-            { "title": "Mommie Dearest", "year": 1981 },
-            { "title": "Serial Mom", "year": 1994 },
-            { "title": "White Oleander", "year": 2002 },
-            { "title": "Black Swan", "year": 2010 }
+            {
+              "title": "Mommie Dearest",
+              "year": 1981
+            },
+            {
+              "title": "Serial Mom",
+              "year": 1994
+            },
+            {
+              "title": "White Oleander",
+              "year": 2002
+            },
+            {
+              "title": "Black Swan",
+              "year": 2010
+            }
           ]
         }
       ]
@@ -22119,10 +22359,22 @@
           "difficulty": 1,
           "color": "#4CAF50",
           "movies": [
-            { "title": "The Terminator", "year": 1984 },
-            { "title": "Predator", "year": 1987 },
-            { "title": "Total Recall", "year": 1990 },
-            { "title": "Commando", "year": 1985 }
+            {
+              "title": "The Terminator",
+              "year": 1984
+            },
+            {
+              "title": "Predator",
+              "year": 1987
+            },
+            {
+              "title": "Total Recall",
+              "year": 1990
+            },
+            {
+              "title": "Commando",
+              "year": 1985
+            }
           ]
         },
         {
@@ -22130,10 +22382,22 @@
           "difficulty": 2,
           "color": "#FFC107",
           "movies": [
-            { "title": "Lethal Weapon", "year": 1987 },
-            { "title": "Beverly Hills Cop", "year": 1984 },
-            { "title": "Die Hard", "year": 1988 },
-            { "title": "48 Hrs.", "year": 1982 }
+            {
+              "title": "Lethal Weapon",
+              "year": 1987
+            },
+            {
+              "title": "Beverly Hills Cop",
+              "year": 1984
+            },
+            {
+              "title": "Die Hard",
+              "year": 1988
+            },
+            {
+              "title": "48 Hrs.",
+              "year": 1982
+            }
           ]
         },
         {
@@ -22141,10 +22405,22 @@
           "difficulty": 3,
           "color": "#2196F3",
           "movies": [
-            { "title": "Speed", "year": 1994 },
-            { "title": "Con Air", "year": 1997 },
-            { "title": "Under Siege", "year": 1992 },
-            { "title": "The Rock", "year": 1996 }
+            {
+              "title": "Speed",
+              "year": 1994
+            },
+            {
+              "title": "Con Air",
+              "year": 1997
+            },
+            {
+              "title": "Under Siege",
+              "year": 1992
+            },
+            {
+              "title": "The Rock",
+              "year": 1996
+            }
           ]
         },
         {
@@ -22152,10 +22428,2119 @@
           "difficulty": 4,
           "color": "#9C27B0",
           "movies": [
-            { "title": "High Noon", "year": 1952 },
-            { "title": "Run Lola Run", "year": 1998 },
-            { "title": "Phone Booth", "year": 2002 },
-            { "title": "Nick of Time", "year": 1995 }
+            {
+              "title": "High Noon",
+              "year": 1952
+            },
+            {
+              "title": "Run Lola Run",
+              "year": 1998
+            },
+            {
+              "title": "Phone Booth",
+              "year": 2002
+            },
+            {
+              "title": "Nick of Time",
+              "year": 1995
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2026-05-12",
+      "title": "Two-for-Tuesday",
+      "categories": [
+        {
+          "name": "Movies with Numerical Sequels (2, 3, etc.)",
+          "difficulty": 1,
+          "color": "#4CAF50",
+          "movies": [
+            {
+              "title": "Back to the Future Part II",
+              "year": 1989,
+              "tmdb_id": 165,
+              "summary": "Marty and Doc are at it again as the time-traveling duo head to 2015 to nip some McFly family woes in the bud. But things go awry thanks to bully Biff Tannen and a pesky sports almanac. In a last-ditch attempt to set things straight, Marty finds himself bound for 1955 and face to face with his teenage parents -- again.",
+              "genres": [
+                "Adventure",
+                "Comedy",
+                "Science Fiction"
+              ],
+              "director": "Robert Zemeckis",
+              "stars": [
+                "Michael J. Fox",
+                "Christopher Lloyd",
+                "Lea Thompson"
+              ]
+            },
+            {
+              "title": "Gremlins 2: The New Batch",
+              "year": 1990,
+              "tmdb_id": 928,
+              "summary": "Young sweethearts Billy and Kate move to the Big Apple, land jobs in a high-tech office park and soon reunite with the friendly and lovable Gizmo. But a series of accidents creates a whole new generation of Gremlins. The situation worsens when the devilish green creatures invade a top-secret laboratory and develop genetically altered powers, making them even harder to destroy!",
+              "genres": [
+                "Comedy",
+                "Horror",
+                "Fantasy"
+              ],
+              "director": "Joe Dante",
+              "stars": [
+                "Zach Galligan",
+                "Phoebe Cates",
+                "John Glover"
+              ]
+            },
+            {
+              "title": "Ghostbusters II",
+              "year": 1989,
+              "tmdb_id": 2978,
+              "summary": "The discovery of a massive river of ectoplasm and a resurgence of spectral activity allows the staff of Ghostbusters to revive the business.",
+              "genres": [
+                "Comedy",
+                "Fantasy"
+              ],
+              "director": "Ivan Reitman",
+              "stars": [
+                "Bill Murray",
+                "Dan Aykroyd",
+                "Sigourney Weaver"
+              ]
+            },
+            {
+              "title": "RoboCop 2",
+              "year": 1990,
+              "tmdb_id": 5549,
+              "summary": "After a successful deployment of the RoboCop Law Enforcement unit, OCP sees its goal of urban pacification come closer and closer, but as this develops, a new narcotic known as \"Nuke\" invades the streets led by God-delirious leader Cane. As this menace grows, it may prove to be too much for Murphy to handle. OCP tries to replicate the success of the first unit, but ends up with failed prototypes with suicidal issues... until Dr. Faxx, a scientist straying away from OCP's path, uses Cane as the new subject for the RoboCop 2 project, a living God.",
+              "genres": [
+                "Action",
+                "Crime",
+                "Science Fiction",
+                "Thriller"
+              ],
+              "director": "Irvin Kershner",
+              "stars": [
+                "Peter Weller",
+                "Nancy Allen",
+                "Tom Noonan"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Twin Movies: Released Same Year, Similar Plots",
+          "difficulty": 2,
+          "color": "#FFC107",
+          "movies": [
+            {
+              "title": "Deep Impact",
+              "year": 1998,
+              "tmdb_id": 8656,
+              "summary": "A seven-mile-wide space rock is hurtling toward Earth, threatening to obliterate the planet. Now, it's up to the president of the United States to save the world. He appoints a tough-as-nails veteran astronaut to lead a joint American-Russian crew into space to destroy the comet before impact. Meanwhile, an enterprising reporter uses her smarts to uncover the scoop of the century.",
+              "genres": [
+                "Action",
+                "Drama",
+                "Science Fiction"
+              ],
+              "director": "Mimi Leder",
+              "stars": [
+                "Robert Duvall",
+                "Téa Leoni",
+                "Elijah Wood"
+              ]
+            },
+            {
+              "title": "Armageddon",
+              "year": 1998,
+              "tmdb_id": 95,
+              "summary": "When an asteroid threatens to collide with Earth, NASA honcho Dan Truman determines the only way to stop it is to drill into its surface and detonate a nuclear bomb. This leads him to renowned driller Harry Stamper, who agrees to helm the dangerous space mission provided he can bring along his own hotshot crew. Among them is the cocksure A.J. who Harry thinks isn't good enough for his daughter, until the mission proves otherwise.",
+              "genres": [
+                "Action",
+                "Thriller",
+                "Science Fiction",
+                "Adventure"
+              ],
+              "director": "Michael Bay",
+              "stars": [
+                "Bruce Willis",
+                "Billy Bob Thornton",
+                "Ben Affleck"
+              ]
+            },
+            {
+              "title": "Dante's Peak",
+              "year": 1997,
+              "tmdb_id": 9619,
+              "summary": "Volcanologist Harry Dalton comes to the sleepy town of Dante's Peak to investigate the recent rumblings of the dormant volcano the burg is named for. Before long, his worst fears are realized when a massive eruption hits, and immediately, Harry, the mayor and the townspeople find themselves fighting for their lives amid a catastrophic nightmare.",
+              "genres": [
+                "Action",
+                "Adventure",
+                "Drama",
+                "Thriller"
+              ],
+              "director": "Roger Donaldson",
+              "stars": [
+                "Pierce Brosnan",
+                "Linda Hamilton",
+                "Arabella Field"
+              ]
+            },
+            {
+              "title": "Volcano",
+              "year": 1997,
+              "tmdb_id": 10357,
+              "summary": "An earthquake shatters a peaceful Los Angeles morning and opens a fissure deep into the earth, causing lava to start bubbling up. As a volcano begins forming in the La Brea Tar Pits, the director of the city's emergency management service, working with a geologist, must then use every resource in the city to try and stop the volcano from consuming LA.",
+              "genres": [
+                "Science Fiction",
+                "Action",
+                "Drama",
+                "Thriller"
+              ],
+              "director": "Mick Jackson",
+              "stars": [
+                "Tommy Lee Jones",
+                "Anne Heche",
+                "Gaby Hoffmann"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Films Where Two Actors Play the Same Character",
+          "difficulty": 3,
+          "color": "#2196F3",
+          "movies": [
+            {
+              "title": "Back to the Future Part II",
+              "year": 1989,
+              "tmdb_id": 165,
+              "summary": "Marty and Doc are at it again as the time-traveling duo head to 2015 to nip some McFly family woes in the bud. But things go awry thanks to bully Biff Tannen and a pesky sports almanac. In a last-ditch attempt to set things straight, Marty finds himself bound for 1955 and face to face with his teenage parents -- again.",
+              "genres": [
+                "Adventure",
+                "Comedy",
+                "Science Fiction"
+              ],
+              "director": "Robert Zemeckis",
+              "stars": [
+                "Michael J. Fox",
+                "Christopher Lloyd",
+                "Lea Thompson"
+              ]
+            },
+            {
+              "title": "Face/Off",
+              "year": 1997,
+              "tmdb_id": 754,
+              "summary": "In order to foil a terrorist plot, an FBI agent undergoes facial transplant surgery and assumes the identity of a criminal mastermind. The plan turns sour when the criminal wakes up prematurely and seeks revenge.",
+              "genres": [
+                "Action",
+                "Crime",
+                "Science Fiction"
+              ],
+              "director": "John Woo",
+              "stars": [
+                "John Travolta",
+                "Nicolas Cage",
+                "Joan Allen"
+              ]
+            },
+            {
+              "title": "The Parent Trap",
+              "year": 1998,
+              "tmdb_id": 9820,
+              "summary": "Hallie Parker and Annie James are identical twins who were separated at a young age due to their parents' divorce. Unbeknownst to their parents, the girls are sent to the same summer camp, where they meet, discover the truth about their relationship, and come up with a plan to switch places in an effort to reunite their mother and father.",
+              "genres": [
+                "Comedy",
+                "Family",
+                "Romance"
+              ],
+              "director": "Nancy Meyers",
+              "stars": [
+                "Lindsay Lohan",
+                "Dennis Quaid",
+                "Natasha Richardson"
+              ]
+            },
+            {
+              "title": "Freaky Friday",
+              "year": 1976,
+              "tmdb_id": 16084,
+              "summary": "School girl Annabel is hassled by her mother, and Mrs. Andrews is annoyed with her daughter, Annabel. They both think that the other has an easy life. On a normal Friday morning, both complain about each other and wish they could have the easy life of their daughter/mother for just one day and their wishes come true as a bit of magic puts Annabel in Mrs. Andrews' body and vice versa. They both have a Freaky Friday.",
+              "genres": [
+                "Fantasy",
+                "Comedy",
+                "Family"
+              ],
+              "director": "Gary Nelson",
+              "stars": [
+                "Jodie Foster",
+                "Barbara Harris",
+                "John Astin"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Two Directors Co-Directed These Films",
+          "difficulty": 4,
+          "color": "#9C27B0",
+          "movies": [
+            {
+              "title": "Gremlins 2: The New Batch",
+              "year": 1990,
+              "tmdb_id": 928,
+              "summary": "Young sweethearts Billy and Kate move to the Big Apple, land jobs in a high-tech office park and soon reunite with the friendly and lovable Gizmo. But a series of accidents creates a whole new generation of Gremlins. The situation worsens when the devilish green creatures invade a top-secret laboratory and develop genetically altered powers, making them even harder to destroy!",
+              "genres": [
+                "Comedy",
+                "Horror",
+                "Fantasy"
+              ],
+              "director": "Joe Dante",
+              "stars": [
+                "Zach Galligan",
+                "Phoebe Cates",
+                "John Glover"
+              ]
+            },
+            {
+              "title": "RoboCop 2",
+              "year": 1990,
+              "tmdb_id": 5549,
+              "summary": "After a successful deployment of the RoboCop Law Enforcement unit, OCP sees its goal of urban pacification come closer and closer, but as this develops, a new narcotic known as \"Nuke\" invades the streets led by God-delirious leader Cane. As this menace grows, it may prove to be too much for Murphy to handle. OCP tries to replicate the success of the first unit, but ends up with failed prototypes with suicidal issues... until Dr. Faxx, a scientist straying away from OCP's path, uses Cane as the new subject for the RoboCop 2 project, a living God.",
+              "genres": [
+                "Action",
+                "Crime",
+                "Science Fiction",
+                "Thriller"
+              ],
+              "director": "Irvin Kershner",
+              "stars": [
+                "Peter Weller",
+                "Nancy Allen",
+                "Tom Noonan"
+              ]
+            },
+            {
+              "title": "The Matrix",
+              "year": 1999,
+              "tmdb_id": 603,
+              "summary": "Set in the 22nd century, The Matrix tells the story of a computer hacker who joins a group of underground insurgents fighting the vast and powerful computers who now rule the earth.",
+              "genres": [
+                "Action",
+                "Science Fiction"
+              ],
+              "director": "Lana Wachowski",
+              "stars": [
+                "Keanu Reeves",
+                "Laurence Fishburne",
+                "Carrie-Anne Moss"
+              ]
+            },
+            {
+              "title": "Fargo",
+              "year": 1996,
+              "tmdb_id": 275,
+              "summary": "Jerry, a small-town Minnesota car salesman is bursting at the seams with debt... but he's got a plan. He's going to hire two thugs to kidnap his wife in a scheme to collect a hefty ransom from his wealthy father-in-law. It's going to be a snap and nobody's going to get hurt... until people start dying. Enter Police Chief Marge, a coffee-drinking, parka-wearing - and extremely pregnant - investigator who'll stop at nothing to get her man. And if you think her small-time investigative skills will give the crooks a run for their ransom... you betcha!",
+              "genres": [
+                "Crime",
+                "Drama",
+                "Thriller"
+              ],
+              "director": "Joel Coen",
+              "stars": [
+                "Frances McDormand",
+                "William H. Macy",
+                "Steve Buscemi"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2026-05-13",
+      "title": "Wacky Wednesday",
+      "categories": [
+        {
+          "name": "Jim Carrey Vehicles",
+          "difficulty": 1,
+          "color": "#4CAF50",
+          "movies": [
+            {
+              "title": "The Mask",
+              "year": 1994,
+              "tmdb_id": 854,
+              "summary": "Stanley Ipkiss, an insecure banker who has lost his zest for life stumbles upon an ancient mask, that turns him into a confident suave cartoon-like character who upsets his ordinary life.",
+              "genres": [
+                "Comedy",
+                "Fantasy",
+                "Crime",
+                "Romance"
+              ],
+              "director": "Chuck Russell",
+              "stars": [
+                "Jim Carrey",
+                "Peter Riegert",
+                "Peter Greene"
+              ]
+            },
+            {
+              "title": "Dumb and Dumber",
+              "year": 1994,
+              "tmdb_id": 8467,
+              "summary": "Lloyd and Harry are two men whose stupidity is really indescribable. When Mary, a beautiful woman, loses an important suitcase with money before she leaves for Aspen, the two friends (who have found the suitcase) decide to return it to her. After some \"adventures\" they finally get to Aspen where, using the lost money they live it up and fight for Mary's heart.",
+              "genres": [
+                "Comedy"
+              ],
+              "director": "Peter Farrelly",
+              "stars": [
+                "Jim Carrey",
+                "Jeff Daniels",
+                "Lauren Holly"
+              ]
+            },
+            {
+              "title": "Ace Ventura: Pet Detective",
+              "year": 1994,
+              "tmdb_id": 3049,
+              "summary": "He's Ace Ventura: Pet Detective. The Ace is on the case to find the Miami Dolphins' missing mascot and quarterback Dan Marino. He goes eyeball to eyeball with a man-eating shark, stakes out the Miami Dolphins and woos and wows the ladies. Whether he's undercover, under fire or underwater, he always gets his man… or beast!",
+              "genres": [
+                "Comedy",
+                "Mystery",
+                "Crime"
+              ],
+              "director": "Tom Shadyac",
+              "stars": [
+                "Jim Carrey",
+                "Courteney Cox",
+                "Sean Young"
+              ]
+            },
+            {
+              "title": "The Cable Guy",
+              "year": 1996,
+              "tmdb_id": 9894,
+              "summary": "When recently single Steven moves into his new apartment, cable guy Chip comes to hook him up—and doesn't let go. Initially, Chip is just overzealous in his desire to be Steven's pal, but when Steven tries to end the 'friendship', Chip shows his dark side. He begins stalking Steven, who's left to fend for himself because no one else can believe Chip's capable of such behaviour.",
+              "genres": [
+                "Comedy",
+                "Drama",
+                "Thriller"
+              ],
+              "director": "Ben Stiller",
+              "stars": [
+                "Jim Carrey",
+                "Matthew Broderick",
+                "Leslie Mann"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Cult Comedies Set in Los Angeles",
+          "difficulty": 2,
+          "color": "#FFC107",
+          "movies": [
+            {
+              "title": "The Big Lebowski",
+              "year": 1998,
+              "tmdb_id": 115,
+              "summary": "Jeffrey 'The Dude' Lebowski, a Los Angeles slacker who only wants to bowl and drink White Russians, is mistaken for another Jeffrey Lebowski, a wheelchair-bound millionaire, and finds himself dragged into a strange series of events involving nihilists, adult film producers, ferrets, errant toes, and large sums of money.",
+              "genres": [
+                "Comedy",
+                "Crime"
+              ],
+              "director": "Joel Coen",
+              "stars": [
+                "Jeff Bridges",
+                "John Goodman",
+                "Julianne Moore"
+              ]
+            },
+            {
+              "title": "L.A. Story",
+              "year": 1991,
+              "tmdb_id": 2107,
+              "summary": "With the help of a talking freeway billboard, a \"wacky weatherman\" tries to win the heart of an English newspaper reporter, who is struggling to make sense of the strange world of early-90s Los Angeles.",
+              "genres": [
+                "Comedy",
+                "Fantasy",
+                "Romance"
+              ],
+              "director": "Mick Jackson",
+              "stars": [
+                "Steve Martin",
+                "Victoria Tennant",
+                "Richard E. Grant"
+              ]
+            },
+            {
+              "title": "Repo Man",
+              "year": 1984,
+              "tmdb_id": 13820,
+              "summary": "A down and out young punk gets a job working with a seasoned repo man, but what awaits him in his new career is a series of outlandish adventures revolving around aliens, the CIA, and a most wanted '64 Chevy.",
+              "genres": [
+                "Comedy",
+                "Science Fiction"
+              ],
+              "director": "Alex Cox",
+              "stars": [
+                "Emilio Estevez",
+                "Harry Dean Stanton",
+                "Tracey Walter"
+              ]
+            },
+            {
+              "title": "Bowfinger",
+              "year": 1999,
+              "tmdb_id": 11353,
+              "summary": "On the verge of bankruptcy and desperate for his big break, aspiring filmmaker Bobby Bowfinger concocts a crazy plan to make his ultimate dream movie. Rallying a ragtag team that includes a starry-eyed ingenue, a has-been diva and a film studio gofer, he sets out to shoot a blockbuster featuring the biggest star in Hollywood, Kit Ramsey -- only without letting Ramsey know he's in the picture.",
+              "genres": [
+                "Comedy"
+              ],
+              "director": "Frank Oz",
+              "stars": [
+                "Steve Martin",
+                "Eddie Murphy",
+                "Heather Graham"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Movies with Numbers in Foreign Language Titles",
+          "difficulty": 3,
+          "color": "#2196F3",
+          "movies": [
+            {
+              "title": "The Seventh Seal",
+              "year": 1957,
+              "tmdb_id": 490,
+              "summary": "When disillusioned Swedish knight Antonius Block returns home from the Crusades to find his country in the grips of the Black Death, he challenges Death to a chess match for his life. Tormented by the belief that God does not exist, Block sets off on a journey, meeting up with traveling players Jof and his wife, Mia, and becoming determined to evade Death long enough to commit one redemptive act while he still lives.",
+              "genres": [
+                "Fantasy",
+                "Drama"
+              ],
+              "director": "Ingmar Bergman",
+              "stars": [
+                "Gunnar Björnstrand",
+                "Bengt Ekerot",
+                "Nils Poppe"
+              ]
+            },
+            {
+              "title": "8½",
+              "year": 1963,
+              "tmdb_id": 422,
+              "summary": "Guido Anselmi, a film director, finds himself creatively barren at the peak of his career. Urged by his doctors to rest, Anselmi heads for a luxurious resort, but a sorry group gathers—his producer, staff, actors, wife, mistress, and relatives—each one begging him to get on with the show. In retreat from their dependency, he fantasizes about past women and dreams of his childhood.",
+              "genres": [
+                "Drama"
+              ],
+              "director": "Federico Fellini",
+              "stars": [
+                "Marcello Mastroianni",
+                "Claudia Cardinale",
+                "Anouk Aimée"
+              ]
+            },
+            {
+              "title": "La Jetée",
+              "year": 1962,
+              "tmdb_id": 662,
+              "summary": "A man confronts his past during an experiment that attempts to find a solution to the problems of a post-apocalyptic world caused by a world war.",
+              "genres": [
+                "Drama",
+                "Romance",
+                "Science Fiction"
+              ],
+              "director": "Chris Marker",
+              "stars": [
+                "Jean Négroni",
+                "Hélène Chatelain",
+                "Davos Hanich"
+              ]
+            },
+            {
+              "title": "Trois Couleurs: Bleu",
+              "year": 1993,
+              "tmdb_id": 108,
+              "summary": "The wife of a famous composer survives a car accident that kills her husband and daughter. Now alone, she shakes off her old identity and explores her newfound freedom but finds that she is unbreakably bound to other humans, including her husband’s mistress, whose existence she never suspected.",
+              "genres": [
+                "Drama"
+              ],
+              "director": "Krzysztof Kieślowski",
+              "stars": [
+                "Juliette Binoche",
+                "Benoît Régent",
+                "Florence Pernel"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Directors Who Cameo in Their Own Films",
+          "difficulty": 4,
+          "color": "#9C27B0",
+          "movies": [
+            {
+              "title": "Being John Malkovich",
+              "year": 1999,
+              "tmdb_id": 492,
+              "summary": "One day at work, unsuccessful puppeteer Craig finds a portal into the head of actor John Malkovich. The portal soon becomes a passion for anybody who enters its mad and controlling world of overtaking another human body.",
+              "genres": [
+                "Comedy",
+                "Drama",
+                "Fantasy"
+              ],
+              "director": "Spike Jonze",
+              "stars": [
+                "John Cusack",
+                "Cameron Diaz",
+                "John Malkovich"
+              ]
+            },
+            {
+              "title": "Clerks",
+              "year": 1994,
+              "tmdb_id": 2292,
+              "summary": "Convenience and video store clerks Dante and Randal are sharp-witted, potty-mouthed and bored out of their minds. So in between needling customers, the counter jockeys play hockey on the roof, visit a funeral home and deal with their love lives.",
+              "genres": [
+                "Comedy"
+              ],
+              "director": "Kevin Smith",
+              "stars": [
+                "Brian O'Halloran",
+                "Jeff Anderson",
+                "Marilyn Ghigliotti"
+              ]
+            },
+            {
+              "title": "Mars Attacks!",
+              "year": 1996,
+              "tmdb_id": 75,
+              "summary": "A fleet of Martian spacecraft surrounds the world's major cities and all of humanity waits to see if the extraterrestrial visitors have, as they claim, \"come in peace.\" U.S. President James Dale receives assurance from science professor Donald Kessler that the Martians' mission is a friendly one. But when a peaceful exchange ends in the total annihilation of the U.S. Congress, military men call for a full-scale nuclear retaliation.",
+              "genres": [
+                "Comedy",
+                "Fantasy",
+                "Science Fiction"
+              ],
+              "director": "Tim Burton",
+              "stars": [
+                "Jack Nicholson",
+                "Glenn Close",
+                "Annette Bening"
+              ]
+            },
+            {
+              "title": "Mystery Train",
+              "year": 1989,
+              "tmdb_id": 11305,
+              "summary": "In Memphis, Tennessee, over the course of a single night, the Arcade Hotel, run by an eccentric night clerk and a clueless bellboy, is visited by a young Japanese couple traveling in search of the roots of rock; an Italian woman in mourning who stumbles upon a fleeing charlatan girl; and a comical trio of accidental thieves looking for a place to hide.",
+              "genres": [
+                "Comedy"
+              ],
+              "director": "Jim Jarmusch",
+              "stars": [
+                "Youki Kudoh",
+                "Masatoshi Nagase",
+                "Screamin' Jay Hawkins"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2026-05-14",
+      "title": "Rewind & Remember",
+      "categories": [
+        {
+          "name": "Tom Hanks Starrer",
+          "difficulty": 1,
+          "color": "#4CAF50",
+          "movies": [
+            {
+              "title": "Big",
+              "year": 1988,
+              "tmdb_id": 2280,
+              "summary": "When a young boy makes a wish at a carnival machine to be big—he wakes up the following morning to find that it has been granted and his body has grown older overnight. But he is still the same 13-year-old boy inside. Now he must learn how to cope with the unfamiliar world of grown-ups including getting a job and having his first romantic encounter with a woman.",
+              "genres": [
+                "Fantasy",
+                "Drama",
+                "Comedy"
+              ],
+              "director": "Penny Marshall",
+              "stars": [
+                "Tom Hanks",
+                "Elizabeth Perkins",
+                "Robert Loggia"
+              ]
+            },
+            {
+              "title": "Sleepless in Seattle",
+              "year": 1993,
+              "tmdb_id": 858,
+              "summary": "After the death of his mother, a young boy calls a radio station in an attempt to set his father up on a date. Across the country, an engaged woman becomes convinced that they belong together, despite their never having met. Will their paths collide despite the odds?",
+              "genres": [
+                "Comedy",
+                "Drama",
+                "Romance"
+              ],
+              "director": "Nora Ephron",
+              "stars": [
+                "Meg Ryan",
+                "Tom Hanks",
+                "Ross Malinger"
+              ]
+            },
+            {
+              "title": "Forrest Gump",
+              "year": 1994,
+              "tmdb_id": 13,
+              "summary": "A man with a low IQ has accomplished great things in his life and been present during significant historic events—in each case, far exceeding what anyone imagined he could do. But despite all he has achieved, his one true love eludes him.",
+              "genres": [
+                "Comedy",
+                "Drama",
+                "Romance"
+              ],
+              "director": "Robert Zemeckis",
+              "stars": [
+                "Tom Hanks",
+                "Robin Wright",
+                "Gary Sinise"
+              ]
+            },
+            {
+              "title": "Apollo 13",
+              "year": 1995,
+              "tmdb_id": 568,
+              "summary": "The true story of technical troubles that scuttle the Apollo 13 lunar mission in 1970, risking the lives of astronaut Jim Lovell and his crew, with the failed journey turning into a thrilling saga of heroism. Drifting more than 200,000 miles from Earth, the astronauts work furiously with the ground crew to avert tragedy.",
+              "genres": [
+                "Drama",
+                "History"
+              ],
+              "director": "Ron Howard",
+              "stars": [
+                "Tom Hanks",
+                "Bill Paxton",
+                "Kevin Bacon"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "High School Is Hell",
+          "difficulty": 2,
+          "color": "#FFC107",
+          "movies": [
+            {
+              "title": "Heathers",
+              "year": 1989,
+              "tmdb_id": 2640,
+              "summary": "A girl who halfheartedly tries to be part of the \"in crowd\" of her school meets a rebel who teaches her a more devious way to play social politics: by killing the popular kids.",
+              "genres": [
+                "Comedy",
+                "Crime"
+              ],
+              "director": "Michael Lehmann",
+              "stars": [
+                "Winona Ryder",
+                "Christian Slater",
+                "Shannen Doherty"
+              ]
+            },
+            {
+              "title": "The Breakfast Club",
+              "year": 1985,
+              "tmdb_id": 2108,
+              "summary": "Five high school students from different walks of life endure a Saturday detention under a power-hungry principal. The disparate group includes rebel John, princess Claire, outcast Allison, brainy Brian and Andrew, the jock. Each has a chance to tell his or her story, making the others see them a little differently -- and when the day ends, they question whether school will ever be the same.",
+              "genres": [
+                "Comedy",
+                "Drama"
+              ],
+              "director": "John Hughes",
+              "stars": [
+                "Emilio Estevez",
+                "Judd Nelson",
+                "Molly Ringwald"
+              ]
+            },
+            {
+              "title": "Clueless",
+              "year": 1995,
+              "tmdb_id": 9603,
+              "summary": "Shallow, rich and socially successful Cher is at the top of her Beverly Hills high school's pecking scale. Seeing herself as a matchmaker, Cher first coaxes two teachers into dating each other. Emboldened by her success, she decides to give hopelessly klutzy new student Tai a makeover. When Tai becomes more popular than she is, Cher realizes that her disapproving ex-stepbrother was right about how misguided she was -- and falls for him.",
+              "genres": [
+                "Comedy",
+                "Romance"
+              ],
+              "director": "Amy Heckerling",
+              "stars": [
+                "Alicia Silverstone",
+                "Stacey Dash",
+                "Brittany Murphy"
+              ]
+            },
+            {
+              "title": "Carrie",
+              "year": 1976,
+              "tmdb_id": 7340,
+              "summary": "Withdrawn and sensitive teenager Carrie White faces bullying from classmates and abuse from her fanatically pious mother. When she begins to suspect that she has supernatural powers, things take a dark and violent turn.",
+              "genres": [
+                "Horror",
+                "Thriller"
+              ],
+              "director": "Brian De Palma",
+              "stars": [
+                "Sissy Spacek",
+                "Piper Laurie",
+                "Amy Irving"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Set in San Francisco",
+          "difficulty": 3,
+          "color": "#2196F3",
+          "movies": [
+            {
+              "title": "Dirty Harry",
+              "year": 1971,
+              "tmdb_id": 984,
+              "summary": "When a madman dubbed 'Scorpio' terrorizes San Francisco, hard-nosed cop, Harry Callahan – famous for his take-no-prisoners approach to law enforcement – is tasked with hunting down the psychopath.",
+              "genres": [
+                "Action",
+                "Crime",
+                "Thriller"
+              ],
+              "director": "Don Siegel",
+              "stars": [
+                "Clint Eastwood",
+                "Harry Guardino",
+                "Reni Santoni"
+              ]
+            },
+            {
+              "title": "Basic Instinct",
+              "year": 1992,
+              "tmdb_id": 402,
+              "summary": "Catherine, a novelist with an insatiable sexual appetite, becomes a prime suspect when her boyfriend is brutally murdered -- a crime she had described in her latest story.",
+              "genres": [
+                "Thriller",
+                "Mystery"
+              ],
+              "director": "Paul Verhoeven",
+              "stars": [
+                "Michael Douglas",
+                "Sharon Stone",
+                "George Dzundza"
+              ]
+            },
+            {
+              "title": "Mrs. Doubtfire",
+              "year": 1993,
+              "tmdb_id": 788,
+              "summary": "Loving but irresponsible dad Daniel Hillard, estranged from his exasperated spouse, is crushed by a court order allowing only weekly visits with his kids. When Daniel learns his ex needs a housekeeper, he gets the job -- disguised as a British nanny. Soon he becomes not only his children's best pal but the kind of parent he should have been from the start.",
+              "genres": [
+                "Comedy",
+                "Drama",
+                "Family"
+              ],
+              "director": "Chris Columbus",
+              "stars": [
+                "Robin Williams",
+                "Sally Field",
+                "Lisa Jakub"
+              ]
+            },
+            {
+              "title": "Interview with the Vampire",
+              "year": 1994,
+              "tmdb_id": 628,
+              "summary": "A vampire relates his epic life story of love, betrayal, loneliness, and dark hunger to an over-curious reporter.",
+              "genres": [
+                "Horror",
+                "Drama",
+                "Fantasy"
+              ],
+              "director": "Neil Jordan",
+              "stars": [
+                "Tom Cruise",
+                "Brad Pitt",
+                "Antonio Banderas"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Oscar Winner Who Turned It Down",
+          "difficulty": 4,
+          "color": "#9C27B0",
+          "movies": [
+            {
+              "title": "Patton",
+              "year": 1970,
+              "tmdb_id": 11202,
+              "summary": "\"Patton\" tells the tale of General George S. Patton, famous tank commander of World War II. The film begins with Patton's career in North Africa and progresses through the invasion of Germany and the fall of the Third Reich. Side plots also speak of Patton's numerous faults such his temper and habit towards insubordination.",
+              "genres": [
+                "War",
+                "Drama",
+                "History"
+              ],
+              "director": "Franklin J. Schaffner",
+              "stars": [
+                "George C. Scott",
+                "Karl Malden",
+                "Stephen Young"
+              ]
+            },
+            {
+              "title": "The Godfather",
+              "year": 1972,
+              "tmdb_id": 238,
+              "summary": "Spanning the years 1945 to 1955, a chronicle of the fictional Italian-American Corleone crime family. When organized crime family patriarch, Vito Corleone barely survives an attempt on his life, his youngest son, Michael steps in to take care of the would-be killers, launching a campaign of bloody revenge.",
+              "genres": [
+                "Drama",
+                "Crime"
+              ],
+              "director": "Francis Ford Coppola",
+              "stars": [
+                "Marlon Brando",
+                "Al Pacino",
+                "James Caan"
+              ]
+            },
+            {
+              "title": "Annie Hall",
+              "year": 1977,
+              "tmdb_id": 703,
+              "summary": "New York comedian Alvy Singer falls in love with the ditsy Annie Hall.",
+              "genres": [
+                "Comedy",
+                "Drama",
+                "Romance"
+              ],
+              "director": "Woody Allen",
+              "stars": [
+                "Woody Allen",
+                "Diane Keaton",
+                "Tony Roberts"
+              ]
+            },
+            {
+              "title": "A Streetcar Named Desire",
+              "year": 1951,
+              "tmdb_id": 702,
+              "summary": "A disturbed, aging Southern belle moves in with her sister for solace — but being face-to-face with her brutish brother-in-law accelerates her downward spiral.",
+              "genres": [
+                "Drama",
+                "Thriller"
+              ],
+              "director": "Elia Kazan",
+              "stars": [
+                "Vivien Leigh",
+                "Marlon Brando",
+                "Kim Hunter"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2026-05-15",
+      "title": "Midnight Movie Madness",
+      "categories": [
+        {
+          "name": "Wes Craven Directed",
+          "difficulty": 1,
+          "color": "#4CAF50",
+          "movies": [
+            {
+              "title": "A Nightmare on Elm Street",
+              "year": 1984,
+              "tmdb_id": 377,
+              "summary": "Teenagers in a small town are dropping like flies, apparently in the grip of mass hysteria causing their suicides. A cop's daughter, Nancy Thompson, traces the cause to child molester Fred Krueger, who was burned alive by angry parents many years before. Krueger has now come back in the dreams of his killers' children, claiming their lives as his revenge. Nancy and her boyfriend, Glen, must devise a plan to lure the monster out of the realm of nightmares and into the real world...",
+              "genres": [
+                "Horror"
+              ],
+              "director": "Wes Craven",
+              "stars": [
+                "John Saxon",
+                "Ronee Blakley",
+                "Heather Langenkamp"
+              ]
+            },
+            {
+              "title": "The People Under the Stairs",
+              "year": 1991,
+              "tmdb_id": 13122,
+              "summary": "Trapped inside a fortified home owned by a mysterious couple, a young boy quickly learns the true nature of the homicidal inhabitants, and secret creatures hidden deep within the walls.",
+              "genres": [
+                "Horror",
+                "Comedy",
+                "Thriller"
+              ],
+              "director": "Wes Craven",
+              "stars": [
+                "Brandon Quintin Adams",
+                "Everett McGill",
+                "Wendy Robie"
+              ]
+            },
+            {
+              "title": "Scream",
+              "year": 1996,
+              "tmdb_id": 4232,
+              "summary": "A year after the murder of her mother, a teenage girl is terrorized by a masked killer who targets her and her friends by using scary movies as part of a deadly game.",
+              "genres": [
+                "Crime",
+                "Horror",
+                "Mystery"
+              ],
+              "director": "Wes Craven",
+              "stars": [
+                "David Arquette",
+                "Neve Campbell",
+                "Courteney Cox"
+              ]
+            },
+            {
+              "title": "Scream 2",
+              "year": 1997,
+              "tmdb_id": 4233,
+              "summary": "Two years after the Woodsboro murders, Sidney Prescott acclimates to college life while someone donning the Ghostface costume begins a new string of killings.",
+              "genres": [
+                "Horror",
+                "Mystery"
+              ],
+              "director": "Wes Craven",
+              "stars": [
+                "Neve Campbell",
+                "Courteney Cox",
+                "David Arquette"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Vampire Movies",
+          "difficulty": 2,
+          "color": "#FFC107",
+          "movies": [
+            {
+              "title": "The Lost Boys",
+              "year": 1987,
+              "tmdb_id": 1547,
+              "summary": "When an unsuspecting town newcomer is drawn to local blood fiends, the Frog brothers and other unlikely heroes gear up to rescue him.",
+              "genres": [
+                "Horror",
+                "Comedy",
+                "Thriller",
+                "Drama",
+                "Romance"
+              ],
+              "director": "Joel Schumacher",
+              "stars": [
+                "Jason Patric",
+                "Corey Haim",
+                "Dianne Wiest"
+              ]
+            },
+            {
+              "title": "Fright Night",
+              "year": 1985,
+              "tmdb_id": 11797,
+              "summary": "Charley Brewster, a high school student, accidentally discovers the true and creepy nature of Jerry Dandrige, his dashing and enigmatic new neighbor; but no one seems willing to believe him.",
+              "genres": [
+                "Comedy",
+                "Horror"
+              ],
+              "director": "Tom Holland",
+              "stars": [
+                "Chris Sarandon",
+                "William Ragsdale",
+                "Amanda Bearse"
+              ]
+            },
+            {
+              "title": "Near Dark",
+              "year": 1987,
+              "tmdb_id": 11879,
+              "summary": "A farm boy reluctantly becomes a member of the undead when a girl he meets turns out to be part of a band of vampires who roam the highways in stolen cars.",
+              "genres": [
+                "Horror"
+              ],
+              "director": "Kathryn Bigelow",
+              "stars": [
+                "Adrian Pasdar",
+                "Jenny Wright",
+                "Lance Henriksen"
+              ]
+            },
+            {
+              "title": "Blade",
+              "year": 1998,
+              "tmdb_id": 36647,
+              "summary": "The Daywalker known as \"Blade\" - a half-vampire, half-mortal man - becomes the protector of humanity against an underground army of vampires.",
+              "genres": [
+                "Horror",
+                "Action"
+              ],
+              "director": "Stephen Norrington",
+              "stars": [
+                "Wesley Snipes",
+                "Stephen Dorff",
+                "Kris Kristofferson"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Takes Place on Halloween Night",
+          "difficulty": 3,
+          "color": "#2196F3",
+          "movies": [
+            {
+              "title": "Halloween",
+              "year": 1978,
+              "tmdb_id": 948,
+              "summary": "Fifteen years after murdering his sister on Halloween Night 1963, Michael Myers escapes from a mental hospital and returns to the small town of Haddonfield, Illinois to kill again.",
+              "genres": [
+                "Horror",
+                "Thriller"
+              ],
+              "director": "John Carpenter",
+              "stars": [
+                "Donald Pleasence",
+                "Jamie Lee Curtis",
+                "Nancy Kyes"
+              ]
+            },
+            {
+              "title": "Night of the Demons",
+              "year": 1988,
+              "tmdb_id": 24924,
+              "summary": "When partygoers at a deserted funeral home decide to have a séance on Halloween night, they awaken something evil with a thirst for blood.",
+              "genres": [
+                "Horror",
+                "Comedy"
+              ],
+              "director": "Kevin Tenney",
+              "stars": [
+                "Cathy Podewell",
+                "Alvin Alexis",
+                "Amelia Kinkade"
+              ]
+            },
+            {
+              "title": "Trick 'r Treat",
+              "year": 2007,
+              "tmdb_id": 23202,
+              "summary": "Four interwoven stories that occur on Halloween: an everyday high school principal has a secret life as a serial killer; a college virgin might have just met the one guy for her; a group of teenagers pull a mean prank, and a bitter old recluse receives an uninvited guest.",
+              "genres": [
+                "Horror",
+                "Fantasy"
+              ],
+              "director": "Michael Dougherty",
+              "stars": [
+                "Brian Cox",
+                "Quinn Lord",
+                "Anna Paquin"
+              ]
+            },
+            {
+              "title": "The Crow",
+              "year": 1994,
+              "tmdb_id": 9495,
+              "summary": "Exactly one year after young rock guitarist Eric Draven and his fiancée are brutally killed by a ruthless gang of criminals, Draven, watched over by a hypnotic crow, returns from the grave to exact revenge.",
+              "genres": [
+                "Fantasy",
+                "Action",
+                "Thriller"
+              ],
+              "director": "Alex Proyas",
+              "stars": [
+                "Brandon Lee",
+                "Rochelle Davis",
+                "Ernie Hudson"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Director's Debut Feature",
+          "difficulty": 4,
+          "color": "#9C27B0",
+          "movies": [
+            {
+              "title": "The Evil Dead",
+              "year": 1981,
+              "tmdb_id": 764,
+              "summary": "In 1979, a group of college students find a Sumerian Book of the Dead in an old wilderness cabin they've rented for a weekend getaway.",
+              "genres": [
+                "Horror"
+              ],
+              "director": "Sam Raimi",
+              "stars": [
+                "Bruce Campbell",
+                "Ellen Sandweiss",
+                "Richard DeManincor"
+              ]
+            },
+            {
+              "title": "Hellraiser",
+              "year": 1987,
+              "tmdb_id": 9003,
+              "summary": "A hedonistic man finds a mysterious puzzle box that summons a group of gruesome beings known as the Cenobites. These otherworldly entities open the doors to a dominion where pain and pleasure are indivisible.",
+              "genres": [
+                "Horror",
+                "Thriller"
+              ],
+              "director": "Clive Barker",
+              "stars": [
+                "Andrew Robinson",
+                "Clare Higgins",
+                "Sean Chapman"
+              ]
+            },
+            {
+              "title": "Tremors",
+              "year": 1990,
+              "tmdb_id": 9362,
+              "summary": "Val McKee and Earl Bassett are in a fight for their lives when they discover that their desolate town has been infested with gigantic, man-eating creatures that live below the ground.",
+              "genres": [
+                "Horror",
+                "Action",
+                "Science Fiction",
+                "Comedy"
+              ],
+              "director": "Ron Underwood",
+              "stars": [
+                "Kevin Bacon",
+                "Fred Ward",
+                "Finn Carter"
+              ]
+            },
+            {
+              "title": "Cube",
+              "year": 1997,
+              "tmdb_id": 431,
+              "summary": "A group of strangers find themselves trapped in a maze-like prison. It soon becomes clear that each of them possesses the peculiar skills necessary to escape, if they don't wind up dead first.",
+              "genres": [
+                "Thriller",
+                "Science Fiction",
+                "Mystery"
+              ],
+              "director": "Vincenzo Natali",
+              "stars": [
+                "Nicole De Boer",
+                "Nicky Guadagni",
+                "Maurice Dean Wint"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2026-05-16",
+      "title": "Saturday Matinee Magic",
+      "categories": [
+        {
+          "name": "Disney Renaissance",
+          "difficulty": 1,
+          "color": "#4CAF50",
+          "movies": [
+            {
+              "title": "The Little Mermaid",
+              "year": 1989,
+              "tmdb_id": 10144,
+              "summary": "This colorful adventure tells the story of an impetuous mermaid princess named Ariel who falls in love with the very human Prince Eric and puts everything on the line for the chance to be with him. Memorable songs and characters -- including the villainous sea witch Ursula.",
+              "genres": [
+                "Animation",
+                "Family",
+                "Fantasy"
+              ],
+              "director": "John Musker",
+              "stars": [
+                "Jodi Benson",
+                "Samuel E. Wright",
+                "Pat Carroll"
+              ]
+            },
+            {
+              "title": "Beauty and the Beast",
+              "year": 1991,
+              "tmdb_id": 10020,
+              "summary": "Follow the adventures of Belle, a bright young woman who finds herself in the castle of a prince who's been turned into a mysterious beast. With the help of the castle's enchanted staff, Belle soon learns the most important lesson of all -- that true beauty comes from within.",
+              "genres": [
+                "Romance",
+                "Family",
+                "Animation",
+                "Fantasy"
+              ],
+              "director": "Gary Trousdale",
+              "stars": [
+                "Paige O'Hara",
+                "Robby Benson",
+                "Richard White"
+              ]
+            },
+            {
+              "title": "Aladdin",
+              "year": 1992,
+              "tmdb_id": 812,
+              "summary": "In the boorish city of Agrabah, kind-hearted street urchin Aladdin and Princess Jasmine fall in love, although she can only marry a prince. He and power-hungry Grand Vizier Jafar vie for a magic lamp that can fulfill their wishes.",
+              "genres": [
+                "Animation",
+                "Family",
+                "Adventure",
+                "Fantasy",
+                "Romance"
+              ],
+              "director": "John Musker",
+              "stars": [
+                "Scott Weinger",
+                "Robin Williams",
+                "Linda Larkin"
+              ]
+            },
+            {
+              "title": "The Lion King",
+              "year": 1994,
+              "tmdb_id": 8587,
+              "summary": "Young lion prince Simba, eager to one day become king of the Pride Lands, grows up under the watchful eye of his father Mufasa; all the while his villainous uncle Scar conspires to take the throne for himself. Amid betrayal and tragedy, Simba must confront his past and find his rightful place in the Circle of Life.",
+              "genres": [
+                "Animation",
+                "Family",
+                "Drama"
+              ],
+              "director": "Roger Allers",
+              "stars": [
+                "Matthew Broderick",
+                "Moira Kelly",
+                "Nathan Lane"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Stop-Motion Animation",
+          "difficulty": 2,
+          "color": "#FFC107",
+          "movies": [
+            {
+              "title": "The Nightmare Before Christmas",
+              "year": 1993,
+              "tmdb_id": 9479,
+              "summary": "Tired of scaring humans every October 31 with the same old bag of tricks, Jack Skellington, the spindly king of Halloween Town, kidnaps Santa Claus and plans to deliver shrunken heads and other ghoulish gifts to children on Christmas morning. But as Christmas approaches, Jack's rag-doll girlfriend, Sally, tries to foil his misguided plans.",
+              "genres": [
+                "Fantasy",
+                "Animation",
+                "Family"
+              ],
+              "director": "Henry Selick",
+              "stars": [
+                "Danny Elfman",
+                "Chris Sarandon",
+                "Catherine O'Hara"
+              ]
+            },
+            {
+              "title": "James and the Giant Peach",
+              "year": 1996,
+              "tmdb_id": 10539,
+              "summary": "When the young orphan boy James spills a magic bag of crocodile tongues, he finds himself in possession of a giant peach that flies him away to strange lands.",
+              "genres": [
+                "Family",
+                "Animation",
+                "Adventure",
+                "Fantasy"
+              ],
+              "director": "Henry Selick",
+              "stars": [
+                "Paul Terry",
+                "Miriam Margolyes",
+                "Joanna Lumley"
+              ]
+            },
+            {
+              "title": "Chicken Run",
+              "year": 2000,
+              "tmdb_id": 7443,
+              "summary": "The creators of Wallace & Gromit bring you an exciting and original story about a group of chickens determined to fly the coop–even if they can’t fly! It’s hardly poultry in motion when Rocky attempts to teach Ginger and her feathered friends to fly…but, with teamwork, determination and a little bit o’ cluck, the fearless flock plots one last attempt in a spectacular bid for freedom.",
+              "genres": [
+                "Animation",
+                "Comedy",
+                "Family"
+              ],
+              "director": "Peter Lord",
+              "stars": [
+                "Julia Sawalha",
+                "Mel Gibson",
+                "Imelda Staunton"
+              ]
+            },
+            {
+              "title": "The Adventures of Mark Twain",
+              "year": 1985,
+              "tmdb_id": 19947,
+              "summary": "Based on elements from the stories of Mark Twain, this feature-length Claymation fantasy follows the adventures of Tom Sawyer, Becky Thatcher and Huck Finn as they stowaway aboard the interplanetary balloon of Mark Twain. Twain, disgusted with the human race, is intent upon finding Halley's Comet and crashing into it, achieving his \"destiny.\" It's up to Tom, Becky, and Huck to convince him that his judgment is wrong and that he still has much to offer humanity that might make a difference. Their efforts aren't just charitable; if they fail, they will share Twain's fate. Along the way, they use a magical time portal to get a detailed overview of the Twain philosophy, observing the \"historical\" events that inspired his works.",
+              "genres": [
+                "Animation",
+                "Adventure",
+                "Family",
+                "Fantasy",
+                "Action"
+              ],
+              "director": "Will Vinton",
+              "stars": [
+                "James Whitmore",
+                "Michele Mariana",
+                "Gary Krug"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Movies Featuring Robin Williams",
+          "difficulty": 3,
+          "color": "#2196F3",
+          "movies": [
+            {
+              "title": "Hook",
+              "year": 1991,
+              "tmdb_id": 879,
+              "summary": "The boy who wasn't supposed to grow up—Peter Pan—does just that, becoming a soulless corporate lawyer whose workaholism could cost him his wife and kids. During his trip to see Granny Wendy in London, the vengeful Capt. Hook kidnaps Peter's kids and forces Peter to return to Neverland.",
+              "genres": [
+                "Adventure",
+                "Fantasy",
+                "Comedy",
+                "Family"
+              ],
+              "director": "Steven Spielberg",
+              "stars": [
+                "Dustin Hoffman",
+                "Robin Williams",
+                "Julia Roberts"
+              ]
+            },
+            {
+              "title": "Jumanji",
+              "year": 1995,
+              "tmdb_id": 8844,
+              "summary": "When siblings Judy and Peter discover an enchanted board game that opens the door to a magical world, they unwittingly invite Alan -- an adult who's been trapped inside the game for 26 years -- into their living room. Alan's only hope for freedom is to finish the game, which proves risky as all three find themselves running from giant rhinoceroses, evil monkeys and other terrifying creatures.",
+              "genres": [
+                "Adventure",
+                "Fantasy",
+                "Family"
+              ],
+              "director": "Joe Johnston",
+              "stars": [
+                "Robin Williams",
+                "Kirsten Dunst",
+                "Bradley Pierce"
+              ]
+            },
+            {
+              "title": "Flubber",
+              "year": 1997,
+              "tmdb_id": 9574,
+              "summary": "Professor Phillip Brainard, an absent minded professor, works with his assistant Weebo, trying to create a substance that's a new source of energy and that will save Medfield College where his sweetheart Sara is the president. He has missed his wedding twice, and on the afternoon of his third wedding, Professor Brainard creates flubber, which allows objects to fly through the air.",
+              "genres": [
+                "Comedy",
+                "Family",
+                "Science Fiction"
+              ],
+              "director": "Les Mayfield",
+              "stars": [
+                "Robin Williams",
+                "Marcia Gay Harden",
+                "Christopher McDonald"
+              ]
+            },
+            {
+              "title": "Aladdin",
+              "year": 1992,
+              "tmdb_id": 812,
+              "summary": "In the boorish city of Agrabah, kind-hearted street urchin Aladdin and Princess Jasmine fall in love, although she can only marry a prince. He and power-hungry Grand Vizier Jafar vie for a magic lamp that can fulfill their wishes.",
+              "genres": [
+                "Animation",
+                "Family",
+                "Adventure",
+                "Fantasy",
+                "Romance"
+              ],
+              "director": "John Musker",
+              "stars": [
+                "Scott Weinger",
+                "Robin Williams",
+                "Linda Larkin"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Title Character Never Speaks",
+          "difficulty": 4,
+          "color": "#9C27B0",
+          "movies": [
+            {
+              "title": "E.T. the Extra-Terrestrial",
+              "year": 1982,
+              "tmdb_id": 601,
+              "summary": "An alien is left behind on Earth and saved by the 10-year-old Elliott who decides to keep him hidden in his home. While a task force hunts for the extra-terrestrial, Elliott, his brother, and his little sister Gertie form an emotional bond with their new friend, and try to help him find his way home.",
+              "genres": [
+                "Science Fiction",
+                "Adventure",
+                "Family",
+                "Fantasy"
+              ],
+              "director": "Steven Spielberg",
+              "stars": [
+                "Henry Thomas",
+                "Drew Barrymore",
+                "Robert MacNaughton"
+              ]
+            },
+            {
+              "title": "The NeverEnding Story",
+              "year": 1984,
+              "tmdb_id": 34584,
+              "summary": "While hiding from bullies in his school's attic, a young boy discovers the extraordinary land of Fantasia, through a magical book called The Neverending Story. The book tells the tale of Atreyu, a young warrior who, with the help of a luck dragon named Falkor, must save Fantasia from the destruction of The Nothing.",
+              "genres": [
+                "Adventure",
+                "Fantasy",
+                "Family",
+                "Drama"
+              ],
+              "director": "Wolfgang Petersen",
+              "stars": [
+                "Noah Hathaway",
+                "Barret Oliver",
+                "Tami Stronach"
+              ]
+            },
+            {
+              "title": "The Nightmare Before Christmas",
+              "year": 1993,
+              "tmdb_id": 9479,
+              "summary": "Tired of scaring humans every October 31 with the same old bag of tricks, Jack Skellington, the spindly king of Halloween Town, kidnaps Santa Claus and plans to deliver shrunken heads and other ghoulish gifts to children on Christmas morning. But as Christmas approaches, Jack's rag-doll girlfriend, Sally, tries to foil his misguided plans.",
+              "genres": [
+                "Fantasy",
+                "Animation",
+                "Family"
+              ],
+              "director": "Henry Selick",
+              "stars": [
+                "Danny Elfman",
+                "Chris Sarandon",
+                "Catherine O'Hara"
+              ]
+            },
+            {
+              "title": "The Lion King",
+              "year": 1994,
+              "tmdb_id": 8587,
+              "summary": "Young lion prince Simba, eager to one day become king of the Pride Lands, grows up under the watchful eye of his father Mufasa; all the while his villainous uncle Scar conspires to take the throne for himself. Amid betrayal and tragedy, Simba must confront his past and find his rightful place in the Circle of Life.",
+              "genres": [
+                "Animation",
+                "Family",
+                "Drama"
+              ],
+              "director": "Roger Allers",
+              "stars": [
+                "Matthew Broderick",
+                "Moira Kelly",
+                "Nathan Lane"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2026-05-17",
+      "title": "Oscar Bait & Switch",
+      "categories": [
+        {
+          "name": "Meryl Streep Movies",
+          "difficulty": 1,
+          "color": "#4CAF50",
+          "movies": [
+            {
+              "title": "Sophie's Choice",
+              "year": 1982,
+              "tmdb_id": 15764,
+              "summary": "Stingo, a young writer, moves to Brooklyn in 1947 to begin work on his first novel. As he becomes friendly with Sophie and her lover Nathan, he learns that she is a Holocaust survivor. Flashbacks reveal her harrowing story, from pre-war prosperity to Auschwitz. In the present, Sophie and Nathan's relationship increasingly unravels as Stingo grows closer to Sophie and Nathan's fragile mental state becomes ever more apparent.",
+              "genres": [
+                "Drama",
+                "Romance",
+                "War"
+              ],
+              "director": "Alan J. Pakula",
+              "stars": [
+                "Meryl Streep",
+                "Kevin Kline",
+                "Peter MacNicol"
+              ]
+            },
+            {
+              "title": "Silkwood",
+              "year": 1983,
+              "tmdb_id": 12502,
+              "summary": "Like most of the people in her town, Karen Silkwood works at the local nuclear plant producing highly radioactive plutonium. Exposed one day to a lethal dose of radiation, Karen faces the blank walls of corporate indifference and denial. As her illness increases, her protest grows louder and she becomes an obvious danger to the powers that be.",
+              "genres": [
+                "Drama"
+              ],
+              "director": "Mike Nichols",
+              "stars": [
+                "Meryl Streep",
+                "Kurt Russell",
+                "Cher"
+              ]
+            },
+            {
+              "title": "Out of Africa",
+              "year": 1985,
+              "tmdb_id": 606,
+              "summary": "Tells the life story of Danish author Karen Blixen, who at the beginning of the 20th century moved to Africa to build a new life for herself. The film is based on her 1937 autobiographical novel.",
+              "genres": [
+                "History",
+                "Romance",
+                "Drama"
+              ],
+              "director": "Sydney Pollack",
+              "stars": [
+                "Robert Redford",
+                "Meryl Streep",
+                "Klaus Maria Brandauer"
+              ]
+            },
+            {
+              "title": "The Bridges of Madison County",
+              "year": 1995,
+              "tmdb_id": 688,
+              "summary": "Photographer Robert Kincaid wanders into the life of housewife Francesca Johnson for four days in the 1960s.",
+              "genres": [
+                "Drama",
+                "Romance"
+              ],
+              "director": "Clint Eastwood",
+              "stars": [
+                "Meryl Streep",
+                "Clint Eastwood",
+                "Annie Corley"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Adapted from Plays",
+          "difficulty": 2,
+          "color": "#FFC107",
+          "movies": [
+            {
+              "title": "Who's Afraid of Virginia Woolf?",
+              "year": 1966,
+              "tmdb_id": 396,
+              "summary": "A history professor and his wife entertain a young couple who are new to the university's faculty. As the drinks flow, secrets come to light, and the middle-aged couple unload onto their guests the full force of the bitterness, dysfunction, and animosity that defines their marriage.",
+              "genres": [
+                "Drama"
+              ],
+              "director": "Mike Nichols",
+              "stars": [
+                "Elizabeth Taylor",
+                "Richard Burton",
+                "George Segal"
+              ]
+            },
+            {
+              "title": "Glengarry Glen Ross",
+              "year": 1992,
+              "tmdb_id": 9504,
+              "summary": "Times are tough at Premiere Properties. Shelley \"the machine\" Levene and Dave Moss are veteran salesmen, but only Ricky Roma is on a hot streak. The new Glengarry sales leads could turn everything around, but the front office is holding them back until these \"losers\" prove themselves. Then someone decides to take matters into his own hands, stealing the Glengarry leads and leaving everyone wondering who did it.",
+              "genres": [
+                "Crime",
+                "Drama",
+                "Mystery"
+              ],
+              "director": "James Foley",
+              "stars": [
+                "Al Pacino",
+                "Jack Lemmon",
+                "Alec Baldwin"
+              ]
+            },
+            {
+              "title": "Amadeus",
+              "year": 1984,
+              "tmdb_id": 279,
+              "summary": "Disciplined Italian composer Antonio Salieri becomes consumed by jealousy and resentment towards the hedonistic and remarkably talented young Salzburger composer Wolfgang Amadeus Mozart.",
+              "genres": [
+                "History",
+                "Music",
+                "Drama"
+              ],
+              "director": "Miloš Forman",
+              "stars": [
+                "F. Murray Abraham",
+                "Tom Hulce",
+                "Elizabeth Berridge"
+              ]
+            },
+            {
+              "title": "Fences",
+              "year": 2016,
+              "tmdb_id": 393457,
+              "summary": "In 1950s Pittsburgh, a frustrated African-American father struggles with the constraints of poverty, racism, and his own inner demons as he tries to raise a family.",
+              "genres": [
+                "Drama"
+              ],
+              "director": "Denzel Washington",
+              "stars": [
+                "Denzel Washington",
+                "Viola Davis",
+                "Stephen McKinley Henderson"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Characters Die of AIDS",
+          "difficulty": 3,
+          "color": "#2196F3",
+          "movies": [
+            {
+              "title": "Philadelphia",
+              "year": 1993,
+              "tmdb_id": 9800,
+              "summary": "Two competing lawyers join forces to sue a prestigious law firm for AIDS discrimination. As their unlikely friendship develops, their courage overcomes the prejudice and corruption of their powerful adversaries.",
+              "genres": [
+                "Drama"
+              ],
+              "director": "Jonathan Demme",
+              "stars": [
+                "Tom Hanks",
+                "Denzel Washington",
+                "Jason Robards"
+              ]
+            },
+            {
+              "title": "And the Band Played On",
+              "year": 1993,
+              "tmdb_id": 2887,
+              "summary": "The story of the discovery of the AIDS epidemic and the political infighting of the scientific community hampering the early fight with it.",
+              "genres": [
+                "Drama",
+                "TV Movie"
+              ],
+              "director": "Roger Spottiswoode",
+              "stars": [
+                "Matthew Modine",
+                "Alan Alda",
+                "Patrick Bauchau"
+              ]
+            },
+            {
+              "title": "Longtime Companion",
+              "year": 1989,
+              "tmdb_id": 39934,
+              "summary": "During the summer of 1981, a group of friends in New York are completely unprepared for the onslaught of AIDS. What starts as a rumor about a mysterious \"gay cancer\" soon turns into a major crisis as, one by one, some of the friends begin to fall ill, leaving the others to panic about who will be next. As death takes its toll, the lives of these friends are forever redefined by an unconditional display of love, hope and courage.",
+              "genres": [
+                "Drama",
+                "Romance"
+              ],
+              "director": "Norman René",
+              "stars": [
+                "Bruce Davison",
+                "Campbell Scott",
+                "Patrick Cassidy"
+              ]
+            },
+            {
+              "title": "Angels in America",
+              "year": 2003,
+              "tmdb_id": 743164,
+              "summary": "Peter Eötvös's operatic adaptation of Tony Kushner's \"Angels in America.\"",
+              "genres": [],
+              "director": null,
+              "stars": [
+                "Julia Migenes"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Actor's First Oscar Win",
+          "difficulty": 4,
+          "color": "#9C27B0",
+          "movies": [
+            {
+              "title": "Rain Man",
+              "year": 1988,
+              "tmdb_id": 380,
+              "summary": "When car dealer Charlie Babbitt learns that his estranged father has died, he returns home to Cincinnati, where he discovers that he has a savant older brother named Raymond and that his father's $3 million fortune is being left to the mental institution in which Raymond lives. Motivated by his father's money, Charlie checks Raymond out of the facility in order to return with him to Los Angeles. The brothers' cross-country trip ends up changing both their lives.",
+              "genres": [
+                "Drama"
+              ],
+              "director": "Barry Levinson",
+              "stars": [
+                "Dustin Hoffman",
+                "Tom Cruise",
+                "Valeria Golino"
+              ]
+            },
+            {
+              "title": "The Silence of the Lambs",
+              "year": 1991,
+              "tmdb_id": 274,
+              "summary": "Clarice Starling is a top student at the FBI's training academy.  Jack Crawford wants Clarice to interview Dr. Hannibal Lecter, a brilliant psychiatrist who is also a violent psychopath, serving life behind bars for various acts of murder and cannibalism.  Crawford believes that Lecter may have insight into a case and that Starling, as an attractive young woman, may be just the bait to draw him out.",
+              "genres": [
+                "Crime",
+                "Thriller",
+                "Drama"
+              ],
+              "director": "Jonathan Demme",
+              "stars": [
+                "Jodie Foster",
+                "Anthony Hopkins",
+                "Scott Glenn"
+              ]
+            },
+            {
+              "title": "Shine",
+              "year": 1996,
+              "tmdb_id": 7863,
+              "summary": "Pianist David Helfgott, driven by his father and teachers, has a breakdown. Years later he returns to the piano, to popular if not critical acclaim.",
+              "genres": [
+                "Drama"
+              ],
+              "director": "Scott Hicks",
+              "stars": [
+                "Geoffrey Rush",
+                "Noah Taylor",
+                "Armin Mueller-Stahl"
+              ]
+            },
+            {
+              "title": "Boys Don't Cry",
+              "year": 1999,
+              "tmdb_id": 226,
+              "summary": "A young transgender man explores his gender identity and searches for love in rural Nebraska.",
+              "genres": [
+                "Crime",
+                "Drama"
+              ],
+              "director": "Kimberly Peirce",
+              "stars": [
+                "Hilary Swank",
+                "Chloë Sevigny",
+                "Peter Sarsgaard"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2026-05-18",
+      "title": "High Octane Monday",
+      "categories": [
+        {
+          "name": "Stallone's Greatest Hits",
+          "difficulty": 1,
+          "color": "#4CAF50",
+          "movies": [
+            {
+              "title": "First Blood",
+              "year": 1982,
+              "tmdb_id": 1368,
+              "summary": "When former Green Beret John Rambo is harassed by local law enforcement and arrested for vagrancy, he is forced to flee into the mountains and wage an escalating one-man war against his pursuers.",
+              "genres": [
+                "Action",
+                "Adventure",
+                "Thriller",
+                "War"
+              ],
+              "director": "Ted Kotcheff",
+              "stars": [
+                "Sylvester Stallone",
+                "Richard Crenna",
+                "Brian Dennehy"
+              ]
+            },
+            {
+              "title": "Rocky IV",
+              "year": 1985,
+              "tmdb_id": 1374,
+              "summary": "Rocky Balboa holds the world heavyweight championship, but a new challenger has stepped forward: Drago, a six-foot-four, 261-pound fighter who has the backing of the Soviet Union. This time, Rocky's training regimen takes him to Siberia, where he prepares for a globally televised match in the heart of Moscow. But nothing can truly prepare him for what he's about to face – a fight to the finish, in which he must defend not only himself, but also the honor of his country!",
+              "genres": [
+                "Drama"
+              ],
+              "director": "Sylvester Stallone",
+              "stars": [
+                "Sylvester Stallone",
+                "Dolph Lundgren",
+                "Carl Weathers"
+              ]
+            },
+            {
+              "title": "Cliffhanger",
+              "year": 1993,
+              "tmdb_id": 9350,
+              "summary": "A year after losing his friend in a tragic 4,000-foot fall, former ranger Gabe Walker and his partner, Hal, are called to return to the same peak to rescue a group of stranded climbers, only to learn the climbers are actually thieving hijackers who are looking for boxes full of money.",
+              "genres": [
+                "Action",
+                "Adventure",
+                "Thriller"
+              ],
+              "director": "Renny Harlin",
+              "stars": [
+                "Sylvester Stallone",
+                "John Lithgow",
+                "Michael Rooker"
+              ]
+            },
+            {
+              "title": "Demolition Man",
+              "year": 1993,
+              "tmdb_id": 9739,
+              "summary": "In 1996, brash L.A. detective John Spartan and maniac killer Simon Phoenix are both sentenced to decades in a cryogenic prison as punishment for a rescue mission gone wrong. When Phoenix escapes 36 years later to wreak havoc on the future, Spartan is awakened to capture his nemesis the old-fashioned way.",
+              "genres": [
+                "Crime",
+                "Action",
+                "Science Fiction"
+              ],
+              "director": "Marco Brambilla",
+              "stars": [
+                "Sylvester Stallone",
+                "Wesley Snipes",
+                "Sandra Bullock"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Cops Gone Rogue",
+          "difficulty": 2,
+          "color": "#FFC107",
+          "movies": [
+            {
+              "title": "Lethal Weapon",
+              "year": 1987,
+              "tmdb_id": 941,
+              "summary": "A veteran cop and an unstable detective become partners who must put their differences aside in order to bring down a heroin-smuggling ring run by ex-Special Forces.",
+              "genres": [
+                "Action",
+                "Thriller",
+                "Crime"
+              ],
+              "director": "Richard Donner",
+              "stars": [
+                "Mel Gibson",
+                "Danny Glover",
+                "Gary Busey"
+              ]
+            },
+            {
+              "title": "RoboCop",
+              "year": 1987,
+              "tmdb_id": 5548,
+              "summary": "In a violent, near-apocalyptic Detroit, evil corporation Omni Consumer Products wins a contract from the city government to privatize the police force. To test their crime-eradicating cyborgs, the company leads street cop Alex Murphy into an armed confrontation with crime lord Boddicker so they can use his body to support their untested RoboCop prototype. But when RoboCop learns of the company's nefarious plans, he turns on his masters.",
+              "genres": [
+                "Action",
+                "Thriller",
+                "Science Fiction"
+              ],
+              "director": "Paul Verhoeven",
+              "stars": [
+                "Peter Weller",
+                "Nancy Allen",
+                "Dan O'Herlihy"
+              ]
+            },
+            {
+              "title": "Die Hard",
+              "year": 1988,
+              "tmdb_id": 562,
+              "summary": "NYPD cop John McClane's plan to reconcile with his estranged wife is thrown for a serious loop when, minutes after he arrives at her office's Christmas Party, the entire building is overtaken by a group of terrorists. With little help from the LAPD, wisecracking McClane sets out to single-handedly rescue the hostages and bring the bad guys down.",
+              "genres": [
+                "Action",
+                "Thriller"
+              ],
+              "director": "John McTiernan",
+              "stars": [
+                "Bruce Willis",
+                "Alan Rickman",
+                "Alexander Godunov"
+              ]
+            },
+            {
+              "title": "Point Break",
+              "year": 1991,
+              "tmdb_id": 1089,
+              "summary": "In Los Angeles, a gang of bank robbers who call themselves The Ex-Presidents commit their crimes while wearing masks of Reagan, Carter, Nixon and Johnson. Believing that the members of the gang could be surfers, the F.B.I. sends young agent Johnny Utah to the beach undercover to mix with the surfers and gather information.",
+              "genres": [
+                "Action",
+                "Thriller",
+                "Crime"
+              ],
+              "director": "Kathryn Bigelow",
+              "stars": [
+                "Keanu Reeves",
+                "Patrick Swayze",
+                "Lori Petty"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Directed by a John",
+          "difficulty": 3,
+          "color": "#2196F3",
+          "movies": [
+            {
+              "title": "Predator",
+              "year": 1987,
+              "tmdb_id": 106,
+              "summary": "A team of elite commandos on a secret mission in a Central American jungle come to find themselves hunted by an extraterrestrial warrior.",
+              "genres": [
+                "Science Fiction",
+                "Action",
+                "Adventure",
+                "Thriller"
+              ],
+              "director": "John McTiernan",
+              "stars": [
+                "Arnold Schwarzenegger",
+                "Carl Weathers",
+                "Kevin Peter Hall"
+              ]
+            },
+            {
+              "title": "The Hunt for Red October",
+              "year": 1990,
+              "tmdb_id": 1669,
+              "summary": "A new technologically-superior Soviet nuclear sub, the Red October, is heading for the U.S. coast under the command of Captain Marko Ramius. The American government thinks Ramius is planning to attack. Lone CIA analyst Jack Ryan has a different idea: he thinks Ramius is planning to defect, but he has only a few hours to find him and prove it - because the entire Russian naval and air commands are trying to find Ramius, too. The hunt is on!",
+              "genres": [
+                "Action",
+                "Thriller"
+              ],
+              "director": "John McTiernan",
+              "stars": [
+                "Sean Connery",
+                "Alec Baldwin",
+                "Scott Glenn"
+              ]
+            },
+            {
+              "title": "Speed",
+              "year": 1994,
+              "tmdb_id": 1637,
+              "summary": "Tensions run high when a crazed bomber rigs a Los Angeles bus with a device that will kill everyone on board if the vehicle's speed dips below fifty miles per hour.",
+              "genres": [
+                "Action",
+                "Thriller"
+              ],
+              "director": "Jan de Bont",
+              "stars": [
+                "Keanu Reeves",
+                "Dennis Hopper",
+                "Sandra Bullock"
+              ]
+            },
+            {
+              "title": "Face/Off",
+              "year": 1997,
+              "tmdb_id": 754,
+              "summary": "In order to foil a terrorist plot, an FBI agent undergoes facial transplant surgery and assumes the identity of a criminal mastermind. The plan turns sour when the criminal wakes up prematurely and seeks revenge.",
+              "genres": [
+                "Action",
+                "Crime",
+                "Science Fiction"
+              ],
+              "director": "John Woo",
+              "stars": [
+                "John Travolta",
+                "Nicolas Cage",
+                "Joan Allen"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Actor Broke a Bone During Production",
+          "difficulty": 4,
+          "color": "#9C27B0",
+          "movies": [
+            {
+              "title": "Raiders of the Lost Ark",
+              "year": 1981,
+              "tmdb_id": 85,
+              "summary": "When Dr. Indiana Jones – the tweed-suited professor who just happens to be a celebrated archaeologist – is hired by the government to locate the legendary Ark of the Covenant, he finds himself up against the entire Nazi regime.",
+              "genres": [
+                "Adventure",
+                "Action"
+              ],
+              "director": "Steven Spielberg",
+              "stars": [
+                "Harrison Ford",
+                "Karen Allen",
+                "Paul Freeman"
+              ]
+            },
+            {
+              "title": "The Karate Kid",
+              "year": 1984,
+              "tmdb_id": 1885,
+              "summary": "New Jersey teen Daniel LaRusso moves to Los Angeles with his mother, and soon strikes up a relationship with Ali. He quickly finds himself the target of bullying by a group of thugs, led by Ali's ex-boyfriend Johnny, who study karate at the Cobra Kai dojo under ruthless sensei John Kreese. Fortunately, Daniel befriends Mr. Miyagi, an unassuming repairman who just happens to be a martial arts master himself. Miyagi takes Daniel under his wing, training him in a more compassionate form of karate for self-defense and, later, preparing him to compete against the brutal Cobra Kai.",
+              "genres": [
+                "Action",
+                "Drama",
+                "Family"
+              ],
+              "director": "John G. Avildsen",
+              "stars": [
+                "Ralph Macchio",
+                "Pat Morita",
+                "Elisabeth Shue"
+              ]
+            },
+            {
+              "title": "Total Recall",
+              "year": 1990,
+              "tmdb_id": 861,
+              "summary": "Construction worker Douglas Quaid's obsession with the planet Mars leads him to visit Rekall, a virtual vacation company that manufactures memories. When something goes wrong during Quaid's memory implant procedure, his life turns upside down, leading him to question what is reality and what isn't.",
+              "genres": [
+                "Action",
+                "Adventure",
+                "Science Fiction"
+              ],
+              "director": "Paul Verhoeven",
+              "stars": [
+                "Arnold Schwarzenegger",
+                "Rachel Ticotin",
+                "Sharon Stone"
+              ]
+            },
+            {
+              "title": "True Lies",
+              "year": 1994,
+              "tmdb_id": 36955,
+              "summary": "A fearless, globe-trotting, terrorist-battling secret agent has his life turned upside down when he discovers his wife might be having an affair with a used car salesman while terrorists smuggle nuclear war heads into the United States.",
+              "genres": [
+                "Action",
+                "Thriller"
+              ],
+              "director": "James Cameron",
+              "stars": [
+                "Arnold Schwarzenegger",
+                "Jamie Lee Curtis",
+                "Tom Arnold"
+              ]
+            }
           ]
         }
       ]
