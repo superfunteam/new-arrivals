@@ -24544,6 +24544,303 @@
           ]
         }
       ]
+    },
+    {
+      "id": "2026-05-19",
+      "title": "Double Vision",
+      "categories": [
+        {
+          "name": "Movies with Numbered Sequels in the '80s",
+          "difficulty": 1,
+          "color": "#4CAF50",
+          "movies": [
+            {
+              "title": "Aliens",
+              "year": 1986,
+              "tmdb_id": 679,
+              "summary": "Ripley, the sole survivor of the Nostromo's deadly encounter with the monstrous Alien, returns to Earth after drifting through space in hypersleep for 57 years. Although her story is initially met with skepticism, she agrees to accompany a team of Colonial Marines back to LV-426.",
+              "genres": [
+                "Action",
+                "Thriller",
+                "Science Fiction"
+              ],
+              "director": "James Cameron",
+              "stars": [
+                "Sigourney Weaver",
+                "Carrie Henn",
+                "Michael Biehn"
+              ]
+            },
+            {
+              "title": "The Terminator",
+              "year": 1984,
+              "tmdb_id": 218,
+              "summary": "In the post-apocalyptic future, reigning tyrannical supercomputers teleport a cyborg assassin known as the \"Terminator\" back to 1984 to kill Sarah Connor, whose unborn son is destined to lead insurgents against 21st century mechanical hegemony. Meanwhile, the human-resistance movement dispatches a lone warrior to safeguard Sarah. Can he stop the virtually indestructible killing machine?",
+              "genres": [
+                "Action",
+                "Thriller",
+                "Science Fiction"
+              ],
+              "director": "James Cameron",
+              "stars": [
+                "Arnold Schwarzenegger",
+                "Michael Biehn",
+                "Linda Hamilton"
+              ]
+            },
+            {
+              "title": "Gremlins",
+              "year": 1984,
+              "tmdb_id": 927,
+              "summary": "After receiving an exotic small animal as a Christmas gift, a young man inadvertently breaks three important rules concerning his new pet, which unleashes a horde of malevolently mischievous creatures on a small town.",
+              "genres": [
+                "Fantasy",
+                "Horror",
+                "Comedy"
+              ],
+              "director": "Joe Dante",
+              "stars": [
+                "Zach Galligan",
+                "Phoebe Cates",
+                "Hoyt Axton"
+              ]
+            },
+            {
+              "title": "Poltergeist",
+              "year": 1982,
+              "tmdb_id": 609,
+              "summary": "The Freelings' suburban home becomes the center of paranormal activity that opens a portal to the 'other side'. With help, they must cross over to get their daughter back.",
+              "genres": [
+                "Horror"
+              ],
+              "director": "Tobe Hooper",
+              "stars": [
+                "JoBeth Williams",
+                "Craig T. Nelson",
+                "Beatrice Straight"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Twin Protagonists or Lookalikes",
+          "difficulty": 2,
+          "color": "#FFC107",
+          "movies": [
+            {
+              "title": "The Parent Trap",
+              "year": 1998,
+              "tmdb_id": 9820,
+              "summary": "Hallie Parker and Annie James are identical twins who were separated at a young age due to their parents' divorce. Unbeknownst to their parents, the girls are sent to the same summer camp, where they meet, discover the truth about their relationship, and come up with a plan to switch places in an effort to reunite their mother and father.",
+              "genres": [
+                "Comedy",
+                "Family",
+                "Romance"
+              ],
+              "director": "Nancy Meyers",
+              "stars": [
+                "Lindsay Lohan",
+                "Dennis Quaid",
+                "Natasha Richardson"
+              ]
+            },
+            {
+              "title": "Dead Ringers",
+              "year": 1988,
+              "tmdb_id": 9540,
+              "summary": "Elliot, a successful gynecologist, works at the same practice as his identical twin, Beverly. Elliot is attracted to many of his patients and has affairs with them. When he inevitably loses interest, he will give the woman over to Beverly, the meeker of the two, without the woman knowing the difference. Beverly falls hard for one of the patients, Claire, but when she inadvertently deceives him, he slips into a state of madness.",
+              "genres": [
+                "Thriller",
+                "Horror"
+              ],
+              "director": "David Cronenberg",
+              "stars": [
+                "Jeremy Irons",
+                "Geneviève Bujold",
+                "Heidi von Palleske"
+              ]
+            },
+            {
+              "title": "Twins",
+              "year": 1988,
+              "tmdb_id": 9493,
+              "summary": "Julius and Vincent Benedict are the results of an experiment that would allow for the perfect child. Julius was planned and grows to athletic proportions. Vincent is an accident and is somewhat smaller in stature. Vincent is placed in an orphanage while Julius is taken to a south seas island and raised by philosophers. Vincent becomes the ultimate low life and is about to be killed by loan sharks.",
+              "genres": [
+                "Comedy"
+              ],
+              "director": "Ivan Reitman",
+              "stars": [
+                "Arnold Schwarzenegger",
+                "Danny DeVito",
+                "Kelly Preston"
+              ]
+            },
+            {
+              "title": "Double Impact",
+              "year": 1991,
+              "tmdb_id": 9594,
+              "summary": "Jean Claude Van Damme plays a dual role as Alex and Chad, twins separated at the death of their parents. Chad is raised by a family retainer in Paris, Alex becomes a petty crook in Hong Kong. Seeing a picture of Alex, Chad rejoins him and convinces him that his rival in Hong Kong is also the man who killed their parents. Alex is suspicious of Chad, especially when it comes to his girlfriend.",
+              "genres": [
+                "Thriller",
+                "Action",
+                "Crime",
+                "Drama"
+              ],
+              "director": "Sheldon Lettich",
+              "stars": [
+                "Jean-Claude Van Damme",
+                "Geoffrey Lewis",
+                "Alonna Shaw"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Takes Place Over Exactly Two Days",
+          "difficulty": 3,
+          "color": "#2196F3",
+          "movies": [
+            {
+              "title": "Ferris Bueller's Day Off",
+              "year": 1986,
+              "tmdb_id": 9377,
+              "summary": "After high school slacker Ferris Bueller successfully fakes an illness in order to skip school for the day, he goes on a series of adventures throughout Chicago with his girlfriend Sloane and best friend Cameron, all the while trying to outwit his wily school principal and fed-up sister.",
+              "genres": [
+                "Comedy"
+              ],
+              "director": "John Hughes",
+              "stars": [
+                "Matthew Broderick",
+                "Alan Ruck",
+                "Mia Sara"
+              ]
+            },
+            {
+              "title": "The Terminator",
+              "year": 1984,
+              "tmdb_id": 218,
+              "summary": "In the post-apocalyptic future, reigning tyrannical supercomputers teleport a cyborg assassin known as the \"Terminator\" back to 1984 to kill Sarah Connor, whose unborn son is destined to lead insurgents against 21st century mechanical hegemony. Meanwhile, the human-resistance movement dispatches a lone warrior to safeguard Sarah. Can he stop the virtually indestructible killing machine?",
+              "genres": [
+                "Action",
+                "Thriller",
+                "Science Fiction"
+              ],
+              "director": "James Cameron",
+              "stars": [
+                "Arnold Schwarzenegger",
+                "Michael Biehn",
+                "Linda Hamilton"
+              ]
+            },
+            {
+              "title": "After Hours",
+              "year": 1985,
+              "tmdb_id": 10843,
+              "summary": "Desperate to escape his mind-numbing routine, uptown Manhattan office worker Paul Hackett ventures downtown for a hookup with a mystery woman.",
+              "genres": [
+                "Comedy",
+                "Thriller",
+                "Drama"
+              ],
+              "director": "Martin Scorsese",
+              "stars": [
+                "Griffin Dunne",
+                "Rosanna Arquette",
+                "Verna Bloom"
+              ]
+            },
+            {
+              "title": "Aliens",
+              "year": 1986,
+              "tmdb_id": 679,
+              "summary": "Ripley, the sole survivor of the Nostromo's deadly encounter with the monstrous Alien, returns to Earth after drifting through space in hypersleep for 57 years. Although her story is initially met with skepticism, she agrees to accompany a team of Colonial Marines back to LV-426.",
+              "genres": [
+                "Action",
+                "Thriller",
+                "Science Fiction"
+              ],
+              "director": "James Cameron",
+              "stars": [
+                "Sigourney Weaver",
+                "Carrie Henn",
+                "Michael Biehn"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Actor Played Two Different Characters in Same Film",
+          "difficulty": 4,
+          "color": "#9C27B0",
+          "movies": [
+            {
+              "title": "The Nutty Professor",
+              "year": 1996,
+              "tmdb_id": 9327,
+              "summary": "When beautiful Carla Purty joins the university faculty, genetic professor Dr. Sherman Klump grows desperate to whittle his 400-pound frame down to size and win her heart. So, with one swig of his experimental fat-reducing serum, Sherman becomes 'Buddy Love', a fast-talking, pumped-up, plumped down Don Juan.",
+              "genres": [
+                "Fantasy",
+                "Comedy",
+                "Romance",
+                "Science Fiction"
+              ],
+              "director": "Tom Shadyac",
+              "stars": [
+                "Eddie Murphy",
+                "Jada Pinkett Smith",
+                "James Coburn"
+              ]
+            },
+            {
+              "title": "Dead Ringers",
+              "year": 1988,
+              "tmdb_id": 9540,
+              "summary": "Elliot, a successful gynecologist, works at the same practice as his identical twin, Beverly. Elliot is attracted to many of his patients and has affairs with them. When he inevitably loses interest, he will give the woman over to Beverly, the meeker of the two, without the woman knowing the difference. Beverly falls hard for one of the patients, Claire, but when she inadvertently deceives him, he slips into a state of madness.",
+              "genres": [
+                "Thriller",
+                "Horror"
+              ],
+              "director": "David Cronenberg",
+              "stars": [
+                "Jeremy Irons",
+                "Geneviève Bujold",
+                "Heidi von Palleske"
+              ]
+            },
+            {
+              "title": "Monty Python's Life of Brian",
+              "year": 1979,
+              "tmdb_id": 583,
+              "summary": "Brian Cohen is an average young Jewish man, but through a series of ridiculous events, he gains a reputation as the Messiah. When he's not dodging his followers or being scolded by his shrill mother, the hapless Brian has to contend with the pompous Pontius Pilate and acronym-obsessed members of a separatist movement. Rife with Monty Python's signature absurdity, the tale finds Brian's life paralleling Biblical lore, albeit with many more laughs.",
+              "genres": [
+                "Comedy"
+              ],
+              "director": "Terry Jones",
+              "stars": [
+                "Graham Chapman",
+                "John Cleese",
+                "Terry Gilliam"
+              ]
+            },
+            {
+              "title": "Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb",
+              "year": 1964,
+              "tmdb_id": 935,
+              "summary": "After the insane General Jack D. Ripper initiates a nuclear strike on the Soviet Union, a war room full of politicians, generals and a Russian diplomat all frantically try to stop it.",
+              "genres": [
+                "Comedy",
+                "War"
+              ],
+              "director": "Stanley Kubrick",
+              "stars": [
+                "Peter Sellers",
+                "George C. Scott",
+                "Sterling Hayden"
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
