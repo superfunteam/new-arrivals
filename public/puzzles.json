@@ -24841,6 +24841,304 @@
           ]
         }
       ]
+    },
+    {
+      "id": "2026-05-20",
+      "title": "Off the Beaten Reel",
+      "categories": [
+        {
+          "name": "Jim Carrey Vehicles",
+          "difficulty": 1,
+          "color": "#4CAF50",
+          "movies": [
+            {
+              "title": "Ace Ventura: Pet Detective",
+              "year": 1994,
+              "tmdb_id": 3049,
+              "summary": "He's Ace Ventura: Pet Detective. The Ace is on the case to find the Miami Dolphins' missing mascot and quarterback Dan Marino. He goes eyeball to eyeball with a man-eating shark, stakes out the Miami Dolphins and woos and wows the ladies. Whether he's undercover, under fire or underwater, he always gets his man… or beast!",
+              "genres": [
+                "Comedy",
+                "Mystery",
+                "Crime"
+              ],
+              "director": "Tom Shadyac",
+              "stars": [
+                "Jim Carrey",
+                "Courteney Cox",
+                "Sean Young"
+              ]
+            },
+            {
+              "title": "The Mask",
+              "year": 1994,
+              "tmdb_id": 854,
+              "summary": "Stanley Ipkiss, an insecure banker who has lost his zest for life stumbles upon an ancient mask, that turns him into a confident suave cartoon-like character who upsets his ordinary life.",
+              "genres": [
+                "Comedy",
+                "Fantasy",
+                "Crime",
+                "Romance"
+              ],
+              "director": "Chuck Russell",
+              "stars": [
+                "Jim Carrey",
+                "Peter Riegert",
+                "Peter Greene"
+              ]
+            },
+            {
+              "title": "Dumb and Dumber",
+              "year": 1994,
+              "tmdb_id": 8467,
+              "summary": "Lloyd and Harry are two men whose stupidity is really indescribable. When Mary, a beautiful woman, loses an important suitcase with money before she leaves for Aspen, the two friends (who have found the suitcase) decide to return it to her. After some \"adventures\" they finally get to Aspen where, using the lost money they live it up and fight for Mary's heart.",
+              "genres": [
+                "Comedy"
+              ],
+              "director": "Peter Farrelly",
+              "stars": [
+                "Jim Carrey",
+                "Jeff Daniels",
+                "Lauren Holly"
+              ]
+            },
+            {
+              "title": "The Cable Guy",
+              "year": 1996,
+              "tmdb_id": 9894,
+              "summary": "When recently single Steven moves into his new apartment, cable guy Chip comes to hook him up—and doesn't let go. Initially, Chip is just overzealous in his desire to be Steven's pal, but when Steven tries to end the 'friendship', Chip shows his dark side. He begins stalking Steven, who's left to fend for himself because no one else can believe Chip's capable of such behaviour.",
+              "genres": [
+                "Comedy",
+                "Drama",
+                "Thriller"
+              ],
+              "director": "Ben Stiller",
+              "stars": [
+                "Jim Carrey",
+                "Matthew Broderick",
+                "Leslie Mann"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Cult Comedies Set in High School",
+          "difficulty": 2,
+          "color": "#FFC107",
+          "movies": [
+            {
+              "title": "Heathers",
+              "year": 1989,
+              "tmdb_id": 2640,
+              "summary": "A girl who halfheartedly tries to be part of the \"in crowd\" of her school meets a rebel who teaches her a more devious way to play social politics: by killing the popular kids.",
+              "genres": [
+                "Comedy",
+                "Crime"
+              ],
+              "director": "Michael Lehmann",
+              "stars": [
+                "Winona Ryder",
+                "Christian Slater",
+                "Shannen Doherty"
+              ]
+            },
+            {
+              "title": "Clueless",
+              "year": 1995,
+              "tmdb_id": 9603,
+              "summary": "Shallow, rich and socially successful Cher is at the top of her Beverly Hills high school's pecking scale. Seeing herself as a matchmaker, Cher first coaxes two teachers into dating each other. Emboldened by her success, she decides to give hopelessly klutzy new student Tai a makeover. When Tai becomes more popular than she is, Cher realizes that her disapproving ex-stepbrother was right about how misguided she was -- and falls for him.",
+              "genres": [
+                "Comedy",
+                "Romance"
+              ],
+              "director": "Amy Heckerling",
+              "stars": [
+                "Alicia Silverstone",
+                "Stacey Dash",
+                "Brittany Murphy"
+              ]
+            },
+            {
+              "title": "Rushmore",
+              "year": 1998,
+              "tmdb_id": 11545,
+              "summary": "When a beautiful first-grade teacher arrives at a prep school, she soon attracts the attention of an ambitious teenager named Max, who quickly falls in love with her. Max turns to the father of two of his schoolmates for advice on how to woo the teacher. However, the situation soon gets complicated when Max's new friend becomes involved with her, setting the two pals against one another in a war for her attention.",
+              "genres": [
+                "Comedy",
+                "Drama"
+              ],
+              "director": "Wes Anderson",
+              "stars": [
+                "Jason Schwartzman",
+                "Bill Murray",
+                "Olivia Williams"
+              ]
+            },
+            {
+              "title": "Pump Up the Volume",
+              "year": 1990,
+              "tmdb_id": 8428,
+              "summary": "Mark Hunter, a lonely high school student, uses his shortwave radio to moonlight as the popular pirate DJ \"Hard Harry.\" When his show gets blamed for a teen committing suicide, the students clash with high school faculty and the authorities.",
+              "genres": [
+                "Music",
+                "Drama"
+              ],
+              "director": "Allan Moyle",
+              "stars": [
+                "Christian Slater",
+                "Samantha Mathis",
+                "Annie Ross"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Movies Featuring Stop-Motion Animation",
+          "difficulty": 3,
+          "color": "#2196F3",
+          "movies": [
+            {
+              "title": "Beetlejuice",
+              "year": 1988,
+              "tmdb_id": 4011,
+              "summary": "A newly dead New England couple seeks help from a deranged demon exorcist to scare an affluent New York family out of their home.",
+              "genres": [
+                "Fantasy",
+                "Comedy"
+              ],
+              "director": "Tim Burton",
+              "stars": [
+                "Alec Baldwin",
+                "Geena Davis",
+                "Winona Ryder"
+              ]
+            },
+            {
+              "title": "The Mask",
+              "year": 1994,
+              "tmdb_id": 854,
+              "summary": "Stanley Ipkiss, an insecure banker who has lost his zest for life stumbles upon an ancient mask, that turns him into a confident suave cartoon-like character who upsets his ordinary life.",
+              "genres": [
+                "Comedy",
+                "Fantasy",
+                "Crime",
+                "Romance"
+              ],
+              "director": "Chuck Russell",
+              "stars": [
+                "Jim Carrey",
+                "Peter Riegert",
+                "Peter Greene"
+              ]
+            },
+            {
+              "title": "Mars Attacks!",
+              "year": 1996,
+              "tmdb_id": 75,
+              "summary": "A fleet of Martian spacecraft surrounds the world's major cities and all of humanity waits to see if the extraterrestrial visitors have, as they claim, \"come in peace.\" U.S. President James Dale receives assurance from science professor Donald Kessler that the Martians' mission is a friendly one. But when a peaceful exchange ends in the total annihilation of the U.S. Congress, military men call for a full-scale nuclear retaliation.",
+              "genres": [
+                "Comedy",
+                "Fantasy",
+                "Science Fiction"
+              ],
+              "director": "Tim Burton",
+              "stars": [
+                "Jack Nicholson",
+                "Glenn Close",
+                "Annette Bening"
+              ]
+            },
+            {
+              "title": "Small Soldiers",
+              "year": 1998,
+              "tmdb_id": 11551,
+              "summary": "When missile technology is used to enhance toy action figures, the toys soon begin to take their battle programming too seriously.",
+              "genres": [
+                "Comedy",
+                "Adventure",
+                "Fantasy",
+                "Science Fiction",
+                "Action"
+              ],
+              "director": "Joe Dante",
+              "stars": [
+                "Gregory Smith",
+                "Kirsten Dunst",
+                "Denis Leary"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Movies Where Someone Eats Dog Food",
+          "difficulty": 4,
+          "color": "#9C27B0",
+          "movies": [
+            {
+              "title": "Dumb and Dumber",
+              "year": 1994,
+              "tmdb_id": 8467,
+              "summary": "Lloyd and Harry are two men whose stupidity is really indescribable. When Mary, a beautiful woman, loses an important suitcase with money before she leaves for Aspen, the two friends (who have found the suitcase) decide to return it to her. After some \"adventures\" they finally get to Aspen where, using the lost money they live it up and fight for Mary's heart.",
+              "genres": [
+                "Comedy"
+              ],
+              "director": "Peter Farrelly",
+              "stars": [
+                "Jim Carrey",
+                "Jeff Daniels",
+                "Lauren Holly"
+              ]
+            },
+            {
+              "title": "Beetlejuice",
+              "year": 1988,
+              "tmdb_id": 4011,
+              "summary": "A newly dead New England couple seeks help from a deranged demon exorcist to scare an affluent New York family out of their home.",
+              "genres": [
+                "Fantasy",
+                "Comedy"
+              ],
+              "director": "Tim Burton",
+              "stars": [
+                "Alec Baldwin",
+                "Geena Davis",
+                "Winona Ryder"
+              ]
+            },
+            {
+              "title": "Ace Ventura: Pet Detective",
+              "year": 1994,
+              "tmdb_id": 3049,
+              "summary": "He's Ace Ventura: Pet Detective. The Ace is on the case to find the Miami Dolphins' missing mascot and quarterback Dan Marino. He goes eyeball to eyeball with a man-eating shark, stakes out the Miami Dolphins and woos and wows the ladies. Whether he's undercover, under fire or underwater, he always gets his man… or beast!",
+              "genres": [
+                "Comedy",
+                "Mystery",
+                "Crime"
+              ],
+              "director": "Tom Shadyac",
+              "stars": [
+                "Jim Carrey",
+                "Courteney Cox",
+                "Sean Young"
+              ]
+            },
+            {
+              "title": "UHF",
+              "year": 1989,
+              "tmdb_id": 11959,
+              "summary": "The eccentric new manager of a UHF television channel tries to save the station from financial ruin with an odd array of programming.",
+              "genres": [
+                "Comedy"
+              ],
+              "director": "Jay Levey",
+              "stars": [
+                "'Weird Al' Yankovic",
+                "Kevin McCarthy",
+                "Michael Richards"
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
