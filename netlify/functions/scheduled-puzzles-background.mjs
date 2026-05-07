@@ -1,20 +1,25 @@
 // Daily scheduled background function that keeps a rolling buffer of upcoming
-// dated puzzles in public/puzzles.json. Runs entirely on Netlify so it uses
-// the AI Gateway via `new Anthropic()` — no extra config needed.
+// dated puzzles in public/puzzles.json AND their customer dialogue in
+// public/interrupts.json. Runs entirely on Netlify so it uses the AI Gateway
+// via `new Anthropic()` — no extra config needed.
 //
 // Pipeline per run:
-//   1. Fetch the latest puzzles.json + sha from the GitHub Contents API.
-//   2. Backfill any pre-existing entries that are missing tmdb_id / poster /
-//      summary / genres / director / stars (catches puzzles that were
-//      hand-committed without enrichment).
-//   3. Compute how many days short of PUZZLE_BUFFER_DAYS we are.
-//   4. For each missing day: ask Claude to design a puzzle, then enrich each
-//      movie via TMDB. Enrichment is strict — the puzzle is rejected unless
-//      every movie resolves to a tmdb_id whose title+year matches and that
-//      has a poster_path. Better to retry than to ship grey-box puzzles.
-//   5. Commit the updated puzzles.json back to GitHub. The commit triggers
-//      a normal Netlify rebuild, which runs scripts/fetch-posters.js to
-//      download the actual poster files for any new tmdb_ids.
+//   1. Fetch puzzles.json + interrupts.json from the GitHub Contents API.
+//   2. Backfill any pre-existing puzzle entries that are missing tmdb_id /
+//      poster / summary / genres / director / stars (catches puzzles that
+//      were hand-committed without enrichment).
+//   3. Backfill interrupts.json for any puzzle that has no chat/tips entry.
+//      Without this the customer panel renders empty and hints don't work.
+//   4. Compute how many days short of PUZZLE_BUFFER_DAYS we are.
+//   5. For each missing day: ask Claude to design a puzzle, enrich each
+//      movie via TMDB, and generate 10 customer interruptions (4 trivia,
+//      3 hints, 3 stories). Enrichment is strict — the puzzle is rejected
+//      unless every movie resolves to a tmdb_id whose title+year matches
+//      and has a poster_path. Better to retry than ship grey-box puzzles.
+//   6. Atomically commit puzzles.json + interrupts.json back to GitHub via
+//      the Trees API. The commit triggers a normal Netlify rebuild, which
+//      runs scripts/fetch-posters.js to download poster files for any new
+//      tmdb_ids.
 //
 // Background functions can run up to 15 minutes — plenty of time for serial
 // Anthropic + TMDB calls. Manual top-ups can still be done via the CLI
@@ -23,8 +28,9 @@
 import Anthropic from '@anthropic-ai/sdk';
 
 const REPO = 'superfunteam/new-arrivals';
-const FILE_PATH = 'public/puzzles.json';
-const GITHUB_API = `https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`;
+const PUZZLES_PATH = 'public/puzzles.json';
+const INTERRUPTS_PATH = 'public/interrupts.json';
+const GH_API = `https://api.github.com/repos/${REPO}`;
 const TMDB_BASE = 'https://api.themoviedb.org/3';
 
 const COLOR_BY_DIFFICULTY = {
@@ -230,33 +236,118 @@ function isCorrectMatch(puzzleTitle, puzzleYear, tmdbResult) {
   return tMatch && yMatch;
 }
 
-// ── GitHub helpers (mirror of admin-puzzles.mjs) ──
+// ── GitHub helpers (Trees API for atomic multi-file commits) ──
+//
+// We commit puzzles.json and interrupts.json together so a player never sees
+// a deploy where a puzzle exists but its dialogue doesn't. Mirrors the
+// approach in admin-process.mjs.
 
 function ghHeaders() {
   return {
     Authorization: `Bearer ${Netlify.env.get('GITHUB_TOKEN')}`,
     Accept: 'application/vnd.github.v3+json',
     'User-Agent': 'new-arrivals-puzzle-bot',
+    'Content-Type': 'application/json',
   };
 }
 
-async function loadFromGitHub() {
-  const res = await fetch(GITHUB_API, { headers: ghHeaders() });
-  if (!res.ok) throw new Error(`GitHub GET failed: ${res.status} ${await res.text()}`);
+async function ghGetFile(filePath) {
+  const res = await fetch(`${GH_API}/contents/${filePath}`, { headers: ghHeaders() });
+  if (!res.ok) {
+    if (res.status === 404) return { content: null };
+    throw new Error(`GitHub GET ${filePath} failed: ${res.status} ${await res.text()}`);
+  }
   const data = await res.json();
-  const parsed = JSON.parse(Buffer.from(data.content, 'base64').toString('utf8'));
-  return { puzzles: parsed.puzzles, sha: data.sha };
+  const content = JSON.parse(Buffer.from(data.content, 'base64').toString('utf8'));
+  return { content };
 }
 
-async function commitToGitHub(puzzles, sha, message) {
-  const content = Buffer.from(JSON.stringify({ puzzles }, null, 2)).toString('base64');
-  const res = await fetch(GITHUB_API, {
-    method: 'PUT',
-    headers: { ...ghHeaders(), 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message, content, sha }),
-  });
-  if (!res.ok) throw new Error(`GitHub PUT failed: ${res.status} ${await res.text()}`);
+async function loadFromGitHub() {
+  const [puzzlesFile, interruptsFile] = await Promise.all([
+    ghGetFile(PUZZLES_PATH),
+    ghGetFile(INTERRUPTS_PATH),
+  ]);
+  const puzzles = puzzlesFile.content?.puzzles || [];
+  const interrupts = interruptsFile.content || {};
+  return { puzzles, interrupts };
+}
+
+async function ghGetRef(branch = 'main') {
+  const res = await fetch(`${GH_API}/git/ref/heads/${branch}`, { headers: ghHeaders() });
+  if (!res.ok) throw new Error(`get ref failed: ${await res.text()}`);
+  const data = await res.json();
+  return data.object.sha;
+}
+
+async function ghGetCommit(sha) {
+  const res = await fetch(`${GH_API}/git/commits/${sha}`, { headers: ghHeaders() });
+  if (!res.ok) throw new Error(`get commit failed: ${await res.text()}`);
   return res.json();
+}
+
+async function ghCreateBlob(content) {
+  const res = await fetch(`${GH_API}/git/blobs`, {
+    method: 'POST',
+    headers: ghHeaders(),
+    body: JSON.stringify({ content, encoding: 'utf-8' }),
+  });
+  if (!res.ok) throw new Error(`create blob failed: ${await res.text()}`);
+  const data = await res.json();
+  return data.sha;
+}
+
+async function ghCreateTree(baseTreeSha, files) {
+  const res = await fetch(`${GH_API}/git/trees`, {
+    method: 'POST',
+    headers: ghHeaders(),
+    body: JSON.stringify({
+      base_tree: baseTreeSha,
+      tree: files.map((f) => ({ path: f.path, mode: '100644', type: 'blob', sha: f.sha })),
+    }),
+  });
+  if (!res.ok) throw new Error(`create tree failed: ${await res.text()}`);
+  const data = await res.json();
+  return data.sha;
+}
+
+async function ghCreateCommit(treeSha, parentSha, message) {
+  const res = await fetch(`${GH_API}/git/commits`, {
+    method: 'POST',
+    headers: ghHeaders(),
+    body: JSON.stringify({ message, tree: treeSha, parents: [parentSha] }),
+  });
+  if (!res.ok) throw new Error(`create commit failed: ${await res.text()}`);
+  const data = await res.json();
+  return data.sha;
+}
+
+async function ghUpdateRef(sha, branch = 'main') {
+  const res = await fetch(`${GH_API}/git/refs/heads/${branch}`, {
+    method: 'PATCH',
+    headers: ghHeaders(),
+    body: JSON.stringify({ sha }),
+  });
+  if (!res.ok) throw new Error(`update ref failed: ${await res.text()}`);
+  return res.json();
+}
+
+async function commitToGitHub(puzzles, interrupts, message) {
+  const headSha = await ghGetRef('main');
+  const head = await ghGetCommit(headSha);
+
+  const [puzzlesBlob, interruptsBlob] = await Promise.all([
+    ghCreateBlob(JSON.stringify({ puzzles }, null, 2)),
+    ghCreateBlob(JSON.stringify(interrupts, null, 2)),
+  ]);
+
+  const treeSha = await ghCreateTree(head.tree.sha, [
+    { path: PUZZLES_PATH, sha: puzzlesBlob },
+    { path: INTERRUPTS_PATH, sha: interruptsBlob },
+  ]);
+
+  const commitSha = await ghCreateCommit(treeSha, headSha, message);
+  await ghUpdateRef(commitSha, 'main');
+  return commitSha;
 }
 
 // ── TMDB helpers ──
@@ -485,6 +576,205 @@ Pick a fun, punchy puzzle title. Make sure the four categories span easy → dev
   return { id: dateStr, title: parsed.title, categories: parsed.categories };
 }
 
+// ── interrupts (customer chat / hints) ──
+//
+// Mirror of netlify/functions/admin-ai-interrupts.mjs. Inlined here instead
+// of imported because the scheduled function needs the same pipeline plus
+// a few extras (cost defaulting, validation against the actual puzzle
+// categories, retry on parse failure).
+
+const CHARACTERS = [
+  { character: 'Blonde Kid Girl', sprite: 'blonde_kid_girl', folder: 'Blonde Kid Girl', type: 'kid' },
+  { character: 'Blonde Man', sprite: 'blonde_man', folder: 'Blonde Man', type: 'adult' },
+  { character: 'Blonde Woman', sprite: 'blonde_woman', folder: 'Blonde Woman', type: 'adult' },
+  { character: 'Blue Haired Kid Girl', sprite: 'blue_haired_kid_girl', folder: 'Blue Haired Kid Girl', type: 'kid' },
+  { character: 'Blue Haired Woman', sprite: 'blue_haired_woman', folder: 'Blue Haired Woman', type: 'adult' },
+  { character: 'Bride', sprite: 'bride', folder: 'Bride', type: 'adult' },
+  { character: 'Businessman', sprite: 'businessman', folder: 'Businessman', type: 'adult' },
+  { character: 'Chef', sprite: 'chef', folder: 'Chef', type: 'adult' },
+  { character: 'Farmer', sprite: 'farmer', folder: 'Farmer', type: 'adult' },
+  { character: 'Firefighter', sprite: 'firefighter', folder: 'Firefighter', type: 'adult' },
+  { character: 'Goblin Kid', sprite: 'goblin_kid', folder: 'Goblin Kid', type: 'kid' },
+  { character: 'Joker', sprite: 'joker', folder: 'Joker', type: 'adult' },
+  { character: 'Knight', sprite: 'knight', folder: 'Knight', type: 'adult' },
+  { character: 'Knight Kid', sprite: 'knight_kid', folder: 'Knight Kid', type: 'kid' },
+  { character: 'Ninja', sprite: 'ninja', folder: 'Ninja', type: 'adult' },
+  { character: 'Old Man', sprite: 'old_man', folder: 'Old Man', type: 'old' },
+  { character: 'Old Woman', sprite: 'old_woman', folder: 'Old Woman', type: 'old' },
+  { character: 'Policeman', sprite: 'policeman', folder: 'Policeman', type: 'adult' },
+  { character: 'Punk Kid Boy', sprite: 'punk_kid_boy', folder: 'Punk Kid Boy', type: 'kid' },
+  { character: 'Punk Man', sprite: 'punk_man', folder: 'Punk Man', type: 'adult' },
+  { character: 'Punk Woman', sprite: 'punk_woman', folder: 'Punk Woman', type: 'adult' },
+  { character: 'Viking Kid Boy', sprite: 'viking_kid_boy', folder: 'Viking Kid Boy', type: 'kid' },
+  { character: 'Viking Man', sprite: 'viking_man', folder: 'Viking Man', type: 'adult' },
+  { character: 'Viking Woman', sprite: 'viking_woman', folder: 'Viking Woman', type: 'adult' },
+];
+
+const INTERRUPT_SYSTEM_PROMPT = `You are writing customer dialogue for "New Arrivals," a VHS rental store game. Customers interrupt the player while they sort tapes.
+
+SETTING: A video rental store, Friday night, 1987. Customers are browsing, chatting, looking for movies.
+
+Generate exactly 10 interruptions:
+- 4 TRIVIA: Ask about a specific movie on the shelf. 4 multiple-choice answers (1 correct, 3 plausible wrong from the same era). Short question, 1-2 sentences. Required fields: type="trivia", character, dialogue, answers (array of 4 strings), correct (0-3 index of correct answer).
+- 3 HINTS: Character vaguely describes what they're looking for (obliquely referencing a category). Include the EXACT category name as hintCategory. Never say the category name in dialogue. Required fields: type="hint", character, dialogue, hintCategory, cost (use 3).
+- 3 STORIES: Funny 80s rental store anecdote, joke, pun, or oversharing. Include a fun dismiss button label. Required fields: type="story", character, dialogue, dismiss.
+
+CHARACTER VOICE RULES:
+- Kid characters: UNHINGED energy. Caps, "UHHH", "MY MOM SAID", sugar-high, Tindendo references
+- Adults: Normal 80s rental customer. Friday nights, date nights, late fees, opinions
+- Old characters: Slower, nostalgic, confused by technology, wholesome
+
+Keep dialogue SHORT (1-3 sentences max). These are quick interruptions.
+
+OUTPUT: Valid JSON array of 10 objects only, no commentary, no markdown fences.`;
+
+function pickAssignments() {
+  // 4 trivia, 3 hints, 3 stories — same split as admin-ai-interrupts.mjs.
+  const shuffled = [...CHARACTERS].sort(() => Math.random() - 0.5);
+  const selected = shuffled.slice(0, 10);
+  return selected.map((char, i) => {
+    if (i < 4) return { ...char, role: 'trivia' };
+    if (i < 7) return { ...char, role: 'hint' };
+    return { ...char, role: 'story' };
+  });
+}
+
+function buildInterruptPrompt(puzzle, assignments) {
+  const allMovies = puzzle.categories.flatMap((cat) =>
+    (cat.movies || []).map((m) => `${m.title} (${m.year})`)
+  );
+  const categoryNames = puzzle.categories.map((cat) => cat.name);
+  const characterDescriptions = assignments
+    .map((a) => `- ${a.character} (${a.type}) → ${a.role.toUpperCase()}`)
+    .join('\n');
+
+  return `PUZZLE MOVIES (on the shelf):
+${allMovies.map((m) => `- ${m}`).join('\n')}
+
+PUZZLE CATEGORIES (use EXACT name as hintCategory for hint items):
+${categoryNames.map((n) => `- ${n}`).join('\n')}
+
+CHARACTERS:
+${characterDescriptions}
+
+Generate 10 interruptions matching these exact character/role assignments.`;
+}
+
+function parseJsonArrayLoose(text) {
+  const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+  let candidate = (fenced ? fenced[1] : text).trim();
+  if (!candidate.startsWith('[')) {
+    const first = candidate.indexOf('[');
+    const last = candidate.lastIndexOf(']');
+    if (first !== -1 && last > first) candidate = candidate.slice(first, last + 1);
+  }
+  return JSON.parse(candidate);
+}
+
+// Validate + repair a generated interrupt array against the source puzzle.
+// Throws on unrecoverable problems so the caller can retry. Mutates each
+// item to set canonical sprite/folder + default cost. Mirror of the checks
+// in scripts/verify-interrupts.js.
+function validateInterrupts(items, puzzle, assignments) {
+  if (!Array.isArray(items) || items.length !== 10) {
+    throw new Error(`expected 10 interrupts, got ${Array.isArray(items) ? items.length : 'non-array'}`);
+  }
+  const charByName = Object.fromEntries(CHARACTERS.map((c) => [c.character, c]));
+  const validCategories = new Set(puzzle.categories.map((c) => c.name));
+  const counts = { trivia: 0, hint: 0, story: 0 };
+
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    if (!item || typeof item !== 'object') throw new Error(`item #${i} not an object`);
+    if (!['trivia', 'hint', 'story'].includes(item.type)) {
+      throw new Error(`item #${i} bad type: ${item.type}`);
+    }
+    counts[item.type]++;
+
+    const charData = charByName[item.character];
+    if (!charData) throw new Error(`item #${i} unknown character: ${item.character}`);
+    item.sprite = charData.sprite;
+    item.folder = charData.folder;
+    if (!item.dialogue || typeof item.dialogue !== 'string') {
+      throw new Error(`item #${i} missing dialogue`);
+    }
+
+    if (item.type === 'trivia') {
+      if (!Array.isArray(item.answers) || item.answers.length !== 4) {
+        throw new Error(`item #${i} trivia needs 4 answers`);
+      }
+      if (typeof item.correct !== 'number' || item.correct < 0 || item.correct > 3) {
+        throw new Error(`item #${i} trivia.correct must be 0-3`);
+      }
+    } else if (item.type === 'hint') {
+      if (!item.hintCategory || !validCategories.has(item.hintCategory)) {
+        throw new Error(
+          `item #${i} hint.hintCategory '${item.hintCategory}' not in puzzle categories`
+        );
+      }
+      // Every existing entry in interrupts.json uses cost=3 — default it
+      // here too rather than blame the model when it omits the field.
+      if (typeof item.cost !== 'number' || item.cost <= 0) item.cost = 3;
+    } else {
+      if (!item.dismiss || typeof item.dismiss !== 'string') {
+        throw new Error(`item #${i} story needs dismiss`);
+      }
+    }
+  }
+
+  if (counts.trivia !== 4 || counts.hint !== 3 || counts.story !== 3) {
+    throw new Error(`bad type mix: ${JSON.stringify(counts)} (need 4 trivia / 3 hint / 3 story)`);
+  }
+  return items;
+}
+
+async function generateInterrupts(client, puzzle) {
+  const assignments = pickAssignments();
+  const message = await client.messages.create({
+    model: Netlify.env.get('PUZZLE_GEN_MODEL') || 'claude-sonnet-4-5-20250929',
+    max_tokens: 4096,
+    system: INTERRUPT_SYSTEM_PROMPT,
+    messages: [{ role: 'user', content: buildInterruptPrompt(puzzle, assignments) }],
+  });
+  const text = message.content?.find((b) => b.type === 'text')?.text || message.content?.[0]?.text || '';
+  if (!text) throw new Error('empty response from Claude');
+  const parsed = parseJsonArrayLoose(text);
+  return validateInterrupts(parsed, puzzle, assignments);
+}
+
+async function generateInterruptsWithRetry(client, puzzle, maxAttempts = 3) {
+  let lastErr;
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      return await generateInterrupts(client, puzzle);
+    } catch (err) {
+      lastErr = err;
+      console.error(`    interrupts attempt ${attempt} for ${puzzle.id}: ${err.message}`);
+      if (attempt < maxAttempts) await new Promise((r) => setTimeout(r, 1000 * attempt));
+    }
+  }
+  throw lastErr;
+}
+
+// Backfill interrupts for every puzzle that has none. Best-effort — failures
+// are logged and the rest of the run continues. Mutates `interrupts` in
+// place. Returns count of puzzles newly populated.
+async function backfillMissingInterrupts(client, puzzles, interrupts) {
+  let added = 0;
+  for (const p of puzzles) {
+    if (interrupts[p.id] && interrupts[p.id].length > 0) continue;
+    try {
+      const items = await generateInterruptsWithRetry(client, p);
+      interrupts[p.id] = items;
+      added++;
+      console.log(`  ↻ interrupts backfilled for ${p.id} — "${p.title}"`);
+    } catch (err) {
+      console.error(`  ✗ interrupts backfill failed for ${p.id}: ${err.message}`);
+    }
+  }
+  return added;
+}
+
 // ── handler ──
 
 export default async (req, context) => {
@@ -501,22 +791,34 @@ export default async (req, context) => {
 
   const bufferDays = parseInt(Netlify.env.get('PUZZLE_BUFFER_DAYS') || '14', 10);
 
-  let puzzles, sha;
+  let puzzles, interrupts;
   try {
-    ({ puzzles, sha } = await loadFromGitHub());
+    ({ puzzles, interrupts } = await loadFromGitHub());
   } catch (err) {
     console.error('[scheduled-puzzles] GitHub load failed:', err.message);
     return new Response(`load failed: ${err.message}`, { status: 500 });
   }
 
-  // Step 2: catch up any pre-existing entries that were committed unenriched
-  // (e.g. hand-curated puzzles or earlier broken runs). Best-effort — we
-  // continue even if some can't be resolved.
-  let backfilled = 0;
+  const client = new Anthropic();
+
+  // Step 2: catch up any pre-existing puzzle entries that were committed
+  // unenriched (e.g. hand-curated puzzles or earlier broken runs).
+  // Best-effort — we continue even if some can't be resolved.
+  let movieFieldsBackfilled = 0;
   try {
-    backfilled = await backfillStaleEntries(puzzles);
+    movieFieldsBackfilled = await backfillStaleEntries(puzzles);
   } catch (err) {
-    console.error('[scheduled-puzzles] backfill threw:', err.message);
+    console.error('[scheduled-puzzles] tmdb backfill threw:', err.message);
+  }
+
+  // Step 3: backfill missing customer dialogue. Without entries here the
+  // game shows an empty customer panel and hints don't work — same class
+  // of "puzzle ships, chrome doesn't" bug as missing tmdb_ids.
+  let interruptsBackfilled = 0;
+  try {
+    interruptsBackfilled = await backfillMissingInterrupts(client, puzzles, interrupts);
+  } catch (err) {
+    console.error('[scheduled-puzzles] interrupts backfill threw:', err.message);
   }
 
   const today = todayUTC();
@@ -525,7 +827,7 @@ export default async (req, context) => {
   const daysAhead = latest && latest >= today ? daysBetween(today, latest) : 0;
   const need = Math.max(0, bufferDays - daysAhead);
 
-  if (need === 0 && backfilled === 0) {
+  if (need === 0 && movieFieldsBackfilled === 0 && interruptsBackfilled === 0) {
     console.log(`[scheduled-puzzles] buffer at ${daysAhead}/${bufferDays} and nothing to backfill — nothing to do`);
     return new Response('buffer full');
   }
@@ -534,7 +836,6 @@ export default async (req, context) => {
     console.log(`[scheduled-puzzles] generating ${need} puzzle(s) starting ${startDate}`);
   }
 
-  const client = new Anthropic();
   let cursor = startDate;
   let added = 0;
   const newlyAdded = [];
@@ -552,6 +853,14 @@ export default async (req, context) => {
         // poster. The retry loop will then ask Claude for a different
         // puzzle, which avoids shipping wrong-poster days.
         await enrichPuzzleStrict(puzzle);
+        // Generate dialogue alongside the puzzle so they always land in the
+        // same commit. If interrupts can't be produced the puzzle still
+        // ships — backfill will catch it next run rather than block today.
+        try {
+          interrupts[puzzle.id] = await generateInterruptsWithRetry(client, puzzle);
+        } catch (err) {
+          console.error(`    interrupts failed for ${dateStr} (will retry next run): ${err.message}`);
+        }
         puzzles.push(puzzle);
         newlyAdded.push(puzzle);
         added++;
@@ -569,58 +878,39 @@ export default async (req, context) => {
     cursor = addDays(cursor, 1);
   }
 
-  if (added === 0 && backfilled === 0) {
-    console.error('[scheduled-puzzles] no puzzles generated and nothing backfilled — not committing');
+  const hasChanges = added > 0 || movieFieldsBackfilled > 0 || interruptsBackfilled > 0;
+  if (!hasChanges) {
+    console.error('[scheduled-puzzles] no changes — not committing');
     return new Response('no changes', { status: 500 });
   }
 
-  let message;
-  if (added > 0 && backfilled > 0) {
-    message =
-      added === 1
-        ? `Auto-publish: queue ${newlyAdded[0].id} — ${newlyAdded[0].title} (+${backfilled} backfilled)`
-        : `Auto-publish: queue ${added} new puzzle(s) (${newlyAdded[0].id} → ${newlyAdded[added - 1].id}) (+${backfilled} backfilled)`;
-  } else if (added > 0) {
-    message =
-      added === 1
-        ? `Auto-publish: queue ${newlyAdded[0].id} — ${newlyAdded[0].title}`
-        : `Auto-publish: queue ${added} new puzzle(s) (${newlyAdded[0].id} → ${newlyAdded[added - 1].id})`;
-  } else {
-    message = `Auto-backfill: enrich ${backfilled} stale puzzle entr${backfilled === 1 ? 'y' : 'ies'}`;
+  // Build a single-line commit message describing whichever subset of
+  // changes happened this run.
+  const parts = [];
+  if (added === 1) {
+    parts.push(`queue ${newlyAdded[0].id} — ${newlyAdded[0].title}`);
+  } else if (added > 1) {
+    parts.push(`queue ${added} new puzzle(s) (${newlyAdded[0].id} → ${newlyAdded[added - 1].id})`);
   }
+  if (movieFieldsBackfilled > 0) parts.push(`+${movieFieldsBackfilled} tmdb backfilled`);
+  if (interruptsBackfilled > 0) parts.push(`+${interruptsBackfilled} chat backfilled`);
+  const message = `Auto-publish: ${parts.join(', ')}`;
 
-  // One retry on SHA conflict — re-fetch and re-apply if someone committed
-  // mid-run. We always append, so re-applying is safe.
-  let attempt = 0;
-  while (attempt < 2) {
-    attempt++;
-    try {
-      await commitToGitHub(puzzles, sha, message);
-      const elapsed = ((Date.now() - startedAt) / 1000).toFixed(1);
-      console.log(`[scheduled-puzzles] committed ${added} new + ${backfilled} backfilled in ${elapsed}s`);
-      return new Response(`added ${added} puzzle(s), backfilled ${backfilled}`);
-    } catch (err) {
-      const isShaConflict = /409|sha|conflict/i.test(err.message);
-      if (!isShaConflict || attempt >= 2) {
-        console.error('[scheduled-puzzles] commit failed:', err.message);
-        return new Response(`commit failed: ${err.message}`, { status: 500 });
-      }
-      console.warn('[scheduled-puzzles] sha conflict — re-fetching and reapplying');
-      const reloaded = await loadFromGitHub();
-      sha = reloaded.sha;
-      // Re-apply both backfill and newly-added puzzles to the freshly-loaded
-      // list. Backfill is idempotent (already-enriched entries are no-ops).
-      puzzles = reloaded.puzzles;
-      try {
-        await backfillStaleEntries(puzzles);
-      } catch (e) {
-        console.error('[scheduled-puzzles] re-backfill threw:', e.message);
-      }
-      puzzles = puzzles.concat(newlyAdded);
-    }
+  // Atomic commit via Trees API: one commit touches both puzzles.json and
+  // interrupts.json so we never deploy a state where one drifted ahead of
+  // the other.
+  try {
+    const sha = await commitToGitHub(puzzles, interrupts, message);
+    const elapsed = ((Date.now() - startedAt) / 1000).toFixed(1);
+    console.log(
+      `[scheduled-puzzles] committed ${sha.slice(0, 7)} in ${elapsed}s — ` +
+      `${added} new puzzle(s), ${movieFieldsBackfilled} tmdb backfilled, ${interruptsBackfilled} chat backfilled`
+    );
+    return new Response(`ok: ${message}`);
+  } catch (err) {
+    console.error('[scheduled-puzzles] commit failed:', err.message);
+    return new Response(`commit failed: ${err.message}`, { status: 500 });
   }
-
-  return new Response('commit failed', { status: 500 });
 };
 
 // 13:00 UTC daily — early morning Pacific, mid-morning Eastern.
