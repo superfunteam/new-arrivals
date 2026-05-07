@@ -25139,6 +25139,307 @@
           ]
         }
       ]
+    },
+    {
+      "id": "2026-05-21",
+      "title": "Throwback Rental Rewind",
+      "categories": [
+        {
+          "name": "Spielberg Directed",
+          "difficulty": 1,
+          "color": "#4CAF50",
+          "movies": [
+            {
+              "title": "E.T. the Extra-Terrestrial",
+              "year": 1982,
+              "tmdb_id": 601,
+              "summary": "An alien is left behind on Earth and saved by the 10-year-old Elliott who decides to keep him hidden in his home. While a task force hunts for the extra-terrestrial, Elliott, his brother, and his little sister Gertie form an emotional bond with their new friend, and try to help him find his way home.",
+              "genres": [
+                "Science Fiction",
+                "Adventure",
+                "Family",
+                "Fantasy"
+              ],
+              "director": "Steven Spielberg",
+              "stars": [
+                "Henry Thomas",
+                "Drew Barrymore",
+                "Robert MacNaughton"
+              ]
+            },
+            {
+              "title": "Jurassic Park",
+              "year": 1993,
+              "tmdb_id": 329,
+              "summary": "A wealthy entrepreneur secretly creates a theme park featuring living dinosaurs drawn from prehistoric DNA. Before opening day, he invites a team of experts and his two eager grandchildren to experience the park and help calm anxious investors. However, the park is anything but amusing as the security systems go off-line and the dinosaurs escape.",
+              "genres": [
+                "Adventure",
+                "Science Fiction"
+              ],
+              "director": "Steven Spielberg",
+              "stars": [
+                "Sam Neill",
+                "Laura Dern",
+                "Jeff Goldblum"
+              ]
+            },
+            {
+              "title": "Schindler's List",
+              "year": 1993,
+              "tmdb_id": 424,
+              "summary": "The true story of how businessman Oskar Schindler saved over a thousand Jewish lives from the Nazis while they worked as slaves in his factory during World War II.",
+              "genres": [
+                "Drama",
+                "History",
+                "War"
+              ],
+              "director": "Steven Spielberg",
+              "stars": [
+                "Liam Neeson",
+                "Ben Kingsley",
+                "Ralph Fiennes"
+              ]
+            },
+            {
+              "title": "Saving Private Ryan",
+              "year": 1998,
+              "tmdb_id": 857,
+              "summary": "As U.S. troops storm the beaches of Normandy, three brothers lie dead on the battlefield, with a fourth trapped behind enemy lines. Ranger captain John Miller and seven men are tasked with penetrating German-held territory and bringing the boy home.",
+              "genres": [
+                "War",
+                "Drama",
+                "History"
+              ],
+              "director": "Steven Spielberg",
+              "stars": [
+                "Tom Hanks",
+                "Tom Sizemore",
+                "Edward Burns"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Time Travel Tales",
+          "difficulty": 2,
+          "color": "#FFC107",
+          "movies": [
+            {
+              "title": "Back to the Future",
+              "year": 1985,
+              "tmdb_id": 105,
+              "summary": "Eighties teenager Marty McFly is accidentally sent back in time to 1955, inadvertently disrupting his parents' first meeting and attracting his mother's romantic interest. Marty must repair the damage to history by rekindling his parents' romance and - with the help of his eccentric inventor friend Doc Brown - return to 1985.",
+              "genres": [
+                "Adventure",
+                "Comedy",
+                "Science Fiction"
+              ],
+              "director": "Robert Zemeckis",
+              "stars": [
+                "Michael J. Fox",
+                "Christopher Lloyd",
+                "Crispin Glover"
+              ]
+            },
+            {
+              "title": "Bill & Ted's Excellent Adventure",
+              "year": 1989,
+              "tmdb_id": 1648,
+              "summary": "Bill and Ted are high school buddies starting a band. They are also about to fail their history class—which means Ted would be sent to military school—but receive help from Rufus, a traveller from a future where their band is the foundation for a perfect society. With the use of Rufus' time machine, Bill and Ted travel to various points in history, returning with important figures to help them complete their final history presentation.",
+              "genres": [
+                "Adventure",
+                "Comedy",
+                "Science Fiction"
+              ],
+              "director": "Stephen Herek",
+              "stars": [
+                "Keanu Reeves",
+                "Alex Winter",
+                "George Carlin"
+              ]
+            },
+            {
+              "title": "Groundhog Day",
+              "year": 1993,
+              "tmdb_id": 137,
+              "summary": "A cynical TV weatherman, along with his idealistic producer and his sardonic cameraman, is sent to report on Groundhog Day in the small town of Punxsutawney, where he finds himself repeating the same day over and over.",
+              "genres": [
+                "Romance",
+                "Fantasy",
+                "Comedy"
+              ],
+              "director": "Harold Ramis",
+              "stars": [
+                "Bill Murray",
+                "Andie MacDowell",
+                "Chris Elliott"
+              ]
+            },
+            {
+              "title": "12 Monkeys",
+              "year": 1995,
+              "tmdb_id": 63,
+              "summary": "In the year 2035, convict James Cole reluctantly volunteers to be sent back in time to discover the origin of a deadly virus that wiped out nearly all of the earth's population and forced the survivors into underground communities. But when Cole is mistakenly sent to 1990 instead of 1996, he's arrested and locked up in a mental hospital. There he meets psychiatrist Dr. Kathryn Railly and the son of a famous virus expert who may hold the key to the Army of the 12 Monkeys; thought to be responsible for unleashing the killer disease.",
+              "genres": [
+                "Science Fiction",
+                "Thriller",
+                "Mystery"
+              ],
+              "director": "Terry Gilliam",
+              "stars": [
+                "Bruce Willis",
+                "Madeleine Stowe",
+                "Brad Pitt"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Prison is the Setting",
+          "difficulty": 3,
+          "color": "#2196F3",
+          "movies": [
+            {
+              "title": "Escape from Alcatraz",
+              "year": 1979,
+              "tmdb_id": 10734,
+              "summary": "San Francisco Bay, January 18, 1960. Frank Lee Morris is transferred to Alcatraz, a maximum security prison located on a rocky island. Although no one has ever managed to escape from there, Frank and other inmates begin to carefully prepare an escape plan.",
+              "genres": [
+                "Drama",
+                "Thriller"
+              ],
+              "director": "Don Siegel",
+              "stars": [
+                "Clint Eastwood",
+                "Patrick McGoohan",
+                "Roberts Blossom"
+              ]
+            },
+            {
+              "title": "The Shawshank Redemption",
+              "year": 1994,
+              "tmdb_id": 278,
+              "summary": "Imprisoned in the 1940s for the double murder of his wife and her lover, upstanding banker Andy Dufresne begins a new life at the Shawshank prison, where he puts his accounting skills to work for an amoral warden. During his long stretch in prison, Dufresne comes to be admired by the other inmates -- including an older prisoner named Red -- for his integrity and unquenchable sense of hope.",
+              "genres": [
+                "Drama",
+                "Crime"
+              ],
+              "director": "Frank Darabont",
+              "stars": [
+                "Tim Robbins",
+                "Morgan Freeman",
+                "Bob Gunton"
+              ]
+            },
+            {
+              "title": "The Green Mile",
+              "year": 1999,
+              "tmdb_id": 497,
+              "summary": "A supernatural tale set on death row in a Southern prison, where gentle giant John Coffey possesses the mysterious power to heal people's ailments. When the cell block's head guard, Paul Edgecomb, recognizes Coffey's miraculous gift, he tries desperately to help stave off the condemned man's execution.",
+              "genres": [
+                "Fantasy",
+                "Drama",
+                "Crime"
+              ],
+              "director": "Frank Darabont",
+              "stars": [
+                "Tom Hanks",
+                "David Morse",
+                "Bonnie Hunt"
+              ]
+            },
+            {
+              "title": "Con Air",
+              "year": 1997,
+              "tmdb_id": 1701,
+              "summary": "Newly-paroled former US Army ranger Cameron Poe is headed back to his wife, but must fly home aboard a prison transport flight dubbed \"Jailbird\" taking the “worst of the worst” prisoners, a group described as “pure predators”, to a new super-prison. Poe faces impossible odds when the transport plane is skyjacked mid-flight by the most vicious criminals in the country led by the mastermind — genius serial killer Cyrus \"The Virus\" Grissom, and backed by black militant Diamond Dog and psychopath Billy Bedlam.",
+              "genres": [
+                "Action",
+                "Thriller",
+                "Crime"
+              ],
+              "director": "Simon West",
+              "stars": [
+                "Nicolas Cage",
+                "John Cusack",
+                "John Malkovich"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Oscar-Nominated Directorial Debuts",
+          "difficulty": 4,
+          "color": "#9C27B0",
+          "movies": [
+            {
+              "title": "Ordinary People",
+              "year": 1980,
+              "tmdb_id": 16619,
+              "summary": "Beth, Calvin, and their son Conrad are living in the aftermath of the death of the other son. Conrad is overcome by grief and misplaced guilt to the extent of a suicide attempt. He is in therapy. Beth had always preferred his brother and is having difficulty being supportive to Conrad. Calvin is trapped between the two trying to hold the family together.",
+              "genres": [
+                "Drama"
+              ],
+              "director": "Robert Redford",
+              "stars": [
+                "Donald Sutherland",
+                "Mary Tyler Moore",
+                "Judd Hirsch"
+              ]
+            },
+            {
+              "title": "Dances with Wolves",
+              "year": 1990,
+              "tmdb_id": 581,
+              "summary": "Wounded Civil War soldier John Dunbar tries to commit suicide—and becomes a hero instead. As a reward, he's assigned to his dream post, a remote junction on the Western frontier, and soon makes unlikely friends with the local Sioux tribe.",
+              "genres": [
+                "Adventure",
+                "Drama",
+                "Western"
+              ],
+              "director": "Kevin Costner",
+              "stars": [
+                "Kevin Costner",
+                "Mary McDonnell",
+                "Graham Greene"
+              ]
+            },
+            {
+              "title": "Boyz n the Hood",
+              "year": 1991,
+              "tmdb_id": 650,
+              "summary": "In the middle of the Los Angeles ghetto, drugs, robberies and shootings dominate everyday life. During these times, Furious tries to raise his son Tre to be a decent person. Tre's friends, on the other hand, have little regard for the law and drag the entire neighborhood into a street war...",
+              "genres": [
+                "Crime",
+                "Drama"
+              ],
+              "director": "John Singleton",
+              "stars": [
+                "Cuba Gooding Jr.",
+                "Laurence Fishburne",
+                "Ice Cube"
+              ]
+            },
+            {
+              "title": "The Sixth Sense",
+              "year": 1999,
+              "tmdb_id": 745,
+              "summary": "Following an unexpected tragedy, child psychologist Malcolm Crowe meets a nine year old boy named Cole Sear, who is hiding a dark secret.",
+              "genres": [
+                "Mystery",
+                "Thriller",
+                "Drama"
+              ],
+              "director": "M. Night Shyamalan",
+              "stars": [
+                "Bruce Willis",
+                "Haley Joel Osment",
+                "Toni Collette"
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
