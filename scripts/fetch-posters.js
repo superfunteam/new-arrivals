@@ -26,9 +26,25 @@ function loadEnv() {
 
 loadEnv();
 
-const BEARER_TOKEN = process.env.TMDB_READ_ACCESS_TOKEN;
+// Accept either env name. The admin/scheduled functions call it
+// TMDB_ACCESS_TOKEN; the build step historically used TMDB_READ_ACCESS_TOKEN.
+// Allowing both prevents the silent "wrong env name on Netlify" failure mode
+// that left posters un-resolved.
+const BEARER_TOKEN =
+  process.env.TMDB_READ_ACCESS_TOKEN || process.env.TMDB_ACCESS_TOKEN;
+const ON_NETLIFY = Boolean(process.env.NETLIFY || process.env.DEPLOY_PRIME_URL);
 if (!BEARER_TOKEN) {
-  console.warn('TMDB_READ_ACCESS_TOKEN not set — skipping poster fetch (existing posters will be used)');
+  if (ON_NETLIFY) {
+    // On Netlify, no token means a deploy will ship with grey-box posters
+    // for any newly-added movies. That is the bug we're fixing — fail loud.
+    console.error(
+      'TMDB token not set on Netlify (need TMDB_READ_ACCESS_TOKEN or TMDB_ACCESS_TOKEN) — failing build'
+    );
+    process.exit(1);
+  }
+  console.warn(
+    'TMDB token not set — skipping poster fetch (existing posters will be used)'
+  );
   process.exit(0);
 }
 
@@ -368,6 +384,17 @@ async function main() {
   console.log(`  Downloaded:   ${successCount}`);
   console.log(`  Skipped:      ${skipCount}`);
   console.log(`  Failed:       ${failCount}`);
+
+  // On Netlify a failure means we'd deploy grey-box posters / broken
+  // selection (game keys by tmdb_id). Fail the build loudly instead of
+  // silently shipping. Locally we leave the script tolerant so devs aren't
+  // blocked by a single odd title.
+  if (failCount > 0 && ON_NETLIFY) {
+    console.error(
+      `\n${failCount} movie(s) failed to resolve to a TMDB id — failing build to prevent grey-box deploy`
+    );
+    process.exit(1);
+  }
 }
 
 main().catch(err => {
