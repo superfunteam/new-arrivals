@@ -7963,5 +7963,223 @@
       "dialogue": "Watched Groundhog Day. Now every February 2 my wife wakes me with I Got You Babe. We've been doing this for eleven years. I might break.",
       "dismiss": "Send help, Phil"
     }
+  ],
+  "2026-05-11": [
+    {
+      "type": "trivia",
+      "character": "Viking Man",
+      "folder": "Viking Man",
+      "sprite": "viking_man",
+      "dialogue": "TELL ME, MERCHANT! In Predator, what jungle environment does Dutch's team fight the alien in?",
+      "answers": [
+        "The Amazon",
+        "Central America",
+        "Vietnam",
+        "The Congo"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Policeman",
+      "folder": "Policeman",
+      "sprite": "policeman",
+      "dialogue": "Lethal Weapon — Riggs and Murtaugh's first names, please.",
+      "answers": [
+        "Mike and Joe",
+        "Martin and Roger",
+        "Frank and Lou",
+        "Sam and Ed"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Firefighter",
+      "folder": "Firefighter",
+      "sprite": "firefighter",
+      "dialogue": "Speed — what speed must the bus stay above to keep the bomb from detonating?",
+      "answers": [
+        "50 mph",
+        "55 mph",
+        "60 mph",
+        "65 mph"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Businessman",
+      "folder": "Businessman",
+      "sprite": "businessman",
+      "dialogue": "High Noon — the whole movie unfolds in real time. How long does the sheriff have before the bad guys arrive?",
+      "answers": [
+        "One hour",
+        "Two hours",
+        "Three hours",
+        "Until sundown"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "hint",
+      "character": "Viking Kid Boy",
+      "folder": "Viking Kid Boy",
+      "sprite": "viking_kid_boy",
+      "dialogue": "I WANT THE BIG GUY MOVIES!! The Austrian one with the muscles!! He says I'LL BE BACK and stuff explodes!!",
+      "hintCategory": "Schwarzenegger Action",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Old Man",
+      "folder": "Old Man",
+      "sprite": "old_man",
+      "dialogue": "Take me back to the eighties — neon, mullets, two cops who hate each other but get the job done. Cassette tape soundtrack.",
+      "hintCategory": "80s Cop Action",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Businessman",
+      "folder": "Businessman",
+      "sprite": "businessman",
+      "dialogue": "Movies where the whole thing goes down ON or IN a moving vehicle — bus, plane, ship, train. The vehicle IS the setting.",
+      "hintCategory": "Action on a Vehicle",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "folder": "Joker",
+      "sprite": "joker",
+      "dialogue": "Why did the action hero refuse the elevator? Because he ALWAYS takes the STAIRS — preferably while it's exploding! Cinema 101!",
+      "dismiss": "Get to da choppa"
+    },
+    {
+      "type": "story",
+      "character": "Farmer",
+      "folder": "Farmer",
+      "sprite": "farmer",
+      "dialogue": "Tried to do the Predator handshake with the foreman at work. He did NOT know the reference. I'm Bill Duke in my heart.",
+      "dismiss": "Underappreciated"
+    },
+    {
+      "type": "story",
+      "character": "Punk Woman",
+      "folder": "Punk Woman",
+      "sprite": "punk_woman",
+      "dialogue": "Saw Die Hard at twelve and decided yippee-ki-yay was my new catchphrase. Got sent to the principal's office TWICE. Worth it.",
+      "dismiss": "Welcome to the party"
+    }
+  ],
+  "2026-05-12": [
+    {
+      "type": "trivia",
+      "character": "Viking Kid Boy",
+      "folder": "Viking Kid Boy",
+      "sprite": "viking_kid_boy",
+      "dialogue": "BACK TO THE FUTURE PART II!! What year does Marty travel forward to?",
+      "answers": [
+        "2015",
+        "2020",
+        "2025",
+        "2030"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Businessman",
+      "folder": "Businessman",
+      "sprite": "businessman",
+      "dialogue": "1998 had TWO killer-asteroid movies. Deep Impact and which other?",
+      "answers": [
+        "Asteroid Hunter",
+        "Armageddon",
+        "Doomsday",
+        "Impact"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Bride",
+      "folder": "Bride",
+      "sprite": "bride",
+      "dialogue": "The Parent Trap (1998) — what's the name of BOTH twins played by Lindsay Lohan?",
+      "answers": [
+        "Annie and Hallie",
+        "Susan and Sharon",
+        "Sarah and Sophie",
+        "Anna and Holly"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Farmer",
+      "folder": "Farmer",
+      "sprite": "farmer",
+      "dialogue": "Fargo was directed by the Coen Brothers. What state is most of it set in?",
+      "answers": [
+        "Wisconsin",
+        "North Dakota",
+        "Minnesota",
+        "Iowa"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "hint",
+      "character": "Knight",
+      "folder": "Knight",
+      "sprite": "knight",
+      "dialogue": "I seek tales bearing a NUMBER in their title — the second, the third, the continuing saga! Sequels by digit, not by subtitle.",
+      "hintCategory": "Movies with Numerical Sequels (2, 3, etc.)",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Blue Haired Woman",
+      "folder": "Blue Haired Woman",
+      "sprite": "blue_haired_woman",
+      "dialogue": "Looking for those eerie pairs — two studios released basically the SAME movie in the same year. Volcanoes, asteroids, ant films, the works.",
+      "hintCategory": "Twin Movies: Released Same Year, Similar Plots",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Punk Man",
+      "folder": "Punk Man",
+      "sprite": "punk_men",
+      "dialogue": "I want movies where TWO different actors play the SAME character. Body swap, twin reveal, face-changing surgery — whatever the gimmick.",
+      "hintCategory": "Films Where Two Actors Play the Same Character",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "folder": "Joker",
+      "sprite": "joker",
+      "dialogue": "Why are twin movies released the same year? Because two studios WATCHED each other's pitch meetings! Hollywood, you sneaky duplicators!",
+      "dismiss": "Industry secret"
+    },
+    {
+      "type": "story",
+      "character": "Chef",
+      "folder": "Chef",
+      "sprite": "chef",
+      "dialogue": "Tried to make TWO of every dish on Tuesday for theme night. Got halfway through prep and realized I'd just doubled my hours. Sundown special, my mistake.",
+      "dismiss": "Lesson learned"
+    },
+    {
+      "type": "story",
+      "character": "Firefighter",
+      "folder": "Firefighter",
+      "sprite": "firefighter",
+      "dialogue": "Saw The Parent Trap and Dead Ringers in the same week. Cried at one, slept with the lights on after the other. Both feature twins, both legendary.",
+      "dismiss": "Range of emotions"
+    }
   ]
 }
