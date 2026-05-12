@@ -8181,5 +8181,768 @@
       "dialogue": "Saw The Parent Trap and Dead Ringers in the same week. Cried at one, slept with the lights on after the other. Both feature twins, both legendary.",
       "dismiss": "Range of emotions"
     }
+  ],
+  "2026-05-13": [
+    {
+      "type": "trivia",
+      "character": "Joker",
+      "folder": "Joker",
+      "sprite": "joker",
+      "dialogue": "THE MASK! Stanley Ipkiss puts on a green mask carved by what Norse trickster god?",
+      "answers": [
+        "Loki",
+        "Thor",
+        "Odin",
+        "Hel"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Woman",
+      "folder": "Punk Woman",
+      "sprite": "punk_woman",
+      "dialogue": "Ace Ventura is a detective for WHICH clientele, exactly?",
+      "answers": [
+        "Cheating spouses",
+        "Stolen cars",
+        "Pets",
+        "Missing kids"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Businessman",
+      "folder": "Businessman",
+      "sprite": "businessman",
+      "dialogue": "The Big Lebowski — what is The Dude's drink of choice?",
+      "answers": [
+        "Old Fashioned",
+        "Negroni",
+        "White Russian",
+        "Manhattan"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Old Man",
+      "folder": "Old Man",
+      "sprite": "old_man",
+      "dialogue": "Federico Fellini directed which of these, also known by a fraction?",
+      "answers": [
+        "La Dolce Vita",
+        "8½",
+        "Amarcord",
+        "La Strada"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "hint",
+      "character": "Goblin Kid",
+      "folder": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "dialogue": "I want the RUBBER-FACE GUY! The one who CAN'T STOP MAKING FACES!! Talks out his butt!!",
+      "hintCategory": "Jim Carrey Vehicles",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Punk Man",
+      "folder": "Punk Man",
+      "sprite": "punk_men",
+      "dialogue": "Looking for the weird ones — slacker comedies, sun-baked, set right here in LA. Bowling, freeways, palm trees, lowlifes.",
+      "hintCategory": "Cult Comedies Set in Los Angeles",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Old Woman",
+      "folder": "Old Woman",
+      "sprite": "old_woman",
+      "dialogue": "Pardon, dearie, I'm after the international pictures with a number tucked into the title — subtitles and all.",
+      "hintCategory": "Movies with Numbers in Foreign Language Titles",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "folder": "Joker",
+      "sprite": "joker",
+      "dialogue": "Why did The Mask take up bowling? He had a STRIKE-ing personality! SS-SS-SS-SOMEBODY STOP ME!",
+      "dismiss": "Roll credits"
+    },
+    {
+      "type": "story",
+      "character": "Chef",
+      "folder": "Chef",
+      "sprite": "chef",
+      "dialogue": "Tried to make a White Russian on a Wednesday. Came out fine. Then I rolled a strike at Tuesday night league. The Dude abides.",
+      "dismiss": "Abide"
+    },
+    {
+      "type": "story",
+      "character": "Blonde Woman",
+      "folder": "Blonde Woman",
+      "sprite": "blonde_woman",
+      "dialogue": "Watched Bowfinger and now my coworker thinks every shot at lunch is \"Kit Ramsey reacting.\" We don't even have a camera.",
+      "dismiss": "Method acting"
+    }
+  ],
+  "2026-05-14": [
+    {
+      "type": "trivia",
+      "character": "Knight",
+      "folder": "Knight",
+      "sprite": "knight",
+      "dialogue": "Forrest Gump's mother famously said life is like what?",
+      "answers": [
+        "A river",
+        "A box of chocolates",
+        "A long road",
+        "A summer storm"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Bride",
+      "folder": "Bride",
+      "sprite": "bride",
+      "dialogue": "Heathers — what drain cleaner does Veronica unwittingly mix into Heather Chandler's morning drink?",
+      "answers": [
+        "Drano",
+        "Liquid-Plumr",
+        "Big Blue",
+        "Easy-Off"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Firefighter",
+      "folder": "Firefighter",
+      "sprite": "firefighter",
+      "dialogue": "Apollo 13 — what now-iconic line does Jim Lovell radio to Mission Control?",
+      "answers": [
+        "\"We have a situation\"",
+        "\"Houston, we have a problem\"",
+        "\"Mayday, mayday\"",
+        "\"Abort the mission\""
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Viking Man",
+      "folder": "Viking Man",
+      "sprite": "viking_man",
+      "dialogue": "TELL ME, MERCHANT! In The Breakfast Club, what day of the week is the detention?",
+      "answers": [
+        "Friday",
+        "Saturday",
+        "Sunday",
+        "Monday"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "hint",
+      "character": "Blonde Man",
+      "folder": "Blonde Man",
+      "sprite": "blonde_man",
+      "dialogue": "Looking for that everyman — the one who plays a kid in a man's body, a stranded astronaut, a Vietnam vet. Big-hearted leads.",
+      "hintCategory": "Tom Hanks Starrer",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Punk Kid Boy",
+      "folder": "Punk Kid Boy",
+      "sprite": "punk_kid_boy",
+      "dialogue": "Yo dude, give me high school NIGHTMARE movies. Cliques, cruelty, prom from hell, that kind of vibe.",
+      "hintCategory": "High School Is Hell",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Policeman",
+      "folder": "Policeman",
+      "sprite": "policeman",
+      "dialogue": "Pulling up films set in San Francisco — the hills, the fog, the bridge in the background. Cable cars optional.",
+      "hintCategory": "Set in San Francisco",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Old Woman",
+      "folder": "Old Woman",
+      "sprite": "old_woman",
+      "dialogue": "Saw Mrs. Doubtfire again last night and I tell you, that man could play a granny better than I play me.",
+      "dismiss": "Hello dear"
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "folder": "Joker",
+      "sprite": "joker",
+      "dialogue": "Why did Forrest Gump take up jogging? Because life is like a box of chocolates — you eat them ALL and have to BURN IT OFF!",
+      "dismiss": "Run Forrest run"
+    },
+    {
+      "type": "story",
+      "character": "Punk Woman",
+      "folder": "Punk Woman",
+      "sprite": "punk_woman",
+      "dialogue": "My older brother quoted The Breakfast Club at me my entire senior year. \"Don't you forget about me.\" Bro, I have not.",
+      "dismiss": "Don't you forget"
+    }
+  ],
+  "2026-05-15": [
+    {
+      "type": "trivia",
+      "character": "Viking Man",
+      "folder": "Viking Man",
+      "sprite": "viking_man",
+      "dialogue": "TELL ME, MORTAL! In Halloween, who is the killer stalking Haddonfield?",
+      "answers": [
+        "Jason Voorhees",
+        "Freddy Krueger",
+        "Michael Myers",
+        "Ghostface"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Man",
+      "folder": "Punk Man",
+      "sprite": "punk_men",
+      "dialogue": "Scream — what mask does the killer wear?",
+      "answers": [
+        "William Shatner",
+        "A hockey mask",
+        "Ghostface",
+        "A burlap sack"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Bride",
+      "folder": "Bride",
+      "sprite": "bride",
+      "dialogue": "The Lost Boys — what fictional California town is overrun with vampires?",
+      "answers": [
+        "Santa Cruz",
+        "Santa Carla",
+        "Santa Rosa",
+        "Santa Clara"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Goblin Kid",
+      "folder": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "dialogue": "EVIL DEAD!! Who directed it before he ever made a Spider-Man movie?",
+      "answers": [
+        "Peter Jackson",
+        "Sam Raimi",
+        "John Carpenter",
+        "Wes Craven"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "hint",
+      "character": "Knight",
+      "folder": "Knight",
+      "sprite": "knight",
+      "dialogue": "I seek the works of one director — the master of dream-stalkers and meta-slashers. He hath made many a horror.",
+      "hintCategory": "Wes Craven Directed",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Ninja",
+      "folder": "Ninja",
+      "sprite": "ninja",
+      "dialogue": "Looking for the bloodsuckers... fangs, nightcrawlers, eternal life with bite. Vampire pictures, every one.",
+      "hintCategory": "Vampire Movies",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Old Woman",
+      "folder": "Old Woman",
+      "sprite": "old_woman",
+      "dialogue": "Dearie, pull me the ones set on All Hallows' Eve itself — pumpkin lanterns, costumes, things that go bump.",
+      "hintCategory": "Takes Place on Halloween Night",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "folder": "Joker",
+      "sprite": "joker",
+      "dialogue": "Why don't vampires watch midnight movies? They've seen the original cut. Live. In person. With the cast!",
+      "dismiss": "Old jokes never die"
+    },
+    {
+      "type": "story",
+      "character": "Farmer",
+      "folder": "Farmer",
+      "sprite": "farmer",
+      "dialogue": "Tried to host a midnight screening of The Evil Dead in the barn. Cat knocked over the projector. Movie kept playing on the cow.",
+      "dismiss": "Country cinema"
+    },
+    {
+      "type": "story",
+      "character": "Punk Kid Boy",
+      "folder": "Punk Kid Boy",
+      "sprite": "punk_kid_boy",
+      "dialogue": "Yo my mom let me watch The Lost Boys when I was nine and now I won't go to the beach after dark. Worth it though.",
+      "dismiss": "Stay sun-side"
+    }
+  ],
+  "2026-05-16": [
+    {
+      "type": "trivia",
+      "character": "Blonde Kid Girl",
+      "folder": "Blonde Kid Girl",
+      "sprite": "blonde_kid_girl",
+      "dialogue": "In The Lion King, what does \"Hakuna Matata\" mean?",
+      "answers": [
+        "Long live the king",
+        "No worries",
+        "Circle of life",
+        "Be prepared"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Joker",
+      "folder": "Joker",
+      "sprite": "joker",
+      "dialogue": "Hook — Robin Williams plays a grown-up version of WHICH eternally-young hero?",
+      "answers": [
+        "Robin Hood",
+        "Peter Pan",
+        "King Arthur",
+        "Aladdin"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Old Man",
+      "folder": "Old Man",
+      "sprite": "old_man",
+      "dialogue": "E.T. famously wants to phone WHERE?",
+      "answers": [
+        "Mom",
+        "Home",
+        "Help",
+        "Hello"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Knight Kid",
+      "folder": "Knight Kid",
+      "sprite": "knight_kid",
+      "dialogue": "Stop-motion clay chickens! In Chicken Run, where are the hens trying to escape from?",
+      "answers": [
+        "A petting zoo",
+        "Tweedy's Farm",
+        "Mrs. Bun's pies",
+        "The county fair"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "hint",
+      "character": "Blonde Woman",
+      "folder": "Blonde Woman",
+      "sprite": "blonde_woman",
+      "dialogue": "I want the Disney golden-era animated musicals — mermaids, beasts, lions, magic carpets. The ones with the SONGS.",
+      "hintCategory": "Disney Renaissance",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Chef",
+      "folder": "Chef",
+      "sprite": "chef",
+      "dialogue": "Plates please, the ones built frame-by-frame in clay and puppet. Painstaking work, like glazing one cookie at a time.",
+      "hintCategory": "Stop-Motion Animation",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Goblin Kid",
+      "folder": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "dialogue": "I WANT THE GENIE GUY!! The one who DOES ALL THE VOICES and laughs really loud and is SO FAST!!",
+      "hintCategory": "Movies Featuring Robin Williams",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Old Woman",
+      "folder": "Old Woman",
+      "sprite": "old_woman",
+      "dialogue": "Took my grandbaby to a Saturday matinee revival of The NeverEnding Story. He hasn't stopped asking about Falkor since. Won't pet a dog without naming it.",
+      "dismiss": "Bedtime story"
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "folder": "Joker",
+      "sprite": "joker",
+      "dialogue": "Why was the Goblin King good at hiring? He had a great LABYRINTH for resumes! Bowie joke! BOWIE JOKE!",
+      "dismiss": "Magic dance"
+    },
+    {
+      "type": "story",
+      "character": "Bride",
+      "folder": "Bride",
+      "sprite": "bride",
+      "dialogue": "Picked our wedding song from The Princess Bride. Officiant said \"as you wish\" instead of \"I do\" by accident. Best day of my life.",
+      "dismiss": "True love"
+    }
+  ],
+  "2026-05-17": [
+    {
+      "type": "trivia",
+      "character": "Old Woman",
+      "folder": "Old Woman",
+      "sprite": "old_woman",
+      "dialogue": "Sophie's Choice — what unbearable choice is Sophie forced to make?",
+      "answers": [
+        "Which child lives",
+        "Which parent to save",
+        "Whether to flee",
+        "Who to marry"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Businessman",
+      "folder": "Businessman",
+      "sprite": "businessman",
+      "dialogue": "Glengarry Glen Ross — what does \"ABC\" stand for in the famous speech?",
+      "answers": [
+        "Always Be Closing",
+        "Acts Before Coffee",
+        "Aim Be Calm",
+        "Avoid Bad Clients"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Knight",
+      "folder": "Knight",
+      "sprite": "knight",
+      "dialogue": "AMADEUS! What is the name of Mozart's scheming court rival?",
+      "answers": [
+        "Hummel",
+        "Salieri",
+        "Haydn",
+        "Beethoven"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Firefighter",
+      "folder": "Firefighter",
+      "sprite": "firefighter",
+      "dialogue": "Rain Man — which Las Vegas casino do Charlie and Raymond hit to count cards?",
+      "answers": [
+        "The Sands",
+        "Caesars Palace",
+        "The Mirage",
+        "The Sahara"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "hint",
+      "character": "Bride",
+      "folder": "Bride",
+      "sprite": "bride",
+      "dialogue": "I want the Streep ones — the accent showcase, the prestige picture, the kind that gets nominated every year.",
+      "hintCategory": "Meryl Streep Movies",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Old Man",
+      "folder": "Old Man",
+      "sprite": "old_man",
+      "dialogue": "Looking for movies adapted straight off the stage — long monologues, single rooms, theater-trained casts.",
+      "hintCategory": "Adapted from Plays",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Blue Haired Woman",
+      "folder": "Blue Haired Woman",
+      "sprite": "blue_haired_woman",
+      "dialogue": "Pull the ones that broke our hearts about the epidemic — characters lost to AIDS, told with grace and grief.",
+      "hintCategory": "Characters Die of AIDS",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "folder": "Joker",
+      "sprite": "joker",
+      "dialogue": "Why don't Oscar speeches end on time? Because there's ALWAYS one more producer to thank! Cue the music!",
+      "dismiss": "Wrap it up"
+    },
+    {
+      "type": "story",
+      "character": "Chef",
+      "folder": "Chef",
+      "sprite": "chef",
+      "dialogue": "Watched Amadeus and now I refuse to plate anything without dramatic music. The dishwasher's sick of the Requiem.",
+      "dismiss": "Magnifico"
+    },
+    {
+      "type": "story",
+      "character": "Punk Woman",
+      "folder": "Punk Woman",
+      "sprite": "punk_woman",
+      "dialogue": "My theater teacher made us recite the \"Always Be Closing\" speech in CHARACTER. I memorized it for SATs. Did not help.",
+      "dismiss": "Coffee's for closers"
+    }
+  ],
+  "2026-05-18": [
+    {
+      "type": "trivia",
+      "character": "Policeman",
+      "folder": "Policeman",
+      "sprite": "policeman",
+      "dialogue": "Die Hard — what is Hans Gruber's nationality?",
+      "answers": [
+        "Russian",
+        "German",
+        "Austrian",
+        "Swiss"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Viking Man",
+      "folder": "Viking Man",
+      "sprite": "viking_man",
+      "dialogue": "TELL ME, MORTAL! In Rocky IV, who is Rocky's towering Soviet opponent?",
+      "answers": [
+        "Tommy Gunn",
+        "Apollo Creed",
+        "Ivan Drago",
+        "Clubber Lang"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Man",
+      "folder": "Punk Man",
+      "sprite": "punk_men",
+      "dialogue": "Speed — what is the minimum speed the bus must maintain or the bomb detonates?",
+      "answers": [
+        "45 mph",
+        "50 mph",
+        "55 mph",
+        "60 mph"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Firefighter",
+      "folder": "Firefighter",
+      "sprite": "firefighter",
+      "dialogue": "Predator — Dutch's commando team is dropped into what kind of environment?",
+      "answers": [
+        "Arctic tundra",
+        "Australian outback",
+        "Central American jungle",
+        "African savanna"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "hint",
+      "character": "Viking Man",
+      "folder": "Viking Man",
+      "sprite": "viking_man",
+      "dialogue": "I SEEK THE ITALIAN STALLION!! Boxing, headbands, mountain ranges, drawn-out training! GIVE ME STALLONE!",
+      "hintCategory": "Stallone's Greatest Hits",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Policeman",
+      "folder": "Policeman",
+      "sprite": "policeman",
+      "dialogue": "Pull the rogue badge ones — the cop who throws away the rulebook. Bad lieutenants, partner buddy stuff, the whole genre.",
+      "hintCategory": "Cops Gone Rogue",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Old Man",
+      "folder": "Old Man",
+      "sprite": "old_man",
+      "dialogue": "Hand me the ones with a director named John — McTiernan, Woo, take your pick. Lots of Johns in the action aisle.",
+      "hintCategory": "Directed by a John",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "folder": "Joker",
+      "sprite": "joker",
+      "dialogue": "Why did the action hero refuse the elevator? He ALWAYS takes the stairs — preferably while they're EXPLODING!",
+      "dismiss": "Yippee-ki-yay"
+    },
+    {
+      "type": "story",
+      "character": "Punk Woman",
+      "folder": "Punk Woman",
+      "sprite": "punk_woman",
+      "dialogue": "My boyfriend yelled \"GET TO THE CHOPPA\" at the Uber driver. We did not get a five-star rating.",
+      "dismiss": "Choppa denied"
+    },
+    {
+      "type": "story",
+      "character": "Farmer",
+      "folder": "Farmer",
+      "sprite": "farmer",
+      "dialogue": "Tried to bench-press hay bales after Rocky IV. Pulled something in my back. Apollo Creed wouldn't have approved.",
+      "dismiss": "No pain no gain"
+    }
+  ],
+  "2026-05-19": [
+    {
+      "type": "trivia",
+      "character": "Blonde Man",
+      "folder": "Blonde Man",
+      "sprite": "blonde_man",
+      "dialogue": "Beverly Hills Cop — what city is Axel Foley's home precinct?",
+      "answers": [
+        "Chicago",
+        "New York",
+        "Detroit",
+        "Cleveland"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Bride",
+      "folder": "Bride",
+      "sprite": "bride",
+      "dialogue": "Dead Ringers — what kind of doctors are Jeremy Irons' identical twins?",
+      "answers": [
+        "Surgeons",
+        "Gynecologists",
+        "Psychiatrists",
+        "Cardiologists"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Kid Boy",
+      "folder": "Punk Kid Boy",
+      "sprite": "punk_kid_boy",
+      "dialogue": "Yo, Ferris Bueller skips school and tears around WHICH city?",
+      "answers": [
+        "New York",
+        "Los Angeles",
+        "Chicago",
+        "Boston"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "trivia",
+      "character": "Old Man",
+      "folder": "Old Man",
+      "sprite": "old_man",
+      "dialogue": "Dr. Strangelove — how many distinct roles does Peter Sellers play?",
+      "answers": [
+        "One",
+        "Two",
+        "Three",
+        "Four"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "hint",
+      "character": "Viking Kid Boy",
+      "folder": "Viking Kid Boy",
+      "sprite": "viking_kid_boy",
+      "dialogue": "I WANT THE ONES THAT GOT A PART 2!! Original movie, then a sequel with a NUMBER on it!! Easy peasy!!",
+      "hintCategory": "Spawned a Numbered Sequel",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Bride",
+      "folder": "Bride",
+      "sprite": "bride",
+      "dialogue": "Bring me the twin ones — identical leads, mirror image plots, mistaken identities. Doubles all the way down.",
+      "hintCategory": "Twin Protagonists or Lookalikes",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Businessman",
+      "folder": "Businessman",
+      "sprite": "businessman",
+      "dialogue": "Pulling the compressed-timeline ones — story starts and ends in a single day or night. No time-jumps, no multi-week arcs.",
+      "hintCategory": "Story Unfolds Over a Single Day or Night",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "folder": "Joker",
+      "sprite": "joker",
+      "dialogue": "Why did the twin gynecologist refuse a partner? He already had a SECOND OPINION. Cronenberg humor!",
+      "dismiss": "Take two"
+    },
+    {
+      "type": "story",
+      "character": "Chef",
+      "folder": "Chef",
+      "sprite": "chef",
+      "dialogue": "Made the same dish twice on Tuesday for the Double Vision menu. Customers loved it. Then I made it AGAIN by accident on Wednesday.",
+      "dismiss": "Twice the trouble"
+    },
+    {
+      "type": "story",
+      "character": "Old Woman",
+      "folder": "Old Woman",
+      "sprite": "old_woman",
+      "dialogue": "Showed my granddaughters The Parent Trap and they spent the weekend trying to switch lives. Their mother was not amused.",
+      "dismiss": "Switcheroo"
+    }
   ]
 }

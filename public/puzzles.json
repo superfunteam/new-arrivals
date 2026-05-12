@@ -23401,20 +23401,19 @@
           "color": "#2196F3",
           "movies": [
             {
-              "title": "Back to the Future Part II",
+              "title": "Indiana Jones and the Last Crusade",
               "year": 1989,
-              "tmdb_id": 165,
-              "summary": "Marty and Doc are at it again as the time-traveling duo head to 2015 to nip some McFly family woes in the bud. But things go awry thanks to bully Biff Tannen and a pesky sports almanac. In a last-ditch attempt to set things straight, Marty finds himself bound for 1955 and face to face with his teenage parents -- again.",
+              "tmdb_id": 89,
+              "summary": "When Dr. Henry Jones Sr. suddenly goes missing while pursuing the Holy Grail, eminent archaeologist Indiana Jones must follow in his father's footsteps and stop the Nazis from recovering the power of eternal life.",
               "genres": [
                 "Adventure",
-                "Comedy",
-                "Science Fiction"
+                "Action"
               ],
-              "director": "Robert Zemeckis",
+              "director": "Steven Spielberg",
               "stars": [
-                "Michael J. Fox",
-                "Christopher Lloyd",
-                "Lea Thompson"
+                "Harrison Ford",
+                "Sean Connery",
+                "Denholm Elliott"
               ]
             },
             {
@@ -23471,43 +23470,40 @@
           ]
         },
         {
-          "name": "Two Directors Co-Directed These Films",
+          "name": "Co-Directed by a Sibling Duo",
           "difficulty": 4,
           "color": "#9C27B0",
           "movies": [
             {
-              "title": "Gremlins 2: The New Batch",
-              "year": 1990,
-              "tmdb_id": 928,
-              "summary": "Young sweethearts Billy and Kate move to the Big Apple, land jobs in a high-tech office park and soon reunite with the friendly and lovable Gizmo. But a series of accidents creates a whole new generation of Gremlins. The situation worsens when the devilish green creatures invade a top-secret laboratory and develop genetically altered powers, making them even harder to destroy!",
+              "title": "Raising Arizona",
+              "year": 1987,
+              "tmdb_id": 378,
+              "summary": "When a childless couple - an ex-con and an ex-cop - decide to help themselves to one of another family's quintuplets, their lives become more complicated than they anticipated.",
               "genres": [
                 "Comedy",
-                "Horror",
-                "Fantasy"
+                "Crime"
               ],
-              "director": "Joe Dante",
+              "director": "Joel Coen",
               "stars": [
-                "Zach Galligan",
-                "Phoebe Cates",
-                "John Glover"
+                "Nicolas Cage",
+                "Holly Hunter",
+                "Trey Wilson"
               ]
             },
             {
-              "title": "RoboCop 2",
-              "year": 1990,
-              "tmdb_id": 5549,
-              "summary": "After a successful deployment of the RoboCop Law Enforcement unit, OCP sees its goal of urban pacification come closer and closer, but as this develops, a new narcotic known as \"Nuke\" invades the streets led by God-delirious leader Cane. As this menace grows, it may prove to be too much for Murphy to handle. OCP tries to replicate the success of the first unit, but ends up with failed prototypes with suicidal issues... until Dr. Faxx, a scientist straying away from OCP's path, uses Cane as the new subject for the RoboCop 2 project, a living God.",
+              "title": "The Big Lebowski",
+              "year": 1998,
+              "tmdb_id": 115,
+              "summary": "Jeffrey \"The Dude\" Lebowski, a Los Angeles slacker who only wants to bowl and drink white Russians, is mistaken for another Jeffrey Lebowski, a wheelchair-bound millionaire, and finds himself dragged into a strange series of events involving nihilists, adult film producers, ferrets, errant toes, and large sums of money.",
               "genres": [
-                "Action",
-                "Crime",
-                "Science Fiction",
-                "Thriller"
+                "Comedy",
+                "Crime"
               ],
-              "director": "Irvin Kershner",
+              "director": "Joel Coen",
               "stars": [
-                "Peter Weller",
-                "Nancy Allen",
-                "Tom Noonan"
+                "Jeff Bridges",
+                "John Goodman",
+                "Julianne Moore"
               ]
             },
             {
@@ -24651,28 +24647,26 @@
               ]
             },
             {
-              "title": "Aladdin",
-              "year": 1992,
-              "tmdb_id": 812,
-              "summary": "In the boorish city of Agrabah, kind-hearted street urchin Aladdin and Princess Jasmine fall in love, although she can only marry a prince. He and power-hungry Grand Vizier Jafar vie for a magic lamp that can fulfill their wishes.",
+              "title": "Mrs. Doubtfire",
+              "year": 1993,
+              "tmdb_id": 788,
+              "summary": "Loving father Daniel Hillard is devastated when his wife Miranda files for divorce, and the court rules that she should have sole custody of the kids. Determined to remain a part of their daily lives, he disguises himself as a Scottish nanny named Mrs. Doubtfire in order to be hired by his unsuspecting ex.",
               "genres": [
-                "Animation",
-                "Family",
-                "Adventure",
-                "Fantasy",
-                "Romance"
+                "Comedy",
+                "Drama",
+                "Family"
               ],
-              "director": "John Musker",
+              "director": "Chris Columbus",
               "stars": [
-                "Scott Weinger",
                 "Robin Williams",
-                "Linda Larkin"
+                "Sally Field",
+                "Pierce Brosnan"
               ]
             }
           ]
         },
         {
-          "name": "Title Character Never Speaks",
+          "name": "80s Family Fantasy Adventures",
           "difficulty": 4,
           "color": "#9C27B0",
           "movies": [
@@ -24713,37 +24707,37 @@
               ]
             },
             {
-              "title": "The Nightmare Before Christmas",
-              "year": 1993,
-              "tmdb_id": 9479,
-              "summary": "Tired of scaring humans every October 31 with the same old bag of tricks, Jack Skellington, the spindly king of Halloween Town, kidnaps Santa Claus and plans to deliver shrunken heads and other ghoulish gifts to children on Christmas morning. But as Christmas approaches, Jack's rag-doll girlfriend, Sally, tries to foil his misguided plans.",
+              "title": "Labyrinth",
+              "year": 1986,
+              "tmdb_id": 13597,
+              "summary": "Sixteen-year-old Sarah is forced to take care of her little brother, Toby, ruining her plans for the evening. While he's crying, she summons The Goblin King to take him away. When he disappears, Sarah must venture into a strange fantasy land and solve a labyrinth to save him.",
               "genres": [
+                "Adventure",
                 "Fantasy",
-                "Animation",
                 "Family"
               ],
-              "director": "Henry Selick",
+              "director": "Jim Henson",
               "stars": [
-                "Danny Elfman",
-                "Chris Sarandon",
-                "Catherine O'Hara"
+                "Jennifer Connelly",
+                "David Bowie",
+                "Toby Froud"
               ]
             },
             {
-              "title": "The Lion King",
-              "year": 1994,
-              "tmdb_id": 8587,
-              "summary": "Young lion prince Simba, eager to one day become king of the Pride Lands, grows up under the watchful eye of his father Mufasa; all the while his villainous uncle Scar conspires to take the throne for himself. Amid betrayal and tragedy, Simba must confront his past and find his rightful place in the Circle of Life.",
+              "title": "Willow",
+              "year": 1988,
+              "tmdb_id": 847,
+              "summary": "Willow Ufgood is a reluctant dwarf who must play a critical role in protecting a special baby from an evil queen in this sweeping fantasy-adventure. With a little help from the warrior Madmartigan and a clan of feisty Brownies, Willow and his fellowship battle the forces of darkness through dragon-infested waters and across snow-covered mountains, to a final confrontation at Nockmaar Castle.",
               "genres": [
-                "Animation",
-                "Family",
-                "Drama"
+                "Adventure",
+                "Fantasy",
+                "Action"
               ],
-              "director": "Roger Allers",
+              "director": "Ron Howard",
               "stars": [
-                "Matthew Broderick",
-                "Moira Kelly",
-                "Nathan Lane"
+                "Val Kilmer",
+                "Warwick Davis",
+                "Joanne Whalley"
               ]
             }
           ]
@@ -25340,42 +25334,42 @@
       "title": "Double Vision",
       "categories": [
         {
-          "name": "Movies with Numbered Sequels in the '80s",
+          "name": "Spawned a Numbered Sequel",
           "difficulty": 1,
           "color": "#4CAF50",
           "movies": [
             {
-              "title": "Aliens",
-              "year": 1986,
-              "tmdb_id": 679,
-              "summary": "Ripley, the sole survivor of the Nostromo's deadly encounter with the monstrous Alien, returns to Earth after drifting through space in hypersleep for 57 years. Although her story is initially met with skepticism, she agrees to accompany a team of Colonial Marines back to LV-426.",
+              "title": "Beverly Hills Cop",
+              "year": 1984,
+              "tmdb_id": 90,
+              "summary": "Detective Axel Foley travels to Beverly Hills to investigate the murder of one of his close friends. Soon Foley knows he's up against a brutal crime lord, and matters get even more complicated when the Beverly Hills police try to keep him off the case.",
               "genres": [
                 "Action",
-                "Thriller",
-                "Science Fiction"
+                "Comedy",
+                "Crime"
               ],
-              "director": "James Cameron",
+              "director": "Martin Brest",
               "stars": [
-                "Sigourney Weaver",
-                "Carrie Henn",
-                "Michael Biehn"
+                "Eddie Murphy",
+                "Judge Reinhold",
+                "John Ashton"
               ]
             },
             {
-              "title": "The Terminator",
+              "title": "The Karate Kid",
               "year": 1984,
-              "tmdb_id": 218,
-              "summary": "In the post-apocalyptic future, reigning tyrannical supercomputers teleport a cyborg assassin known as the \"Terminator\" back to 1984 to kill Sarah Connor, whose unborn son is destined to lead insurgents against 21st century mechanical hegemony. Meanwhile, the human-resistance movement dispatches a lone warrior to safeguard Sarah. Can he stop the virtually indestructible killing machine?",
+              "tmdb_id": 1885,
+              "summary": "Daniel LaRusso arrives in California from the East Coast with his mother. He finds himself the target of a group of bullies who study karate at the Cobra Kai dojo. Luckily Daniel befriends Mr. Miyagi, an unassuming repairman who just happens to be a martial arts master himself.",
               "genres": [
                 "Action",
-                "Thriller",
-                "Science Fiction"
+                "Drama",
+                "Family"
               ],
-              "director": "James Cameron",
+              "director": "John G. Avildsen",
               "stars": [
-                "Arnold Schwarzenegger",
-                "Michael Biehn",
-                "Linda Hamilton"
+                "Ralph Macchio",
+                "Pat Morita",
+                "Elisabeth Shue"
               ]
             },
             {
@@ -25486,7 +25480,7 @@
           ]
         },
         {
-          "name": "Takes Place Over Exactly Two Days",
+          "name": "Story Unfolds Over a Single Day or Night",
           "difficulty": 3,
           "color": "#2196F3",
           "movies": [
@@ -25506,20 +25500,18 @@
               ]
             },
             {
-              "title": "The Terminator",
-              "year": 1984,
-              "tmdb_id": 218,
-              "summary": "In the post-apocalyptic future, reigning tyrannical supercomputers teleport a cyborg assassin known as the \"Terminator\" back to 1984 to kill Sarah Connor, whose unborn son is destined to lead insurgents against 21st century mechanical hegemony. Meanwhile, the human-resistance movement dispatches a lone warrior to safeguard Sarah. Can he stop the virtually indestructible killing machine?",
+              "title": "Dazed and Confused",
+              "year": 1993,
+              "tmdb_id": 9571,
+              "summary": "The adventures of high school and junior high students on the last day of school in May 1976.",
               "genres": [
-                "Action",
-                "Thriller",
-                "Science Fiction"
+                "Comedy"
               ],
-              "director": "James Cameron",
+              "director": "Richard Linklater",
               "stars": [
-                "Arnold Schwarzenegger",
-                "Michael Biehn",
-                "Linda Hamilton"
+                "Jason London",
+                "Wiley Wiggins",
+                "Matthew McConaughey"
               ]
             },
             {
@@ -25540,20 +25532,20 @@
               ]
             },
             {
-              "title": "Aliens",
-              "year": 1986,
-              "tmdb_id": 679,
-              "summary": "Ripley, the sole survivor of the Nostromo's deadly encounter with the monstrous Alien, returns to Earth after drifting through space in hypersleep for 57 years. Although her story is initially met with skepticism, she agrees to accompany a team of Colonial Marines back to LV-426.",
+              "title": "Dog Day Afternoon",
+              "year": 1975,
+              "tmdb_id": 968,
+              "summary": "A man robs a bank to pay for his lover's operation; it turns into a hostage situation and a media circus.",
               "genres": [
-                "Action",
-                "Thriller",
-                "Science Fiction"
+                "Crime",
+                "Drama",
+                "Thriller"
               ],
-              "director": "James Cameron",
+              "director": "Sidney Lumet",
               "stars": [
-                "Sigourney Weaver",
-                "Carrie Henn",
-                "Michael Biehn"
+                "Al Pacino",
+                "John Cazale",
+                "Charles Durning"
               ]
             }
           ]
@@ -25582,19 +25574,19 @@
               ]
             },
             {
-              "title": "Dead Ringers",
+              "title": "Coming to America",
               "year": 1988,
-              "tmdb_id": 9540,
-              "summary": "Elliot, a successful gynecologist, works at the same practice as his identical twin, Beverly. Elliot is attracted to many of his patients and has affairs with them. When he inevitably loses interest, he will give the woman over to Beverly, the meeker of the two, without the woman knowing the difference. Beverly falls hard for one of the patients, Claire, but when she inadvertently deceives him, he slips into a state of madness.",
+              "tmdb_id": 9602,
+              "summary": "An African prince decides it's time for him to find a princess, and his mission leads him and his most loyal friend to Queens, New York. In disguise as an impoverished immigrant, the pampered prince quickly finds himself a new job, new friends, new digs, new enemies and lots of trouble.",
               "genres": [
-                "Thriller",
-                "Horror"
+                "Comedy",
+                "Romance"
               ],
-              "director": "David Cronenberg",
+              "director": "John Landis",
               "stars": [
-                "Jeremy Irons",
-                "Geneviève Bujold",
-                "Heidi von Palleske"
+                "Eddie Murphy",
+                "Arsenio Hall",
+                "James Earl Jones"
               ]
             },
             {
