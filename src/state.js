@@ -10,6 +10,11 @@ const KEY_GAME_SCORES = 'newArrivals_gameScores';
 const KEY_NOTIFY = 'newArrivals_notify';
 const KEY_EXTRA_SPENT = 'newArrivals_extraSpent';
 const KEY_EXTRA_PLAYED = 'newArrivals_extraPlayed';
+// One-shot eviction flag for the 2026-05-12 duplicate-shelf fix. Any save
+// from that puzzle was made against the buggy version (movies appearing in
+// two categories), so the solved-category names may reference movies that
+// no longer exist at the saved row positions. We nuke it once per user.
+const KEY_EVICT_2026_05_12 = 'newArrivals_evicted_2026_05_12_v1';
 
 /**
  * Get the current "puzzle date" based on Central Time (America/Chicago).
@@ -80,6 +85,23 @@ export function saveGameState(serialized) {
  */
 export function loadGameState() {
   try {
+    if (!localStorage.getItem(KEY_EVICT_2026_05_12)) {
+      const raw = localStorage.getItem(KEY_STATE);
+      if (raw) {
+        try {
+          const saved = JSON.parse(raw);
+          if (saved && saved.puzzleId === '2026-05-12') {
+            localStorage.removeItem(KEY_STATE);
+            localStorage.removeItem(KEY_TODAY);
+          }
+        } catch (_) {
+          // Corrupt saved state — let it fall through; the version flag below
+          // will still get set so we don't re-check forever.
+        }
+      }
+      localStorage.setItem(KEY_EVICT_2026_05_12, '1');
+    }
+
     const savedDate = localStorage.getItem(KEY_TODAY);
     if (savedDate !== getPuzzleDate()) return null;
 

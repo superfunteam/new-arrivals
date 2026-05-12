@@ -663,6 +663,14 @@ async function startGameSession(puzzle, mode, puzzlesData) {
         setSpineColor(box, parseInt(cat.color.replace('#', ''), 16));
       });
 
+      // Restore the colored "SOLVED" label band — without this the locked
+      // row is visually indistinguishable from an unsolved one and rejected
+      // taps look like a bug.
+      const labelCenter = new THREE.Vector3(0, rowPositions[catIdx], z);
+      labelCenter.project(camera);
+      const labelScreenY = (-labelCenter.y * 0.5 + 0.5) * renderer.domElement.clientHeight;
+      addSolvedRowLabel(cat.name, cat.color, labelScreenY);
+
       // Remove these boxes from unsolved list
       unsolvedBoxes = unsolvedBoxes.filter((b) => !catMovieIds.has(b.userData.movie.tmdb_id));
     });
