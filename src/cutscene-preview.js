@@ -34,37 +34,31 @@ renderer.toneMappingExposure = 1.0;
 renderer.setClearColor(0x05060a);
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.Fog(0x05060a, 12, 60);
+// Fog ranges and light distances are configured AFTER FBX load (we don't
+// know the model's scale until we measure its bounding box).
 
-const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 200);
-camera.position.set(0, 4, 18);
-camera.lookAt(0, 2, 0);
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 100000);
+camera.position.set(0, 1000, 12000);
+camera.lookAt(0, 0, 0);
 
-// Optional hand-fly camera while iterating on waypoints.
 const orbit = new OrbitControls(camera, canvas);
 orbit.enabled = false;
-orbit.target.set(0, 1.5, 0);
 
-// Lighting recipe — chosen to roughly match the reference renders:
-//  - low ambient so interior contrast pops
-//  - warm directional sun-from-above for shelf falloff
-//  - magenta/cyan accent on the storefront sign
-const ambient = new THREE.AmbientLight(0xfff5e6, 0.35);
-scene.add(ambient);
+// Lighting — these are placeholders; intensities and positions are rescaled
+// to the FBX's actual bounding box in the loader callback (the model turned
+// out to be ~12000 units across, so point lights need huge ranges).
+const hemi = new THREE.HemisphereLight(0xffe9c2, 0x202028, 0.55);
+scene.add(hemi);
 
-const overhead = new THREE.DirectionalLight(0xfff0d4, 0.9);
-overhead.position.set(2, 12, 6);
-overhead.castShadow = false; // skip shadows on PoC — adds cost, FBX uses baked materials anyway
-scene.add(overhead);
+const sun = new THREE.DirectionalLight(0xfff0d4, 1.2);
+sun.position.set(2000, 8000, 6000);
+scene.add(sun);
 
-// Storefront neon (pink) — sits roughly where "VHS Video" is in the render
-const signLight = new THREE.PointLight(0xff5fb8, 1.6, 14);
-signLight.position.set(0, 5.5, 6);
+// Storefront sign accents (pink + cyan). Positions set in onLoad once we
+// know where the sign actually is.
+const signLight = new THREE.PointLight(0xff5fb8, 4.0, 0);
 scene.add(signLight);
-
-// Storefront neon (cyan) — fill on the other half of the sign
-const signLight2 = new THREE.PointLight(0x5fb8ff, 1.0, 12);
-signLight2.position.set(-3.0, 5.0, 6);
+const signLight2 = new THREE.PointLight(0x5fb8ff, 2.5, 0);
 scene.add(signLight2);
 
 // ---- FBX load ---------------------------------------------------------
@@ -82,16 +76,19 @@ fbxLoader.load(
   '/new-store/Models/Shop_VHS.fbx',
   (object) => {
     shopRoot = object;
-
-    // The FBX is in centimeters (default Maya/Blender export). Scale down
-    // to meters so it plays nicely with our existing scene units.
-    shopRoot.scale.setScalar(0.01);
     scene.add(shopRoot);
 
-    // Catalog named nodes so we can anchor camera waypoints to them.
+    // Catalog named nodes (for camera waypoints) AND hide collision proxies.
+    // The FBX ships with seven *_Collision meshes (Floor_Collision, Wall_
+    // Collision, etc.) — they're meant to be invisible physics volumes in
+    // the host engine but render as opaque black walls in three.js, which is
+    // what made the whole scene look unlit at first. Hiding them is enough.
     shopRoot.traverse((n) => {
       if (n.name) namedNodes[n.name] = n;
-      // Ensure all materials use sRGB color textures
+      if (n.isMesh && /collision/i.test(n.name || '')) {
+        n.visible = false;
+        return;
+      }
       if (n.isMesh && n.material) {
         const mats = Array.isArray(n.material) ? n.material : [n.material];
         for (const m of mats) {
@@ -106,16 +103,68 @@ fbxLoader.load(
       }
     });
 
-    // Compute world bounds so the camera waypoints can be relative to the
-    // actual model size (the .scale.setScalar call above may not have
-    // committed by the time we measure, so update matrices first).
+    // Compute world bounds and use them to derive the camera path. The FBX
+    // turned out to be ~118 units wide (mostly parking lot + building) so
+    // we can't hardcode meter-scale waypoints — they have to scale with
+    // whatever the model's native units are.
     shopRoot.updateMatrixWorld(true);
     bbox = new THREE.Box3().setFromObject(shopRoot);
     const size = new THREE.Vector3(); bbox.getSize(size);
     const center = new THREE.Vector3(); bbox.getCenter(center);
 
-    statusEl.textContent = `loaded — size ${size.x.toFixed(1)}×${size.y.toFixed(1)}×${size.z.toFixed(1)}m, ${Object.keys(namedNodes).length} named nodes`;
+    const diag = size.length();
+
+    // Stretch the camera far plane to fit. Model is ~13k units diagonal so
+    // the default near/far range was clipping everything.
+    camera.near = Math.max(1, diag / 10000);
+    camera.far = diag * 4;
+    camera.updateProjectionMatrix();
+
+    // Scale the sun + sign lights to the model's actual size. With a
+    // ~12000-unit model, light distance values of "10" do literally nothing.
+    sun.position.set(center.x + size.x * 0.3, bbox.max.y + size.y * 0.5, center.z + size.z * 0.6);
+    signLight.position.set(center.x + size.x * 0.05, bbox.max.y * 0.85, bbox.max.z * 0.95);
+    signLight.distance = diag * 0.3;
+    signLight2.position.set(center.x - size.x * 0.15, bbox.max.y * 0.8, bbox.max.z * 0.95);
+    signLight2.distance = diag * 0.25;
+
+    // Build waypoints from the bounding box. Z+ is "in front of the store"
+    // by inspection of the screenshots; we'll confirm once it renders and
+    // flip the sign if needed.
+    const cx = center.x, cy = bbox.min.y, cz = center.z;
+    const halfW = size.x / 2, halfD = size.z / 2;
+    const eye = cy + size.y * 0.18; // ~human eye height above floor
+    const ceil = cy + size.y * 0.55;
+
+    WAYPOINTS.length = 0;
+    WAYPOINTS.push(
+      // 0 — wide parking lot establishing shot
+      { pos: [cx,             eye + 1.5,  cz + halfD + size.z * 0.5], look: [cx, ceil, cz], fov: 55 },
+      // 1 — closer, sign should fill the upper third
+      { pos: [cx,             eye + 0.8,  cz + halfD * 0.6],          look: [cx, ceil * 0.85, cz], fov: 45 },
+      // 2 — eye-level just past the storefront, looking deeper in
+      { pos: [cx,             eye,        cz + halfD * 0.1],          look: [cx, eye * 0.9, cz - halfD * 0.5], fov: 55 },
+      // 3 — close on a shelf area
+      { pos: [cx - halfW * 0.15, eye - 0.2, cz - halfD * 0.2],        look: [cx - halfW * 0.25, eye - 0.3, cz - halfD * 0.6], fov: 45 },
+    );
+
+    // If a Shelf_01 node exists, retarget the final waypoint at its world
+    // position — beats my guesses every time.
+    const shelf = namedNodes['Shelf_01'] || namedNodes['Shelf'];
+    if (shelf) {
+      const sw = new THREE.Vector3();
+      shelf.getWorldPosition(sw);
+      const final = WAYPOINTS[WAYPOINTS.length - 1];
+      // sit one shelf-length away on the same Z axis, look at the shelf
+      final.look = [sw.x, sw.y, sw.z];
+      final.pos = [sw.x + size.x * 0.05, sw.y + 0.5, sw.z + size.z * 0.1];
+    }
+
+    statusEl.textContent = `loaded — size ${size.x.toFixed(1)}×${size.y.toFixed(1)}×${size.z.toFixed(1)} units, ${Object.keys(namedNodes).length} named nodes`;
     infoEl.textContent = ` | shelves: ${Object.keys(namedNodes).filter(n => /^Shelf/.test(n)).length}`;
+
+    // Expose for live debugging in the preview tool
+    window.__cutscene = { scene, camera, renderer, shopRoot, bbox, namedNodes, WAYPOINTS, THREE, setCameraToWaypoint };
 
     // Park the camera at the start position
     setCameraToWaypoint(0);
@@ -137,15 +186,14 @@ fbxLoader.load(
 // "free orbit" button lets us refine them by hand. Each waypoint is
 // { pos, look, fov }. We tween between them with cubic easing.
 
+// Populated from the bounding box at load time — see the FBX onLoad
+// callback above. Hardcoded fallback values match the OLD assumed scale
+// so a missing-FBX scenario doesn't NaN the camera.
 const WAYPOINTS = [
-  // Parking lot — far back, slight elevation, looking at the storefront
-  { pos: [0, 3.0, 14],  look: [0, 2.5, 0],   fov: 50,  dwell: 0.8 },
-  // Approach — lower, closer, sign fills the upper third
-  { pos: [0, 2.5, 8],   look: [0, 2.8, 0],   fov: 45,  dwell: 0.6 },
-  // Through the doorway — eye level, looking down the central aisle
-  { pos: [0, 1.7, 2],   look: [0, 1.6, -6],  fov: 55,  dwell: 0.6 },
-  // Close on a shelf — slight angle, fills frame
-  { pos: [-1.0, 1.5, -3], look: [-2.5, 1.4, -6], fov: 45, dwell: 1.0 },
+  { pos: [0, 3.0, 14],  look: [0, 2.5, 0],   fov: 50 },
+  { pos: [0, 2.5, 8],   look: [0, 2.8, 0],   fov: 45 },
+  { pos: [0, 1.7, 2],   look: [0, 1.6, -6],  fov: 55 },
+  { pos: [-1.0, 1.5, -3], look: [-2.5, 1.4, -6], fov: 45 },
 ];
 
 const TOTAL_DURATION_MS = 7000; // total cutscene length
