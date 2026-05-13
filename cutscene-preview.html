@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Cutscene Preview — New Store Zoom</title>
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; background: #000; overflow: hidden; }
+    canvas { display: block; }
+    #hud {
+      position: fixed; left: 12px; top: 12px;
+      font: 12px/1.4 ui-monospace, Menlo, monospace;
+      color: #ddd; background: rgba(0,0,0,0.55); padding: 8px 10px; border-radius: 6px;
+      pointer-events: none;
+    }
+    #controls {
+      position: fixed; left: 12px; bottom: 12px;
+      font: 12px/1.4 ui-monospace, Menlo, monospace;
+      color: #ddd; background: rgba(0,0,0,0.55); padding: 8px 10px; border-radius: 6px;
+    }
+    button {
+      background: #FF6B9D; color: #000; border: 0; padding: 6px 10px;
+      font: bold 12px ui-monospace, monospace; cursor: pointer; border-radius: 4px;
+      margin: 0 4px 0 0;
+    }
+    button:hover { background: #ff89b0; }
+    #status { font-style: italic; color: #aaa; }
+  </style>
+</head>
+<body>
+  <canvas id="cv"></canvas>
+  <div id="hud">
+    <div><b>cutscene preview</b></div>
+    <div id="status">loading FBX…</div>
+  </div>
+  <div id="controls">
+    <button id="play">▶ play cutscene</button>
+    <button id="orbit">free orbit</button>
+    <span id="info"></span>
+  </div>
+  <script type="module" src="/src/cutscene-preview.js"></script>
+</body>
+</html>
