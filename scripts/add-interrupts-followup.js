@@ -58,6 +58,44 @@ const story = (char, dialogue, dismiss) =>
 // ---------------------------------------------------------------------------
 const NEW_INTERRUPTS = {
 
+  // Friday Frights (05-08) — added after Tom's feedback that Poltergeist
+  // wasn't a great fit for Demonic Possession (swapped to The Exorcism of
+  // Emily Rose). This puzzle had no interrupts at all, so adding the full
+  // mix here.
+  // Categories: Slasher Films | Stephen King Adaptations | Body Horror | Demonic Possession
+  '2026-05-08': [
+    trivia(CHARS.vikingMan,
+      "SLASHER QUESTION! In Halloween (1978), what's the name of the killer in the white mask?",
+      ["Jason Voorhees", "Michael Myers", "Freddy Krueger", "Ghostface"], 1),
+    trivia(CHARS.punkWoman,
+      "Misery — what does Annie Wilkes do to Paul's ankles?",
+      ["Burns them with a torch", "Hobbles them with a sledgehammer", "Breaks them on a fence post", "Ties them to the bedposts"], 1),
+    trivia(CHARS.ninja,
+      "Whisper... in The Thing (1982), what creature has assimilated the Antarctic research team?",
+      ["A vampire", "An alien shapeshifter", "A demon", "A ghost"], 1),
+    trivia(CHARS.knight,
+      "VERILY! In The Exorcism of Emily Rose, the film is based on what kind of real event?",
+      ["A war crime", "A famous murder", "A real exorcism case from Germany", "A medical conspiracy"], 2),
+    hint(CHARS.punkKidBoy,
+      "Dude I want the OG slasher stuff — masked killer, big knife, dumb teenagers making the wrong call. The full ritual.",
+      "Slasher Films"),
+    hint(CHARS.oldWoman,
+      "Dearie, I want films from that Maine fellow — the prolific horror writer. He's written more books than I've baked pies. Maximum-overdrive type.",
+      "Stephen King Adaptations"),
+    hint(CHARS.chef,
+      "Looking for the films where the BODY itself becomes the horror — things growing in places they shouldn't, transformations, flesh as the enemy. Pure Cronenberg territory.",
+      "Body Horror"),
+    story(CHARS.joker,
+      "Why don't demons negotiate? Because they always SPEAK in tongues — and the audience can't follow the contract! Read the fine print before exorcising!",
+      "Send a notary"),
+    story(CHARS.firefighter,
+      "Watched The Thing at the firehouse during a snowstorm. Power went out halfway through. We did NOT finish that movie that night. We finished it in DAYLIGHT.",
+      "Smart team policy"),
+    story(CHARS.farmer,
+      "My wife rented Pet Sematary thinking it was a kid's movie about cats. Two hours later neither of us was sleeping. Stephen King is NOT a kids' author.",
+      "Filed under no thanks"),
+  ],
+
   // Today — Monday Mayhem
   // Categories: Schwarzenegger Action | 80s Cop Action | Action on a Vehicle | Real-Time Thrillers
   '2026-05-11': [

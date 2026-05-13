@@ -8944,5 +8944,114 @@
       "dialogue": "Showed my granddaughters The Parent Trap and they spent the weekend trying to switch lives. Their mother was not amused.",
       "dismiss": "Switcheroo"
     }
+  ],
+  "2026-05-08": [
+    {
+      "type": "trivia",
+      "character": "Viking Man",
+      "folder": "Viking Man",
+      "sprite": "viking_man",
+      "dialogue": "SLASHER QUESTION! In Halloween (1978), what's the name of the killer in the white mask?",
+      "answers": [
+        "Jason Voorhees",
+        "Michael Myers",
+        "Freddy Krueger",
+        "Ghostface"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Woman",
+      "folder": "Punk Woman",
+      "sprite": "punk_woman",
+      "dialogue": "Misery — what does Annie Wilkes do to Paul's ankles?",
+      "answers": [
+        "Burns them with a torch",
+        "Hobbles them with a sledgehammer",
+        "Breaks them on a fence post",
+        "Ties them to the bedposts"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Ninja",
+      "folder": "Ninja",
+      "sprite": "ninja",
+      "dialogue": "Whisper... in The Thing (1982), what creature has assimilated the Antarctic research team?",
+      "answers": [
+        "A vampire",
+        "An alien shapeshifter",
+        "A demon",
+        "A ghost"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Knight",
+      "folder": "Knight",
+      "sprite": "knight",
+      "dialogue": "VERILY! In The Exorcism of Emily Rose, the film is based on what kind of real event?",
+      "answers": [
+        "A war crime",
+        "A famous murder",
+        "A real exorcism case from Germany",
+        "A medical conspiracy"
+      ],
+      "correct": 2
+    },
+    {
+      "type": "hint",
+      "character": "Punk Kid Boy",
+      "folder": "Punk Kid Boy",
+      "sprite": "punk_kid_boy",
+      "dialogue": "Dude I want the OG slasher stuff — masked killer, big knife, dumb teenagers making the wrong call. The full ritual.",
+      "hintCategory": "Slasher Films",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Old Woman",
+      "folder": "Old Woman",
+      "sprite": "old_woman",
+      "dialogue": "Dearie, I want films from that Maine fellow — the prolific horror writer. He's written more books than I've baked pies. Maximum-overdrive type.",
+      "hintCategory": "Stephen King Adaptations",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Chef",
+      "folder": "Chef",
+      "sprite": "chef",
+      "dialogue": "Looking for the films where the BODY itself becomes the horror — things growing in places they shouldn't, transformations, flesh as the enemy. Pure Cronenberg territory.",
+      "hintCategory": "Body Horror",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "folder": "Joker",
+      "sprite": "joker",
+      "dialogue": "Why don't demons negotiate? Because they always SPEAK in tongues — and the audience can't follow the contract! Read the fine print before exorcising!",
+      "dismiss": "Send a notary"
+    },
+    {
+      "type": "story",
+      "character": "Firefighter",
+      "folder": "Firefighter",
+      "sprite": "firefighter",
+      "dialogue": "Watched The Thing at the firehouse during a snowstorm. Power went out halfway through. We did NOT finish that movie that night. We finished it in DAYLIGHT.",
+      "dismiss": "Smart team policy"
+    },
+    {
+      "type": "story",
+      "character": "Farmer",
+      "folder": "Farmer",
+      "sprite": "farmer",
+      "dialogue": "My wife rented Pet Sematary thinking it was a kid's movie about cats. Two hours later neither of us was sleeping. Stephen King is NOT a kids' author.",
+      "dismiss": "Filed under no thanks"
+    }
   ]
 }

@@ -21889,15 +21889,54 @@
             },
             {
               "title": "Sleuth",
-              "year": 1972
+              "year": 1972,
+              "tmdb_id": 993,
+              "summary": "A man who loves games and theatre invites his wife's lover to meet, setting up a battle of wits with potentially deadly results.",
+              "genres": [
+                "Thriller",
+                "Mystery",
+                "Crime"
+              ],
+              "director": "Joseph L. Mankiewicz",
+              "stars": [
+                "Laurence Olivier",
+                "Michael Caine"
+              ]
             },
             {
               "title": "Knives Out",
-              "year": 2019
+              "year": 2019,
+              "tmdb_id": 546554,
+              "summary": "When renowned crime novelist Harlan Thrombey is found dead at his estate just after his 85th birthday, the inquisitive and debonair Detective Benoit Blanc is mysteriously enlisted to investigate. From Harlan's dysfunctional family to his devoted staff, Blanc sifts through a web of red herrings and self-serving lies to uncover the truth behind Harlan's untimely death.",
+              "genres": [
+                "Comedy",
+                "Crime",
+                "Mystery"
+              ],
+              "director": "Rian Johnson",
+              "stars": [
+                "Daniel Craig",
+                "Chris Evans",
+                "Ana de Armas"
+              ]
             },
             {
               "title": "Murder by Death",
-              "year": 1976
+              "year": 1976,
+              "tmdb_id": 6037,
+              "summary": "Lionel Twain invites the world's five greatest detectives to a 'dinner and murder'. Included are a blind butler, a deaf-mute maid, screams, spinning rooms, secret passages, false identities and more plot turns and twists than are decently allowed.",
+              "genres": [
+                "Comedy",
+                "Crime",
+                "Mystery",
+                "Thriller"
+              ],
+              "director": "Robert Moore",
+              "stars": [
+                "Truman Capote",
+                "Alec Guinness",
+                "Peter Sellers"
+              ]
             }
           ]
         },
@@ -22055,19 +22094,70 @@
           "movies": [
             {
               "title": "Murder on the Orient Express",
-              "year": 1974
+              "year": 1974,
+              "tmdb_id": 4176,
+              "summary": "In 1935, when his train is stopped by deep snow, detective Hercule Poirot is called on to solve a murder that occurred in his car the night before.",
+              "genres": [
+                "Drama",
+                "Thriller",
+                "Mystery"
+              ],
+              "director": "Sidney Lumet",
+              "stars": [
+                "Albert Finney",
+                "Lauren Bacall",
+                "Martin Balsam"
+              ]
             },
             {
               "title": "Death on the Nile",
-              "year": 1978
+              "year": 1978,
+              "tmdb_id": 4192,
+              "summary": "As Hercule Poirot enjoys a luxurious cruise down the Nile, a newlywed heiress is found murdered on board and every elegant passenger becomes a prime suspect.",
+              "genres": [
+                "Mystery"
+              ],
+              "director": "John Guillermin",
+              "stars": [
+                "Peter Ustinov",
+                "Jane Birkin",
+                "Lois Chiles"
+              ]
             },
             {
               "title": "Witness for the Prosecution",
-              "year": 1957
+              "year": 1957,
+              "tmdb_id": 37257,
+              "summary": "An ailing barrister is thrust back into the courtroom in what becomes one of the most unusual and eventful murder cases of the lawyer's career when he finds himself defending a man being tried for the murder of a socialite.",
+              "genres": [
+                "Drama",
+                "Mystery",
+                "Crime"
+              ],
+              "director": "Billy Wilder",
+              "stars": [
+                "Tyrone Power",
+                "Marlene Dietrich",
+                "Charles Laughton"
+              ]
             },
             {
               "title": "Evil Under the Sun",
-              "year": 1982
+              "year": 1982,
+              "tmdb_id": 4193,
+              "summary": "An opulent beach resort provides a scenic background to this amusing whodunit as Poirot attempts to uncover the nefarious evildoer behind the strangling of a notorious stage star.",
+              "genres": [
+                "Thriller",
+                "Crime",
+                "Mystery",
+                "Drama"
+              ],
+              "director": "Guy Hamilton",
+              "stars": [
+                "Peter Ustinov",
+                "James Mason",
+                "Sylvia Miles"
+              ]
             }
           ]
         }
@@ -22530,7 +22620,20 @@
             },
             {
               "title": "Videodrome",
-              "year": 1983
+              "year": 1983,
+              "tmdb_id": 837,
+              "summary": "As the president of a trashy TV channel, Max Renn is desperate for new programming to attract viewers. When he happens upon \"Videodrome,\" a TV show dedicated to gratuitous torture and punishment, Max sees a potential hit and broadcasts the show on his channel. However, after his girlfriend auditions for the show and never returns, Max investigates the truth behind Videodrome and discovers that the graphic violence may not be as fake as he thought.",
+              "genres": [
+                "Horror",
+                "Science Fiction",
+                "Mystery"
+              ],
+              "director": "David Cronenberg",
+              "stars": [
+                "James Woods",
+                "Debbie Harry",
+                "Sonja Smits"
+              ]
             },
             {
               "title": "The Thing",
@@ -22591,7 +22694,20 @@
             },
             {
               "title": "Rosemary's Baby",
-              "year": 1968
+              "year": 1968,
+              "tmdb_id": 805,
+              "summary": "A young couple, Rosemary and Guy, moves into an infamous New York apartment building, known by frightening legends and mysterious events, with the purpose of starting a family.",
+              "genres": [
+                "Drama",
+                "Horror",
+                "Thriller"
+              ],
+              "director": "Roman Polanski",
+              "stars": [
+                "Mia Farrow",
+                "John Cassavetes",
+                "Ruth Gordon"
+              ]
             },
             {
               "title": "The Omen",
@@ -22610,18 +22726,21 @@
               ]
             },
             {
-              "title": "Poltergeist",
-              "year": 1982,
-              "tmdb_id": 609,
-              "summary": "The Freelings' suburban home becomes the center of paranormal activity that opens a portal to the 'other side'. With help, they must cross over to get their daughter back.",
+              "title": "The Exorcism of Emily Rose",
+              "year": 2005,
+              "tmdb_id": 8643,
+              "summary": "When a younger girl called Emily Rose dies, everyone puts blame on the exorcism which was performed on her by Father Moore prior to her death. The priest is arrested on suspicion of murder. The trial begins with lawyer Erin Bruner representing Moore, but it is not going to be easy, as no one wants to believe what Father Moore says is true.",
               "genres": [
-                "Horror"
+                "Crime",
+                "Drama",
+                "Horror",
+                "Thriller"
               ],
-              "director": "Tobe Hooper",
+              "director": "Scott Derrickson",
               "stars": [
-                "JoBeth Williams",
-                "Craig T. Nelson",
-                "Beatrice Straight"
+                "Laura Linney",
+                "Tom Wilkinson",
+                "Campbell Scott"
               ]
             }
           ]
@@ -22718,19 +22837,79 @@
           "movies": [
             {
               "title": "The Land Before Time",
-              "year": 1988
+              "year": 1988,
+              "tmdb_id": 12144,
+              "summary": "An orphaned brontosaurus named Littlefoot sets off in search of the legendary Great Valley. A land of lush vegetation where the dinosaurs can thrive and live in peace. Along the way he meets four other young dinosaurs, each one a different species, and they encounter several obstacles as they learn to work together in order to survive.",
+              "genres": [
+                "Family",
+                "Animation",
+                "Adventure"
+              ],
+              "director": "Don Bluth",
+              "stars": [
+                "Gabriel Damon",
+                "Candace Hutson",
+                "Will Ryan"
+              ]
             },
             {
               "title": "An American Tail",
-              "year": 1986
+              "year": 1986,
+              "tmdb_id": 4978,
+              "summary": "A young mouse named Fievel and his family decide to migrate to America, a \"land without cats,\" at the turn of the 20th century. But somehow, Fievel ends up in the New World alone and must fend off not only the felines he never thought he'd have to deal with again but also the loneliness of being away from home.",
+              "genres": [
+                "Animation",
+                "Comedy",
+                "Adventure",
+                "Drama",
+                "Family"
+              ],
+              "director": "Don Bluth",
+              "stars": [
+                "Phillip Glasser",
+                "Erica Yohn",
+                "Nehemiah Persoff"
+              ]
             },
             {
               "title": "The Secret of NIMH",
-              "year": 1982
+              "year": 1982,
+              "tmdb_id": 11704,
+              "summary": "A widowed field mouse must move her family -- including an ailing son -- to escape a farmer's plow. Aided by a crow and a pack of superintelligent, escaped lab rats, the brave mother struggles to transplant her home to firmer ground.",
+              "genres": [
+                "Adventure",
+                "Animation",
+                "Drama",
+                "Family",
+                "Fantasy",
+                "Mystery",
+                "Science Fiction"
+              ],
+              "director": "Don Bluth",
+              "stars": [
+                "Elizabeth Hartman",
+                "Derek Jacobi",
+                "Arthur Malet"
+              ]
             },
             {
               "title": "All Dogs Go to Heaven",
-              "year": 1989
+              "year": 1989,
+              "tmdb_id": 11497,
+              "summary": "When a casino-owning dog named Charlie is murdered by his rival Carface, he finds himself in Heaven. Wanting to get back at his killer, he cons his way back to the living with the warning that doing so damns him to Hell. Once back, he teams with his old partner, Itchy, to prep his retaliation. He stumbles upon an orphan girl who can talk to the animals, thus allowing him to get the inside info on the races to ensure his wins to finance his plans. However, all the while, he is still haunted by nightmares of what's waiting for him on the other side unless he can prove that he is worthy of Heaven again.",
+              "genres": [
+                "Drama",
+                "Animation",
+                "Family",
+                "Comedy",
+                "Fantasy"
+              ],
+              "director": "Don Bluth",
+              "stars": [
+                "Burt Reynolds",
+                "Dom DeLuise",
+                "Judith Barsi"
+              ]
             }
           ]
         },
@@ -22741,19 +22920,71 @@
           "movies": [
             {
               "title": "My Neighbor Totoro",
-              "year": 1988
+              "year": 1988,
+              "tmdb_id": 8392,
+              "summary": "Two sisters move to the country with their father in order to be closer to their hospitalized mother, and discover the surrounding trees are inhabited by Totoros, magical spirits of the forest. When the youngest runs away from home, the older sister seeks help from the spirits to find her.",
+              "genres": [
+                "Fantasy",
+                "Animation",
+                "Family"
+              ],
+              "director": "Hayao Miyazaki",
+              "stars": [
+                "Noriko Hidaka",
+                "Chika Sakamoto",
+                "Hitoshi Takagi"
+              ]
             },
             {
               "title": "Princess Mononoke",
-              "year": 1997
+              "year": 1997,
+              "tmdb_id": 128,
+              "summary": "Ashitaka, a prince of the disappearing Emishi people, is cursed by a demonized boar god and must journey to the west to find a cure. Along the way, he encounters San, a young human woman fighting to protect the forest, and Lady Eboshi, who is trying to destroy it. Ashitaka must find a way to bring balance to this conflict.",
+              "genres": [
+                "Adventure",
+                "Fantasy",
+                "Animation"
+              ],
+              "director": "Hayao Miyazaki",
+              "stars": [
+                "Yoji Matsuda",
+                "Yuriko Ishida",
+                "Yuko Tanaka"
+              ]
             },
             {
               "title": "Spirited Away",
-              "year": 2001
+              "year": 2001,
+              "tmdb_id": 129,
+              "summary": "A young girl, Chihiro, becomes trapped in a strange new world of spirits. When her parents undergo a mysterious transformation, she must call upon the courage she never knew she had to free her family.",
+              "genres": [
+                "Animation",
+                "Family",
+                "Fantasy"
+              ],
+              "director": "Hayao Miyazaki",
+              "stars": [
+                "Rumi Hiiragi",
+                "Miyu Irino",
+                "Mari Natsuki"
+              ]
             },
             {
               "title": "Kiki's Delivery Service",
-              "year": 1989
+              "year": 1989,
+              "tmdb_id": 16859,
+              "summary": "A young witch, on her mandatory year of independent life, finds fitting into a new community difficult while she supports herself by running an air courier service.",
+              "genres": [
+                "Animation",
+                "Family",
+                "Fantasy"
+              ],
+              "director": "Hayao Miyazaki",
+              "stars": [
+                "Minami Takayama",
+                "Rei Sakuma",
+                "Kappei Yamaguchi"
+              ]
             }
           ]
         },
@@ -22816,7 +23047,20 @@
             },
             {
               "title": "Coraline",
-              "year": 2009
+              "year": 2009,
+              "tmdb_id": 14836,
+              "summary": "Wandering her rambling old house in her boring new town, 11-year-old Coraline discovers a hidden door to a strangely idealized version of her life. In order to stay in the fantasy, she must make a frighteningly real sacrifice.",
+              "genres": [
+                "Animation",
+                "Family",
+                "Fantasy"
+              ],
+              "director": "Henry Selick",
+              "stars": [
+                "Dakota Fanning",
+                "Teri Hatcher",
+                "Jennifer Saunders"
+              ]
             }
           ]
         }
@@ -22850,15 +23094,54 @@
             },
             {
               "title": "Mamma Mia!",
-              "year": 2008
+              "year": 2008,
+              "tmdb_id": 11631,
+              "summary": "A spirited young bride-to-be living with her single mother on a small Greek island secretly invites three of her mother's ex-boyfriends in hope of finding her biological father to walk her down the aisle.",
+              "genres": [
+                "Comedy",
+                "Romance"
+              ],
+              "director": "Phyllida Lloyd",
+              "stars": [
+                "Amanda Seyfried",
+                "Meryl Streep",
+                "Pierce Brosnan"
+              ]
             },
             {
               "title": "Stepmom",
-              "year": 1998
+              "year": 1998,
+              "tmdb_id": 9441,
+              "summary": "Jackie is a divorced mother of two. Isabel is the career minded girlfriend of Jackie’s ex-husband Luke, forced into the role of unwelcome stepmother to their children. But when Jackie discovers she is ill, both women realise they must put aside their differences to find a common ground and celebrate life to the fullest, while they have the chance.",
+              "genres": [
+                "Drama",
+                "Romance",
+                "Comedy"
+              ],
+              "director": "Chris Columbus",
+              "stars": [
+                "Julia Roberts",
+                "Susan Sarandon",
+                "Ed Harris"
+              ]
             },
             {
               "title": "Freaky Friday",
-              "year": 2003
+              "year": 2003,
+              "tmdb_id": 10330,
+              "summary": "Mother and daughter bicker over everything -- what Anna wears, whom she likes and what she wants to do when she's older. In turn, Anna detests Tess's fiancé. When a magical fortune cookie switches their personalities, they each get a peek at how the other person feels, thinks and lives.",
+              "genres": [
+                "Family",
+                "Fantasy",
+                "Comedy",
+                "Romance"
+              ],
+              "director": "Mark Waters",
+              "stars": [
+                "Lindsay Lohan",
+                "Jamie Lee Curtis",
+                "Harold Gould"
+              ]
             }
           ]
         },
@@ -22869,19 +23152,69 @@
           "movies": [
             {
               "title": "Terms of Endearment",
-              "year": 1983
+              "year": 1983,
+              "tmdb_id": 11050,
+              "summary": "Aurora, a finicky woman, is in search of true love while her daughter faces marital issues. Together, they help each other deal with problems and find reasons to live a joyful life.",
+              "genres": [
+                "Drama",
+                "Comedy"
+              ],
+              "director": "James L. Brooks",
+              "stars": [
+                "Shirley MacLaine",
+                "Debra Winger",
+                "Jack Nicholson"
+              ]
             },
             {
               "title": "Steel Magnolias",
-              "year": 1989
+              "year": 1989,
+              "tmdb_id": 10860,
+              "summary": "A young beautician, newly arrived in a small Louisiana town, finds work at the local salon, where a small group of women share a close bond of friendship and welcome her into the fold.",
+              "genres": [
+                "Comedy",
+                "Drama",
+                "Romance"
+              ],
+              "director": "Herbert Ross",
+              "stars": [
+                "Sally Field",
+                "Dolly Parton",
+                "Shirley MacLaine"
+              ]
             },
             {
               "title": "Postcards from the Edge",
-              "year": 1990
+              "year": 1990,
+              "tmdb_id": 22414,
+              "summary": "A substance-addicted actress tries to look on the bright side even as she's forced to move back in with her mother to avoid unemployment.",
+              "genres": [
+                "Comedy",
+                "Drama"
+              ],
+              "director": "Mike Nichols",
+              "stars": [
+                "Meryl Streep",
+                "Shirley MacLaine",
+                "Dennis Quaid"
+              ]
             },
             {
               "title": "Mermaids",
-              "year": 1990
+              "year": 1990,
+              "tmdb_id": 4587,
+              "summary": "Fifteen-year-old Charlotte Flax is tired of her wacky mom moving their family to a different town any time she feels it is necessary. When they move to a small Massachusetts town and Mrs. Flax begins dating a shopkeeper, Charlotte and her 9-year-old sister, Kate, hope that they can finally settle down. But when Charlotte's attraction to an older man gets in the way, the family must learn to accept each other for who they truly are.",
+              "genres": [
+                "Comedy",
+                "Drama",
+                "Romance"
+              ],
+              "director": "Richard Benjamin",
+              "stars": [
+                "Cher",
+                "Bob Hoskins",
+                "Winona Ryder"
+              ]
             }
           ]
         },
@@ -22926,11 +23259,36 @@
             },
             {
               "title": "The Babadook",
-              "year": 2014
+              "year": 2014,
+              "tmdb_id": 242224,
+              "summary": "A grieving single mother and her child fall into a deep well of paranoia when an eerie children's book manifests in their home.",
+              "genres": [
+                "Drama",
+                "Horror"
+              ],
+              "director": "Jennifer Kent",
+              "stars": [
+                "Essie Davis",
+                "Noah Wiseman",
+                "Hayley McElhinney"
+              ]
             },
             {
               "title": "A Quiet Place",
-              "year": 2018
+              "year": 2018,
+              "tmdb_id": 447332,
+              "summary": "A family is forced to live in silence while hiding from creatures that hunt by sound.",
+              "genres": [
+                "Horror",
+                "Drama",
+                "Science Fiction"
+              ],
+              "director": "John Krasinski",
+              "stars": [
+                "Emily Blunt",
+                "John Krasinski",
+                "Millicent Simmonds"
+              ]
             }
           ]
         },
@@ -22941,15 +23299,49 @@
           "movies": [
             {
               "title": "Mommie Dearest",
-              "year": 1981
+              "year": 1981,
+              "tmdb_id": 15660,
+              "summary": "Renowned film star Joan Crawford's abuse towards Christina, her adopted daughter, intensifies as her professional and romantic relationships turn sour.",
+              "genres": [
+                "Drama"
+              ],
+              "director": "Frank Perry",
+              "stars": [
+                "Faye Dunaway",
+                "Diana Scarwid",
+                "Steve Forrest"
+              ]
             },
             {
               "title": "Serial Mom",
-              "year": 1994
+              "year": 1994,
+              "tmdb_id": 11592,
+              "summary": "Beverly is the perfect happy homemaker, along with her doting husband and two children, but this nuclear family just might explode when her fascination with serial killers collides with her ever-so-proper code of ethics.",
+              "genres": [
+                "Comedy",
+                "Crime"
+              ],
+              "director": "John Waters",
+              "stars": [
+                "Kathleen Turner",
+                "Sam Waterston",
+                "Ricki Lake"
+              ]
             },
             {
               "title": "White Oleander",
-              "year": 2002
+              "year": 2002,
+              "tmdb_id": 10994,
+              "summary": "A teenager journeys through a series of foster homes after her mother goes to prison for committing a crime of passion.",
+              "genres": [
+                "Drama"
+              ],
+              "director": "Peter Kosminsky",
+              "stars": [
+                "Alison Lohman",
+                "Michelle Pfeiffer",
+                "Renée Zellweger"
+              ]
             },
             {
               "title": "Black Swan",
@@ -23166,7 +23558,19 @@
             },
             {
               "title": "Under Siege",
-              "year": 1992
+              "year": 1992,
+              "tmdb_id": 8845,
+              "summary": "A disgruntled ex-CIA operative, his assistant and their assembled group of terrorists seize a battleship with nuclear blackmail in mind. They've planned for every contingency but ignore the ship's cook, former Navy SEAL Casey Ryback—an error that could be fatal.",
+              "genres": [
+                "Action",
+                "Thriller"
+              ],
+              "director": "Andrew Davis",
+              "stars": [
+                "Steven Seagal",
+                "Tommy Lee Jones",
+                "Gary Busey"
+              ]
             },
             {
               "title": "The Rock",
@@ -23211,11 +23615,36 @@
             },
             {
               "title": "Run Lola Run",
-              "year": 1998
+              "year": 1998,
+              "tmdb_id": 104,
+              "summary": "Lola receives a phone call from her boyfriend Manni. He lost 100,000 DM in a subway train that belongs to a very bad guy. She has 20 minutes to raise this amount and meet Manni. Otherwise, he will rob a store to get the money. Three different alternatives may happen depending on some minor event along Lola's run.",
+              "genres": [
+                "Action",
+                "Drama",
+                "Thriller"
+              ],
+              "director": "Tom Tykwer",
+              "stars": [
+                "Franka Potente",
+                "Moritz Bleibtreu",
+                "Herbert Knaup"
+              ]
             },
             {
               "title": "Phone Booth",
-              "year": 2002
+              "year": 2002,
+              "tmdb_id": 1817,
+              "summary": "A slick New York publicist who picks up a ringing receiver in a phone booth is told that if he hangs up, he'll be killed... and the little red light from a laser rifle sight is proof that the caller isn't kidding.",
+              "genres": [
+                "Thriller",
+                "Crime"
+              ],
+              "director": "Joel Schumacher",
+              "stars": [
+                "Colin Farrell",
+                "Kiefer Sutherland",
+                "Forest Whitaker"
+              ]
             },
             {
               "title": "Nick of Time",
@@ -23724,7 +24153,7 @@
               "director": "Federico Fellini",
               "stars": [
                 "Marcello Mastroianni",
-                "Claudia Cardinale",
+                "Claude Cardinale",
                 "Anouk Aimée"
               ]
             },
@@ -24326,7 +24755,8 @@
               "summary": "Four interwoven stories that occur on Halloween: an everyday high school principal has a secret life as a serial killer; a college virgin might have just met the one guy for her; a group of teenagers pull a mean prank, and a bitter old recluse receives an uninvited guest.",
               "genres": [
                 "Horror",
-                "Fantasy"
+                "Fantasy",
+                "Comedy"
               ],
               "director": "Michael Dougherty",
               "stars": [
@@ -24577,8 +25007,7 @@
                 "Animation",
                 "Adventure",
                 "Family",
-                "Fantasy",
-                "Action"
+                "Fantasy"
               ],
               "director": "Will Vinton",
               "stars": [
