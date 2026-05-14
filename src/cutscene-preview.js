@@ -282,13 +282,20 @@ fbxLoader.load(
             std.emissiveIntensity = 1.3;
             std.envMapIntensity = 0.3;
           } else if (std.name === 'Emisor_01') {
-            std.emissive = new THREE.Color(0x4060ff); // electric blue
-            std.emissiveIntensity = 2.8;
-            std.envMapIntensity = 0.2;
+            // VHS mesh — electric blue neon. color=0 so the sun + hemi
+            // can't add white diffuse on top of the emissive (that was
+            // washing the sign out under ACES tone mapping). With pure-
+            // emissive + zero diffuse, the sign reads as a self-lit
+            // panel regardless of scene lighting.
+            std.color.set(0x000000);
+            std.emissive = new THREE.Color(0x4060ff);
+            std.emissiveIntensity = 4.0;
+            std.envMapIntensity = 0;
           } else if (std.name === 'Emisor') {
+            std.color.set(0x000000);
             std.emissive = new THREE.Color(0xff3aa8); // hot magenta
-            std.emissiveIntensity = 2.8;
-            std.envMapIntensity = 0.2;
+            std.emissiveIntensity = 4.0;
+            std.envMapIntensity = 0;
           }
 
           if (std.name && /glass|window|mirror/i.test(std.name)) {
