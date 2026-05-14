@@ -140,37 +140,10 @@ fbxLoader.load(
     signLight2.position.set(center.x - size.x * 0.15, bbox.max.y * 0.8, bbox.max.z * 0.95);
     signLight2.distance = diag * 0.25;
 
-    // Build waypoints from the bounding box. Z+ is "in front of the store"
-    // by inspection of the screenshots; we'll confirm once it renders and
-    // flip the sign if needed.
-    const cx = center.x, cy = bbox.min.y, cz = center.z;
-    const halfW = size.x / 2, halfD = size.z / 2;
-    const eye = cy + size.y * 0.18; // ~human eye height above floor
-    const ceil = cy + size.y * 0.55;
-
-    WAYPOINTS.length = 0;
-    WAYPOINTS.push(
-      // 0 — wide parking lot establishing shot
-      { pos: [cx,             eye + 1.5,  cz + halfD + size.z * 0.5], look: [cx, ceil, cz], fov: 55 },
-      // 1 — closer, sign should fill the upper third
-      { pos: [cx,             eye + 0.8,  cz + halfD * 0.6],          look: [cx, ceil * 0.85, cz], fov: 45 },
-      // 2 — eye-level just past the storefront, looking deeper in
-      { pos: [cx,             eye,        cz + halfD * 0.1],          look: [cx, eye * 0.9, cz - halfD * 0.5], fov: 55 },
-      // 3 — close on a shelf area
-      { pos: [cx - halfW * 0.15, eye - 0.2, cz - halfD * 0.2],        look: [cx - halfW * 0.25, eye - 0.3, cz - halfD * 0.6], fov: 45 },
-    );
-
-    // If a Shelf_01 node exists, retarget the final waypoint at its world
-    // position — beats my guesses every time.
-    const shelf = namedNodes['Shelf_01'] || namedNodes['Shelf'];
-    if (shelf) {
-      const sw = new THREE.Vector3();
-      shelf.getWorldPosition(sw);
-      const final = WAYPOINTS[WAYPOINTS.length - 1];
-      // sit one shelf-length away on the same Z axis, look at the shelf
-      final.look = [sw.x, sw.y, sw.z];
-      final.pos = [sw.x + size.x * 0.05, sw.y + 0.5, sw.z + size.z * 0.1];
-    }
+    // We used to overwrite WAYPOINTS with bbox-derived defaults here, but
+    // now that we have a hand-tuned path in the const above we want those
+    // to be the source of truth. (The waypoint picker still works on top
+    // of either — see playFromUserWaypointsIfAny.)
 
     statusEl.textContent = `loaded — size ${size.x.toFixed(1)}×${size.y.toFixed(1)}×${size.z.toFixed(1)} units, ${Object.keys(namedNodes).length} named nodes`;
     infoEl.textContent = ` | shelves: ${Object.keys(namedNodes).filter(n => /^Shelf/.test(n)).length}`;
@@ -198,14 +171,15 @@ fbxLoader.load(
 // "free orbit" button lets us refine them by hand. Each waypoint is
 // { pos, look, fov }. We tween between them with cubic easing.
 
-// Populated from the bounding box at load time — see the FBX onLoad
-// callback above. Hardcoded fallback values match the OLD assumed scale
-// so a missing-FBX scenario doesn't NaN the camera.
+// Hand-tuned waypoints captured via the picker. Pos + look in FBX units
+// (~mm). WP4 was originally pos===look (degenerate, breaks orbit zoom);
+// look was nudged forward by ~150 units along the camera direction so the
+// camera has a real look axis to dolly along.
 const WAYPOINTS = [
-  { pos: [0, 3.0, 14],  look: [0, 2.5, 0],   fov: 50 },
-  { pos: [0, 2.5, 8],   look: [0, 2.8, 0],   fov: 45 },
-  { pos: [0, 1.7, 2],   look: [0, 1.6, -6],  fov: 55 },
-  { pos: [-1.0, 1.5, -3], look: [-2.5, 1.4, -6], fov: 45 },
+  { pos: [-456.5, 622.0, -3440.0], look: [-311.6, 15.8,  22.6],  fov: 55.0 },
+  { pos: [-957.7, 340.7, -1087.7], look: [-956.4, 71.6,  53.7],  fov: 55.0 },
+  { pos: [-897.2, 175.4,   -47.7], look: [-898.1, 160.6, 76.8],  fov: 55.0 },
+  { pos: [-898.0, 160.8,    76.9], look: [-898.0, 160.8, 226.9], fov: 55.0 },
 ];
 
 const TOTAL_DURATION_MS = 7000; // total cutscene length
@@ -222,39 +196,59 @@ function setCameraToWaypoint(i) {
   camera.updateProjectionMatrix();
 }
 
+// Catmull-Rom splines for position + look. Building once at the start of
+// each cutscene means the path is C¹-continuous through every waypoint —
+// no deceleration at each beat the way the old per-leg lerp had. One
+// global easeInOutCubic on `t` keeps the run cinematic (slow start, slow
+// stop) without per-waypoint pauses.
+let posCurve = null;
+let lookCurve = null;
+let fovKeys = [];
+
+function rebuildSplines() {
+  const posPts = WAYPOINTS.map((w) => new THREE.Vector3(...w.pos));
+  const lookPts = WAYPOINTS.map((w) => new THREE.Vector3(...w.look));
+  // `centripetal` parameterization avoids the cusps/overshoot that the
+  // default `centripetal` (no wait, the default is `centripetal` since
+  // r122) can introduce on unevenly-spaced waypoints. Setting tension low
+  // for a relaxed dolly feel.
+  posCurve = new THREE.CatmullRomCurve3(posPts, false, 'centripetal', 0.3);
+  lookCurve = new THREE.CatmullRomCurve3(lookPts, false, 'centripetal', 0.3);
+  fovKeys = WAYPOINTS.map((w) => w.fov);
+}
+
+function sampleFov(t) {
+  // Piecewise-linear over the same parameter so fov keys match positions.
+  const legs = fovKeys.length - 1;
+  if (legs <= 0) return fovKeys[0] || 50;
+  const legT = t * legs;
+  const i = Math.min(Math.floor(legT), legs - 1);
+  const localT = legT - i;
+  return fovKeys[i] + (fovKeys[i + 1] - fovKeys[i]) * localT;
+}
+
 let cutsceneStart = null;
 let cutsceneActive = false;
 
 function tickCutscene(now) {
-  if (!cutsceneActive) return;
+  if (!cutsceneActive || !posCurve) return;
   const elapsed = now - cutsceneStart;
-  const t = Math.min(1, elapsed / TOTAL_DURATION_MS);
+  const rawT = Math.min(1, elapsed / TOTAL_DURATION_MS);
+  // Global ease so the run starts gentle and lands gentle, but the
+  // middle plays at near-uniform speed — no mid-path pauses.
+  const t = easeInOutCubic(rawT);
 
-  // Map normalized t (0..1) onto the waypoint list. Each leg gets an
-  // equal slice; within a leg, easeInOutCubic.
-  const legs = WAYPOINTS.length - 1;
-  const legT = t * legs;
-  const legIdx = Math.min(Math.floor(legT), legs - 1);
-  const localT = easeInOutCubic(legT - legIdx);
+  const pos = posCurve.getPoint(t);
+  const look = lookCurve.getPoint(t);
 
-  const a = WAYPOINTS[legIdx];
-  const b = WAYPOINTS[legIdx + 1];
-
-  camera.position.set(
-    a.pos[0] + (b.pos[0] - a.pos[0]) * localT,
-    a.pos[1] + (b.pos[1] - a.pos[1]) * localT,
-    a.pos[2] + (b.pos[2] - a.pos[2]) * localT,
-  );
-  const lookX = a.look[0] + (b.look[0] - a.look[0]) * localT;
-  const lookY = a.look[1] + (b.look[1] - a.look[1]) * localT;
-  const lookZ = a.look[2] + (b.look[2] - a.look[2]) * localT;
-  camera.lookAt(lookX, lookY, lookZ);
-  camera.fov = a.fov + (b.fov - a.fov) * localT;
+  camera.position.copy(pos);
+  camera.lookAt(look);
+  camera.fov = sampleFov(t);
   camera.updateProjectionMatrix();
 
-  statusEl.textContent = `cutscene ${(t * 100).toFixed(0)}% — leg ${legIdx + 1}/${legs}`;
+  statusEl.textContent = `cutscene ${(rawT * 100).toFixed(0)}%`;
 
-  if (t >= 1) {
+  if (rawT >= 1) {
     cutsceneActive = false;
     statusEl.textContent = `cutscene complete (handoff to game would happen now)`;
   }
@@ -264,6 +258,7 @@ document.getElementById('play').addEventListener('click', () => {
   if (!shopRoot) return;
   orbit.enabled = false;
   playFromUserWaypointsIfAny();
+  rebuildSplines();
   cutsceneActive = true;
   cutsceneStart = performance.now();
 });
@@ -313,10 +308,23 @@ function captureCurrentWaypoint() {
   } else {
     const dir = new THREE.Vector3();
     camera.getWorldDirection(dir);
-    // Pick a look point ~5% of the bbox diagonal in front of the camera
     const dist = bbox ? bbox.getSize(new THREE.Vector3()).length() * 0.05 : 100;
     look = camera.position.clone().add(dir.multiplyScalar(dist));
   }
+
+  // Guard against a degenerate position==look pair. If the user zoomed
+  // all the way to the orbit target, pos and target collapse — the saved
+  // waypoint then has zero look-axis, which (a) breaks OrbitControls zoom
+  // on subsequent edits and (b) makes the spline tangent undefined. Push
+  // the look point forward along the camera's facing by a small fraction
+  // of the model diagonal.
+  const MIN_LOOK_DIST = bbox ? bbox.getSize(new THREE.Vector3()).length() * 0.01 : 50;
+  if (camera.position.distanceTo(look) < MIN_LOOK_DIST) {
+    const dir = new THREE.Vector3();
+    camera.getWorldDirection(dir); // already normalized
+    look = camera.position.clone().add(dir.multiplyScalar(MIN_LOOK_DIST));
+  }
+
   return {
     pos: camera.position.toArray(),
     look: look.toArray(),
@@ -369,11 +377,25 @@ function goToWaypoint(i) {
   if (!wp) return;
   cutsceneActive = false;
   camera.position.fromArray(wp.pos);
-  camera.lookAt(...wp.look);
+
+  // Sanitize the look target so OrbitControls always has a non-zero
+  // axis to dolly along. If pos==look (degenerate, was a real bug),
+  // push the look out 1% of the model diagonal in the camera's last
+  // facing direction.
+  const lookVec = new THREE.Vector3().fromArray(wp.look);
+  const minDist = bbox ? bbox.getSize(new THREE.Vector3()).length() * 0.01 : 50;
+  if (camera.position.distanceTo(lookVec) < minDist) {
+    const dir = new THREE.Vector3();
+    camera.getWorldDirection(dir);
+    if (dir.lengthSq() < 0.1) dir.set(0, 0, -1);
+    lookVec.copy(camera.position).add(dir.multiplyScalar(minDist));
+  }
+
+  camera.lookAt(lookVec);
   camera.fov = wp.fov;
   camera.updateProjectionMatrix();
   if (orbit.enabled) {
-    orbit.target.fromArray(wp.look);
+    orbit.target.copy(lookVec);
     orbit.update();
   }
 }
