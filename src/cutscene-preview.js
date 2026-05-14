@@ -100,8 +100,14 @@ const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerH
 camera.position.set(0, 1000, 12000);
 camera.lookAt(0, 0, 0);
 
+// OrbitControls is kept around for wheel-zoom only — its rotation is
+// disabled below in favor of first-person drag-to-look (see fpsLook
+// section). The "free orbit" button still toggles input enabled state.
 const orbit = new OrbitControls(camera, canvas);
 orbit.enabled = false;
+orbit.enableRotate = false;     // we do drag-look ourselves
+orbit.enablePan = false;        // panning the orbit target is confusing
+                                // alongside WASD movement
 
 // ---- Postprocessing stack -------------------------------------------
 //
@@ -444,20 +450,15 @@ document.getElementById('orbit').addEventListener('click', () => {
   orbit.enabled = !orbit.enabled;
   cutsceneActive = false;
   if (orbit.enabled) {
-    // Push the orbit target ~10% of diagonal in front of the camera. This
-    // gives the dolly a comfortable range regardless of whatever tight
-    // close-up the camera was sitting in (a saved waypoint with look near
-    // pos would otherwise leave us with almost no dolly headroom — the
-    // "plateau" symptom).
-    const diag = bbox ? bbox.getSize(new THREE.Vector3()).length() : 1000;
-    const dir = new THREE.Vector3();
-    camera.getWorldDirection(dir);
-    orbit.target.copy(camera.position).add(dir.multiplyScalar(diag * 0.1));
-    orbit.update();
+    // Sync the look angles from the camera's current orientation and
+    // retether the orbit target. This guarantees the first drag picks
+    // up exactly where the camera was pointing.
+    syncLookAngles();
+    applyLookAngles();
   }
   statusEl.textContent = orbit.enabled
-    ? 'free orbit — WASD/QE to fly, drag to look, shift = boost'
-    : 'free orbit off';
+    ? 'free fly — WASD/QE move, drag to look, shift = boost'
+    : 'free fly off';
 });
 
 // ---- Waypoint picker -------------------------------------------------
@@ -834,6 +835,93 @@ const tweakInitTimer = setInterval(() => {
   }
 }, 200);
 
+// ---- First-person drag-to-look --------------------------------------
+//
+// OrbitControls rotates the camera AROUND orbit.target, which is fine
+// when you're orbiting an object but breaks down for a flythrough:
+// after WASD-ing forward, the target is right in front of the camera,
+// and any small drag rotation swings the camera in a tight arc that
+// reads as "the world is strafing sideways." Worse, the orbit math
+// degenerates if the camera ever moves past the target.
+//
+// First-person look fixes this: drag yaws around world-Y and pitches
+// around the camera's local X. The camera's position is unchanged,
+// only its facing rotates. Pitch is clamped to ±85° to prevent flipping.
+//
+// orbit.target is kept tethered to a fixed offset in front of the
+// camera every frame, so wheel-zoom (which OrbitControls still
+// handles) always has something sensible to dolly toward.
+
+let lookYaw = 0;
+let lookPitch = 0;
+const LOOK_SENSITIVITY = 0.003; // radians per pixel of drag
+const PITCH_LIMIT = THREE.MathUtils.degToRad(85);
+const TARGET_AHEAD_FRAC = 0.05; // 5% of bbox diagonal in front of camera
+
+// Seed yaw/pitch from the camera's current orientation so the first drag
+// doesn't snap the view to identity. Done lazily after FBX load when
+// the cutscene/setCameraToWaypoint has positioned things.
+function syncLookAngles() {
+  const dir = new THREE.Vector3();
+  camera.getWorldDirection(dir);
+  // yaw is rotation around world Y; pitch is the elevation
+  lookYaw = Math.atan2(-dir.x, -dir.z);
+  lookPitch = Math.asin(dir.y);
+  lookPitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, lookPitch));
+}
+
+function applyLookAngles() {
+  // Rebuild camera orientation from yaw + pitch (no roll).
+  const euler = new THREE.Euler(lookPitch, lookYaw, 0, 'YXZ');
+  camera.quaternion.setFromEuler(euler);
+  // Keep orbit.target tethered in front of the camera so wheel-zoom
+  // (which OrbitControls still handles) has a sensible dolly axis.
+  if (bbox) {
+    const ahead = new THREE.Vector3(0, 0, -1)
+      .applyQuaternion(camera.quaternion)
+      .multiplyScalar(bbox.getSize(new THREE.Vector3()).length() * TARGET_AHEAD_FRAC);
+    orbit.target.copy(camera.position).add(ahead);
+  }
+}
+
+let dragActive = false;
+let dragLastX = 0;
+let dragLastY = 0;
+let dragPointerId = -1;
+
+canvas.addEventListener('pointerdown', (e) => {
+  if (!orbit.enabled || e.button !== 0) return;
+  // Make sure look angles match the current camera before we start
+  // applying deltas (otherwise the first drag snaps the view).
+  syncLookAngles();
+  dragActive = true;
+  dragLastX = e.clientX;
+  dragLastY = e.clientY;
+  dragPointerId = e.pointerId;
+  canvas.setPointerCapture(e.pointerId);
+});
+
+canvas.addEventListener('pointermove', (e) => {
+  if (!dragActive || e.pointerId !== dragPointerId) return;
+  const dx = e.clientX - dragLastX;
+  const dy = e.clientY - dragLastY;
+  dragLastX = e.clientX;
+  dragLastY = e.clientY;
+  lookYaw -= dx * LOOK_SENSITIVITY;
+  lookPitch -= dy * LOOK_SENSITIVITY;
+  lookPitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, lookPitch));
+  applyLookAngles();
+});
+
+function endDrag(e) {
+  if (e.pointerId !== dragPointerId) return;
+  dragActive = false;
+  dragPointerId = -1;
+  canvas.releasePointerCapture?.(e.pointerId);
+}
+canvas.addEventListener('pointerup', endDrag);
+canvas.addEventListener('pointercancel', endDrag);
+
 // ---- Keyboard fly controls ------------------------------------------
 //
 // OrbitControls dolly is multiplicative on distance-to-target, which
@@ -896,17 +984,16 @@ function tickKeyboardFly(dtSeconds) {
 
   if (dx === 0 && dy === 0 && dz === 0) return;
 
-  // Move camera AND orbit.target so drag-rotate keeps the same pivot
-  // relative to the camera. Without this, after flying around the
-  // orbit pivot stays at the old target and rotation feels totally
-  // disconnected.
+  // Move only the camera position. orbit.target is retethered by
+  // applyLookAngles to stay TARGET_AHEAD_FRAC of diagonal ahead of
+  // the camera — that way wheel-zoom always has a sensible dolly axis
+  // and rotation pivot.
   const move = new THREE.Vector3()
     .addScaledVector(FLY_FORWARD, dz)
     .addScaledVector(FLY_SIDE, dx)
     .addScaledVector(FLY_WORLD_UP, dy);
   camera.position.add(move);
-  orbit.target.add(move);
-  orbit.update();
+  applyLookAngles();
 }
 
 // ---- render loop ------------------------------------------------------
