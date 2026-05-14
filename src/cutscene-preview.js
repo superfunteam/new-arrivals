@@ -224,24 +224,29 @@ fbxLoader.load(
           // Promote Phong → Standard so the material samples scene.environment
           // (IBL fill). FBXLoader gives us MeshPhongMaterial by default, which
           // ignores scene.environment entirely — that's why textured walls
-          // looked monochrome despite the diffuse maps being loaded. We
-          // preserve diffuse map + emissive but reset color to white so the
-          // texture isn't dimmed by Phong's default 0xcccccc base.
+          // looked monochrome despite the diffuse maps being loaded.
+          //
+          // Color rule: when the material HAS a diffuse map, set color to
+          // white so the texture isn't pre-dimmed by Phong's default
+          // 0xcccccc base. But when the material has NO map (e.g. "Black",
+          // "Water"), KEEP the Phong color — those materials carry their
+          // appearance in the color channel, not a texture. Forcing white
+          // on them made every map-less material render pure white,
+          // including window frames + aquarium water.
           let std;
           if (phong.isMeshPhongMaterial || phong.isMeshLambertMaterial) {
+            const baseColor = phong.map ? 0xffffff : phong.color.clone();
             std = new THREE.MeshStandardMaterial({
               name: phong.name,
               map: phong.map || null,
-              color: 0xffffff,         // was 0xcccccc — let the texture speak
+              color: baseColor,
               transparent: phong.transparent,
               opacity: phong.opacity,
               alphaTest: phong.alphaTest,
               side: phong.side,
-              roughness: 0.95,         // very matte — kills specular highlights
-                                       // on the floor + VHS covers that were
-                                       // catching the env map and blooming
+              roughness: 0.95,
               metalness: 0.0,
-              envMapIntensity: 0.8,    // hand-tuned via tweaks panel
+              envMapIntensity: 0.8,
             });
             // Replace in place
             if (Array.isArray(n.material)) n.material[i] = std;
@@ -254,18 +259,55 @@ fbxLoader.load(
           if (std.map) std.map.colorSpace = THREE.SRGBColorSpace;
 
           // Per-material overrides (re-applied after promotion).
-          if (std.name && /emis|^light/i.test(std.name)) {
+          // Emissive overrides — ONLY for materials that actually have an
+          // emissive texture map ("Lights" is the ceiling fixtures, with
+          // dark housing + bright tube pattern baked into Lights.jpg).
+          // The plain-color emitters ("Emisor", "Emisor_01") have no map,
+          // so blanket-applying a white emissive made the storefront sign
+          // wash out white. Letting it stay non-emissive lets the
+          // pink/cyan signLights below cast their neon onto it.
+          if (std.name && /^light/i.test(std.name) && std.map) {
             std.emissiveMap = std.map;
             std.emissive = new THREE.Color(0xfff4d8);
-            std.emissiveIntensity = 1.3; // hand-tuned via tweaks panel
-            std.envMapIntensity = 0.3;   // don't double-bright glowing parts
+            std.emissiveIntensity = 1.3;
+            std.envMapIntensity = 0.3;
+          } else if (std.name && /emis/i.test(std.name)) {
+            // No-map emitter: keep it bright + a touch warm, but DON'T
+            // pour emissive over the texture-less surface — let the scene
+            // lighting (signLights, lamps) color it.
+            std.emissiveIntensity = 0;
+            std.envMapIntensity = 0.5;
           }
+
           if (std.name && /glass|window|mirror/i.test(std.name)) {
             std.transparent = true;
             std.opacity = 0.18;
             std.depthWrite = false;
             std.color.set(0xb8d0e0);
             std.roughness = 0.1;
+            std.metalness = 0.0;
+          }
+
+          // Hand-fixed materials whose FBX color is wrong or whose role
+          // needs special handling. Identified by name, not by regex —
+          // these are one-off legitimate exceptions.
+          if (std.name === 'Black') {
+            // Window mullions + door frames. The original Phong color
+            // was the default 0xcccccc (not actually black), which made
+            // them render pure white once we whitened the base color.
+            // Force them dark.
+            std.color.set(0x0a0a0a);
+            std.roughness = 0.7;
+          }
+          if (std.name === 'Water') {
+            // Aquarium water — semi-transparent murky blue. Same as
+            // glass family but with water tint + a bit of roughness so
+            // it still reads as a surface, not invisible.
+            std.transparent = true;
+            std.opacity = 0.35;
+            std.depthWrite = false;
+            std.color.set(0x3a5e6e);
+            std.roughness = 0.3;
             std.metalness = 0.0;
           }
         }
@@ -705,11 +747,15 @@ function fanOutEnvIntensity(v) {
 
 function fanOutEmissive(v) {
   if (!shopRoot) return;
+  // Only scales the actual-emitting materials — ones with an emissive
+  // texture map. The plain-color "Emisor"/"Emisor_01" slots have no map
+  // and are intentionally non-emissive (their neon look comes from the
+  // pink/cyan signLights instead of a self-glow).
   shopRoot.traverse((n) => {
     if (n.isMesh && n.material) {
       const arr = Array.isArray(n.material) ? n.material : [n.material];
       for (const m of arr) {
-        if (m.name && /emis|^light/i.test(m.name)) {
+        if (m.emissiveMap) {
           m.emissiveIntensity = v;
         }
       }
