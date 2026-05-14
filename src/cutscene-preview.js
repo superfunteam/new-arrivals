@@ -37,10 +37,13 @@ const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setSize(window.innerWidth, window.innerHeight);
 // OutputPass at the end of the composer handles tone mapping + color
-// space, so the renderer itself should be in linear/no-tone-mapping mode
-// — passing it through twice double-corrects and looks washed out.
+// space, so the renderer itself stays linear / no-tonemapping — passing
+// through both would double-correct and wash the image out. Exposure is
+// applied via the renderer.toneMappingExposure value which OutputPass
+// reads at run time, so we still control it here.
 renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
 renderer.toneMapping = THREE.NoToneMapping;
+renderer.toneMappingExposure = 1.8; // OutputPass picks this up
 renderer.setClearColor(0x05060a);
 
 const scene = new THREE.Scene();
@@ -109,13 +112,14 @@ const renderPass = new RenderPass(scene, camera);
 composer.addPass(renderPass);
 
 // UnrealBloomPass(resolution, strength, radius, threshold)
-// threshold 0.6 means only pixels brighter than 60% gray glow — keeps
-// bright sources blooming without lifting the whole image.
+// Restraint setting: strength 0.4 just kisses the highlights. Higher
+// threshold so only the brightest emissives bloom (signs, fluorescent
+// fixtures) instead of every bright wall.
 const bloomPass = new UnrealBloomPass(
   new THREE.Vector2(window.innerWidth, window.innerHeight),
-  0.7,  // strength
-  0.4,  // radius
-  0.6,  // threshold
+  0.4,  // strength
+  0.5,  // radius
+  0.85, // threshold
 );
 composer.addPass(bloomPass);
 
@@ -137,22 +141,36 @@ composer.addPass(vignette);
 const outputPass = new OutputPass();
 composer.addPass(outputPass);
 
-// Lighting — these are placeholders; intensities and positions are rescaled
-// to the FBX's actual bounding box in the loader callback (the model turned
-// out to be ~12000 units across, so point lights need huge ranges).
-const hemi = new THREE.HemisphereLight(0xffe9c2, 0x202028, 0.55);
+// Lighting — placeholder intensities/positions; rescaled in onLoad. The
+// reference renders were lit in Blender with global illumination, which
+// three.js can't do real-time, so we fake it with a strong ambient floor
+// (hemisphere) + sun + a clutch of fill points inside the building.
+const hemi = new THREE.HemisphereLight(0xfff0d4, 0x282030, 2.2);
 scene.add(hemi);
 
-const sun = new THREE.DirectionalLight(0xfff0d4, 1.2);
+const sun = new THREE.DirectionalLight(0xfff0d4, 2.0);
 sun.position.set(2000, 8000, 6000);
 scene.add(sun);
 
-// Storefront sign accents (pink + cyan). Positions set in onLoad once we
-// know where the sign actually is.
-const signLight = new THREE.PointLight(0xff5fb8, 4.0, 0);
+// Front fill — a soft directional aimed at the storefront so the brick
+// wall reads in the establishing shot. Without this the building is back-
+// lit by the sun and reads as a silhouette from the parking-lot waypoint.
+const frontFill = new THREE.DirectionalLight(0xfff4dc, 1.4);
+frontFill.position.set(0, 1500, -5000); // negative-z = "out from store"
+frontFill.target.position.set(0, 0, 0);
+scene.add(frontFill);
+scene.add(frontFill.target);
+
+// Storefront sign accents (pink + cyan).
+const signLight = new THREE.PointLight(0xff5fb8, 8.0, 0, 1.6);
 scene.add(signLight);
-const signLight2 = new THREE.PointLight(0x5fb8ff, 2.5, 0);
+const signLight2 = new THREE.PointLight(0x5fb8ff, 5.0, 0, 1.6);
 scene.add(signLight2);
+
+// Interior fill — populated after FBX load by parking warm point lights
+// at every ceiling fixture (Lamp_*) world position. Stored at module scope
+// so the lights can be rescaled if needed.
+const interiorLights = [];
 
 // ---- FBX load ---------------------------------------------------------
 
@@ -187,14 +205,14 @@ fbxLoader.load(
         for (const m of mats) {
           if (m.map) m.map.colorSpace = THREE.SRGBColorSpace;
           // The FBX's emissive materials are named "Emisor" / "Emisor_01"
-          // (Spanish for "Emitter") and "Lights_Emisor". Bump emissive
-          // intensity well above the bloom threshold (0.6) so the
-          // fluorescent ceiling fixtures and the storefront sign actually
-          // glow through the bloom pass.
+          // (Spanish for "Emitter") and "Lights_Emisor". Intensity 1.5
+          // sits just above the bloom threshold (0.85) so fixtures glow
+          // without blowing out. The actual interior light comes from
+          // PointLights placed at each Lamp_* world position below.
           if (m.name && /emis|^light/i.test(m.name)) {
             m.emissiveMap = m.map;
             m.emissive = new THREE.Color(0xfff4d8);
-            m.emissiveIntensity = 3.5;
+            m.emissiveIntensity = 1.5;
           }
           // Storefront windows + mirrors — semi-transparent plate glass.
           if (m.name && /glass|window|mirror/i.test(m.name)) {
@@ -240,6 +258,24 @@ fbxLoader.load(
     // at ~2.5% of diagonal so each scroll always produces visible motion.
     orbit.minDistance = diag * 0.025;
     orbit.maxDistance = diag * 2.0;
+
+    // Plant a warm point light at every Lamp_* fixture so the interior is
+    // actually lit (not just visually emissive-but-dark). Without these,
+    // the bloom pass made the fixtures glow but the rest of the inside
+    // stayed pitch black, because emissive surfaces don't illuminate
+    // other surfaces in three.js (only actual lights do).
+    const lampNames = Object.keys(namedNodes).filter((n) => /^Lamp/i.test(n));
+    const lampRange = diag * 0.18;
+    const lampIntensity = (diag * diag) / 90000; // scales with model
+    for (const name of lampNames) {
+      const node = namedNodes[name];
+      const wp = new THREE.Vector3();
+      node.getWorldPosition(wp);
+      const pt = new THREE.PointLight(0xfff0c8, lampIntensity, lampRange, 1.8);
+      pt.position.copy(wp);
+      scene.add(pt);
+      interiorLights.push(pt);
+    }
 
     // We used to overwrite WAYPOINTS with bbox-derived defaults here, but
     // now that we have a hand-tuned path in the const above we want those
