@@ -360,16 +360,14 @@ fbxLoader.load(
 // (~mm). Replace these with the latest export from the picker UI when
 // the path changes — that's the workflow.
 const WAYPOINTS = [
-  { pos: [584.4,   605.6, -3137.2], look: [-731.7,  141.9, 126.1], fov: 55.0 },
-  { pos: [-754.6,  174.5,   -22.6], look: [-804.2,  157.0, 100.3], fov: 55.0 },
-  { pos: [-1000.9, 165.3,    22.2], look: [-1050.4, 147.9, 145.1], fov: 55.0 },
+  { pos: [-1810.6, 291.8, -1984.7], look: [-1668.8, 235.6, -1333.8], fov: 55.0 },
+  { pos: [ -740.5, 172.2,   -80.7], look: [ -598.6, 116.0,   570.2], fov: 55.0 },
+  { pos: [-1048.0, 196.3,   111.9], look: [-1096.8,  95.6,   771.1], fov: 55.0 },
+  { pos: [ -878.7, 188.3,   806.6], look: [ -583.3, 113.6,  1401.7], fov: 55.0 },
+  { pos: [ -906.1, 191.1,  1011.9], look: [ -911.8, 122.8,   346.9], fov: 55.0 },
 ];
 
-const TOTAL_DURATION_MS = 7000; // total cutscene length
-
-function easeInOutCubic(t) {
-  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-}
+const TOTAL_DURATION_MS = 12000; // ~12s — was 7s, user wanted slower
 
 function setCameraToWaypoint(i) {
   const w = WAYPOINTS[i];
@@ -379,11 +377,16 @@ function setCameraToWaypoint(i) {
   camera.updateProjectionMatrix();
 }
 
-// Catmull-Rom splines for position + look. Building once at the start of
-// each cutscene means the path is C¹-continuous through every waypoint —
-// no deceleration at each beat the way the old per-leg lerp had. One
-// global easeInOutCubic on `t` keeps the run cinematic (slow start, slow
-// stop) without per-waypoint pauses.
+// Catmull-Rom splines for position + look — sampled by ARC LENGTH (not
+// parameter t) so the camera moves at a constant speed across the whole
+// path regardless of how unevenly the waypoints are spaced. Curve.getPointAt(u)
+// uses an internal arc-length lookup table that gets built lazily; we
+// force-build it by calling getLength() right after construction so the
+// first frame doesn't pay the cost.
+//
+// Tension 0.2 (was 0.3) for slightly smoother curves through tight bends.
+// `centripetal` parameterization still controls the curve shape; the
+// arc-length re-sample lives on top of that to give constant speed.
 let posCurve = null;
 let lookCurve = null;
 let fovKeys = [];
@@ -391,12 +394,11 @@ let fovKeys = [];
 function rebuildSplines() {
   const posPts = WAYPOINTS.map((w) => new THREE.Vector3(...w.pos));
   const lookPts = WAYPOINTS.map((w) => new THREE.Vector3(...w.look));
-  // `centripetal` parameterization avoids the cusps/overshoot that the
-  // default `centripetal` (no wait, the default is `centripetal` since
-  // r122) can introduce on unevenly-spaced waypoints. Setting tension low
-  // for a relaxed dolly feel.
-  posCurve = new THREE.CatmullRomCurve3(posPts, false, 'centripetal', 0.3);
-  lookCurve = new THREE.CatmullRomCurve3(lookPts, false, 'centripetal', 0.3);
+  posCurve = new THREE.CatmullRomCurve3(posPts, false, 'centripetal', 0.2);
+  lookCurve = new THREE.CatmullRomCurve3(lookPts, false, 'centripetal', 0.2);
+  // Force the arc-length cache to populate now, not on first frame
+  posCurve.getLength();
+  lookCurve.getLength();
   fovKeys = WAYPOINTS.map((w) => w.fov);
 }
 
@@ -416,22 +418,23 @@ let cutsceneActive = false;
 function tickCutscene(now) {
   if (!cutsceneActive || !posCurve) return;
   const elapsed = now - cutsceneStart;
-  const rawT = Math.min(1, elapsed / TOTAL_DURATION_MS);
-  // Global ease so the run starts gentle and lands gentle, but the
-  // middle plays at near-uniform speed — no mid-path pauses.
-  const t = easeInOutCubic(rawT);
+  const t = Math.min(1, elapsed / TOTAL_DURATION_MS);
 
-  const pos = posCurve.getPoint(t);
-  const look = lookCurve.getPoint(t);
+  // getPointAt(u) samples by arc length — u=0.5 is genuinely the
+  // midpoint of the path, not the midpoint of the parameter. With
+  // linear t this gives a uniform-velocity flythrough through every
+  // segment, no per-waypoint slowdowns and no overall easing.
+  const pos = posCurve.getPointAt(t);
+  const look = lookCurve.getPointAt(t);
 
   camera.position.copy(pos);
   camera.lookAt(look);
   camera.fov = sampleFov(t);
   camera.updateProjectionMatrix();
 
-  statusEl.textContent = `cutscene ${(rawT * 100).toFixed(0)}%`;
+  statusEl.textContent = `cutscene ${(t * 100).toFixed(0)}%`;
 
-  if (rawT >= 1) {
+  if (t >= 1) {
     cutsceneActive = false;
     statusEl.textContent = `cutscene complete (handoff to game would happen now)`;
   }
