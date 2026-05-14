@@ -123,14 +123,17 @@ const renderPass = new RenderPass(scene, camera);
 composer.addPass(renderPass);
 
 // UnrealBloomPass(resolution, strength, radius, threshold)
-// Restraint setting: strength 0.4 just kisses the highlights. Higher
-// threshold so only the brightest emissives bloom (signs, fluorescent
-// fixtures) instead of every bright wall.
+// Threshold > 1.0 only blooms HDR values (i.e. surfaces whose lit color
+// exceeds normal SDR range). With Standard materials sampling IBL +
+// emissive intensity, anything we INTEND to glow has emissive >= 1.5,
+// so threshold 1.5 cleanly isolates fluorescents and the sign. Bright
+// diffuse pixels in VHS covers / carpet patches stay under threshold
+// and don't blow out.
 const bloomPass = new UnrealBloomPass(
   new THREE.Vector2(window.innerWidth, window.innerHeight),
-  0.4,  // strength
+  0.6,  // strength — bumped slightly since fewer pixels qualify now
   0.5,  // radius
-  0.85, // threshold
+  1.5,  // threshold (was 0.85)
 );
 composer.addPass(bloomPass);
 
@@ -231,9 +234,12 @@ fbxLoader.load(
               opacity: phong.opacity,
               alphaTest: phong.alphaTest,
               side: phong.side,
-              roughness: 0.85,         // matte-ish, matches the chunky-poly vibe
+              roughness: 0.95,         // very matte — kills specular highlights
+                                       // on the floor + VHS covers that were
+                                       // catching the env map and blooming
               metalness: 0.0,
-              envMapIntensity: 1.2,    // gentle bump on the IBL fill
+              envMapIntensity: 0.6,    // was 1.2 — IBL was lifting bright
+                                       // diffuse pixels into bloom range
             });
             // Replace in place
             if (Array.isArray(n.material)) n.material[i] = std;
@@ -304,7 +310,9 @@ fbxLoader.load(
     // other surfaces in three.js (only actual lights do).
     const lampNames = Object.keys(namedNodes).filter((n) => /^Lamp/i.test(n));
     const lampRange = diag * 0.18;
-    const lampIntensity = (diag * diag) / 90000; // scales with model
+    const lampIntensity = (diag * diag) / 220000; // was /90000 — overlapping
+                                                   // fixtures stacked light
+                                                   // hard near the camera
     for (const name of lampNames) {
       const node = namedNodes[name];
       const wp = new THREE.Vector3();
