@@ -99,6 +99,18 @@ fbxLoader.load(
             m.emissive = new THREE.Color(0xffffff);
             m.emissiveIntensity = 1.2;
           }
+          // Storefront windows + mirrors — make them semi-transparent so
+          // the interior shows through. Disabling depthWrite prevents the
+          // glass from occluding shelves behind it in the depth pass; the
+          // tradeoff is a small risk of sort glitches at oblique angles.
+          if (m.name && /glass|window|mirror/i.test(m.name)) {
+            m.transparent = true;
+            m.opacity = 0.18;
+            m.depthWrite = false;
+            // Cool blue tint, low specular bump — feels like real plate glass
+            if (m.color) m.color.set(0xb8d0e0);
+            if ('shininess' in m) m.shininess = 80;
+          }
         }
       }
     });
@@ -251,6 +263,7 @@ function tickCutscene(now) {
 document.getElementById('play').addEventListener('click', () => {
   if (!shopRoot) return;
   orbit.enabled = false;
+  playFromUserWaypointsIfAny();
   cutsceneActive = true;
   cutsceneStart = performance.now();
 });
@@ -262,6 +275,153 @@ document.getElementById('orbit').addEventListener('click', () => {
     ? 'free orbit — drag to rotate, wheel to zoom, right-drag to pan'
     : 'free orbit off';
 });
+
+// ---- Waypoint picker -------------------------------------------------
+//
+// Let the user fly around (free orbit) and save the camera's current
+// position + look target as a waypoint. The cutscene then interpolates
+// through the saved list. Waypoints persist in localStorage so the user
+// can iterate without losing them on reload.
+
+const LS_KEY = 'cutscene-preview:waypoints:v1';
+const userWaypoints = loadUserWaypoints();
+const wpListEl = document.getElementById('wp-list');
+const exportBoxEl = document.getElementById('export-box');
+
+function loadUserWaypoints() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveUserWaypoints() {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify(userWaypoints));
+  } catch {}
+}
+
+function captureCurrentWaypoint() {
+  // OrbitControls.target is the camera's lookAt point — perfect for waypoints.
+  // If orbit isn't enabled, project forward from the camera direction so
+  // the user still gets a sensible look target.
+  let look;
+  if (orbit.enabled) {
+    look = orbit.target.clone();
+  } else {
+    const dir = new THREE.Vector3();
+    camera.getWorldDirection(dir);
+    // Pick a look point ~5% of the bbox diagonal in front of the camera
+    const dist = bbox ? bbox.getSize(new THREE.Vector3()).length() * 0.05 : 100;
+    look = camera.position.clone().add(dir.multiplyScalar(dist));
+  }
+  return {
+    pos: camera.position.toArray(),
+    look: look.toArray(),
+    fov: camera.fov,
+  };
+}
+
+function renderWaypointList() {
+  wpListEl.innerHTML = '';
+  if (userWaypoints.length === 0) {
+    wpListEl.innerHTML = '<div style="color:#666;font-style:italic;font-size:11px">no waypoints — using bbox defaults</div>';
+    return;
+  }
+  userWaypoints.forEach((wp, i) => {
+    const row = document.createElement('div');
+    row.className = 'wp-item';
+    const [x, y, z] = wp.pos.map((n) => Math.round(n));
+    row.innerHTML = `
+      <span class="wp-label">${i + 1}. <span class="wp-coords">[${x},${y},${z}] fov ${Math.round(wp.fov)}</span></span>
+      <button data-i="${i}" class="wp-go">go</button>
+      <button data-i="${i}" class="wp-up secondary">↑</button>
+      <button data-i="${i}" class="wp-down secondary">↓</button>
+      <button data-i="${i}" class="wp-del secondary">✕</button>
+    `;
+    wpListEl.appendChild(row);
+  });
+  // Wire up per-row buttons
+  wpListEl.querySelectorAll('.wp-go').forEach((b) =>
+    b.addEventListener('click', (e) => goToWaypoint(parseInt(e.target.dataset.i, 10))),
+  );
+  wpListEl.querySelectorAll('.wp-del').forEach((b) =>
+    b.addEventListener('click', (e) => { userWaypoints.splice(parseInt(e.target.dataset.i, 10), 1); saveUserWaypoints(); renderWaypointList(); }),
+  );
+  wpListEl.querySelectorAll('.wp-up').forEach((b) =>
+    b.addEventListener('click', (e) => {
+      const i = parseInt(e.target.dataset.i, 10);
+      if (i > 0) { [userWaypoints[i-1], userWaypoints[i]] = [userWaypoints[i], userWaypoints[i-1]]; saveUserWaypoints(); renderWaypointList(); }
+    }),
+  );
+  wpListEl.querySelectorAll('.wp-down').forEach((b) =>
+    b.addEventListener('click', (e) => {
+      const i = parseInt(e.target.dataset.i, 10);
+      if (i < userWaypoints.length - 1) { [userWaypoints[i+1], userWaypoints[i]] = [userWaypoints[i], userWaypoints[i+1]]; saveUserWaypoints(); renderWaypointList(); }
+    }),
+  );
+}
+
+function goToWaypoint(i) {
+  const wp = userWaypoints[i];
+  if (!wp) return;
+  cutsceneActive = false;
+  camera.position.fromArray(wp.pos);
+  camera.lookAt(...wp.look);
+  camera.fov = wp.fov;
+  camera.updateProjectionMatrix();
+  if (orbit.enabled) {
+    orbit.target.fromArray(wp.look);
+    orbit.update();
+  }
+}
+
+function playFromUserWaypointsIfAny() {
+  if (userWaypoints.length >= 2) {
+    WAYPOINTS.length = 0;
+    for (const wp of userWaypoints) WAYPOINTS.push({ pos: wp.pos.slice(), look: wp.look.slice(), fov: wp.fov });
+    statusEl.textContent = `playing ${userWaypoints.length} user waypoints…`;
+  } else {
+    statusEl.textContent = userWaypoints.length === 1
+      ? '1 waypoint — need at least 2 for a path; using defaults'
+      : 'playing bbox defaults — save 2+ waypoints to use your own';
+  }
+}
+
+document.getElementById('wp-save').addEventListener('click', () => {
+  userWaypoints.push(captureCurrentWaypoint());
+  saveUserWaypoints();
+  renderWaypointList();
+});
+
+document.getElementById('wp-clear').addEventListener('click', () => {
+  if (userWaypoints.length === 0) return;
+  if (!confirm(`Clear all ${userWaypoints.length} waypoints?`)) return;
+  userWaypoints.length = 0;
+  saveUserWaypoints();
+  renderWaypointList();
+});
+
+document.getElementById('wp-play').addEventListener('click', () => {
+  document.getElementById('play').click();
+});
+
+document.getElementById('wp-export').addEventListener('click', () => {
+  if (userWaypoints.length === 0) { exportBoxEl.style.display = 'none'; return; }
+  // Format as something paste-able into source code.
+  const lines = userWaypoints.map((wp) => {
+    const p = wp.pos.map((n) => n.toFixed(1)).join(', ');
+    const l = wp.look.map((n) => n.toFixed(1)).join(', ');
+    return `  { pos: [${p}], look: [${l}], fov: ${wp.fov.toFixed(1)} },`;
+  });
+  exportBoxEl.value = `const WAYPOINTS = [\n${lines.join('\n')}\n];`;
+  exportBoxEl.style.display = 'block';
+  exportBoxEl.select();
+});
+
+renderWaypointList();
 
 // ---- render loop ------------------------------------------------------
 
