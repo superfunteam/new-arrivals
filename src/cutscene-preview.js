@@ -259,24 +259,36 @@ fbxLoader.load(
           if (std.map) std.map.colorSpace = THREE.SRGBColorSpace;
 
           // Per-material overrides (re-applied after promotion).
-          // Emissive overrides — ONLY for materials that actually have an
-          // emissive texture map ("Lights" is the ceiling fixtures, with
-          // dark housing + bright tube pattern baked into Lights.jpg).
-          // The plain-color emitters ("Emisor", "Emisor_01") have no map,
-          // so blanket-applying a white emissive made the storefront sign
-          // wash out white. Letting it stay non-emissive lets the
-          // pink/cyan signLights below cast their neon onto it.
+          // Emissive overrides. Three buckets:
+          //
+          // 1. "Lights" — actual emissive TEXTURE (Lights.jpg has the
+          //    dark fixture housing + bright tube baked in). Just bind
+          //    the diffuse as emissiveMap and let the texture itself
+          //    decide what glows.
+          //
+          // 2. "Emisor_01" — used by the mesh named "VHS" (sign left
+          //    half). In the reference renders this glows BLUE/PURPLE.
+          //    No texture; we hand-set the emissive color.
+          //
+          // 3. "Emisor" — used by the mesh named "Video" (sign right
+          //    half). Glows PINK/MAGENTA in the reference. Hand-set too.
+          //
+          // The PointLights (signLight + signLight2) still cast colored
+          // light onto the surrounding brick wall — the emissive provides
+          // the sign's own glow, the lights provide the wall bounce.
           if (std.name && /^light/i.test(std.name) && std.map) {
             std.emissiveMap = std.map;
             std.emissive = new THREE.Color(0xfff4d8);
             std.emissiveIntensity = 1.3;
             std.envMapIntensity = 0.3;
-          } else if (std.name && /emis/i.test(std.name)) {
-            // No-map emitter: keep it bright + a touch warm, but DON'T
-            // pour emissive over the texture-less surface — let the scene
-            // lighting (signLights, lamps) color it.
-            std.emissiveIntensity = 0;
-            std.envMapIntensity = 0.5;
+          } else if (std.name === 'Emisor_01') {
+            std.emissive = new THREE.Color(0x4060ff); // electric blue
+            std.emissiveIntensity = 2.8;
+            std.envMapIntensity = 0.2;
+          } else if (std.name === 'Emisor') {
+            std.emissive = new THREE.Color(0xff3aa8); // hot magenta
+            std.emissiveIntensity = 2.8;
+            std.envMapIntensity = 0.2;
           }
 
           if (std.name && /glass|window|mirror/i.test(std.name)) {
