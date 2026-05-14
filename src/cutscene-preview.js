@@ -44,7 +44,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 // reads at run time, so we still control it here.
 renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
 renderer.toneMapping = THREE.NoToneMapping;
-renderer.toneMappingExposure = 1.8; // OutputPass picks this up
+renderer.toneMappingExposure = 1.8; // hand-tuned via the tweaks panel
 renderer.setClearColor(0x05060a);
 
 const scene = new THREE.Scene();
@@ -131,25 +131,22 @@ composer.addPass(renderPass);
 // and don't blow out.
 const bloomPass = new UnrealBloomPass(
   new THREE.Vector2(window.innerWidth, window.innerHeight),
-  0.6,  // strength — bumped slightly since fewer pixels qualify now
-  0.5,  // radius
-  1.5,  // threshold (was 0.85)
+  0.1,  // strength — hand-tuned, just kisses the brightest fixtures
+  0.7,  // radius
+  1.5,  // threshold (HDR only)
 );
 composer.addPass(bloomPass);
 
 const rgbShift = new ShaderPass(RGBShiftShader);
-rgbShift.uniforms.amount.value = 0.0018;  // ~3px channel split at 1080p
+rgbShift.uniforms.amount.value = 0.0008;  // hand-tuned, restrained CA
 composer.addPass(rgbShift);
 
-// FilmPass(intensity, grayscale). Newer three.js versions drop the
-// scanline parameters — we use intensity ~0.25 for visible-but-not-
-// distracting grain, grayscale=false to keep colors.
-const filmPass = new FilmPass(0.25, false);
+const filmPass = new FilmPass(0.55, false);
 composer.addPass(filmPass);
 
 const vignette = new ShaderPass(VignetteShader);
 vignette.uniforms.offset.value = 1.05;
-vignette.uniforms.darkness.value = 1.15;
+vignette.uniforms.darkness.value = 1.3;
 composer.addPass(vignette);
 
 const outputPass = new OutputPass();
@@ -159,17 +156,17 @@ composer.addPass(outputPass);
 // reference renders were lit in Blender with global illumination, which
 // three.js can't do real-time, so we fake it with a strong ambient floor
 // (hemisphere) + sun + a clutch of fill points inside the building.
-const hemi = new THREE.HemisphereLight(0xfff0d4, 0x282030, 2.2);
+const hemi = new THREE.HemisphereLight(0xfff0d4, 0x282030, 1.4);
 scene.add(hemi);
 
-const sun = new THREE.DirectionalLight(0xfff0d4, 2.0);
+const sun = new THREE.DirectionalLight(0xfff0d4, 2.1);
 sun.position.set(2000, 8000, 6000);
 scene.add(sun);
 
 // Front fill — a soft directional aimed at the storefront so the brick
 // wall reads in the establishing shot. Without this the building is back-
 // lit by the sun and reads as a silhouette from the parking-lot waypoint.
-const frontFill = new THREE.DirectionalLight(0xfff4dc, 1.4);
+const frontFill = new THREE.DirectionalLight(0xfff4dc, 0.7);
 frontFill.position.set(0, 1500, -5000); // negative-z = "out from store"
 frontFill.target.position.set(0, 0, 0);
 scene.add(frontFill);
@@ -238,8 +235,7 @@ fbxLoader.load(
                                        // on the floor + VHS covers that were
                                        // catching the env map and blooming
               metalness: 0.0,
-              envMapIntensity: 0.6,    // was 1.2 — IBL was lifting bright
-                                       // diffuse pixels into bloom range
+              envMapIntensity: 0.8,    // hand-tuned via tweaks panel
             });
             // Replace in place
             if (Array.isArray(n.material)) n.material[i] = std;
@@ -255,8 +251,8 @@ fbxLoader.load(
           if (std.name && /emis|^light/i.test(std.name)) {
             std.emissiveMap = std.map;
             std.emissive = new THREE.Color(0xfff4d8);
-            std.emissiveIntensity = 1.5;
-            std.envMapIntensity = 0.3; // don't double-bright the glowing parts
+            std.emissiveIntensity = 1.3; // hand-tuned via tweaks panel
+            std.envMapIntensity = 0.3;   // don't double-bright glowing parts
           }
           if (std.name && /glass|window|mirror/i.test(std.name)) {
             std.transparent = true;
@@ -673,18 +669,18 @@ setupCollapse('waypoints', 'waypoints-toggle', false);
 
 const DEFAULTS = {
   exposure: 1.8,
-  bloomStrength: 0.6,
+  bloomStrength: 0.1,
   bloomThreshold: 1.5,
-  bloomRadius: 0.5,
-  hemi: 2.2,
-  sun: 2.0,
-  fill: 1.4,
+  bloomRadius: 0.7,
+  hemi: 1.4,
+  sun: 2.1,
+  fill: 0.7,
   lamps: 1.0,
-  env: 0.6,
-  emis: 1.5,
-  rgb: 0.0018,
-  film: 0.25,
-  vig: 1.15,
+  env: 0.8,
+  emis: 1.3,
+  rgb: 0.0008,
+  film: 0.55,
+  vig: 1.3,
 };
 const tweaks = { ...DEFAULTS };
 
