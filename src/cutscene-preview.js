@@ -20,6 +20,7 @@
 import * as THREE from 'three';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
@@ -84,6 +85,16 @@ function buildStarryNightTexture(width = 2048, height = 1024) {
   return tex;
 }
 scene.background = buildStarryNightTexture();
+
+// Image-based-lighting environment. Three.js ships a RoomEnvironment that
+// approximates an indoor light box (bright top, dim sides) — perfect for
+// faking the "yellow walls bouncing onto everything" feel of the
+// reference renders. Standard materials sample this for ambient fill
+// without us having to position a dozen extra PointLights.
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+// envMap intensity defaults to 1 per material; we crank it scene-wide
+// later by overriding when we promote Phong → Standard.
 
 const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 100000);
 camera.position.set(0, 1000, 12000);
@@ -202,25 +213,52 @@ fbxLoader.load(
       }
       if (n.isMesh && n.material) {
         const mats = Array.isArray(n.material) ? n.material : [n.material];
-        for (const m of mats) {
-          if (m.map) m.map.colorSpace = THREE.SRGBColorSpace;
-          // The FBX's emissive materials are named "Emisor" / "Emisor_01"
-          // (Spanish for "Emitter") and "Lights_Emisor". Intensity 1.5
-          // sits just above the bloom threshold (0.85) so fixtures glow
-          // without blowing out. The actual interior light comes from
-          // PointLights placed at each Lamp_* world position below.
-          if (m.name && /emis|^light/i.test(m.name)) {
-            m.emissiveMap = m.map;
-            m.emissive = new THREE.Color(0xfff4d8);
-            m.emissiveIntensity = 1.5;
+        for (let i = 0; i < mats.length; i++) {
+          const phong = mats[i];
+          // Promote Phong → Standard so the material samples scene.environment
+          // (IBL fill). FBXLoader gives us MeshPhongMaterial by default, which
+          // ignores scene.environment entirely — that's why textured walls
+          // looked monochrome despite the diffuse maps being loaded. We
+          // preserve diffuse map + emissive but reset color to white so the
+          // texture isn't dimmed by Phong's default 0xcccccc base.
+          let std;
+          if (phong.isMeshPhongMaterial || phong.isMeshLambertMaterial) {
+            std = new THREE.MeshStandardMaterial({
+              name: phong.name,
+              map: phong.map || null,
+              color: 0xffffff,         // was 0xcccccc — let the texture speak
+              transparent: phong.transparent,
+              opacity: phong.opacity,
+              alphaTest: phong.alphaTest,
+              side: phong.side,
+              roughness: 0.85,         // matte-ish, matches the chunky-poly vibe
+              metalness: 0.0,
+              envMapIntensity: 1.2,    // gentle bump on the IBL fill
+            });
+            // Replace in place
+            if (Array.isArray(n.material)) n.material[i] = std;
+            else n.material = std;
+            // Free the old material's GL resources eventually
+            phong.dispose?.();
+          } else {
+            std = phong;
           }
-          // Storefront windows + mirrors — semi-transparent plate glass.
-          if (m.name && /glass|window|mirror/i.test(m.name)) {
-            m.transparent = true;
-            m.opacity = 0.18;
-            m.depthWrite = false;
-            if (m.color) m.color.set(0xb8d0e0);
-            if ('shininess' in m) m.shininess = 80;
+          if (std.map) std.map.colorSpace = THREE.SRGBColorSpace;
+
+          // Per-material overrides (re-applied after promotion).
+          if (std.name && /emis|^light/i.test(std.name)) {
+            std.emissiveMap = std.map;
+            std.emissive = new THREE.Color(0xfff4d8);
+            std.emissiveIntensity = 1.5;
+            std.envMapIntensity = 0.3; // don't double-bright the glowing parts
+          }
+          if (std.name && /glass|window|mirror/i.test(std.name)) {
+            std.transparent = true;
+            std.opacity = 0.18;
+            std.depthWrite = false;
+            std.color.set(0xb8d0e0);
+            std.roughness = 0.1;
+            std.metalness = 0.0;
           }
         }
       }
