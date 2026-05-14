@@ -140,6 +140,14 @@ fbxLoader.load(
     signLight2.position.set(center.x - size.x * 0.15, bbox.max.y * 0.8, bbox.max.z * 0.95);
     signLight2.distance = diag * 0.25;
 
+    // Constrain orbit dolly to a sensible range. Without bounds, the
+    // multiplicative zoom asymptotes toward 0 as you approach the target —
+    // each scroll moves the camera by less and less, which reads as a
+    // "stuck" feeling even though it's still technically zooming. Floor it
+    // at ~2.5% of diagonal so each scroll always produces visible motion.
+    orbit.minDistance = diag * 0.025;
+    orbit.maxDistance = diag * 2.0;
+
     // We used to overwrite WAYPOINTS with bbox-derived defaults here, but
     // now that we have a hand-tuned path in the const above we want those
     // to be the source of truth. (The waypoint picker still works on top
@@ -149,7 +157,7 @@ fbxLoader.load(
     infoEl.textContent = ` | shelves: ${Object.keys(namedNodes).filter(n => /^Shelf/.test(n)).length}`;
 
     // Expose for live debugging in the preview tool
-    window.__cutscene = { scene, camera, renderer, shopRoot, bbox, namedNodes, WAYPOINTS, THREE, setCameraToWaypoint };
+    window.__cutscene = { scene, camera, renderer, shopRoot, bbox, namedNodes, WAYPOINTS, THREE, setCameraToWaypoint, orbit };
 
     // Park the camera at the start position
     setCameraToWaypoint(0);
@@ -172,14 +180,12 @@ fbxLoader.load(
 // { pos, look, fov }. We tween between them with cubic easing.
 
 // Hand-tuned waypoints captured via the picker. Pos + look in FBX units
-// (~mm). WP4 was originally pos===look (degenerate, breaks orbit zoom);
-// look was nudged forward by ~150 units along the camera direction so the
-// camera has a real look axis to dolly along.
+// (~mm). Replace these with the latest export from the picker UI when
+// the path changes — that's the workflow.
 const WAYPOINTS = [
-  { pos: [-456.5, 622.0, -3440.0], look: [-311.6, 15.8,  22.6],  fov: 55.0 },
-  { pos: [-957.7, 340.7, -1087.7], look: [-956.4, 71.6,  53.7],  fov: 55.0 },
-  { pos: [-897.2, 175.4,   -47.7], look: [-898.1, 160.6, 76.8],  fov: 55.0 },
-  { pos: [-898.0, 160.8,    76.9], look: [-898.0, 160.8, 226.9], fov: 55.0 },
+  { pos: [584.4,   605.6, -3137.2], look: [-731.7,  141.9, 126.1], fov: 55.0 },
+  { pos: [-754.6,  174.5,   -22.6], look: [-804.2,  157.0, 100.3], fov: 55.0 },
+  { pos: [-1000.9, 165.3,    22.2], look: [-1050.4, 147.9, 145.1], fov: 55.0 },
 ];
 
 const TOTAL_DURATION_MS = 7000; // total cutscene length
@@ -266,8 +272,20 @@ document.getElementById('play').addEventListener('click', () => {
 document.getElementById('orbit').addEventListener('click', () => {
   orbit.enabled = !orbit.enabled;
   cutsceneActive = false;
+  if (orbit.enabled) {
+    // Push the orbit target ~10% of diagonal in front of the camera. This
+    // gives the dolly a comfortable range regardless of whatever tight
+    // close-up the camera was sitting in (a saved waypoint with look near
+    // pos would otherwise leave us with almost no dolly headroom — the
+    // "plateau" symptom).
+    const diag = bbox ? bbox.getSize(new THREE.Vector3()).length() : 1000;
+    const dir = new THREE.Vector3();
+    camera.getWorldDirection(dir);
+    orbit.target.copy(camera.position).add(dir.multiplyScalar(diag * 0.1));
+    orbit.update();
+  }
   statusEl.textContent = orbit.enabled
-    ? 'free orbit — drag to rotate, wheel to zoom, right-drag to pan'
+    ? `free orbit — drag to rotate, wheel to zoom (range ${Math.round(orbit.minDistance)}–${Math.round(orbit.maxDistance)})`
     : 'free orbit off';
 });
 
