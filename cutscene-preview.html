@@ -23,12 +23,29 @@
       overflow-y: auto; font: 12px/1.4 ui-monospace, Menlo, monospace;
       color: #ddd; background: rgba(0,0,0,0.65); padding: 10px 12px; border-radius: 6px;
     }
+    #waypoints.collapsed { width: auto; padding: 6px 10px; }
+    #waypoints.collapsed .row,
+    #waypoints.collapsed #wp-list,
+    #waypoints.collapsed #export-box,
+    #waypoints.collapsed .hint { display: none !important; }
+    #waypoints h3 .toggle { font-size: 14px; color: #aaa; margin-left: 8px; }
     #tweaks {
       position: fixed; left: 12px; top: 80px; width: 240px; max-height: 80vh;
       overflow-y: auto; font: 11px/1.4 ui-monospace, Menlo, monospace;
       color: #ddd; background: rgba(0,0,0,0.65); padding: 10px 12px; border-radius: 6px;
     }
-    #tweaks h3 { margin: 0 0 8px 0; font-size: 12px; color: #FF6B9D; }
+    #tweaks.collapsed { width: auto; padding: 6px 10px; }
+    #tweaks.collapsed .group,
+    #tweaks.collapsed #tweaks-reset,
+    #tweaks.collapsed #tweaks-export,
+    #tweaks.collapsed #tweaks-export-box { display: none !important; }
+    #tweaks h3 {
+      margin: 0 0 8px 0; font-size: 12px; color: #FF6B9D;
+      display: flex; justify-content: space-between; align-items: center;
+      cursor: pointer; user-select: none;
+    }
+    #tweaks.collapsed h3 { margin: 0; }
+    #tweaks h3 .toggle { font-size: 14px; color: #aaa; }
     #tweaks label {
       display: block; margin: 6px 0 2px 0; font-size: 10px;
       color: #aaa; display: flex; justify-content: space-between;
@@ -44,7 +61,12 @@
       background: #444; color: #ddd; border: 0; border-radius: 4px; cursor: pointer;
       margin-top: 6px;
     }
-    #waypoints h3 { margin: 0 0 6px 0; font-size: 12px; color: #FF6B9D; }
+    #waypoints h3 {
+      margin: 0 0 6px 0; font-size: 12px; color: #FF6B9D;
+      display: flex; justify-content: space-between; align-items: center;
+      cursor: pointer; user-select: none;
+    }
+    #waypoints.collapsed h3 { margin: 0; }
     #waypoints .row { display: flex; gap: 4px; margin: 4px 0; flex-wrap: wrap; }
     #wp-list { margin: 8px 0; }
     .wp-item {
@@ -85,7 +107,7 @@
     <span id="info"></span>
   </div>
   <div id="tweaks">
-    <h3>tweaks</h3>
+    <h3 id="tweaks-toggle"><span>tweaks</span><span class="toggle">▾</span></h3>
     <div class="group">
       <label>exposure <span class="val" id="v-exposure">1.80</span></label>
       <input type="range" id="s-exposure" min="0.2" max="4" step="0.05">
@@ -127,8 +149,8 @@
     <textarea id="tweaks-export-box" readonly style="display:none;width:100%;height:80px;margin-top:6px;box-sizing:border-box;background:#111;color:#9f9;border:1px solid #333;font:10px/1.3 ui-monospace,monospace;padding:4px"></textarea>
   </div>
   <div id="waypoints">
-    <h3>waypoint picker</h3>
-    <div style="color:#aaa;font-size:11px;margin-bottom:6px">
+    <h3 id="waypoints-toggle"><span>waypoint picker</span><span class="toggle">▾</span></h3>
+    <div class="hint" style="color:#aaa;font-size:11px;margin-bottom:6px">
       Toggle <b>free orbit</b>, fly the camera to a good frame, then <b>save WP</b>.
       Play uses your saved list if any (else the bbox defaults).
     </div>

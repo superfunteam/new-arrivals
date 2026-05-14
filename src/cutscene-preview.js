@@ -638,6 +638,31 @@ document.getElementById('wp-export').addEventListener('click', () => {
 
 renderWaypointList();
 
+// ---- Panel collapse toggles -----------------------------------------
+//
+// Both side panels overlay the canvas and intercept mouse-drag events,
+// which blocks OrbitControls drag-rotate (wheel still bubbles, so zoom
+// worked — but drag did not). Make them collapsible so the user can
+// hide them while flying the camera.
+
+function setupCollapse(panelId, toggleId, startCollapsed = false) {
+  const panel = document.getElementById(panelId);
+  const toggle = document.getElementById(toggleId);
+  if (!panel || !toggle) return;
+  const arrow = toggle.querySelector('.toggle');
+  function apply(c) {
+    panel.classList.toggle('collapsed', c);
+    if (arrow) arrow.textContent = c ? '▸' : '▾';
+  }
+  apply(startCollapsed);
+  toggle.addEventListener('click', () => {
+    apply(!panel.classList.contains('collapsed'));
+  });
+}
+
+setupCollapse('tweaks', 'tweaks-toggle', false);
+setupCollapse('waypoints', 'waypoints-toggle', false);
+
 // ---- Live tweak sliders ---------------------------------------------
 //
 // Bind each visible slider to the matching three.js / composer
