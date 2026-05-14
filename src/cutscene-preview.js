@@ -460,7 +460,7 @@ document.getElementById('orbit').addEventListener('click', () => {
     orbit.update();
   }
   statusEl.textContent = orbit.enabled
-    ? `free orbit — drag to rotate, wheel to zoom (range ${Math.round(orbit.minDistance)}–${Math.round(orbit.maxDistance)})`
+    ? 'free orbit — WASD/QE to fly, drag to look, shift = boost'
     : 'free orbit off';
 });
 
@@ -741,6 +741,9 @@ function initTweakSliders() {
   bindSlider('s-exposure', 'v-exposure',
     () => renderer.toneMappingExposure,
     (n) => { renderer.toneMappingExposure = n; tweaks.exposure = n; });
+  bindSlider('s-fly', 'v-fly',
+    () => flySpeedFactor,
+    (n) => { flySpeedFactor = n; });
 
   bindSlider('s-bloom-strength', 'v-bloom-strength',
     () => bloomPass.strength,
@@ -835,11 +838,90 @@ const tweakInitTimer = setInterval(() => {
   }
 }, 200);
 
+// ---- Keyboard fly controls ------------------------------------------
+//
+// OrbitControls dolly is multiplicative on distance-to-target, which
+// asymptotes to zero — that's the "movement stops" bug. Keyboard fly
+// moves the camera by absolute units along its facing axis (and side/
+// up axes), so it never stalls. Active only while "free orbit" is on
+// so we don't fight the cutscene animation.
+//
+// Bindings (held = continuous):
+//   W / ↑     forward (along camera facing)
+//   S / ↓     backward
+//   A / ←     strafe left
+//   D / →     strafe right
+//   Q         down (world Y-)
+//   E         up   (world Y+)
+//   Shift     3× speed boost
+//
+// Base speed scales with the bbox diagonal (200 units / second at 60fps =
+// "walk pace" through a model this size; Shift bumps to 600 u/s).
+
+const keysHeld = new Set();
+window.addEventListener('keydown', (e) => {
+  // Don't capture keys while typing in textareas/inputs
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  keysHeld.add(e.key.toLowerCase());
+  // Also stash Shift state under a stable key
+  if (e.shiftKey) keysHeld.add('shift');
+});
+window.addEventListener('keyup', (e) => {
+  keysHeld.delete(e.key.toLowerCase());
+  if (!e.shiftKey) keysHeld.delete('shift');
+});
+
+const FLY_FORWARD = new THREE.Vector3();
+const FLY_SIDE = new THREE.Vector3();
+const FLY_WORLD_UP = new THREE.Vector3(0, 1, 0);
+
+// Speed expressed as "fraction of bbox diagonal per second". 0.06 ≈ 800
+// u/s in this scene — model is ~12k units, so ~15 seconds to traverse.
+// Live-tunable via the "fly speed" slider in the tweaks panel.
+let flySpeedFactor = 0.06;
+
+function tickKeyboardFly(dtSeconds) {
+  if (!orbit.enabled) return;
+  const diag = bbox ? bbox.getSize(new THREE.Vector3()).length() : 1000;
+  const baseSpeed = diag * flySpeedFactor * dtSeconds;
+  const speed = keysHeld.has('shift') ? baseSpeed * 3 : baseSpeed;
+
+  // Camera-local forward + right
+  camera.getWorldDirection(FLY_FORWARD);
+  FLY_SIDE.crossVectors(FLY_FORWARD, FLY_WORLD_UP).normalize();
+
+  let dx = 0, dy = 0, dz = 0;
+  if (keysHeld.has('w') || keysHeld.has('arrowup'))    { dz += speed; }
+  if (keysHeld.has('s') || keysHeld.has('arrowdown'))  { dz -= speed; }
+  if (keysHeld.has('a') || keysHeld.has('arrowleft'))  { dx -= speed; }
+  if (keysHeld.has('d') || keysHeld.has('arrowright')) { dx += speed; }
+  if (keysHeld.has('e'))                                { dy += speed; }
+  if (keysHeld.has('q'))                                { dy -= speed; }
+
+  if (dx === 0 && dy === 0 && dz === 0) return;
+
+  // Move camera AND orbit.target so drag-rotate keeps the same pivot
+  // relative to the camera. Without this, after flying around the
+  // orbit pivot stays at the old target and rotation feels totally
+  // disconnected.
+  const move = new THREE.Vector3()
+    .addScaledVector(FLY_FORWARD, dz)
+    .addScaledVector(FLY_SIDE, dx)
+    .addScaledVector(FLY_WORLD_UP, dy);
+  camera.position.add(move);
+  orbit.target.add(move);
+  orbit.update();
+}
+
 // ---- render loop ------------------------------------------------------
 
+let prevFrameMs = performance.now();
 function animate(now) {
   requestAnimationFrame(animate);
+  const dt = Math.min(0.05, (now - prevFrameMs) / 1000); // clamp big gaps
+  prevFrameMs = now;
   tickCutscene(now);
+  tickKeyboardFly(dt);
   if (orbit.enabled) orbit.update();
   composer.render();
 }
