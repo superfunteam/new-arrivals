@@ -23,6 +23,27 @@
       overflow-y: auto; font: 12px/1.4 ui-monospace, Menlo, monospace;
       color: #ddd; background: rgba(0,0,0,0.65); padding: 10px 12px; border-radius: 6px;
     }
+    #tweaks {
+      position: fixed; left: 12px; top: 80px; width: 240px; max-height: 80vh;
+      overflow-y: auto; font: 11px/1.4 ui-monospace, Menlo, monospace;
+      color: #ddd; background: rgba(0,0,0,0.65); padding: 10px 12px; border-radius: 6px;
+    }
+    #tweaks h3 { margin: 0 0 8px 0; font-size: 12px; color: #FF6B9D; }
+    #tweaks label {
+      display: block; margin: 6px 0 2px 0; font-size: 10px;
+      color: #aaa; display: flex; justify-content: space-between;
+    }
+    #tweaks label .val { color: #FF6B9D; }
+    #tweaks input[type="range"] {
+      width: 100%; margin: 0 0 4px 0; accent-color: #FF6B9D;
+    }
+    #tweaks .group { border-top: 1px solid #333; padding-top: 6px; margin-top: 8px; }
+    #tweaks .group:first-child { border-top: 0; padding-top: 0; margin-top: 0; }
+    #tweaks button {
+      width: 100%; padding: 4px 8px; font-size: 10px;
+      background: #444; color: #ddd; border: 0; border-radius: 4px; cursor: pointer;
+      margin-top: 6px;
+    }
     #waypoints h3 { margin: 0 0 6px 0; font-size: 12px; color: #FF6B9D; }
     #waypoints .row { display: flex; gap: 4px; margin: 4px 0; flex-wrap: wrap; }
     #wp-list { margin: 8px 0; }
@@ -62,6 +83,48 @@
     <button id="play">▶ play cutscene</button>
     <button id="orbit">free orbit</button>
     <span id="info"></span>
+  </div>
+  <div id="tweaks">
+    <h3>tweaks</h3>
+    <div class="group">
+      <label>exposure <span class="val" id="v-exposure">1.80</span></label>
+      <input type="range" id="s-exposure" min="0.2" max="4" step="0.05">
+    </div>
+    <div class="group">
+      <label>bloom strength <span class="val" id="v-bloom-strength">0.60</span></label>
+      <input type="range" id="s-bloom-strength" min="0" max="2" step="0.05">
+      <label>bloom threshold <span class="val" id="v-bloom-threshold">1.50</span></label>
+      <input type="range" id="s-bloom-threshold" min="0" max="3" step="0.05">
+      <label>bloom radius <span class="val" id="v-bloom-radius">0.50</span></label>
+      <input type="range" id="s-bloom-radius" min="0" max="2" step="0.05">
+    </div>
+    <div class="group">
+      <label>hemisphere <span class="val" id="v-hemi">2.20</span></label>
+      <input type="range" id="s-hemi" min="0" max="6" step="0.1">
+      <label>sun <span class="val" id="v-sun">2.00</span></label>
+      <input type="range" id="s-sun" min="0" max="6" step="0.1">
+      <label>front fill <span class="val" id="v-fill">1.40</span></label>
+      <input type="range" id="s-fill" min="0" max="6" step="0.1">
+      <label>lamp intensity <span class="val" id="v-lamps">1.00</span></label>
+      <input type="range" id="s-lamps" min="0" max="3" step="0.05">
+    </div>
+    <div class="group">
+      <label>env-map intensity <span class="val" id="v-env">0.60</span></label>
+      <input type="range" id="s-env" min="0" max="2" step="0.05">
+      <label>emissive intensity <span class="val" id="v-emis">1.50</span></label>
+      <input type="range" id="s-emis" min="0" max="4" step="0.05">
+    </div>
+    <div class="group">
+      <label>chromatic aberration <span class="val" id="v-rgb">0.0018</span></label>
+      <input type="range" id="s-rgb" min="0" max="0.01" step="0.0002">
+      <label>film grain <span class="val" id="v-film">0.25</span></label>
+      <input type="range" id="s-film" min="0" max="1" step="0.05">
+      <label>vignette darkness <span class="val" id="v-vig">1.15</span></label>
+      <input type="range" id="s-vig" min="0" max="3" step="0.05">
+    </div>
+    <button id="tweaks-reset">reset to defaults</button>
+    <button id="tweaks-export">export values</button>
+    <textarea id="tweaks-export-box" readonly style="display:none;width:100%;height:80px;margin-top:6px;box-sizing:border-box;background:#111;color:#9f9;border:1px solid #333;font:10px/1.3 ui-monospace,monospace;padding:4px"></textarea>
   </div>
   <div id="waypoints">
     <h3>waypoint picker</h3>

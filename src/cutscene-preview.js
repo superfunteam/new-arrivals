@@ -638,6 +638,178 @@ document.getElementById('wp-export').addEventListener('click', () => {
 
 renderWaypointList();
 
+// ---- Live tweak sliders ---------------------------------------------
+//
+// Bind each visible slider to the matching three.js / composer
+// property so it updates without a reload. Per-material values
+// (envMapIntensity, emissiveIntensity, lamp light intensity) require
+// walking the scene to fan out — the FBX has 540+ materials so we do
+// the walk once per slider event, not per frame.
+
+const DEFAULTS = {
+  exposure: 1.8,
+  bloomStrength: 0.6,
+  bloomThreshold: 1.5,
+  bloomRadius: 0.5,
+  hemi: 2.2,
+  sun: 2.0,
+  fill: 1.4,
+  lamps: 1.0,
+  env: 0.6,
+  emis: 1.5,
+  rgb: 0.0018,
+  film: 0.25,
+  vig: 1.15,
+};
+const tweaks = { ...DEFAULTS };
+
+function fanOutEnvIntensity(v) {
+  if (!shopRoot) return;
+  shopRoot.traverse((n) => {
+    if (n.isMesh && n.material) {
+      const arr = Array.isArray(n.material) ? n.material : [n.material];
+      for (const m of arr) {
+        if (m.isMeshStandardMaterial) {
+          if (m.name && /emis|^light/i.test(m.name)) continue;
+          m.envMapIntensity = v;
+        }
+      }
+    }
+  });
+}
+
+function fanOutEmissive(v) {
+  if (!shopRoot) return;
+  shopRoot.traverse((n) => {
+    if (n.isMesh && n.material) {
+      const arr = Array.isArray(n.material) ? n.material : [n.material];
+      for (const m of arr) {
+        if (m.name && /emis|^light/i.test(m.name)) {
+          m.emissiveIntensity = v;
+        }
+      }
+    }
+  });
+}
+
+function fanOutLampIntensity(scale) {
+  const base = bbox ? bbox.getSize(new THREE.Vector3()).length() : 1000;
+  const baseIntensity = (base * base) / 220000;
+  for (const pt of interiorLights) pt.intensity = baseIntensity * scale;
+}
+
+function bindSlider(id, valId, getter, setter) {
+  const s = document.getElementById(id);
+  const v = document.getElementById(valId);
+  if (!s || !v) return;
+  const cur = getter();
+  s.value = cur;
+  v.textContent = (typeof cur === 'number' && cur < 0.01) ? cur.toFixed(4) : cur.toFixed(2);
+  s.addEventListener('input', () => {
+    const n = parseFloat(s.value);
+    setter(n);
+    v.textContent = (n < 0.01) ? n.toFixed(4) : n.toFixed(2);
+  });
+}
+
+function initTweakSliders() {
+  bindSlider('s-exposure', 'v-exposure',
+    () => renderer.toneMappingExposure,
+    (n) => { renderer.toneMappingExposure = n; tweaks.exposure = n; });
+
+  bindSlider('s-bloom-strength', 'v-bloom-strength',
+    () => bloomPass.strength,
+    (n) => { bloomPass.strength = n; tweaks.bloomStrength = n; });
+  bindSlider('s-bloom-threshold', 'v-bloom-threshold',
+    () => bloomPass.threshold,
+    (n) => { bloomPass.threshold = n; tweaks.bloomThreshold = n; });
+  bindSlider('s-bloom-radius', 'v-bloom-radius',
+    () => bloomPass.radius,
+    (n) => { bloomPass.radius = n; tweaks.bloomRadius = n; });
+
+  bindSlider('s-hemi', 'v-hemi',
+    () => hemi.intensity,
+    (n) => { hemi.intensity = n; tweaks.hemi = n; });
+  bindSlider('s-sun', 'v-sun',
+    () => sun.intensity,
+    (n) => { sun.intensity = n; tweaks.sun = n; });
+  bindSlider('s-fill', 'v-fill',
+    () => frontFill.intensity,
+    (n) => { frontFill.intensity = n; tweaks.fill = n; });
+  bindSlider('s-lamps', 'v-lamps',
+    () => tweaks.lamps,
+    (n) => { fanOutLampIntensity(n); tweaks.lamps = n; });
+
+  bindSlider('s-env', 'v-env',
+    () => tweaks.env,
+    (n) => { fanOutEnvIntensity(n); tweaks.env = n; });
+  bindSlider('s-emis', 'v-emis',
+    () => tweaks.emis,
+    (n) => { fanOutEmissive(n); tweaks.emis = n; });
+
+  bindSlider('s-rgb', 'v-rgb',
+    () => rgbShift.uniforms.amount.value,
+    (n) => { rgbShift.uniforms.amount.value = n; tweaks.rgb = n; });
+  bindSlider('s-film', 'v-film',
+    () => filmPass.uniforms?.intensity?.value ?? tweaks.film,
+    (n) => {
+      if (filmPass.uniforms?.intensity) filmPass.uniforms.intensity.value = n;
+      tweaks.film = n;
+    });
+  bindSlider('s-vig', 'v-vig',
+    () => vignette.uniforms.darkness.value,
+    (n) => { vignette.uniforms.darkness.value = n; tweaks.vig = n; });
+
+  document.getElementById('tweaks-reset').addEventListener('click', () => {
+    Object.assign(tweaks, DEFAULTS);
+    renderer.toneMappingExposure = DEFAULTS.exposure;
+    bloomPass.strength = DEFAULTS.bloomStrength;
+    bloomPass.threshold = DEFAULTS.bloomThreshold;
+    bloomPass.radius = DEFAULTS.bloomRadius;
+    hemi.intensity = DEFAULTS.hemi;
+    sun.intensity = DEFAULTS.sun;
+    frontFill.intensity = DEFAULTS.fill;
+    fanOutLampIntensity(DEFAULTS.lamps);
+    fanOutEnvIntensity(DEFAULTS.env);
+    fanOutEmissive(DEFAULTS.emis);
+    rgbShift.uniforms.amount.value = DEFAULTS.rgb;
+    if (filmPass.uniforms?.intensity) filmPass.uniforms.intensity.value = DEFAULTS.film;
+    vignette.uniforms.darkness.value = DEFAULTS.vig;
+    // Re-sync slider DOM positions
+    for (const [sliderId, defaultKey] of [
+      ['s-exposure', 'exposure'], ['s-bloom-strength', 'bloomStrength'],
+      ['s-bloom-threshold', 'bloomThreshold'], ['s-bloom-radius', 'bloomRadius'],
+      ['s-hemi', 'hemi'], ['s-sun', 'sun'], ['s-fill', 'fill'], ['s-lamps', 'lamps'],
+      ['s-env', 'env'], ['s-emis', 'emis'],
+      ['s-rgb', 'rgb'], ['s-film', 'film'], ['s-vig', 'vig'],
+    ]) {
+      const el = document.getElementById(sliderId);
+      if (!el) continue;
+      el.value = DEFAULTS[defaultKey];
+      const valEl = document.getElementById('v-' + sliderId.slice(2));
+      if (valEl) {
+        const n = DEFAULTS[defaultKey];
+        valEl.textContent = (n < 0.01) ? n.toFixed(4) : n.toFixed(2);
+      }
+    }
+  });
+
+  document.getElementById('tweaks-export').addEventListener('click', () => {
+    const box = document.getElementById('tweaks-export-box');
+    box.value = `const TWEAKS = ${JSON.stringify(tweaks, null, 2)};`;
+    box.style.display = 'block';
+    box.select();
+  });
+}
+
+// Wait for the FBX so per-material fanOut calls have something to walk.
+const tweakInitTimer = setInterval(() => {
+  if (shopRoot) {
+    clearInterval(tweakInitTimer);
+    initTweakSliders();
+  }
+}, 200);
+
 // ---- render loop ------------------------------------------------------
 
 function animate(now) {
