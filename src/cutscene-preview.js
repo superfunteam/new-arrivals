@@ -20,6 +20,14 @@
 import * as THREE from 'three';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { FilmPass } from 'three/examples/jsm/postprocessing/FilmPass.js';
+import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
+import { RGBShiftShader } from 'three/examples/jsm/shaders/RGBShiftShader.js';
+import { VignetteShader } from 'three/examples/jsm/shaders/VignetteShader.js';
 
 const canvas = document.getElementById('cv');
 const statusEl = document.getElementById('status');
@@ -28,14 +36,51 @@ const infoEl = document.getElementById('info');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.0;
+// OutputPass at the end of the composer handles tone mapping + color
+// space, so the renderer itself should be in linear/no-tone-mapping mode
+// — passing it through twice double-corrects and looks washed out.
+renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+renderer.toneMapping = THREE.NoToneMapping;
 renderer.setClearColor(0x05060a);
 
 const scene = new THREE.Scene();
 // Fog ranges and light distances are configured AFTER FBX load (we don't
 // know the model's scale until we measure its bounding box).
+
+// Procedural starry night skybox. Generated once on a 2D canvas, wrapped
+// to a cubemap-equivalent via Scene.background = Texture. Much cheaper
+// than 6 image files and gives us a deep blue gradient + speckle stars
+// without external assets.
+function buildStarryNightTexture(width = 2048, height = 1024) {
+  const c = document.createElement('canvas');
+  c.width = width; c.height = height;
+  const ctx = c.getContext('2d');
+  // Deep navy → near-black gradient top→bottom
+  const grad = ctx.createLinearGradient(0, 0, 0, height);
+  grad.addColorStop(0, '#0a0e1e');
+  grad.addColorStop(0.55, '#050810');
+  grad.addColorStop(1, '#020308');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, width, height);
+  // Stars — small bright pixels with slight color variation
+  for (let i = 0; i < 1400; i++) {
+    const x = Math.random() * width;
+    const y = Math.random() * height * 0.7; // bias toward upper sky
+    const r = Math.random();
+    const size = r < 0.85 ? 1 : r < 0.97 ? 2 : 3;
+    const alpha = 0.5 + Math.random() * 0.5;
+    // slight color tint: pure white, slight blue, slight yellow
+    const tint = Math.random();
+    const color = tint < 0.7 ? '255,255,255' : tint < 0.9 ? '180,200,255' : '255,240,200';
+    ctx.fillStyle = `rgba(${color},${alpha})`;
+    ctx.fillRect(x, y, size, size);
+  }
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.mapping = THREE.EquirectangularReflectionMapping;
+  return tex;
+}
+scene.background = buildStarryNightTexture();
 
 const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 100000);
 camera.position.set(0, 1000, 12000);
@@ -43,6 +88,54 @@ camera.lookAt(0, 0, 0);
 
 const orbit = new OrbitControls(camera, canvas);
 orbit.enabled = false;
+
+// ---- Postprocessing stack -------------------------------------------
+//
+// Roughly matches the reference renders' "PS1 vibe":
+//   bloom     — soft glow on the emissive ceiling fluorescents + sign
+//   rgb shift — subtle chromatic aberration on the frame edges
+//   film      — grain + faint scanlines, no greyscale
+//   vignette  — gentle frame darkening
+//   output    — final tone mapping + sRGB encoding (replaces the
+//                renderer's own pass — see comment in renderer setup)
+//
+// Sizes are based on innerWidth/Height; rebuilt on resize.
+
+const composer = new EffectComposer(renderer);
+composer.setSize(window.innerWidth, window.innerHeight);
+composer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+const renderPass = new RenderPass(scene, camera);
+composer.addPass(renderPass);
+
+// UnrealBloomPass(resolution, strength, radius, threshold)
+// threshold 0.6 means only pixels brighter than 60% gray glow — keeps
+// bright sources blooming without lifting the whole image.
+const bloomPass = new UnrealBloomPass(
+  new THREE.Vector2(window.innerWidth, window.innerHeight),
+  0.7,  // strength
+  0.4,  // radius
+  0.6,  // threshold
+);
+composer.addPass(bloomPass);
+
+const rgbShift = new ShaderPass(RGBShiftShader);
+rgbShift.uniforms.amount.value = 0.0018;  // ~3px channel split at 1080p
+composer.addPass(rgbShift);
+
+// FilmPass(intensity, grayscale). Newer three.js versions drop the
+// scanline parameters — we use intensity ~0.25 for visible-but-not-
+// distracting grain, grayscale=false to keep colors.
+const filmPass = new FilmPass(0.25, false);
+composer.addPass(filmPass);
+
+const vignette = new ShaderPass(VignetteShader);
+vignette.uniforms.offset.value = 1.05;
+vignette.uniforms.darkness.value = 1.15;
+composer.addPass(vignette);
+
+const outputPass = new OutputPass();
+composer.addPass(outputPass);
 
 // Lighting — these are placeholders; intensities and positions are rescaled
 // to the FBX's actual bounding box in the loader callback (the model turned
@@ -93,21 +186,21 @@ fbxLoader.load(
         const mats = Array.isArray(n.material) ? n.material : [n.material];
         for (const m of mats) {
           if (m.map) m.map.colorSpace = THREE.SRGBColorSpace;
-          // Lights_Emisor texture is the FBX's emissive — keep it bright
-          if (m.name && /emis|light/i.test(m.name)) {
+          // The FBX's emissive materials are named "Emisor" / "Emisor_01"
+          // (Spanish for "Emitter") and "Lights_Emisor". Bump emissive
+          // intensity well above the bloom threshold (0.6) so the
+          // fluorescent ceiling fixtures and the storefront sign actually
+          // glow through the bloom pass.
+          if (m.name && /emis|^light/i.test(m.name)) {
             m.emissiveMap = m.map;
-            m.emissive = new THREE.Color(0xffffff);
-            m.emissiveIntensity = 1.2;
+            m.emissive = new THREE.Color(0xfff4d8);
+            m.emissiveIntensity = 3.5;
           }
-          // Storefront windows + mirrors — make them semi-transparent so
-          // the interior shows through. Disabling depthWrite prevents the
-          // glass from occluding shelves behind it in the depth pass; the
-          // tradeoff is a small risk of sort glitches at oblique angles.
+          // Storefront windows + mirrors — semi-transparent plate glass.
           if (m.name && /glass|window|mirror/i.test(m.name)) {
             m.transparent = true;
             m.opacity = 0.18;
             m.depthWrite = false;
-            // Cool blue tint, low specular bump — feels like real plate glass
             if (m.color) m.color.set(0xb8d0e0);
             if ('shininess' in m) m.shininess = 80;
           }
@@ -469,12 +562,15 @@ function animate(now) {
   requestAnimationFrame(animate);
   tickCutscene(now);
   if (orbit.enabled) orbit.update();
-  renderer.render(scene, camera);
+  composer.render();
 }
 requestAnimationFrame(animate);
 
 window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
+  const w = window.innerWidth, h = window.innerHeight;
+  camera.aspect = w / h;
   camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(w, h);
+  composer.setSize(w, h);
+  bloomPass.setSize(w, h);
 });
