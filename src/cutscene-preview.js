@@ -178,10 +178,11 @@ frontFill.target.position.set(0, 0, 0);
 scene.add(frontFill);
 scene.add(frontFill.target);
 
-// Storefront sign accents (pink + cyan).
-const signLight = new THREE.PointLight(0xff5fb8, 8.0, 0, 1.6);
+// Storefront sign bounce — both hot pink so the brick wall around the
+// sign reads as washed in neon glow (matching the sign's own color).
+const signLight = new THREE.PointLight(0xff1488, 10.0, 0, 1.6);
 scene.add(signLight);
-const signLight2 = new THREE.PointLight(0x5fb8ff, 5.0, 0, 1.6);
+const signLight2 = new THREE.PointLight(0xff3aa8, 6.0, 0, 1.6);
 scene.add(signLight2);
 
 // Interior fill — populated after FBX load by parking warm point lights
@@ -281,20 +282,16 @@ fbxLoader.load(
             std.emissive = new THREE.Color(0xfff4d8);
             std.emissiveIntensity = 1.3;
             std.envMapIntensity = 0.3;
-          } else if (std.name === 'Emisor_01') {
-            // VHS mesh — electric blue neon. color=0 so the sun + hemi
-            // can't add white diffuse on top of the emissive (that was
-            // washing the sign out under ACES tone mapping). With pure-
-            // emissive + zero diffuse, the sign reads as a self-lit
-            // panel regardless of scene lighting.
+          } else if (std.name === 'Emisor' || std.name === 'Emisor_01') {
+            // VHS Video sign — both halves are now hot-pink neon. color=0
+            // so sun + hemi diffuse can't whitewash the emissive (that
+            // was the previous failure mode under ACES tone mapping).
+            // emissiveIntensity bumped to 8 so the red channel sits well
+            // above the bloom threshold (1.5) — the bloom pass then
+            // delivers the actual glow halo around the sign.
             std.color.set(0x000000);
-            std.emissive = new THREE.Color(0x4060ff);
-            std.emissiveIntensity = 4.0;
-            std.envMapIntensity = 0;
-          } else if (std.name === 'Emisor') {
-            std.color.set(0x000000);
-            std.emissive = new THREE.Color(0xff3aa8); // hot magenta
-            std.emissiveIntensity = 4.0;
+            std.emissive = new THREE.Color(0xff1488); // saturated hot pink
+            std.emissiveIntensity = 8.0;
             std.envMapIntensity = 0;
           }
 
