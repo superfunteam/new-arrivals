@@ -33,18 +33,21 @@ import {
   Plus,
   ExternalLink,
   Users,
+  Inbox,
 } from 'lucide-react';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import CalendarPage from './components/CalendarPage';
 import PuzzleEditor from './components/PuzzleEditor';
 import UsersPage from './components/UsersPage';
+import SubmissionsPage from './components/SubmissionsPage';
 import { getCurrentUser } from '@/lib/identity';
 
 const NAV_ITEMS_ALL = [
   { key: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { key: 'calendar', label: 'Calendar', icon: CalendarDays },
   { key: 'editor', label: 'New Puzzle', icon: Plus },
+  { key: 'submissions', label: 'Submissions', icon: Inbox },
   { key: 'users', label: 'Users', icon: Users },
 ];
 
@@ -79,6 +82,11 @@ function AppBreadcrumb({ view, editingPuzzle }) {
             </BreadcrumbItem>
           </>
         )}
+        {view === 'submissions' && (
+          <BreadcrumbItem>
+            <BreadcrumbPage>Submissions</BreadcrumbPage>
+          </BreadcrumbItem>
+        )}
       </BreadcrumbList>
     </Breadcrumb>
   );
@@ -92,6 +100,7 @@ export default function App() {
   const [loadError, setLoadError] = useState(null);
   const [view, setView] = useState('dashboard');
   const [editingPuzzle, setEditingPuzzle] = useState(null);
+  const [editingSubmissionKey, setEditingSubmissionKey] = useState(null);
   const [userRole, setUserRole] = useState('author'); // 'admin' | 'author'
 
   async function fetchUserRole() {
@@ -139,17 +148,58 @@ export default function App() {
 
   function handleEditPuzzle(puzzle) {
     setEditingPuzzle(puzzle);
+    setEditingSubmissionKey(null);
+    setView('editor');
+  }
+
+  // Open a player-submitted puzzle in the editor. The submission shape
+  // (title + categories with items lacking tmdb_id) is fed in as a draft;
+  // the editor pre-fills empty movie slots and lets the admin search/AI-
+  // fill each one via the existing MovieSearch / AI panels. When the
+  // editor saves, we PATCH the submission to status='approved' with a
+  // back-reference to the published puzzle's id.
+  function handleOpenSubmissionInEditor(submission) {
+    setEditingPuzzle({
+      // No id yet — the editor will slugify the title. Admin can also
+      // overwrite the id (date) before saving.
+      title: submission.title || '',
+      categories: (submission.categories || []).map((cat) => ({
+        name: cat.name || '',
+        difficulty: cat.difficulty,
+        items: (cat.items || cat.movies || []).map((m) =>
+          m && m.tmdb_id ? m : null
+        ),
+      })),
+      _fromSubmission: submission._submissionKey || submission.key,
+      _submitterNote: submission.submittedBy
+        ? `Submitted by ${submission.submittedBy}` : null,
+    });
+    setEditingSubmissionKey(submission._submissionKey || submission.key);
     setView('editor');
   }
 
   function handleEditorCancel() {
     setEditingPuzzle(null);
+    setEditingSubmissionKey(null);
     setView('dashboard');
   }
 
   function handleEditorSave(puzzleData) {
     console.log('Puzzle saved:', puzzleData);
+    // If this came from a submission, mark it approved + record the
+    // published puzzle id so the Submissions page can show the linkage.
+    if (editingSubmissionKey) {
+      fetch(`/api/puzzle-submit?key=${encodeURIComponent(editingSubmissionKey)}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          status: 'approved',
+          publishedAs: puzzleData?.id || null,
+        }),
+      }).catch((err) => console.warn('Failed to mark submission approved:', err));
+    }
     setEditingPuzzle(null);
+    setEditingSubmissionKey(null);
     setView('dashboard');
     fetch('/api/admin-puzzles')
       .then((res) => res.json())
@@ -167,6 +217,7 @@ export default function App() {
       handleNewPuzzle();
     } else {
       setEditingPuzzle(null);
+      setEditingSubmissionKey(null);
       setView(key);
     }
   }
@@ -291,6 +342,9 @@ export default function App() {
                 onCancel={handleEditorCancel}
                 userRole={userRole}
               />
+            )}
+            {view === 'submissions' && (
+              <SubmissionsPage onOpenInEditor={handleOpenSubmissionInEditor} />
             )}
             {view === 'users' && <UsersPage userRole={userRole} />}
           </main>
