@@ -354,7 +354,11 @@ async function main() {
   }
 
   // ── 3. Check daily state ──────────────────────────────────────────────────
-  const savedState = loadGameState();
+  // Pass the current daily puzzle so loadGameState can compare its
+  // signature against the saved one — if the admin edited the puzzle since
+  // the save was written, the save is evicted and the player gets a fresh
+  // start (stats / streaks / scores untouched).
+  const savedState = loadGameState(dailyPuzzle);
   const hasSavedDaily = savedState && savedState.puzzleId === dailyPuzzle.id;
   let dailyState = null; // null | 'in_progress' | 'completed'
   if (hasSavedDaily) {
@@ -487,10 +491,14 @@ async function startGameSession(puzzle, mode, puzzlesData) {
   const isDaily = mode === 'daily';
 
   // ── 1. Check localStorage for saved state (daily only) ────────────────────
+  // loadGameState(puzzle) auto-evicts the save if the puzzle's signature
+  // (category names + movie tmdb_ids) has changed since the save was
+  // written — i.e. the admin edited the puzzle. Player picks up a fresh
+  // start; their stats / streak / scores are preserved separately.
   let savedState = null;
   let isRestoring = false;
   if (isDaily) {
-    savedState = loadGameState();
+    savedState = loadGameState(puzzle);
     isRestoring = savedState && savedState.puzzleId === puzzle.id;
   }
 

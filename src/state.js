@@ -1,5 +1,7 @@
 // New Arrivals — State Management (localStorage persistence)
 
+import { puzzleSignature } from './game-logic.js';
+
 const KEY_ONBOARDED = 'newArrivals_onboarded';
 const KEY_SKIP_INTRO = 'newArrivals_skipIntro';
 const KEY_TODAY = 'newArrivals_today';
@@ -81,9 +83,18 @@ export function saveGameState(serialized) {
 /**
  * Load game state from localStorage.
  * Returns null if no state exists or if it belongs to a different day.
+ *
+ * If `currentPuzzle` is provided, also validates that the saved state's
+ * puzzleSignature still matches the puzzle's current structure (category
+ * names + movie tmdb_ids). If the admin edited the puzzle since the save
+ * was written, the saved state is silently discarded — the player gets a
+ * fresh start so the new puzzle loads correctly. Streaks, scores, and
+ * cumulative stats live in separate storage keys and are NOT touched.
+ *
+ * @param {Object} [currentPuzzle]  Optional puzzle object to validate against.
  * @returns {Object|null}
  */
-export function loadGameState() {
+export function loadGameState(currentPuzzle) {
   try {
     if (!localStorage.getItem(KEY_EVICT_2026_05_12)) {
       const raw = localStorage.getItem(KEY_STATE);
@@ -108,7 +119,27 @@ export function loadGameState() {
     const raw = localStorage.getItem(KEY_STATE);
     if (!raw) return null;
 
-    return JSON.parse(raw);
+    const saved = JSON.parse(raw);
+
+    // Signature check: if the save is for the puzzle we're about to play
+    // AND the structure has changed since the save was written, evict it.
+    // Skips when no puzzle is passed (caller doesn't know which puzzle yet)
+    // or when the saved state belongs to a different puzzle id entirely.
+    if (currentPuzzle && saved && saved.puzzleId === currentPuzzle.id) {
+      const currentSig = puzzleSignature(currentPuzzle);
+      // saved.puzzleSig may be missing on records from before the field
+      // existed — those are pre-signature saves; treat them as valid.
+      if (saved.puzzleSig && currentSig && saved.puzzleSig !== currentSig) {
+        // Puzzle was edited after this save. Discard the in-progress state
+        // so the player starts fresh on the new puzzle content. Stats /
+        // scores / streaks are untouched (separate storage keys).
+        localStorage.removeItem(KEY_STATE);
+        localStorage.removeItem(KEY_TODAY);
+        return null;
+      }
+    }
+
+    return saved;
   } catch (_) {
     return null;
   }

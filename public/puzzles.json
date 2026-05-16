@@ -24414,75 +24414,76 @@
           ]
         },
         {
-          "name": "Set in San Francisco",
+          "name": "Schwarzenegger Action",
           "difficulty": 3,
           "color": "#2196F3",
           "movies": [
             {
-              "title": "Dirty Harry",
-              "year": 1971,
-              "tmdb_id": 984,
-              "summary": "When a madman dubbed 'Scorpio' terrorizes San Francisco, hard-nosed cop, Harry Callahan – famous for his take-no-prisoners approach to law enforcement – is tasked with hunting down the psychopath.",
+              "title": "The Terminator",
+              "year": 1984,
+              "tmdb_id": 218,
+              "summary": "In the post-apocalyptic future, reigning tyrannical supercomputers teleport a cyborg assassin known as the \"Terminator\" back to 1984 to kill Sarah Connor, whose unborn son is destined to lead insurgents against 21st century mechanical hegemony. Meanwhile, the human-resistance movement dispatches a lone warrior to safeguard Sarah. Can he stop the virtually indestructible killing machine?",
               "genres": [
                 "Action",
-                "Crime",
-                "Thriller"
+                "Thriller",
+                "Science Fiction"
               ],
-              "director": "Don Siegel",
+              "director": "James Cameron",
               "stars": [
-                "Clint Eastwood",
-                "Harry Guardino",
-                "Reni Santoni"
+                "Arnold Schwarzenegger",
+                "Michael Biehn",
+                "Linda Hamilton"
               ]
             },
             {
-              "title": "Basic Instinct",
-              "year": 1992,
-              "tmdb_id": 402,
-              "summary": "Catherine, a novelist with an insatiable sexual appetite, becomes a prime suspect when her boyfriend is brutally murdered -- a crime she had described in her latest story.",
+              "title": "Predator",
+              "year": 1987,
+              "tmdb_id": 106,
+              "summary": "A team of elite commandos on a secret mission in a Central American jungle come to find themselves hunted by an extraterrestrial warrior.",
               "genres": [
-                "Thriller",
-                "Mystery"
+                "Science Fiction",
+                "Action",
+                "Adventure",
+                "Thriller"
+              ],
+              "director": "John McTiernan",
+              "stars": [
+                "Arnold Schwarzenegger",
+                "Carl Weathers",
+                "Kevin Peter Hall"
+              ]
+            },
+            {
+              "title": "Total Recall",
+              "year": 1990,
+              "tmdb_id": 861,
+              "summary": "Construction worker Douglas Quaid's obsession with the planet Mars leads him to visit Recall, a company that manufactures memories. When his memory implant goes wrong, Doug can no longer be sure what is and isn't reality.",
+              "genres": [
+                "Action",
+                "Adventure",
+                "Science Fiction"
               ],
               "director": "Paul Verhoeven",
               "stars": [
-                "Michael Douglas",
-                "Sharon Stone",
-                "George Dzundza"
+                "Arnold Schwarzenegger",
+                "Rachel Ticotin",
+                "Sharon Stone"
               ]
             },
             {
-              "title": "Mrs. Doubtfire",
-              "year": 1993,
-              "tmdb_id": 788,
-              "summary": "Loving but irresponsible dad Daniel Hillard, estranged from his exasperated spouse, is crushed by a court order allowing only weekly visits with his kids. When Daniel learns his ex needs a housekeeper, he gets the job -- disguised as a British nanny. Soon he becomes not only his children's best pal but the kind of parent he should have been from the start.",
-              "genres": [
-                "Comedy",
-                "Drama",
-                "Family"
-              ],
-              "director": "Chris Columbus",
-              "stars": [
-                "Robin Williams",
-                "Sally Field",
-                "Lisa Jakub"
-              ]
-            },
-            {
-              "title": "Interview with the Vampire",
+              "title": "True Lies",
               "year": 1994,
-              "tmdb_id": 628,
-              "summary": "A vampire relates his epic life story of love, betrayal, loneliness, and dark hunger to an over-curious reporter.",
+              "tmdb_id": 36955,
+              "summary": "A fearless, globe-trotting, terrorist-battling secret agent has his life turned upside down when he discovers his wife might be having an affair with a used car salesman while terrorists smuggle nuclear war heads into the United States.",
               "genres": [
-                "Horror",
-                "Drama",
-                "Fantasy"
+                "Action",
+                "Thriller"
               ],
-              "director": "Neil Jordan",
+              "director": "James Cameron",
               "stars": [
-                "Tom Cruise",
-                "Brad Pitt",
-                "Antonio Banderas"
+                "Arnold Schwarzenegger",
+                "Jamie Lee Curtis",
+                "Tom Arnold"
               ]
             }
           ]
@@ -25100,21 +25101,22 @@
           "color": "#9C27B0",
           "movies": [
             {
-              "title": "E.T. the Extra-Terrestrial",
-              "year": 1982,
-              "tmdb_id": 601,
-              "summary": "An alien is left behind on Earth and saved by the 10-year-old Elliott who decides to keep him hidden in his home. While a task force hunts for the extra-terrestrial, Elliott, his brother, and his little sister Gertie form an emotional bond with their new friend, and try to help him find his way home.",
+              "title": "The Princess Bride",
+              "year": 1987,
+              "tmdb_id": 2493,
+              "summary": "In this enchantingly cracked fairy tale, the beautiful Princess Buttercup and the dashing Westley must overcome staggering odds to find happiness amid six-fingered swordsmen, murderous princes, Sicilians and rodents of unusual size. But even death can't stop these true lovebirds from triumphing.",
               "genres": [
-                "Science Fiction",
                 "Adventure",
                 "Family",
-                "Fantasy"
+                "Fantasy",
+                "Comedy",
+                "Romance"
               ],
-              "director": "Steven Spielberg",
+              "director": "Rob Reiner",
               "stars": [
-                "Henry Thomas",
-                "Drew Barrymore",
-                "Robert MacNaughton"
+                "Cary Elwes",
+                "Robin Wright",
+                "Mandy Patinkin"
               ]
             },
             {

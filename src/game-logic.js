@@ -280,14 +280,43 @@ export function getElapsedSeconds(startTime) {
 }
 
 /**
+ * Compute a stable signature for a puzzle's structure. Changes ONLY when
+ * the puzzle's category names or movie tmdb_ids change — not when any of
+ * the cosmetic fields drift. Used to detect "the admin edited this puzzle
+ * since the player last saved" and auto-invalidate stale in-progress
+ * saves so the puzzle loads correctly with the new content.
+ *
+ * Format is `name1:tmdb_a,tmdb_b,tmdb_c,tmdb_d|name2:...` — categories
+ * sorted by difficulty, movies sorted by tmdb_id within each. Short,
+ * human-readable, deterministic.
+ */
+export function puzzleSignature(puzzle) {
+  if (!puzzle || !Array.isArray(puzzle.categories)) return '';
+  const cats = [...puzzle.categories].sort(
+    (a, b) => (a.difficulty || 0) - (b.difficulty || 0)
+  );
+  return cats
+    .map((c) => {
+      const ids = (c.movies || [])
+        .map((m) => m.tmdb_id || 0)
+        .sort((a, b) => a - b)
+        .join(',');
+      return `${c.name || ''}:${ids}`;
+    })
+    .join('|');
+}
+
+/**
  * Serialize game state to a JSON-safe object for localStorage.
  * Stores puzzleId instead of the full puzzle, and solved category names only.
+ * Includes a puzzleSignature so we can detect a stale save on restore.
  * @param {Object} game
  * @returns {Object}
  */
 export function serializeGame(game) {
   return {
     puzzleId: game.puzzle.id,
+    puzzleSig: puzzleSignature(game.puzzle),
     solvedCategories: game.solvedCategories.map((c) => c.name),
     wrongGuesses: game.wrongGuesses,
     hintsUsed: game.hintsUsed,
