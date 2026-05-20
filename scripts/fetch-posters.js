@@ -7,6 +7,7 @@ import { findDuplicateMovies } from './check-puzzle-duplicates.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const PUZZLES_PATH = path.join(ROOT, 'public', 'puzzles.json');
+const INTERRUPTS_PATH = path.join(ROOT, 'public', 'interrupts.json');
 const POSTERS_DIR = path.join(ROOT, 'public', 'posters');
 
 // Load .env if it exists (local dev). On Netlify, env vars come from the dashboard.
@@ -357,6 +358,30 @@ async function main() {
         console.error(`    "${d.title}" (${d.year}) [${d.tmdb_id ?? 'no-id'}] in "${d.firstCategory}" AND "${d.secondCategory}"`);
       }
     }
+    process.exit(1);
+  }
+
+  // Reject deploys where any dated puzzle is missing customer chat/hints/trivia.
+  // A puzzle without interrupts is unplayable in the "real" way — no help, no
+  // dialogue, no atmosphere. We've shipped this multiple times now because
+  // the auto-publisher used to only commit puzzles.json. Hard gate at build time.
+  const interruptsData = fs.existsSync(INTERRUPTS_PATH)
+    ? JSON.parse(fs.readFileSync(INTERRUPTS_PATH, 'utf8'))
+    : {};
+  const missingInterrupts = [];
+  for (const p of puzzlesData.puzzles) {
+    // Skip non-dated puzzles (training-*, floating preferredDay puzzles) —
+    // those don't ship on a schedule and may be intentionally bare.
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(p.id)) continue;
+    const items = interruptsData[p.id];
+    if (!Array.isArray(items) || items.length === 0) {
+      missingInterrupts.push({ id: p.id, title: p.title });
+    }
+  }
+  if (missingInterrupts.length > 0) {
+    console.error('\nPuzzles missing interrupts (customer chat/hints) — refusing to build:');
+    for (const m of missingInterrupts) console.error(`  ${m.id} — ${m.title}`);
+    console.error('\nRun the scheduled-puzzles background function or add entries to public/interrupts.json before deploying.');
     process.exit(1);
   }
 

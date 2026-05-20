@@ -11,7 +11,8 @@
     "generate-puzzles": "node scripts/generate-puzzles.js",
     "verify-posters": "node scripts/verify-puzzles.js",
     "verify-interrupts": "node scripts/verify-interrupts.js",
-    "check-duplicates": "node scripts/check-puzzle-duplicates.js"
+    "check-duplicates": "node scripts/check-puzzle-duplicates.js",
+    "preflight": "node scripts/check-puzzle-duplicates.js && node scripts/verify-interrupts.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.86.0",

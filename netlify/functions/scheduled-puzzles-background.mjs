@@ -24,7 +24,9 @@ import Anthropic from '@anthropic-ai/sdk';
 
 const REPO = 'superfunteam/new-arrivals';
 const FILE_PATH = 'public/puzzles.json';
+const INTERRUPTS_PATH = 'public/interrupts.json';
 const GITHUB_API = `https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`;
+const GITHUB_INTERRUPTS_API = `https://api.github.com/repos/${REPO}/contents/${INTERRUPTS_PATH}`;
 const TMDB_BASE = 'https://api.themoviedb.org/3';
 
 const COLOR_BY_DIFFICULTY = {
@@ -265,6 +267,14 @@ async function loadFromGitHub() {
   return { puzzles: parsed.puzzles, sha: data.sha };
 }
 
+async function loadInterruptsFromGitHub() {
+  const res = await fetch(GITHUB_INTERRUPTS_API, { headers: ghHeaders() });
+  if (!res.ok) throw new Error(`GitHub GET (interrupts) failed: ${res.status} ${await res.text()}`);
+  const data = await res.json();
+  const parsed = JSON.parse(Buffer.from(data.content, 'base64').toString('utf8'));
+  return { interrupts: parsed, sha: data.sha };
+}
+
 async function commitToGitHub(puzzles, sha, message) {
   const content = Buffer.from(JSON.stringify({ puzzles }, null, 2)).toString('base64');
   const res = await fetch(GITHUB_API, {
@@ -273,6 +283,17 @@ async function commitToGitHub(puzzles, sha, message) {
     body: JSON.stringify({ message, content, sha }),
   });
   if (!res.ok) throw new Error(`GitHub PUT failed: ${res.status} ${await res.text()}`);
+  return res.json();
+}
+
+async function commitInterruptsToGitHub(interrupts, sha, message) {
+  const content = Buffer.from(JSON.stringify(interrupts, null, 2)).toString('base64');
+  const res = await fetch(GITHUB_INTERRUPTS_API, {
+    method: 'PUT',
+    headers: { ...ghHeaders(), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message, content, sha }),
+  });
+  if (!res.ok) throw new Error(`GitHub PUT (interrupts) failed: ${res.status} ${await res.text()}`);
   return res.json();
 }
 
@@ -473,6 +494,127 @@ async function backfillStaleEntries(puzzles) {
 
 // ── AI generation ──
 
+const CHARACTERS = [
+  { character: 'Blonde Kid Girl',      sprite: 'blonde_kid_girl',      folder: 'Blonde Kid Girl',      type: 'kid' },
+  { character: 'Blonde Man',           sprite: 'blonde_man',           folder: 'Blonde Man',           type: 'adult' },
+  { character: 'Blonde Woman',         sprite: 'blonde_woman',         folder: 'Blonde Woman',         type: 'adult' },
+  { character: 'Blue Haired Kid Girl', sprite: 'blue_haired_kid_girl', folder: 'Blue Haired Kid Girl', type: 'kid' },
+  { character: 'Blue Haired Woman',    sprite: 'blue_haired_woman',    folder: 'Blue Haired Woman',    type: 'adult' },
+  { character: 'Bride',                sprite: 'bride',                folder: 'Bride',                type: 'adult' },
+  { character: 'Businessman',          sprite: 'businessman',          folder: 'Businessman',          type: 'adult' },
+  { character: 'Chef',                 sprite: 'chef',                 folder: 'Chef',                 type: 'adult' },
+  { character: 'Farmer',               sprite: 'farmer',               folder: 'Farmer',               type: 'adult' },
+  { character: 'Firefighter',          sprite: 'firefighter',          folder: 'Firefighter',          type: 'adult' },
+  { character: 'Goblin Kid',           sprite: 'goblin_kid',           folder: 'Goblin Kid',           type: 'kid' },
+  { character: 'Joker',                sprite: 'joker',                folder: 'Joker',                type: 'adult' },
+  { character: 'Knight',               sprite: 'knight',               folder: 'Knight',               type: 'adult' },
+  { character: 'Knight Kid',           sprite: 'knight_kid',           folder: 'Knight Kid',           type: 'kid' },
+  { character: 'Ninja',                sprite: 'ninja',                folder: 'Ninja',                type: 'adult' },
+  { character: 'Old Man',              sprite: 'old_man',              folder: 'Old Man',              type: 'old' },
+  { character: 'Old Woman',            sprite: 'old_woman',            folder: 'Old Woman',            type: 'old' },
+  { character: 'Policeman',            sprite: 'policeman',            folder: 'Policeman',            type: 'adult' },
+  { character: 'Punk Kid Boy',         sprite: 'punk_kid_boy',         folder: 'Punk Kid Boy',         type: 'kid' },
+  // "Punk Man" folder uses the plural filename punk_men.png — see public/characters/.
+  { character: 'Punk Man',             sprite: 'punk_men',             folder: 'Punk Man',             type: 'adult' },
+  { character: 'Punk Woman',           sprite: 'punk_woman',           folder: 'Punk Woman',           type: 'adult' },
+  { character: 'Viking Kid Boy',       sprite: 'viking_kid_boy',       folder: 'Viking Kid Boy',       type: 'kid' },
+  { character: 'Viking Man',           sprite: 'viking_man',           folder: 'Viking Man',           type: 'adult' },
+  { character: 'Viking Woman',         sprite: 'viking_woman',         folder: 'Viking Woman',         type: 'adult' },
+];
+
+const INTERRUPT_SYSTEM_PROMPT = `You are writing customer dialogue for "New Arrivals," a VHS rental store game. Customers interrupt the player while they sort tapes.
+
+SETTING: A video rental store, Friday night, 1987. Customers are browsing, chatting, looking for movies.
+
+Generate exactly 10 interruptions:
+- 4 TRIVIA: Ask about a specific movie on the shelf. 4 multiple-choice answers (1 correct, 3 plausible wrong from the same era). Short question, 1-2 sentences.
+- 3 HINTS: Character vaguely describes what they're looking for (obliquely referencing a category). Include the exact category name as hintCategory. Never say the category name in dialogue.
+- 3 STORIES: Funny 80s rental store anecdote, joke, pun, or oversharing. Include a fun dismiss button label.
+
+CHARACTER VOICE RULES:
+- Kid characters: UNHINGED energy. Caps, "UHHH", "MY MOM SAID", sugar-high, Tindendo references
+- Adults: Normal 80s rental customer. Friday nights, date nights, late fees, opinions
+- Old characters: Slower, nostalgic, confused by technology, wholesome
+
+Keep dialogue SHORT (1-3 sentences max). These are quick interruptions.
+
+OUTPUT: Valid JSON array only, no commentary. Each object must include ALL required fields for its type.`;
+
+async function generateInterrupts(client, puzzle) {
+  const allMovies = puzzle.categories.flatMap((cat) =>
+    (cat.movies || []).map((m) => `${m.title} (${m.year})`)
+  );
+  const categoryNames = puzzle.categories.map((cat) => cat.name);
+
+  // Pick 10 distinct characters at random. 4 trivia + 3 hint + 3 story.
+  const shuffled = [...CHARACTERS].sort(() => Math.random() - 0.5);
+  const selected = shuffled.slice(0, 10);
+  const assignments = selected.map((char, i) => {
+    if (i < 4) return { ...char, role: 'trivia' };
+    if (i < 7) return { ...char, role: 'hint' };
+    return { ...char, role: 'story' };
+  });
+
+  const characterDescriptions = assignments
+    .map((a) => `- ${a.character} (${a.type}) → ${a.role.toUpperCase()}`)
+    .join('\n');
+
+  const prompt = `PUZZLE MOVIES (on the shelf):
+${allMovies.map((m) => `- ${m}`).join('\n')}
+
+PUZZLE CATEGORIES:
+${categoryNames.map((n) => `- ${n}`).join('\n')}
+
+CHARACTERS:
+${characterDescriptions}
+
+Generate 10 interruptions with these exact character/sprite/folder values.`;
+
+  const message = await client.messages.create({
+    model: Netlify.env.get('INTERRUPT_GEN_MODEL') || 'claude-sonnet-4-5-20250929',
+    max_tokens: 4096,
+    system: INTERRUPT_SYSTEM_PROMPT,
+    messages: [{ role: 'user', content: prompt }],
+  });
+
+  const text = message.content?.find((b) => b.type === 'text')?.text || message.content?.[0]?.text || '';
+  if (!text) throw new Error('empty response from Claude (interrupts)');
+
+  const parsed = parseJsonLoose(text.startsWith('[') ? `{"items":${text}}` : text);
+  const items = Array.isArray(parsed) ? parsed : parsed.items;
+  if (!Array.isArray(items)) throw new Error('interrupts response did not parse to an array');
+
+  // Force sprite/folder to authoritative values per character — the model
+  // occasionally swaps them, and one bad sprite makes the customer render
+  // as a missing image.
+  const charMap = Object.fromEntries(assignments.map((a) => [a.character, a]));
+  const validated = items.map((item) => {
+    const charData = charMap[item.character];
+    if (charData) {
+      item.sprite = charData.sprite;
+      item.folder = charData.folder;
+    }
+    return item;
+  });
+
+  // Final structural check — counts, required fields, hintCategory match.
+  const triviaCount = validated.filter((i) => i.type === 'trivia').length;
+  const hintCount = validated.filter((i) => i.type === 'hint').length;
+  const storyCount = validated.filter((i) => i.type === 'story').length;
+  if (validated.length !== 10 || triviaCount < 1 || hintCount < 1 || storyCount < 1) {
+    throw new Error(
+      `bad interrupt mix: total=${validated.length} trivia=${triviaCount} hint=${hintCount} story=${storyCount}`
+    );
+  }
+  const catNameSet = new Set(categoryNames);
+  for (const item of validated) {
+    if (item.type === 'hint' && !catNameSet.has(item.hintCategory)) {
+      throw new Error(`hint references unknown category: "${item.hintCategory}"`);
+    }
+  }
+  return validated;
+}
+
 async function generatePuzzle(client, dateStr, recentTitles) {
   const themeIdx = dayOfWeekIndex(dateStr);
   const vibe = WEEKLY_THEMES[themeIdx];
@@ -518,11 +660,17 @@ export default async (req, context) => {
 
   const bufferDays = parseInt(Netlify.env.get('PUZZLE_BUFFER_DAYS') || '14', 10);
 
-  let puzzles, sha;
+  let puzzles, sha, interrupts, interruptsSha;
   try {
     ({ puzzles, sha } = await loadFromGitHub());
   } catch (err) {
     console.error('[scheduled-puzzles] GitHub load failed:', err.message);
+    return new Response(`load failed: ${err.message}`, { status: 500 });
+  }
+  try {
+    ({ interrupts, sha: interruptsSha } = await loadInterruptsFromGitHub());
+  } catch (err) {
+    console.error('[scheduled-puzzles] interrupts load failed:', err.message);
     return new Response(`load failed: ${err.message}`, { status: 500 });
   }
 
@@ -536,13 +684,32 @@ export default async (req, context) => {
     console.error('[scheduled-puzzles] backfill threw:', err.message);
   }
 
+  // Step 2b: backfill interrupts for puzzles that don't have any. This catches
+  // puzzles that were auto-published before interrupt generation existed in
+  // this function, or any other path that bypassed admin-process.
+  let interruptsBackfilled = 0;
+  const interruptsBackfilledIds = [];
+  for (const p of puzzles) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(p.id)) continue; // skip floating/training
+    if (Array.isArray(interrupts[p.id]) && interrupts[p.id].length > 0) continue;
+    try {
+      const items = await generateInterrupts(new Anthropic(), p);
+      interrupts[p.id] = items;
+      interruptsBackfilled++;
+      interruptsBackfilledIds.push(p.id);
+      console.log(`  ✓ interrupts backfilled for ${p.id} — "${p.title}"`);
+    } catch (err) {
+      console.error(`  ✗ interrupts backfill failed for ${p.id}: ${err.message}`);
+    }
+  }
+
   const today = todayUTC();
   const latest = findLatestDated(puzzles);
   const startDate = latest && latest >= today ? addDays(latest, 1) : today;
   const daysAhead = latest && latest >= today ? daysBetween(today, latest) : 0;
   const need = Math.max(0, bufferDays - daysAhead);
 
-  if (need === 0 && backfilled === 0) {
+  if (need === 0 && backfilled === 0 && interruptsBackfilled === 0) {
     console.log(`[scheduled-puzzles] buffer at ${daysAhead}/${bufferDays} and nothing to backfill — nothing to do`);
     return new Response('buffer full');
   }
@@ -569,11 +736,17 @@ export default async (req, context) => {
         // poster. The retry loop will then ask Claude for a different
         // puzzle, which avoids shipping wrong-poster days.
         await enrichPuzzleStrict(puzzle);
+        // Generate interrupts as part of the same retry loop. If interrupts
+        // fail we treat it as a puzzle-generation failure and retry the
+        // whole thing — better than committing a puzzle with no chat data,
+        // which is what was happening before.
+        const items = await generateInterrupts(client, puzzle);
+        interrupts[puzzle.id] = items;
         puzzles.push(puzzle);
         newlyAdded.push(puzzle);
         added++;
         success = true;
-        console.log(`  ✓ ${dateStr} — "${puzzle.title}"`);
+        console.log(`  ✓ ${dateStr} — "${puzzle.title}" (+${items.length} interrupts)`);
       } catch (err) {
         console.error(`  ✗ ${dateStr} attempt ${attempts}: ${err.message}`);
         if (attempts < 3) await new Promise((r) => setTimeout(r, 1000 * attempts));
@@ -586,7 +759,7 @@ export default async (req, context) => {
     cursor = addDays(cursor, 1);
   }
 
-  if (added === 0 && backfilled === 0) {
+  if (added === 0 && backfilled === 0 && interruptsBackfilled === 0) {
     console.error('[scheduled-puzzles] no puzzles generated and nothing backfilled — not committing');
     return new Response('no changes', { status: 500 });
   }
@@ -606,6 +779,25 @@ export default async (req, context) => {
     message = `Auto-backfill: enrich ${backfilled} stale puzzle entr${backfilled === 1 ? 'y' : 'ies'}`;
   }
 
+  // Commit interrupts FIRST. If something goes wrong, we'd rather leave the
+  // file with orphan interrupts (harmless — verify-interrupts flags them but
+  // they don't break the game) than commit a puzzle that has no chat data
+  // (which is exactly today's bug).
+  const interruptsDirty =
+    added > 0 || interruptsBackfilled > 0;
+  if (interruptsDirty) {
+    try {
+      const interruptsMessage = added > 0
+        ? `Auto-publish: interrupts for ${newlyAdded.map((p) => p.id).join(', ')}${interruptsBackfilled ? ` (+${interruptsBackfilled} backfilled: ${interruptsBackfilledIds.join(', ')})` : ''}`
+        : `Auto-backfill: ${interruptsBackfilled} missing interrupt set(s) — ${interruptsBackfilledIds.join(', ')}`;
+      await commitInterruptsToGitHub(interrupts, interruptsSha, interruptsMessage);
+      console.log(`[scheduled-puzzles] interrupts committed (${added} new + ${interruptsBackfilled} backfilled)`);
+    } catch (err) {
+      console.error('[scheduled-puzzles] interrupts commit failed:', err.message);
+      return new Response(`interrupts commit failed: ${err.message}`, { status: 500 });
+    }
+  }
+
   // One retry on SHA conflict — re-fetch and re-apply if someone committed
   // mid-run. We always append, so re-applying is safe.
   let attempt = 0;
@@ -615,7 +807,7 @@ export default async (req, context) => {
       await commitToGitHub(puzzles, sha, message);
       const elapsed = ((Date.now() - startedAt) / 1000).toFixed(1);
       console.log(`[scheduled-puzzles] committed ${added} new + ${backfilled} backfilled in ${elapsed}s`);
-      return new Response(`added ${added} puzzle(s), backfilled ${backfilled}`);
+      return new Response(`added ${added} puzzle(s), backfilled ${backfilled}, interrupts backfilled ${interruptsBackfilled}`);
     } catch (err) {
       const isShaConflict = /409|sha|conflict/i.test(err.message);
       if (!isShaConflict || attempt >= 2) {
