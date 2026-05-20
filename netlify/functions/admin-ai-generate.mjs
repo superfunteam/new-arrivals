@@ -14,7 +14,8 @@ DIFFICULTY TIERS (required, one of each):
 RULES:
 - Exactly 4 categories, exactly 4 movies per category (16 total)
 - Movies primarily from 1970-1999 (video store golden age). Occasional outliers OK.
-- At least 2-3 movies must plausibly fit multiple categories (overlap traps that create false confidence)
+- All 16 movies must be DISTINCT — never place the same film in two categories, even if it could plausibly fit both. Each movie appears exactly once in the whole puzzle.
+- At least 2-3 movies should PLAUSIBLY (but not actually) fit multiple categories — the trap is that they could belong somewhere else, not that they're listed twice
 - Each movie needs: title (exact as on TMDB) and year
 
 OUTPUT: Valid JSON only, no commentary.
@@ -95,7 +96,8 @@ Remember:
 - 4 categories with difficulty 1-4 (one of each)
 - 4 movies per category (16 total)
 - Movies mostly from 1970-1999
-- Include 2-3 overlap traps (movies that could plausibly fit multiple categories)
+- All 16 movies must be DISTINCT — never repeat a film across categories
+- Include 2-3 overlap TRAPS: films that PLAUSIBLY belong in multiple categories. Each trap film still appears in only ONE category — the trap is the player's uncertainty about which one
 - Use exact TMDB titles`;
 
       const result = await callClaude(FULL_PUZZLE_SYSTEM_PROMPT, prompt);

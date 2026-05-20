@@ -143,6 +143,39 @@ function inRange(id, start, end) {
   return id >= start && id <= end;
 }
 
+// A movie cannot appear twice in the same puzzle. The shelf has 16 slots; two
+// copies of the same tape break drag-and-drop, sharing, and the categories
+// the player is supposed to discover. Caught here so CI rejects bad data
+// before it hits prod.
+function findDuplicateMovies(puzzle) {
+  const seenIds = new Map();   // tmdb_id -> first category seen
+  const seenTitles = new Map(); // "title|year" -> first category seen
+  const dupes = [];
+  for (const cat of puzzle.categories || []) {
+    for (const m of cat.movies || []) {
+      if (m.tmdb_id != null) {
+        const prev = seenIds.get(m.tmdb_id);
+        if (prev) {
+          dupes.push({ title: m.title, year: m.year, tmdb_id: m.tmdb_id, firstCategory: prev, secondCategory: cat.name });
+        } else {
+          seenIds.set(m.tmdb_id, cat.name);
+        }
+      }
+      const titleKey = `${(m.title || '').trim().toLowerCase()}|${m.year}`;
+      const prevT = seenTitles.get(titleKey);
+      if (prevT && prevT !== cat.name) {
+        // Only report when tmdb_id check didn't already flag this one.
+        if (!dupes.some(d => d.title === m.title && d.year === m.year && d.secondCategory === cat.name)) {
+          dupes.push({ title: m.title, year: m.year, tmdb_id: m.tmdb_id, firstCategory: prevT, secondCategory: cat.name });
+        }
+      } else if (!prevT) {
+        seenTitles.set(titleKey, cat.name);
+      }
+    }
+  }
+  return dupes;
+}
+
 async function matchesAlternativeTitle(tmdbId, puzzleTitle, yearMatch) {
   try {
     const alt = await tmdbFetch(`${TMDB_BASE}/movie/${tmdbId}/alternative_titles`);
@@ -200,11 +233,19 @@ async function main() {
   const data = JSON.parse(fs.readFileSync(PUZZLES_PATH, 'utf8'));
 
   const results = [];
+  const duplicates = [];
   let total = 0;
 
   for (const puzzle of data.puzzles) {
     if (!inRange(puzzle.id, rangeStart, rangeEnd)) continue;
     if (!json) console.log(`\n=== ${puzzle.id} — ${puzzle.title} ===`);
+    const dupes = findDuplicateMovies(puzzle);
+    for (const d of dupes) {
+      duplicates.push({ puzzleId: puzzle.id, ...d });
+      if (!json) {
+        console.log(`  DUP  ${d.title} (${d.year}) [${d.tmdb_id}] appears in "${d.firstCategory}" AND "${d.secondCategory}"`);
+      }
+    }
     for (const cat of puzzle.categories) {
       for (const movie of cat.movies) {
         total++;
@@ -230,16 +271,17 @@ async function main() {
 
   const bad = results.filter(r => r.status !== 'ok');
   if (json) {
-    console.log(JSON.stringify({ total, bad }, null, 2));
+    console.log(JSON.stringify({ total, bad, duplicates }, null, 2));
   } else {
     console.log(`\n\nTotal checked: ${total}`);
     console.log(`OK:            ${results.filter(r => r.status === 'ok').length}`);
     console.log(`Mismatches:    ${results.filter(r => r.status === 'mismatch').length}`);
     console.log(`Missing IDs:   ${results.filter(r => r.status === 'missing-id').length}`);
     console.log(`Fetch errors:  ${results.filter(r => r.status === 'fetch-error').length}`);
+    console.log(`Duplicates:    ${duplicates.length}`);
   }
 
-  process.exit(bad.length === 0 ? 0 : 1);
+  process.exit(bad.length === 0 && duplicates.length === 0 ? 0 : 1);
 }
 
 main().catch(err => {

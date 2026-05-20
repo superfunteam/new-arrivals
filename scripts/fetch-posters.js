@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import sharp from 'sharp';
+import { findDuplicateMovies } from './check-puzzle-duplicates.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -339,6 +340,25 @@ async function main() {
 
   // Read puzzles.json
   const puzzlesData = JSON.parse(fs.readFileSync(PUZZLES_PATH, 'utf8'));
+
+  // Reject puzzles with duplicate movies before any TMDB work: the game
+  // breaks when the same tape appears twice on the shelf, so deploys that
+  // contain duplicates must not ship. Cheap to check, no network needed.
+  const duplicateReports = [];
+  for (const p of puzzlesData.puzzles) {
+    const dupes = findDuplicateMovies(p);
+    if (dupes.length) duplicateReports.push({ puzzleId: p.id, title: p.title, duplicates: dupes });
+  }
+  if (duplicateReports.length > 0) {
+    console.error('\nDuplicate movies found in puzzles — refusing to build:');
+    for (const r of duplicateReports) {
+      console.error(`  ${r.puzzleId} — ${r.title}`);
+      for (const d of r.duplicates) {
+        console.error(`    "${d.title}" (${d.year}) [${d.tmdb_id ?? 'no-id'}] in "${d.firstCategory}" AND "${d.secondCategory}"`);
+      }
+    }
+    process.exit(1);
+  }
 
   let totalMovies = 0;
   let successCount = 0;

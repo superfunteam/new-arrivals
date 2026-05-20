@@ -9225,20 +9225,13 @@
           "color": "#9C27B0",
           "movies": [
             {
-              "title": "Raging Bull",
-              "year": 1980,
-              "tmdb_id": 1578,
-              "summary": "The life of boxer Jake LaMotta, whose violence and temper that led him to the top in the ring destroyed his life outside of it.",
-              "genres": [
-                "Drama",
-                "History"
-              ],
-              "director": "Martin Scorsese",
-              "stars": [
-                "Robert De Niro",
-                "Cathy Moriarty",
-                "Joe Pesci"
-              ]
+              "title": "The Last of the Mohicans",
+              "year": 1992,
+              "tmdb_id": 9361,
+              "summary": "",
+              "genres": [],
+              "director": null,
+              "stars": []
             },
             {
               "title": "My Left Foot",
@@ -26210,37 +26203,38 @@
           "color": "#2196F3",
           "movies": [
             {
-              "title": "Beetlejuice",
-              "year": 1988,
-              "tmdb_id": 4011,
-              "summary": "A newly dead New England couple seeks help from a deranged demon exorcist to scare an affluent New York family out of their home.",
+              "title": "The Nightmare Before Christmas",
+              "year": 1993,
+              "tmdb_id": 9479,
+              "summary": "Tired of scaring humans every October 31 with the same old bag of tricks, Jack Skellington, the spindly king of Halloween Town, kidnaps Santa Claus and plans to deliver shrunken heads and other ghoulish gifts to children on Christmas morning. But as Christmas approaches, Jack's rag-doll girlfriend, Sally, tries to foil his misguided plans.",
               "genres": [
                 "Fantasy",
-                "Comedy"
+                "Animation",
+                "Family"
               ],
-              "director": "Tim Burton",
+              "director": "Henry Selick",
               "stars": [
-                "Alec Baldwin",
-                "Geena Davis",
-                "Winona Ryder"
+                "Danny Elfman",
+                "Chris Sarandon",
+                "Catherine O'Hara"
               ]
             },
             {
-              "title": "The Mask",
-              "year": 1994,
-              "tmdb_id": 854,
-              "summary": "Stanley Ipkiss, an insecure banker who has lost his zest for life stumbles upon an ancient mask, that turns him into a confident suave cartoon-like character who upsets his ordinary life.",
+              "title": "James and the Giant Peach",
+              "year": 1996,
+              "tmdb_id": 10539,
+              "summary": "When the young orphan boy James spills a magic bag of crocodile tongues, he finds himself in possession of a giant peach that flies him away to strange lands.",
               "genres": [
-                "Comedy",
-                "Fantasy",
-                "Crime",
-                "Romance"
+                "Family",
+                "Animation",
+                "Adventure",
+                "Fantasy"
               ],
-              "director": "Chuck Russell",
+              "director": "Henry Selick",
               "stars": [
-                "Jim Carrey",
-                "Peter Riegert",
-                "Peter Greene"
+                "Paul Terry",
+                "Miriam Margolyes",
+                "Joanna Lumley"
               ]
             },
             {
@@ -26282,58 +26276,10 @@
           ]
         },
         {
-          "name": "Movies Where Someone Eats Dog Food",
+          "name": "Satires of the Television Industry",
           "difficulty": 4,
           "color": "#9C27B0",
           "movies": [
-            {
-              "title": "Dumb and Dumber",
-              "year": 1994,
-              "tmdb_id": 8467,
-              "summary": "Lloyd and Harry are two men whose stupidity is really indescribable. When Mary, a beautiful woman, loses an important suitcase with money before she leaves for Aspen, the two friends (who have found the suitcase) decide to return it to her. After some \"adventures\" they finally get to Aspen where, using the lost money they live it up and fight for Mary's heart.",
-              "genres": [
-                "Comedy"
-              ],
-              "director": "Peter Farrelly",
-              "stars": [
-                "Jim Carrey",
-                "Jeff Daniels",
-                "Lauren Holly"
-              ]
-            },
-            {
-              "title": "Beetlejuice",
-              "year": 1988,
-              "tmdb_id": 4011,
-              "summary": "A newly dead New England couple seeks help from a deranged demon exorcist to scare an affluent New York family out of their home.",
-              "genres": [
-                "Fantasy",
-                "Comedy"
-              ],
-              "director": "Tim Burton",
-              "stars": [
-                "Alec Baldwin",
-                "Geena Davis",
-                "Winona Ryder"
-              ]
-            },
-            {
-              "title": "Ace Ventura: Pet Detective",
-              "year": 1994,
-              "tmdb_id": 3049,
-              "summary": "He's Ace Ventura: Pet Detective. The Ace is on the case to find the Miami Dolphins' missing mascot and quarterback Dan Marino. He goes eyeball to eyeball with a man-eating shark, stakes out the Miami Dolphins and woos and wows the ladies. Whether he's undercover, under fire or underwater, he always gets his man… or beast!",
-              "genres": [
-                "Comedy",
-                "Mystery",
-                "Crime"
-              ],
-              "director": "Tom Shadyac",
-              "stars": [
-                "Jim Carrey",
-                "Courteney Cox",
-                "Sean Young"
-              ]
-            },
             {
               "title": "UHF",
               "year": 1989,
@@ -26348,6 +26294,33 @@
                 "Kevin McCarthy",
                 "Michael Richards"
               ]
+            },
+            {
+              "title": "Broadcast News",
+              "year": 1987,
+              "tmdb_id": 12626,
+              "summary": "",
+              "genres": [],
+              "director": null,
+              "stars": []
+            },
+            {
+              "title": "Network",
+              "year": 1976,
+              "tmdb_id": 10774,
+              "summary": "",
+              "genres": [],
+              "director": null,
+              "stars": []
+            },
+            {
+              "title": "Wag the Dog",
+              "year": 1997,
+              "tmdb_id": 586,
+              "summary": "",
+              "genres": [],
+              "director": null,
+              "stars": []
             }
           ]
         }

@@ -133,6 +133,30 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel, userRole = 'aut
     );
   }
 
+  // Map of "catIdx:movieIdx" -> duplicate-conflict info. A movie is a duplicate
+  // when the same tmdb_id appears in another slot — the shelf only renders 16
+  // distinct tapes, so duplicates break gameplay.
+  function findDuplicates() {
+    const seen = new Map();
+    const dupes = {};
+    categories.forEach((cat, ci) => {
+      cat.items.forEach((item, mi) => {
+        if (!item || !item.tmdb_id) return;
+        const prev = seen.get(item.tmdb_id);
+        if (prev) {
+          dupes[`${prev.ci}:${prev.mi}`] = { title: item.title };
+          dupes[`${ci}:${mi}`] = { title: item.title };
+        } else {
+          seen.set(item.tmdb_id, { ci, mi });
+        }
+      });
+    });
+    return dupes;
+  }
+
+  const duplicateSlots = findDuplicates();
+  const hasDuplicates = Object.keys(duplicateSlots).length > 0;
+
   function validate() {
     const errs = {};
     if (!title.trim()) errs.title = 'Title is required';
@@ -142,6 +166,8 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel, userRole = 'aut
       cat.items.forEach((item, mi) => {
         if (!item || !item.tmdb_id) {
           errs[`cat_${ci}_movie_${mi}`] = 'Select a movie from TMDB search';
+        } else if (duplicateSlots[`${ci}:${mi}`]) {
+          errs[`cat_${ci}_movie_${mi}`] = `Already used in another category`;
         }
       });
     });
@@ -152,6 +178,7 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel, userRole = 'aut
 
   function isValid() {
     if (!title.trim()) return false;
+    if (hasDuplicates) return false;
     return categories.every(
       (cat) =>
         cat.name.trim() &&
@@ -336,23 +363,31 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel, userRole = 'aut
 
                 {/* Movie Grid - 2x2 */}
                 <div className="grid grid-cols-2 gap-3">
-                  {cat.items.map((movie, mi) => (
-                    <div key={mi} className="space-y-1.5">
-                      <label className="text-xs text-muted-foreground">
-                        Movie {mi + 1}
-                      </label>
-                      <MovieSearch
-                        value={movie}
-                        onChange={(m) => updateMovie(ci, mi, m)}
-                        isLoading={aiLoadingFull || !!aiLoadingCat[ci]}
-                      />
-                      {submitted && errors[`cat_${ci}_movie_${mi}`] && (
-                        <Badge variant="destructive" className="text-[10px] px-1.5 py-0">
-                          Required
-                        </Badge>
-                      )}
-                    </div>
-                  ))}
+                  {cat.items.map((movie, mi) => {
+                    const isDup = !!duplicateSlots[`${ci}:${mi}`];
+                    return (
+                      <div key={mi} className="space-y-1.5">
+                        <label className="text-xs text-muted-foreground">
+                          Movie {mi + 1}
+                        </label>
+                        <MovieSearch
+                          value={movie}
+                          onChange={(m) => updateMovie(ci, mi, m)}
+                          isLoading={aiLoadingFull || !!aiLoadingCat[ci]}
+                        />
+                        {isDup && (
+                          <Badge variant="destructive" className="text-[10px] px-1.5 py-0">
+                            Duplicate — already in another category
+                          </Badge>
+                        )}
+                        {!isDup && submitted && errors[`cat_${ci}_movie_${mi}`] && (
+                          <Badge variant="destructive" className="text-[10px] px-1.5 py-0">
+                            Required
+                          </Badge>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>
@@ -364,7 +399,11 @@ export default function PuzzleEditor({ puzzle, onSave, onCancel, userRole = 'aut
       <div id="tour-publish" className="fixed bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur-sm z-40">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-3">
           <p className="text-xs text-muted-foreground hidden sm:block">
-            {isValid() ? 'Ready to process and publish' : 'Fill all fields to continue'}
+            {hasDuplicates
+              ? 'Remove duplicate movies before publishing'
+              : isValid()
+                ? 'Ready to process and publish'
+                : 'Fill all fields to continue'}
           </p>
           <div className="flex items-center gap-3 ml-auto">
             <Button

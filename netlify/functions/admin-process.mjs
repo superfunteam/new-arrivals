@@ -210,6 +210,39 @@ export default async (req, context) => {
       })),
     };
 
+    // Reject puzzles where the same movie appears in two categories. The
+    // shelf renders 16 distinct tapes; duplicates break drag-and-drop and
+    // the category-discovery mechanic. Caught here so a bad puzzle never
+    // gets committed.
+    const seenIds = new Map();
+    const seenTitles = new Map();
+    const dupes = [];
+    for (const cat of formattedPuzzle.categories) {
+      for (const m of cat.movies) {
+        if (m.tmdb_id != null) {
+          const prev = seenIds.get(m.tmdb_id);
+          if (prev) dupes.push({ title: m.title, tmdb_id: m.tmdb_id, firstCategory: prev, secondCategory: cat.name });
+          else seenIds.set(m.tmdb_id, cat.name);
+        }
+        const tkey = `${(m.title || '').trim().toLowerCase()}|${m.year}`;
+        const prevT = seenTitles.get(tkey);
+        if (prevT && prevT !== cat.name) {
+          if (!dupes.some(d => d.title === m.title && d.secondCategory === cat.name)) {
+            dupes.push({ title: m.title, tmdb_id: m.tmdb_id, firstCategory: prevT, secondCategory: cat.name });
+          }
+        } else if (!prevT) {
+          seenTitles.set(tkey, cat.name);
+        }
+      }
+    }
+    if (dupes.length > 0) {
+      const detail = dupes.map(d => `"${d.title}" appears in "${d.firstCategory}" and "${d.secondCategory}"`).join('; ');
+      return Response.json(
+        { error: `Duplicate movies are not allowed in a puzzle: ${detail}`, duplicates: dupes },
+        { status: 400 }
+      );
+    }
+
     // 1. Read current puzzles.json and interrupts.json from GitHub
     const [puzzlesFile, interruptsFile] = await Promise.all([
       getFileContent('public/puzzles.json'),
