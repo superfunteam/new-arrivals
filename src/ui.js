@@ -363,7 +363,7 @@ function showHelpMenu({ onBuyHint, hintAvailable }) {
 
   document.getElementById('help-instructions-btn').addEventListener('click', () => {
     overlay.remove();
-    showOnboarding(() => {});
+    showHowToPlayModal();
   });
 
   document.getElementById('help-schedule-btn').addEventListener('click', () => {
@@ -593,130 +593,98 @@ export function showSplashScreen(options = {}) {
  * @param {Function} onComplete  Called with (skipChecked: boolean) when the user
  *                               clicks "Let's Go" on the last slide.
  */
-export function showOnboarding(onComplete, onSlideRender) {
+// "How to Play" slides — single source of truth, used both inline on the
+// home screen (inside the collapsible section) and as a full-screen modal
+// when the in-game HELP button is tapped.
+const HOW_TO_PLAY_POSTERS = { dieHard: 562, ghostbusters: 620 };
+
+const HOW_TO_PLAY_SLIDES = [
+  {
+    title: 'Welcome to the Store',
+    body: `You're the new clerk at NEW ARRIVALS VIDEO. Sort 16 tapes into 4 mystery categories to earn your daily wages.`,
+  },
+  {
+    title: 'How to Sort',
+    anim: () => `<div class="onboarding-poster-price">
+      <img class="demo-tape" src="/posters/${HOW_TO_PLAY_POSTERS.dieHard}_pixel.jpg" alt="Die Hard" />
+      <div class="onboarding-price-tag" style="background:var(--neon-blue);color:#fff;right:-28px">TAP TO SELECT</div>
+    </div>`,
+    body: 'Tap a tape to select it. Pick 4 you think belong together, then hit SHELVE IT. Long-press any tape to view its details up close.',
+  },
+  {
+    title: 'Watch Your Wallet',
+    anim: () => `<div class="onboarding-poster-price">
+      <img class="onboarding-poster-single" src="/posters/${HOW_TO_PLAY_POSTERS.ghostbusters}_pixel.jpg" alt="Ghostbusters" />
+      <div class="onboarding-price-tag">$1</div>
+    </div>`,
+    body: 'You start with $25. Wrong guesses cost $1. Hints cost $1. Take too long and the clock eats your paycheck. Can you keep the store profitable?',
+  },
+];
+
+/**
+ * Render the How to Play slides as inline HTML — for embedding inside the
+ * home screen's "How to Play" collapsible. No buttons, no navigation, just
+ * the same content laid out vertically.
+ */
+export function getHowToPlayInlineHtml() {
+  return HOW_TO_PLAY_SLIDES
+    .map((s) => `
+      <div class="howto-slide">
+        ${s.anim ? `<div class="onboarding-anim">${s.anim()}</div>` : ''}
+        <h3 class="howto-slide-title">${s.title}</h3>
+        <p class="howto-slide-body">${s.body}</p>
+      </div>`)
+    .join('');
+}
+
+/**
+ * Full-screen How to Play modal. Used by the in-game HELP button.
+ * Dismisses on its single CLOSE button — no game-starting buttons here,
+ * the player keeps their existing session.
+ */
+export function showHowToPlayModal() {
   const overlay = document.getElementById('overlay');
   if (!overlay) return;
-
-  // Poster images from well-known movies in the game
-  const posterIds = { predator: 106, totalRecall: 861, dieHard: 562, ghostbusters: 620 };
-
-  const slides = [
-    {
-      title: 'Welcome to the Store',
-      anim: `<canvas class="onboarding-3d-canvas" id="onboarding-3d" width="320" height="180"></canvas>`,
-      body: `You're the new clerk at NEW ARRIVALS VIDEO. Sort 16 tapes into 4 mystery categories to earn your daily wages.
-        <div class="category-carousel" id="category-carousel"></div>`,
-      btn: 'Next',
-    },
-    {
-      title: 'How to Sort',
-      anim: `<div class="onboarding-poster-price">
-        <img class="demo-tape" id="demo-tape" src="/posters/${posterIds.dieHard}_pixel.jpg" alt="Die Hard" />
-        <div class="onboarding-price-tag" style="background:var(--neon-blue);color:#fff;right:-28px">TAP TO SELECT</div>
-      </div>`,
-      body: 'Tap a tape to select it. Pick 4 you think belong together, then hit SHELVE IT. Long-press any tape to view its details up close.',
-      btn: 'Next',
-    },
-    {
-      title: 'Watch Your Wallet',
-      anim: `<div class="onboarding-poster-price">
-        <img class="onboarding-poster-single" src="/posters/${posterIds.ghostbusters}_pixel.jpg" alt="Ghostbusters" />
-        <div class="onboarding-price-tag">$1</div>
-      </div>`,
-      body: 'You start with $25. Wrong guesses cost $1. Hints cost $1. Take too long and the clock eats your paycheck. Can you keep the store profitable?',
-      btn: "Let's Go",
-    },
-  ];
 
   let current = 0;
 
   function render() {
-    const isLastSlide = current === slides.length - 1;
-
-    const dotsHtml = slides
-      .map(
-        (_, i) =>
-          `<div class="onboarding-dot${i === current ? ' active' : ''}"></div>`
-      )
+    const isLastSlide = current === HOW_TO_PLAY_SLIDES.length - 1;
+    const dotsHtml = HOW_TO_PLAY_SLIDES
+      .map((_, i) => `<div class="onboarding-dot${i === current ? ' active' : ''}"></div>`)
       .join('');
 
-    const slidesHtml = slides
-      .map(
-        (s, i) => `
-        <div class="onboarding-slide${i === current ? ' active' : ''}">
-          <div class="onboarding-anim">${s.anim}</div>
-          <h2>${s.title}</h2>
-          <p>${s.body}</p>
-        </div>`
-      )
-      .join('');
-
-    const notifyChecked = _isNotifyEnabled ? ' checked' : '';
-    const checkboxHtml = isLastSlide
-      ? `<div class="checkbox-group">
-          <label class="skip-checkbox">
-            <input type="checkbox" id="skip-intro-check"> Skip this next time
-          </label>
-          <label class="skip-checkbox">
-            <input type="checkbox" id="notify-check"${notifyChecked}> Alert me for daily game
-          </label>
-        </div>`
-      : '';
-
-    const buttonsHtml = isLastSlide
-      ? `<div class="onboarding-final-buttons">
-          <button class="onboarding-btn" id="onboarding-training">Start Training</button>
-          <button class="onboarding-btn-secondary" id="onboarding-skip-daily">Skip to Daily Puzzle</button>
-        </div>`
-      : `<button class="onboarding-btn" id="onboarding-next">${slides[current].btn}</button>`;
+    const s = HOW_TO_PLAY_SLIDES[current];
 
     overlay.innerHTML = `
       <div class="onboarding">
         ${_marqueeHtml}
         <div class="onboarding-card">
-          ${slidesHtml}
+          <div class="onboarding-slide active">
+            ${s.anim ? `<div class="onboarding-anim">${s.anim()}</div>` : ''}
+            <h2>${s.title}</h2>
+            <p>${s.body}</p>
+          </div>
           <div class="onboarding-dots">${dotsHtml}</div>
-          ${checkboxHtml}
-          ${buttonsHtml}
+          ${isLastSlide
+            ? `<button class="onboarding-btn" id="howto-close">CLOSE</button>`
+            : `<button class="onboarding-btn" id="howto-next">Next</button>`}
         </div>
       </div>
     `;
-
     overlay.classList.add('active');
 
-    function finishOnboarding(choice) {
-      const skipCheck = document.getElementById('skip-intro-check');
-      const skipChecked = skipCheck ? skipCheck.checked : false;
-      const notifyCheck = document.getElementById('notify-check');
-      if (notifyCheck) _handleNotifyToggle(notifyCheck.checked);
-      overlay.innerHTML = '';
-      overlay.classList.remove('active');
-      if (typeof onComplete === 'function') onComplete(skipChecked, choice);
-    }
-
     if (isLastSlide) {
-      document.getElementById('onboarding-training').addEventListener('click', () => finishOnboarding('training'));
-      document.getElementById('onboarding-skip-daily').addEventListener('click', () => finishOnboarding('daily'));
+      document.getElementById('howto-close').addEventListener('click', () => {
+        overlay.innerHTML = '';
+        overlay.classList.remove('active');
+      });
     } else {
-      document.getElementById('onboarding-next').addEventListener('click', () => {
+      document.getElementById('howto-next').addEventListener('click', () => {
         current++;
         render();
       });
     }
-
-    // Interactive demo tape on slide 2
-    const demoTape = document.getElementById('demo-tape');
-    if (demoTape) {
-      demoTape.addEventListener('click', () => {
-        demoTape.classList.toggle('demo-selected');
-      });
-    }
-
-    // Category carousel on slide 0 — driven by the 3D scene's onCategoryChange callback
-    // No JS needed here; the carousel element is populated by main.js
-
-    // Notify caller which slide just rendered
-    if (typeof onSlideRender === 'function') onSlideRender(current);
   }
 
   render();
@@ -781,6 +749,7 @@ export function showWelcomeScreen(options = {}) {
     pastPuzzles = [],
     completedDailyIds = [],
     gameScores = {},
+    stats = null,
     paycheckData = null,
     extraShiftPuzzles = [],
     extraBalance = 0,
@@ -868,14 +837,19 @@ export function showWelcomeScreen(options = {}) {
 
   const extraShiftsHtml = (extraShiftPuzzles.length > 0 && extraBalance >= 10)
     ? `
-      <div class="welcome-section">
-        <div class="welcome-section-title">EXTRA SHIFTS</div>
-        <div class="extra-shift-subtitle">$10 per shift · Full $25 earning potential</div>
-        <div class="trainee-list">
-          ${extraShiftCardsHtml}
+      <details class="welcome-section welcome-collapsible">
+        <summary class="welcome-section-summary">
+          <span class="welcome-section-title">EXTRA SHIFTS</span>
+          <span class="welcome-section-caret material-symbols-rounded">expand_more</span>
+        </summary>
+        <div class="welcome-collapsible-body">
+          <div class="extra-shift-subtitle">$10 per shift · Full $25 earning potential</div>
+          <div class="trainee-list">
+            ${extraShiftCardsHtml}
+          </div>
+          ${extraProgressHtml}
         </div>
-        ${extraProgressHtml}
-      </div>`
+      </details>`
     : '';
 
   // Past Returns cards HTML — show first 7, hide rest behind "Show More"
@@ -905,12 +879,30 @@ export function showWelcomeScreen(options = {}) {
 
   const pastReturnsHtml = pastPuzzles.length > 0
     ? `
-      <div class="welcome-section">
-        <div class="welcome-section-title">RERUNS (PAST DAYS)</div>
-        <div class="past-returns-list" id="past-returns-list">
-          ${pastCardsHtml}
+      <details class="welcome-section welcome-collapsible">
+        <summary class="welcome-section-summary">
+          <span class="welcome-section-title">RERUNS (PAST DAYS)</span>
+          <span class="welcome-section-meta">${pastPuzzles.length}</span>
+          <span class="welcome-section-caret material-symbols-rounded">expand_more</span>
+        </summary>
+        <div class="welcome-collapsible-body">
+          <div class="past-returns-list" id="past-returns-list">
+            ${pastCardsHtml}
+          </div>
+          ${showMoreBtn}
         </div>
-        ${showMoreBtn}
+      </details>`
+    : '';
+
+  // Streak chip — only shown when there's something to brag about.
+  const currentStreak = stats?.currentStreak || 0;
+  const maxStreak = stats?.maxStreak || 0;
+  const streakHtml = (currentStreak > 0 || maxStreak > 0)
+    ? `<div class="daily-streak" title="${currentStreak} day streak · best ${maxStreak}">
+        <span class="material-symbols-rounded daily-streak-icon">local_fire_department</span>
+        <span class="daily-streak-current">${currentStreak}</span>
+        <span class="daily-streak-sep">·</span>
+        <span class="daily-streak-best">best ${maxStreak}</span>
       </div>`
     : '';
 
@@ -926,6 +918,7 @@ export function showWelcomeScreen(options = {}) {
         <div class="daily-card" id="welcome-daily-btn">
           <div class="daily-card-title">${dailyPuzzle.title}</div>
           <div class="daily-card-date">${dateStr}</div>
+          ${streakHtml}
           ${hasScore(dailyPuzzle.id) ? scoreButton(dailyPuzzle.id) : `<span class="game-card-play-btn daily-play-btn">${dailyBtnLabel}</span>`}
         </div>
       </div>
@@ -934,14 +927,30 @@ export function showWelcomeScreen(options = {}) {
 
       ${pastReturnsHtml}
 
-      <div class="welcome-section">
-        <div class="welcome-section-title">TRAINEE MANUAL</div>
-        <div class="trainee-list">
-          ${practiceCardsHtml}
+      <details class="welcome-section welcome-collapsible">
+        <summary class="welcome-section-summary">
+          <span class="welcome-section-title">TRAINEE MANUAL</span>
+          <span class="welcome-section-meta">${practicePuzzles.length}</span>
+          <span class="welcome-section-caret material-symbols-rounded">expand_more</span>
+        </summary>
+        <div class="welcome-collapsible-body">
+          <div class="trainee-list">
+            ${practiceCardsHtml}
+          </div>
         </div>
-      </div>
+      </details>
 
       ${extraShiftsHtml}
+
+      <details class="welcome-section welcome-collapsible">
+        <summary class="welcome-section-summary">
+          <span class="welcome-section-title">HOW TO PLAY</span>
+          <span class="welcome-section-caret material-symbols-rounded">expand_more</span>
+        </summary>
+        <div class="welcome-collapsible-body welcome-howto">
+          ${getHowToPlayInlineHtml()}
+        </div>
+      </details>
 
       <div class="welcome-notify">
         <label class="skip-checkbox">

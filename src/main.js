@@ -51,8 +51,7 @@ import {
   saveGameState,
   loadGameState,
   updateStats,
-  isSkipIntro,
-  setSkipIntro,
+  loadStats,
   getPastPuzzles,
   getCompletedDailyIds,
   markDailyCompleted,
@@ -71,7 +70,6 @@ import {
   updateTimer,
   setShelveButton,
   showSplashScreen,
-  showOnboarding,
   showWelcomeScreen,
   showLightbox,
   hideLightbox,
@@ -129,147 +127,6 @@ function createPlaceholderTexture(title) {
   ctx.textAlign = 'center';
   ctx.fillText(title, 64, 96, 120);
   return new THREE.CanvasTexture(cvs);
-}
-
-// ---------------------------------------------------------------------------
-// Mini Three.js scene for onboarding slide 0 (cascading twirl showcase)
-// ---------------------------------------------------------------------------
-
-const ONBOARDING_CATEGORIES = [
-  {
-    name: "90's Comedies", color: '#4CAF50',
-    ids: [3049, 8467, 9614, 8872], // Ace Ventura, Dumb & Dumber, Happy Gilmore, Wayne's World
-  },
-  {
-    name: 'Classic Romance', color: '#FF6B9D',
-    ids: [114, 88, 639, 2028], // Pretty Woman, Dirty Dancing, When Harry Met Sally, Say Anything
-  },
-  {
-    name: 'Starring John Candy', color: '#FFC107',
-    ids: [2609, 11862, 10073, 11983], // Planes/Trains, Uncle Buck, Cool Runnings, Great Outdoors
-  },
-];
-
-function startOnboarding3DScene(onCategoryChange) {
-  const canvas = document.getElementById('onboarding-3d');
-  if (!canvas) return () => {};
-
-  const W = 320;
-  const H = 180;
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(W, H);
-  renderer.setClearColor(0x000000, 0);
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(35, W / H, 0.1, 20);
-  camera.position.set(0, 0, 3);
-  camera.lookAt(0, 0, 0);
-
-  scene.add(new THREE.AmbientLight(0xfff5e6, 0.5));
-  const dirLight = new THREE.DirectionalLight(0xfff0d4, 0.8);
-  dirLight.position.set(0, 3, 4);
-  scene.add(dirLight);
-  const neon = new THREE.PointLight(0xFF6B9D, 0.3, 8);
-  neon.position.set(2, 2, 2);
-  scene.add(neon);
-
-  // Preload all textures for all 3 categories
-  const texCache = {}; // { tmdbId: THREE.Texture }
-  const allIds = ONBOARDING_CATEGORIES.flatMap(c => c.ids);
-  allIds.forEach(id => {
-    loadTexture(`/posters/${id}_pixel.jpg`).then(tex => { texCache[id] = tex; }).catch(() => {});
-  });
-
-  // Create 4 boxes with the first category's posters
-  const firstCat = ONBOARDING_CATEGORIES[0];
-  const boxes = [];
-  const gap = 0.75;
-  const startX = -3 * gap / 2;
-
-  firstCat.ids.forEach((id, i) => {
-    loadTexture(`/posters/${id}_pixel.jpg`).then(tex => {
-      const movie = { tmdb_id: id, title: '' };
-      const box = createVHSBox(movie, tex);
-      box.position.set(startX + i * gap, 0, 0);
-      scene.add(box);
-      boxes[i] = box;
-    }).catch(() => {});
-  });
-
-  let running = true;
-  const clock = new THREE.Clock();
-  let currentCatIdx = 0;
-  let lastCatIdx = -1;
-  const CYCLE_DURATION = 4; // seconds per category
-
-  // Track which boxes have been swapped this cycle
-  let swappedThisCycle = [false, false, false, false];
-
-  function swapBoxTexture(boxIdx, tmdbId) {
-    const box = boxes[boxIdx];
-    const tex = texCache[tmdbId];
-    if (!box || !tex) return;
-    // The front face material is the first child's material[4] (front face of the box)
-    // But createVHSBox stores frontMaterial in userData
-    if (box.userData.frontMaterial) {
-      box.userData.frontMaterial.map = tex;
-      box.userData.frontMaterial.needsUpdate = true;
-    }
-  }
-
-  function animate() {
-    if (!running) return;
-    requestAnimationFrame(animate);
-    const t = clock.getElapsedTime();
-
-    // Which category are we showing?
-    currentCatIdx = Math.floor(t / CYCLE_DURATION) % ONBOARDING_CATEGORIES.length;
-    const cat = ONBOARDING_CATEGORIES[currentCatIdx];
-
-    // Notify UI of category change
-    if (currentCatIdx !== lastCatIdx) {
-      lastCatIdx = currentCatIdx;
-      swappedThisCycle = [false, false, false, false];
-      if (onCategoryChange) onCategoryChange(cat);
-    }
-
-    // Cascading twirl: each box twirls in sequence
-    const cycleT = t % CYCLE_DURATION;
-    for (let i = 0; i < 4; i++) {
-      const box = boxes[i];
-      if (!box) continue;
-
-      const boxStart = i * 0.35;
-      const twirlDuration = 1.0;
-
-      if (cycleT >= boxStart && cycleT < boxStart + twirlDuration) {
-        const localT = (cycleT - boxStart) / twirlDuration;
-        const eased = 1 - Math.pow(1 - localT, 3);
-        box.rotation.y = eased * Math.PI * 2;
-        box.position.y = Math.sin(localT * Math.PI) * 0.12;
-
-        // Swap texture at the halfway point (cover facing away)
-        if (localT > 0.4 && localT < 0.6 && !swappedThisCycle[i]) {
-          swappedThisCycle[i] = true;
-          const nextCat = ONBOARDING_CATEGORIES[(currentCatIdx + 1) % ONBOARDING_CATEGORIES.length];
-          swapBoxTexture(i, nextCat.ids[i]);
-        }
-      } else {
-        box.rotation.y = 0;
-        box.position.y = 0;
-      }
-    }
-
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  return () => {
-    running = false;
-    renderer.dispose();
-    scene.clear();
-  };
 }
 
 // ---------------------------------------------------------------------------
@@ -391,7 +248,12 @@ async function main() {
   // Use up to 60 unique posters (12 per row × 5 rows, no repeats in viewport)
   const splashPosterIds = allPosterIds.slice(0, 60);
 
-  // ── 7. Show splash → onboarding → welcome ─────────────────────────────────
+  // ── 7. Show splash → home (welcome) ───────────────────────────────────────
+  // The welcome screen is now the single home: daily play card up top, plus
+  // collapsible sections for past puzzles, training, extra shifts, and "How
+  // to Play" (the old onboarding slides inlined). The blocking 3-slide
+  // onboarding flow was removed — new visitors land on the same home screen
+  // as everyone else and can pop the "How to Play" section if they want it.
   function showWelcome() {
     showWelcomeScreen({
       dailyPuzzle,
@@ -400,6 +262,7 @@ async function main() {
       pastPuzzles,
       completedDailyIds,
       gameScores: getGameScores(),
+      stats: loadStats(),
       paycheckData: getPaycheckData(puzzlesData),
       extraShiftPuzzles,
       extraBalance: getExtraShiftBalance(puzzlesData),
@@ -432,41 +295,7 @@ async function main() {
     } else {
       ensureRadioStarted();
     }
-
-    if (!isSkipIntro()) {
-      let miniSceneCleanup = null;
-
-      showOnboarding((skipChecked, choice) => {
-        if (miniSceneCleanup) { miniSceneCleanup(); miniSceneCleanup = null; }
-        setSkipIntro(skipChecked);
-        if (choice === 'training') {
-          // Jump straight into the first training puzzle
-          ensureRadioStarted();
-          startGameSession(practicePuzzles[0], 'practice', puzzlesData);
-        } else if (choice === 'daily') {
-          // Jump straight into today's puzzle
-          ensureRadioStarted();
-          startGameSession(dailyPuzzle, 'daily', puzzlesData);
-        } else {
-          showWelcome();
-        }
-      }, (slideIndex) => {
-        // Clean up previous mini scene
-        if (miniSceneCleanup) { miniSceneCleanup(); miniSceneCleanup = null; }
-        // Start 3D tape showcase on slide 0
-        if (slideIndex === 0) {
-          miniSceneCleanup = startOnboarding3DScene((cat) => {
-            // Update the category label in the carousel
-            const el = document.getElementById('category-carousel');
-            if (el) {
-              el.innerHTML = `<span class="solved-label-demo" style="background:${cat.color}">${cat.name.toUpperCase()}</span>`;
-            }
-          });
-        }
-      });
-    } else {
-      showWelcome();
-    }
+    showWelcome();
   }
 
   // Check if returning from a finished game — skip straight to menu
