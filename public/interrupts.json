@@ -8371,8 +8371,8 @@
       "character": "Policeman",
       "folder": "Policeman",
       "sprite": "policeman",
-      "dialogue": "Pulling up films set in San Francisco — the hills, the fog, the bridge in the background. Cable cars optional.",
-      "hintCategory": "Set in San Francisco",
+      "dialogue": "Pulling up Arnie's action stuff — the big guy with the accent, helicopters, one-liners, the works. The 80s/90s muscle era.",
+      "hintCategory": "Schwarzenegger Action",
       "cost": 3
     },
     {
@@ -9052,6 +9052,660 @@
       "sprite": "farmer",
       "dialogue": "My wife rented Pet Sematary thinking it was a kid's movie about cats. Two hours later neither of us was sleeping. Stephen King is NOT a kids' author.",
       "dismiss": "Filed under no thanks"
+    }
+  ],
+  "2026-05-06": [
+    {
+      "type": "trivia",
+      "character": "Policeman",
+      "folder": "Policeman",
+      "sprite": "policeman",
+      "dialogue": "Police business — in Clue (1985), how many alternate endings did the theatrical release have?",
+      "answers": [
+        "Two",
+        "Three",
+        "Four",
+        "Five"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Old Woman",
+      "folder": "Old Woman",
+      "sprite": "old_woman",
+      "dialogue": "Dear, in Psycho, what is the name of the motel where Marion stays?",
+      "answers": [
+        "The Roadside Inn",
+        "The Bates Motel",
+        "The Hillcrest",
+        "The Mariposa"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Ninja",
+      "folder": "Ninja",
+      "sprite": "ninja",
+      "dialogue": "Whisper... in The Sixth Sense, what is Bruce Willis's character's big secret?",
+      "answers": [
+        "He's the killer",
+        "He's been dead the whole time",
+        "He's the boy's father",
+        "It was all a dream"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Businessman",
+      "folder": "Businessman",
+      "sprite": "businessman",
+      "dialogue": "Murder on the Orient Express — what is the detective's name?",
+      "answers": [
+        "Sherlock Holmes",
+        "Hercule Poirot",
+        "Miss Marple",
+        "Father Brown"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "hint",
+      "character": "Knight",
+      "folder": "Knight",
+      "sprite": "knight",
+      "dialogue": "I seek tales of foul deeds and the brave souls who would unmask the culprit! Drawing rooms, suspects in a row, the final accusation!",
+      "hintCategory": "Murder Mystery Movies",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Blue Haired Woman",
+      "folder": "Blue Haired Woman",
+      "sprite": "blue_haired_woman",
+      "dialogue": "I need movies by the Master of Suspense — that British director, big silhouette, did the cameos. Birds, showers, you know the one.",
+      "hintCategory": "Alfred Hitchcock Films",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Punk Woman",
+      "folder": "Punk Woman",
+      "sprite": "punk_woman",
+      "dialogue": "I want movies where the LAST FIVE MINUTES make you sit there with your jaw on the carpet. Whole movie rewrites itself in one scene.",
+      "hintCategory": "Famous Twist Endings",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "folder": "Joker",
+      "sprite": "joker",
+      "dialogue": "Why are the British so good at murder mysteries? Because they invented WAITING for the punchline! Tea, biscuit, BODY in the library!",
+      "dismiss": "Splendid"
+    },
+    {
+      "type": "story",
+      "character": "Farmer",
+      "folder": "Farmer",
+      "sprite": "farmer",
+      "dialogue": "Rented Psycho thinkin' it was a horse movie. Saw the shower scene. Did NOT shower for a week. Wife eventually staged an intervention.",
+      "dismiss": "Mother knows best"
+    },
+    {
+      "type": "story",
+      "character": "Bride",
+      "folder": "Bride",
+      "sprite": "bride",
+      "dialogue": "I made my bachelorette party watch Knives Out. Five of us correctly guessed the maid. The bride correctly guessed nothing. I'm still embarrassed.",
+      "dismiss": "I should have known"
+    }
+  ],
+  "2026-05-07": [
+    {
+      "type": "trivia",
+      "character": "Old Man",
+      "folder": "Old Man",
+      "sprite": "old_man",
+      "dialogue": "In the original Star Wars (1977), what's the name of Luke's home planet?",
+      "answers": [
+        "Hoth",
+        "Tatooine",
+        "Endor",
+        "Naboo"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Kid Girl",
+      "folder": "Blonde Kid Girl",
+      "sprite": "blonde_kid_girl",
+      "dialogue": "In The Breakfast Club, what do the students call themselves at the end?",
+      "answers": [
+        "The Five",
+        "The Breakfast Club",
+        "The Saturday Crew",
+        "The Rebels"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Viking Man",
+      "folder": "Viking Man",
+      "sprite": "viking_man",
+      "dialogue": "PULP FICTION! What does Jules order at the diner near the end?",
+      "answers": [
+        "A cheeseburger",
+        "Coffee and a muffin",
+        "Pancakes",
+        "Steak and eggs"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Businessman",
+      "folder": "Businessman",
+      "sprite": "businessman",
+      "dialogue": "Grease — what year is the movie set in?",
+      "answers": [
+        "The early 1950s",
+        "The late 1950s",
+        "The early 1960s",
+        "The late 1940s"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "hint",
+      "character": "Knight",
+      "folder": "Knight",
+      "sprite": "knight",
+      "dialogue": "I seek the giants of the seventies! The films that birthed the modern blockbuster — sharks, sagas, spaceships and sweaty boxers!",
+      "hintCategory": "Iconic 1970s Blockbusters",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Blue Haired Kid Girl",
+      "folder": "Blue Haired Kid Girl",
+      "sprite": "blue_haired_kid_girl",
+      "dialogue": "OK so I need those eighties teen movies — like, the pink jacket vibe, the dance scenes, the awkward prom, Molly Ringwald energy?",
+      "hintCategory": "1980s Teen Classics",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Punk Man",
+      "folder": "Punk Man",
+      "sprite": "punk_men",
+      "dialogue": "Need that nineties cult stuff. Indie-violent, dialogue-heavy, smoke-filled rooms, sneakers on a body in a trunk. You know the vibe.",
+      "hintCategory": "1990s Cult Hits",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "folder": "Joker",
+      "sprite": "joker",
+      "dialogue": "Why is every 90s cult hit set in the 70s? Because the SOUNDTRACK was already PAID FOR! Sample the boomers, profit the gen-Xers!",
+      "dismiss": "Music supervisor genius"
+    },
+    {
+      "type": "story",
+      "character": "Old Woman",
+      "folder": "Old Woman",
+      "sprite": "old_woman",
+      "dialogue": "Dearie, I saw Jaws in the theater in '75. Did not swim again until '83. The grandkids think I'm being dramatic. I am NOT being dramatic.",
+      "dismiss": "That shark was REAL"
+    },
+    {
+      "type": "story",
+      "character": "Chef",
+      "folder": "Chef",
+      "sprite": "chef",
+      "dialogue": "Tried to make a 1950s diner menu for date night after watching Grease. Wife took one look at the meatloaf and said 'go grease your hair.' Rude.",
+      "dismiss": "She loved it"
+    }
+  ],
+  "2026-05-09": [
+    {
+      "type": "trivia",
+      "character": "Knight Kid",
+      "folder": "Knight Kid",
+      "sprite": "knight_kid",
+      "dialogue": "The Lion King — what's the name of Simba's wisecracking meerkat sidekick?",
+      "answers": [
+        "Pumbaa",
+        "Timon",
+        "Zazu",
+        "Rafiki"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Kid Girl",
+      "folder": "Blonde Kid Girl",
+      "sprite": "blonde_kid_girl",
+      "dialogue": "In Aladdin, what is the name of Aladdin's pet monkey?",
+      "answers": [
+        "Iago",
+        "Abu",
+        "Rajah",
+        "Genie"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Goblin Kid",
+      "folder": "Goblin Kid",
+      "sprite": "goblin_kid",
+      "dialogue": "BEAUTY AND THE BEAST! What is the name of the talking candelabra?",
+      "answers": [
+        "Cogsworth",
+        "Lumière",
+        "Mrs. Potts",
+        "Chip"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Bride",
+      "folder": "Bride",
+      "sprite": "bride",
+      "dialogue": "The Little Mermaid — what song does Ariel sing about wanting to be where the people are?",
+      "answers": [
+        "Under the Sea",
+        "Part of Your World",
+        "Kiss the Girl",
+        "Poor Unfortunate Souls"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "hint",
+      "character": "Blue Haired Kid Girl",
+      "folder": "Blue Haired Kid Girl",
+      "sprite": "blue_haired_kid_girl",
+      "dialogue": "I want, like, the BIG Disney era — the cartoons everybody sang along to in the 90s! Princesses, talking animals, Broadway songs!",
+      "hintCategory": "Disney Renaissance",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Old Man",
+      "folder": "Old Man",
+      "sprite": "old_man",
+      "dialogue": "The other animator. The one with the brown movies, before the Pixar took over. Dark, scary cartoons for kids — gave me a stomach ache.",
+      "hintCategory": "Don Bluth Films",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Blue Haired Woman",
+      "folder": "Blue Haired Woman",
+      "sprite": "blue_haired_woman",
+      "dialogue": "I want the gorgeous Japanese animation — hand-drawn forests, spirits, that bus that's a CAT? You know what I mean. Hayao stuff.",
+      "hintCategory": "Studio Ghibli",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "folder": "Joker",
+      "sprite": "joker",
+      "dialogue": "Why do stop-motion animators have arthritis by 30? Because they moved a CHICKEN one millimeter twenty-four times PER SECOND! Art HURTS!",
+      "dismiss": "Tip your animator"
+    },
+    {
+      "type": "story",
+      "character": "Chef",
+      "folder": "Chef",
+      "sprite": "chef",
+      "dialogue": "I made ratatouille for my niece after Studio Ghibli night and she said 'wrong studio, uncle.' I am NOT recovering from that.",
+      "dismiss": "Brutal six-year-old"
+    },
+    {
+      "type": "story",
+      "character": "Farmer",
+      "folder": "Farmer",
+      "sprite": "farmer",
+      "dialogue": "Watched Land Before Time with the kids. Three of them are now afraid of dinosaurs. Two are afraid of clouds. Don Bluth, what have you done.",
+      "dismiss": "Therapy bills incoming"
+    }
+  ],
+  "2026-05-10": [
+    {
+      "type": "trivia",
+      "character": "Blonde Woman",
+      "folder": "Blonde Woman",
+      "sprite": "blonde_woman",
+      "dialogue": "Mrs. Doubtfire — who plays the title character?",
+      "answers": [
+        "Robin Williams",
+        "Steve Martin",
+        "Tom Hanks",
+        "Eddie Murphy"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Old Woman",
+      "folder": "Old Woman",
+      "sprite": "old_woman",
+      "dialogue": "Dearie, in Terms of Endearment, what disease does Emma have?",
+      "answers": [
+        "Heart disease",
+        "Cancer",
+        "Tuberculosis",
+        "Diabetes"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Viking Man",
+      "folder": "Viking Man",
+      "sprite": "viking_man",
+      "dialogue": "ALIENS! What does Ripley famously yell at the queen alien?",
+      "answers": [
+        "Get out of my ship!",
+        "Get away from her, you bitch!",
+        "Leave my crew alone!",
+        "Eat plasma!"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Punk Woman",
+      "folder": "Punk Woman",
+      "sprite": "punk_woman",
+      "dialogue": "Mommie Dearest — what household item famously SETS HER OFF?",
+      "answers": [
+        "Plastic forks",
+        "Wire hangers",
+        "Steel wool",
+        "Wet towels"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "hint",
+      "character": "Bride",
+      "folder": "Bride",
+      "sprite": "bride",
+      "dialogue": "I want the funny movie moms! The wig, the apron, the chaos, the LAUGHS. The kind of mom that pretends to be someone else for the kids.",
+      "hintCategory": "Iconic Movie Moms (Comedy)",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Businessman",
+      "folder": "Businessman",
+      "sprite": "businessman",
+      "dialogue": "Looking for mother-daughter dramas — those weepy films where they argue, reconcile, cry, share a meaningful look across a hospital bed.",
+      "hintCategory": "Mother-Daughter Dramas",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Firefighter",
+      "folder": "Firefighter",
+      "sprite": "firefighter",
+      "dialogue": "I want movies where MOM has to step up and SAVE her kid. Action, horror, sci-fi — doesn't matter. The mom is the one with the flamethrower.",
+      "hintCategory": "Mom Saves the Kid",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "folder": "Joker",
+      "sprite": "joker",
+      "dialogue": "Why are twisted movie moms the best? Because we ALL knew one growing up! Hi mom, love you, please don't watch THIS particular movie!",
+      "dismiss": "Send chocolates"
+    },
+    {
+      "type": "story",
+      "character": "Farmer",
+      "folder": "Farmer",
+      "sprite": "farmer",
+      "dialogue": "Watched Mrs. Doubtfire with my four boys. They made me try on the wig. We are NEVER speaking of this. Mother's Day was rough.",
+      "dismiss": "Don't tell my wife"
+    },
+    {
+      "type": "story",
+      "character": "Knight",
+      "folder": "Knight",
+      "sprite": "knight",
+      "dialogue": "Verily, my lady mother insisted we watch Steel Magnolias on the eve of her birthday. By film's end, I had wept for THREE distinct reasons.",
+      "dismiss": "Onion in my eye"
+    }
+  ],
+  "2026-05-20": [
+    {
+      "type": "trivia",
+      "character": "Joker",
+      "folder": "Joker",
+      "sprite": "joker",
+      "dialogue": "ACE VENTURA! What's Ace's job, exactly?",
+      "answers": [
+        "Animal control",
+        "Pet detective",
+        "Zookeeper",
+        "Vet"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Blonde Kid Girl",
+      "folder": "Blonde Kid Girl",
+      "sprite": "blonde_kid_girl",
+      "dialogue": "In Clueless, what is Cher's iconic catchphrase when she's disgusted?",
+      "answers": [
+        "Whatever!",
+        "As if!",
+        "Ugh, gross!",
+        "Buggin'!"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Viking Man",
+      "folder": "Viking Man",
+      "sprite": "viking_man",
+      "dialogue": "NIGHTMARE BEFORE CHRISTMAS! What's the main character's name?",
+      "answers": [
+        "Jack Skellington",
+        "Oogie Boogie",
+        "Sally",
+        "Zero"
+      ],
+      "correct": 0
+    },
+    {
+      "type": "trivia",
+      "character": "Old Man",
+      "folder": "Old Man",
+      "sprite": "old_man",
+      "dialogue": "Network — what does Howard Beale famously yell out the window?",
+      "answers": [
+        "I want my money back!",
+        "I'm mad as hell, and I'm not gonna take this anymore!",
+        "Down with the system!",
+        "Turn off your TV!"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "hint",
+      "character": "Punk Kid Boy",
+      "folder": "Punk Kid Boy",
+      "sprite": "punk_kid_boy",
+      "dialogue": "Yo I want the rubber-face dude — talks out of his butt in one, talks to God in another, plays with a mask, plays with the Riddler. THAT guy.",
+      "hintCategory": "Jim Carrey Vehicles",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Blue Haired Kid Girl",
+      "folder": "Blue Haired Kid Girl",
+      "sprite": "blue_haired_kid_girl",
+      "dialogue": "Movies set in high school but, like, WEIRD high school? Cult-favorite teen comedies — the ones the cool seniors quote at lunch?",
+      "hintCategory": "Cult Comedies Set in High School",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Knight",
+      "folder": "Knight",
+      "sprite": "knight",
+      "dialogue": "I seek tales told with FIGURINES, posed one frame at a time! Painstaking labor of craft, where every breath of motion is sculpted!",
+      "hintCategory": "Movies Featuring Stop-Motion Animation",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Businessman",
+      "folder": "Businessman",
+      "sprite": "businessman",
+      "dialogue": "We pitched a sitcom once. Network notes said: more dog, less plot, add a teen. We left the room. Network bought it anyway. They were right.",
+      "dismiss": "Pilot ordered"
+    },
+    {
+      "type": "story",
+      "character": "Chef",
+      "folder": "Chef",
+      "sprite": "chef",
+      "dialogue": "Made a Tim Burton-themed dinner. Black food, spiral pasta, weird shapes. Guests left hungry but ARTISTICALLY satisfied. I think.",
+      "dismiss": "Five-star spooky"
+    },
+    {
+      "type": "story",
+      "character": "Bride",
+      "folder": "Bride",
+      "sprite": "bride",
+      "dialogue": "I made my fiancé learn the entire 'As If!' scene from Clueless for our engagement video. He nailed it. I might marry him after all.",
+      "dismiss": "Sealed the deal"
+    }
+  ],
+  "2026-05-21": [
+    {
+      "type": "trivia",
+      "character": "Viking Kid Boy",
+      "folder": "Viking Kid Boy",
+      "sprite": "viking_kid_boy",
+      "dialogue": "E.T. — what candy does Elliott use to lure E.T. inside the house?",
+      "answers": [
+        "M&M's",
+        "Reese's Pieces",
+        "Skittles",
+        "Hershey's Kisses"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Businessman",
+      "folder": "Businessman",
+      "sprite": "businessman",
+      "dialogue": "Back to the Future — what speed must the DeLorean reach to time travel?",
+      "answers": [
+        "77 mph",
+        "88 mph",
+        "100 mph",
+        "120 mph"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Farmer",
+      "folder": "Farmer",
+      "sprite": "farmer",
+      "dialogue": "Shawshank Redemption — how long was Andy in Shawshank before his escape?",
+      "answers": [
+        "10 years",
+        "19 years",
+        "25 years",
+        "30 years"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "trivia",
+      "character": "Ninja",
+      "folder": "Ninja",
+      "sprite": "ninja",
+      "dialogue": "Whisper... in The Sixth Sense, M. Night Shyamalan's debut feature was nominated for how many Oscars?",
+      "answers": [
+        "Three",
+        "Six",
+        "Eight",
+        "Ten"
+      ],
+      "correct": 1
+    },
+    {
+      "type": "hint",
+      "character": "Knight",
+      "folder": "Knight",
+      "sprite": "knight",
+      "dialogue": "I seek the works of the GREAT bearded one! Sharks, archaeologists, dinosaurs, soldiers — the bard who has crafted them all!",
+      "hintCategory": "Spielberg Directed",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Punk Kid Boy",
+      "folder": "Punk Kid Boy",
+      "sprite": "punk_kid_boy",
+      "dialogue": "Yo I want the movies where they go BACK or FORWARD in time! Like, broken watches, weird machines, paradoxes, fixing the past!",
+      "hintCategory": "Time Travel Tales",
+      "cost": 3
+    },
+    {
+      "type": "hint",
+      "character": "Policeman",
+      "folder": "Policeman",
+      "sprite": "policeman",
+      "dialogue": "Looking for films set behind bars — cell blocks, yard time, the warden, maybe a daring escape. Iron Bars cinema, all of it.",
+      "hintCategory": "Prison is the Setting",
+      "cost": 3
+    },
+    {
+      "type": "story",
+      "character": "Joker",
+      "folder": "Joker",
+      "sprite": "joker",
+      "dialogue": "Why do all Oscar debut directors peak at the start? Because they spent THIRTY YEARS writing the script! Try doing THAT for your second one!",
+      "dismiss": "Sophomore slump"
+    },
+    {
+      "type": "story",
+      "character": "Old Woman",
+      "folder": "Old Woman",
+      "sprite": "old_woman",
+      "dialogue": "Dearie, I cried at E.T. in '82. I cried at E.T. in '92. I cried at the rerelease in '02. The grandkids place bets on which scene gets me first.",
+      "dismiss": "It's always 'home'"
+    },
+    {
+      "type": "story",
+      "character": "Bride",
+      "folder": "Bride",
+      "sprite": "bride",
+      "dialogue": "Watched Back to the Future on our engagement night. My fiancé got very quiet, then said 'if I had a DeLorean, I'd marry you sooner.' Reader, I melted.",
+      "dismiss": "Marty would approve"
     }
   ]
 }
