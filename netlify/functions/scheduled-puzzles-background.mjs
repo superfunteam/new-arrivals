@@ -160,6 +160,23 @@ function validatePuzzle(p) {
       if (!Number.isInteger(m.year)) throw new Error(`movie "${m.title}" has bad year`);
     }
   }
+
+  // Reject the same movie appearing in two categories. The shelf renders 16
+  // distinct tapes; duplicates break drag-and-drop and the category-discovery
+  // mechanic. Compared by normalized title+year because tmdb_id isn't resolved
+  // until later in the pipeline.
+  const titlesSeen = new Map();
+  for (const c of p.categories) {
+    for (const m of c.movies) {
+      const key = `${m.title.trim().toLowerCase()}|${m.year}`;
+      const prev = titlesSeen.get(key);
+      if (prev && prev !== c.name) {
+        throw new Error(`duplicate movie: "${m.title}" (${m.year}) in "${prev}" and "${c.name}"`);
+      }
+      titlesSeen.set(key, c.name);
+    }
+  }
+
   p.categories.sort((a, b) => a.difficulty - b.difficulty);
 }
 
