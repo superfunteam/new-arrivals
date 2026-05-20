@@ -1928,6 +1928,152 @@ html, body {
   text-align: center;
 }
 
+/* Streak chip displayed inside the daily card. Subtle by default; lights up
+   pink when there's an active streak. */
+.daily-streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 12px;
+  padding: 4px 10px;
+  background: rgba(255, 107, 157, 0.1);
+  border: 1px solid rgba(255, 107, 157, 0.25);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.daily-streak-icon {
+  font-size: 14px;
+  color: var(--neon-pink);
+}
+
+.daily-streak-current {
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+.daily-streak-sep {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.daily-streak-best {
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.5px;
+}
+
+/* === Collapsible welcome sections ============================================
+   <details>-driven accordions for Reruns / Trainee / Extra Shifts / How to
+   Play. Closed by default; the chevron rotates on open. */
+.welcome-collapsible {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.welcome-collapsible[open] {
+  background: rgba(255, 255, 255, 0.035);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.welcome-section-summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  user-select: none;
+}
+
+.welcome-section-summary::-webkit-details-marker {
+  display: none;
+}
+
+.welcome-collapsible .welcome-section-summary .welcome-section-title {
+  margin: 0;
+  flex: 1;
+  letter-spacing: 2px;
+  text-align: left;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hide the decorative ::before/::after lines inside a summary — they fight
+   with the chevron. The dividers only make sense on the static section
+   header (DAILY DROPOFF, YOUR PAYCHECK). */
+.welcome-collapsible .welcome-section-summary .welcome-section-title::before,
+.welcome-collapsible .welcome-section-summary .welcome-section-title::after {
+  display: none;
+}
+
+.welcome-section-meta {
+  font-family: var(--font-display);
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 2px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  letter-spacing: 1px;
+}
+
+.welcome-section-caret {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.5);
+  transition: transform 0.18s ease;
+}
+
+.welcome-collapsible[open] .welcome-section-caret {
+  transform: rotate(180deg);
+}
+
+.welcome-collapsible-body {
+  padding: 4px 16px 16px;
+}
+
+/* How to Play — stacked static slides inside the collapsible. */
+.welcome-howto {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.howto-slide {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 14px;
+  text-align: center;
+}
+
+.howto-slide .onboarding-anim {
+  margin: 0 auto 10px;
+}
+
+.howto-slide-title {
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: var(--neon-pink);
+  margin: 0 0 6px;
+  letter-spacing: 2px;
+}
+
+.howto-slide-body {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.5;
+  margin: 0;
+}
+
 .daily-card-title {
   font-family: var(--font-display);
   font-size: 11px;
